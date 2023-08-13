@@ -1,0 +1,14 @@
+.
+├── game
+│   ├── __init__.py
+│   ├── main
+│   │   └── __init__.py
+│   └── __pycache__
+│       └── __init__.cpython-311.pyc
+├── kate.sh
+├── LICENSE
+├── rehack.py
+├── resource
+└── tree
+
+5 directories, 7 files
