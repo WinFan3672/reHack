@@ -1,3 +1,5 @@
+import platform
+import os
 def div():
     print("--------------------")
 def br():
