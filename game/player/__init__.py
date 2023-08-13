@@ -3,6 +3,7 @@ import resource.information as resourceInfo
 from resource.libs import *
 from game.player import *
 import data
+import sys
 def getProgram(name):
     for item in data.PROGRAMS:
         if item.name == name:
@@ -14,17 +15,20 @@ def getPort(num):
 class PlayerNode(Node):
     def __init__(self, name, password):
         super().__init__("Local Host","127.0.0.1", users = [User(name, password, True)])
+        self.address = "127.0.0.1"
         self.name = name
         self.password = password
         self.files = [Folder("home"),Folder("bin"),Folder("sys"),[File("system.ini")]]
         self.minPorts = 100
         self.ports = [getPort("reHackOS Local Server")]
     def main(self):
-        ch = input("{}@127.0.0.1 $".format(self.name))
+        ch = input("{}@{} $".format(self.name, self.address))
         if ch in ["exit","quit"]:
-            return
+            sys.exit()
         elif ch == "":
-            self.main()
+            pass
+        elif ch in ["clear","cls"]:
+            cls()
         else:
             parts = ch.split(" ")
             if len(parts) == 1:

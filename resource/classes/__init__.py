@@ -22,10 +22,13 @@ class User(Base):
         self.name = name
         self.password = password if password else makeRandomString()
 class Port(Base):
-    def __init__(self, num, name):
+    def __init__(self, num, name, open=False):
         super().__init__()
         self.num = num
         self.name = name
+        self.open = False
+    def toggleOpen(self):
+        self.open = False if self.open else True
 class BinaryFile(Base):
     def __init__(self, size=32, length=32):
         self.size = size
@@ -56,3 +59,26 @@ class Node(Base):
         self.name = name
         self.address = address
         self.files = files
+        self.ports = ports
+        self.minPorts = minPorts
+        self.users = users
+    def main(self):
+        ch = input("{}@{} $".format(self.name, self.address))
+        if ch in ["exit","quit"]:
+            sys.exit()
+        elif ch == "":
+            pass
+        elif ch in ["clear","cls"]:
+            cls()
+        else:
+            parts = ch.split(" ")
+            if len(parts) == 1:
+                args = []
+            else:
+                args = parts[1:]
+            name = parts[0]
+            program = getProgram(name)
+            if program:
+                program.execute(args)
+            else:
+                print("FATAL ERROR: The program was not found.")
