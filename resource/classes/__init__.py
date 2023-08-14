@@ -69,7 +69,7 @@ class Node(Base):
         self.name = name
         self.uid = uid
         self.address = address
-        self.files = files
+        self.files = files + [Folder("sys",[File("core.sys"),File("x-server.sys")])]
         self.ports = ports
         self.minPorts = minPorts
         self.users = users

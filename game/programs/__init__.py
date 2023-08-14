@@ -26,24 +26,6 @@ def Exit(args):
     sys.exit()
 def Argtest(args):
     print(args)
-def Ping(args):
-    if args:
-        s = False
-        for item in args:
-            print("64 bytes to  {}...".format(item))
-            for i in data.NODES:
-                if i.address == item:
-                    print("64 bytes from {} received.".format(item))
-                    s = True
-        if not s:
-            print("Unable to resolve hostname.")
-    else:
-        div()
-        print("ping <hostname[s]>")
-        div()
-        print("Confirms whether or not a hostname (or IP address) is online.")
-        print("You can pass more than one at once.")
-        div()
 def nmap(args):
     if args:
         args = args[0]

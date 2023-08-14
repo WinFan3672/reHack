@@ -12,7 +12,15 @@ def listDirTree(directory):
         else:
             d.append(item.name)
     return d
-
+def printDirTree(tree, indent=1):
+    for item in tree:
+        if isinstance(item, str):
+            print("    " * indent + item)
+        elif isinstance(item, list) and len(item) == 2:
+            folder_name = item[0]
+            sub_tree = item[1]
+            print("    " * indent + folder_name + "/")
+            printDirTree(sub_tree, indent + 1)
 def div():
     print("--------------------")
 def connect(item):
@@ -31,12 +39,17 @@ def connect(item):
             print("Hostname: {}".format(item.name))
             div()
         elif name == "ls":
-            d = (listDirTree(item.files))
-            x = json.dumps(d,indent=4)
-            print(x)
+            f = item.files
+            d = (listDirTree(f))
+            print("/")
+            printDirTree(d)
+        elif name == "cls":
+            cls()
         elif name == "help":
             div()
             print("help: list commands")
+            print("cls: clears the screen")
+            print("ls: lists all files on the file system.")
             print("info: print info about the host")
             print("scan: scans for related IP's.")
             print("exit: disconnect from host")
@@ -55,7 +68,7 @@ def connectStart(address):
             resolved = True
             if item.hacked:
                 print("Connecting to {}...".format(address))
-                time.sleep(2.5)
+                # time.sleep(2.5)
                 connect(item)
             else:
                 print("ERROR: Access denied.")

@@ -39,7 +39,6 @@ testSrvFiles = [
             ]),
         File("test.txt","open sesame"),
         ]),
-        Folder("system",[]),
     ]
 NODES = [
     Node("International ISP Hub","isp", "1.1.1.1",ports = [getPort(21),getPort(22), getPort(1443,True)], minPorts = 2, linked=["usagov"]),
@@ -49,7 +48,6 @@ NODES = [
     ]
 PROGRAMS = [
     Program("help",programs.Help, True),
-    Program("ping",programs.Ping, True),
     Program("nmap",programs.nmap, True),
     Program("directory",programs.Directory,True),
     Program("porthack",programs.porthack,True),
