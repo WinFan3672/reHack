@@ -1,0 +1,7 @@
+div()
+reHack.org
+div()
+reHack is a professional organisation specialising in agent recruitment.
+div()
+NOTE FOR AGENTS: Connect to the intranet through using intranet.rehack.org
+div()

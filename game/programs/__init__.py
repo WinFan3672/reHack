@@ -78,19 +78,19 @@ def webworm(args):
         div()
         print("Attacks port 80 and opens it.")
         div()
-def Directory(args):
-    div()
-    print("This is a list of reHack-related IP addresses.")
-    div()
-    print("ISP Database: 1.1.1.1")
-    print("Mission Server: 255.255.255.0")
-    print("Program Shop: 255.255.255.1")
-    print("Credits Machine: 255.255.255.255")
-    div()
-    print("It has come to the attention of reHack.Org that agents are sharing their missions server")
-    print("login credentials to friends and family. DO NOT DO THIS.")
-    print("If you are found doing this, you will 'disappear' and never return.")
-    div()
+# def Directory(args):
+#     div()
+#     print("This is a list of reHack-related IP addresses.")
+#     div()
+#     print("ISP Database: 1.1.1.1")
+#     print("Mission Server: 255.255.255.0")
+#     print("Program Shop: 255.255.255.1")
+#     print("Credits Machine: 255.255.255.255")
+#     div()
+#     print("It has come to the attention of reHack.Org that agents are sharing their missions server")
+#     print("login credentials to friends and family. DO NOT DO THIS.")
+#     print("If you are found doing this, you will 'disappear' and never return.")
+#     div()
 def sshkill(args):
     if args:
         for item in args:
@@ -139,3 +139,38 @@ def porthack(args):
         div()
         print("Attacks a machine using open ports on it.")
         print("You must unlock at least the minimum amount as defined\nby nmap'ing the host.")
+class MessageBoardMessage(Base):
+    def __init__(self, title, text):
+        super().__init__()
+        self.title = title
+        self.text = text
+class MessageBoard(Node):
+    def __init__(self, name, address, uid, path):
+        super().__init__(name, uid, address)
+        self.path = path
+        self.ports = [data.getPort(80),data.getPort(1433),data.getPort(24525)]
+        self.minPorts = 3
+    def main(self):
+        div()
+        print(sellf.name)
+        for item in os.path.lisdir("msgboard/{}".format(self.path)):
+            
+        div() 
+    def add_message(self, message):
+        if isinstance(message, MessageBoardMessage):
+            self.messages.append(message)
+        else:
+            raise TypeError("The message you tried to add is invalid.")
+class WebServer(Node):
+    def __init__(self, name, uid, address, path, linked = [], hacked = False):
+        super().__init__(name, uid, address,files = [Folder("WebServer",[File("index.html")])], linked=linked, hacked=hacked)
+        self.ports = [data.getPort(22),data.getPort(21),data.getPort(80)]
+        self.path = path
+        self.minPorts = 2
+    def main(self):
+        with open("websites/{}".format(self.path)) as f:
+            for line in f.read().split("\n"):
+                if line == "div()":
+                    div()
+                else:
+                    print(line)

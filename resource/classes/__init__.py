@@ -12,6 +12,7 @@ class Base:
         pass
 class Program(Base):
     def __init__(self, name, function, unlocked = False, price = 0):
+        super().__init__()
         self.name = name
         self.function = function
         self.unlocked = unlocked
@@ -33,6 +34,7 @@ class Port(Base):
         self.open = False if self.open else True
 class BinaryFile(Base):
     def __init__(self, size=32, length=32):
+        super().__init__()
         self.size = size
         self.length = length
     def data(self):
@@ -53,6 +55,7 @@ class File(Base):
             self.data = BinaryFile().data()
 class Folder(Base):
     def __init__(self, name, files = []):
+        super().__init__()
         self.name = name
         self.files = files
     def listDir(self):
@@ -75,23 +78,3 @@ class Node(Base):
         self.users = users
         self.hacked = hacked
         self.linked = linked
-    def main(self):
-        ch = input("{}@{} $".format(self.name, self.address))
-        if ch in ["exit","quit"]:
-            sys.exit()
-        elif ch == "":
-            pass
-        elif ch in ["clear","cls"]:
-            cls()
-        else:
-            parts = ch.split(" ")
-            if len(parts) == 1:
-                args = []
-            else:
-                args = parts[1:]
-            name = parts[0]
-            program = getProgram(name)
-            if program:
-                program.execute(args)
-            else:
-                print("FATAL ERROR: The program was not found.")

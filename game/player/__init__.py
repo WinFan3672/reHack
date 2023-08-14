@@ -21,6 +21,8 @@ class PlayerNode(Node):
         self.files = [Folder("home"),Folder("bin"),Folder("sys"),[File("system.ini")]]
         self.minPorts = 100
         self.ports = [getPort("reHackOS Local Server")]
+        self.creditCount = 0
+        self.lvl = 0
     def main(self):
         ch = input("{}@{} $".format(self.name, self.address))
         if ch in ["exit","quit"]:

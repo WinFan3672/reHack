@@ -31,6 +31,7 @@ PORTS = [
     Port(123,"NTP Time Server"),
     Port(1194,"VPN Server"),
     Port(25,"Mail Server"),
+    Port(24525,"Message Board")
     ]
 testSrvFiles = [
     Folder("home",[
@@ -42,14 +43,16 @@ testSrvFiles = [
     ]
 NODES = [
     Node("International ISP Hub","isp", "1.1.1.1",ports = [getPort(21),getPort(22), getPort(1443,True)], minPorts = 2, linked=["usagov"]),
-    Node("USA.GOV","usagov", generateIP(), ports=[getPort(80),getPort(6881,True)],minPorts=2),
     Node("SHODAN","shodan",generateIP(), ports = [getPort(80)], minPorts=1),
-    Node("reHack Test Server","rehacktest","255.255.255.3",ports = [getPort(21),getPort(22)], files = testSrvFiles, hacked = True)
+    Node("reHack Test Server","rehacktest","255.255.255.3",ports = [getPort(21),getPort(22)], files = testSrvFiles, hacked = True),
+    programs.MessageBoard("reHack News", "rehack.news","rehacknews",[programs.MessageBoardMessage("Test","This is a test message.")]),
+    programs.WebServer("United States Government","usagov", "usa.gov", "usa.gov"),
+    programs.WebServer("reHack Official","rehack","rehack.org","rehack.org"),
+    programs.WebServer("reHack Intranet","rehack_intranet","intranet.rehack.org","intranet.rehack.org")
     ]
 PROGRAMS = [
     Program("help",programs.Help, True),
     Program("nmap",programs.nmap, True),
-    Program("directory",programs.Directory,True),
     Program("porthack",programs.porthack,True),
     Program("sshkill",programs.sshkill,True),
     Program("connect",game.programs.connect.main,True),
