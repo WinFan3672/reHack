@@ -51,6 +51,7 @@ def start():
     print("[x] Load Game")
     print("[3] Credits")
     print("[6] Exit")
+    print("[10] Quick Create New Game")
     div()
     print("Version: {}\nReleased: {}".format(resourceInfo.friendlyVersion,resourceInfo.friendlyRelDate))
     div()
@@ -64,4 +65,6 @@ def start():
         credits()
     elif ch == 6:
         return
+    elif ch == 10:
+        PlayerNode("root","root").main()
     start()

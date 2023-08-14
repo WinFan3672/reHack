@@ -14,7 +14,7 @@ def getPort(num):
             return item
 class PlayerNode(Node):
     def __init__(self, name, password):
-        super().__init__("Local Host","127.0.0.1", users = [User(name, password, True)])
+        super().__init__("Local Host","localhost","127.0.0.1", users = [User(name, password, True)])
         self.address = "127.0.0.1"
         self.name = name
         self.password = password
@@ -37,7 +37,7 @@ class PlayerNode(Node):
                 args = parts[1:]
             name = parts[0]
             program = getProgram(name)
-            if program:
+            if program and program.unlocked:
                 program.execute(args)
             else:
                 print("FATAL ERROR: The program was not found.")

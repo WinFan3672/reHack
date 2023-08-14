@@ -1,0 +1,73 @@
+from resource.classes import *
+import resource.information as resourceInfo
+from resource.libs import *
+import data
+import time
+import json
+def listDirTree(directory):
+    d = []
+    for item in directory:
+        if isinstance(item, Folder):
+            d.append([item.name,listDirTree(item.files)])
+        else:
+            d.append(item.name)
+    return d
+
+def div():
+    print("--------------------")
+def connect(item):
+    while True:
+        ch = input("Administrator@{} $".format(item.address))
+        ch = ch.split(" ")
+        name = ch[0]
+        args = ch[1:]
+        if name in ["quit","exit"]:
+            break
+        elif name == "":
+            continue
+        elif name == "info":
+            div()
+            print("Address: {}".format(item.address))
+            print("Hostname: {}".format(item.name))
+            div()
+        elif name == "ls":
+            d = (listDirTree(item.files))
+            x = json.dumps(d,indent=4)
+            print(x)
+        elif name == "help":
+            div()
+            print("help: list commands")
+            print("info: print info about the host")
+            print("scan: scans for related IP's.")
+            print("exit: disconnect from host")
+            div()
+        elif name == "scan":
+            for link in item.linked:
+                n = data.getNode(link)
+                if n:
+                    print("{}: {}".format(n.name, n.address))
+        else:
+            print("ssh: syntax error.\nType `help` for a command list.")
+def connectStart(address):
+    resolved = False
+    for item in data.NODES:
+        if item.address == address:
+            resolved = True
+            if item.hacked:
+                print("Connecting to {}...".format(address))
+                time.sleep(2.5)
+                connect(item)
+            else:
+                print("ERROR: Access denied.")
+    if not resolved:
+        print("ERROR: Failed to resolve hostname.")
+def main(args):
+    if args:
+        connectStart(args[0])
+    else:
+        div()
+        print("connect <IP address>")
+        div()
+        print("Connect to a host and start executing commands on it.")
+        print("Only works for hosts attacked with 'porthack'.")
+        div()

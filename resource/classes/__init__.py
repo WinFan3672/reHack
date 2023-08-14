@@ -11,9 +11,11 @@ class Base:
     def __init__(self):
         pass
 class Program(Base):
-    def __init__(self, name, function):
+    def __init__(self, name, function, unlocked = False, price = 0):
         self.name = name
         self.function = function
+        self.unlocked = unlocked
+        self.price = price
     def execute(self, args):
         return self.function(args)
 class User(Base):
@@ -53,15 +55,26 @@ class Folder(Base):
     def __init__(self, name, files = []):
         self.name = name
         self.files = files
+    def listDir(self):
+        result = []
+        for item in self.files:
+            if isinstance(item, Folder):
+                result.append([item.name] + item.listDir())
+            else:
+                result.append(item)
+        return result        
 class Node(Base):
-    def __init__(self, name, address, files = [], users = [], ports = [], minPorts = 0):
+    def __init__(self, name, uid, address, files = [], users = [], ports = [], minPorts = 0, linked = [], hacked = False):
         super().__init__()
         self.name = name
+        self.uid = uid
         self.address = address
         self.files = files
         self.ports = ports
         self.minPorts = minPorts
         self.users = users
+        self.hacked = hacked
+        self.linked = linked
     def main(self):
         ch = input("{}@{} $".format(self.name, self.address))
         if ch in ["exit","quit"]:
