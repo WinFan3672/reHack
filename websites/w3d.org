@@ -17,9 +17,9 @@ div()
 * News
     * MHT: mht.com
         * Technology journalism done right
-    * 5chan: [REDACTED]
+    * 5chan: N/A
         * anonymous image board and forum
-        * w3d notice: The URL of 5chan has been recacted from the directory by request of the US government.
+        * w3d notice: The URL for 5chan has been removed from the directory by request of the US government.
           To access this website, please contact us: support@w3d.org
 div()
 w3d notice: We cannot guarantee that all links to websites are valid. Due to link rot, some links may be dead.
