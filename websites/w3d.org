@@ -6,6 +6,17 @@ div()
         * reHack is a professional organisation specialising in agent recruitment.
     * Nanosoft: nanosoft.com
         * Operating systems and system utilities made easy.
+    * XDevices: xdevices.com
+        * Makers of the xPhone and xOS.
+    * Search: sear.ch
+        * Introducing the Search MegaPixel 7.
+    * JMail: jmail.com
+        * Mail made simple.
+* Education:
+    * United University Association: uua.edu
+        * A collection of 25 US universities operating in unison.
+    * ac.uk
+        * The home for all UK higher education.
 * Government
     * USA: usa.gov
         * Federal government of the United States.
@@ -13,9 +24,13 @@ div()
         * Aggregated resources and information about the UK government.
 * Food and Beverages
     * FFC: ffc.com
-        * Factory Farmed Chicken: 100% non-free-range chicken with 69 secret herbs and spices
-    * Duck Donald: duckdonalds.com
-        * We cause obesity, addiction and cancer.
+        * Factory Farmed Chicken: 100% non-free-range chicken with 69 *secret* herbs and spices.
+    * Duck Donald: duckdonald.com
+        * We cause obesity, addiction and cancer, and it's cheaper than the competition.
+    * isded: isded.com
+        * Imagine taste.
+    * Coca: coca.com
+        * Only trace amounts of coca leaves.
 * News
     * MHT: mht.com
         * Technology journalism done right

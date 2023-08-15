@@ -36,7 +36,7 @@ def div():
     print("--------------------")
 def connect(item):
     while True:
-        ch = input("admin{} $".format(item.address))
+        ch = input("admin@{} $".format(item.address))
         ch = ch.split(" ")
         name = ch[0]
         args = ch[1:]
@@ -48,6 +48,8 @@ def connect(item):
             div()
             print("Address: {}".format(item.address))
             print("Hostname: {}".format(item.name))
+            print("Users: {}".format(";".join([x.name for x in item.users]) if item.users else "None"))
+            print("Has Linked Nodes: {}".format("Yes" if item.linked else "No"))
             div()
         elif name == "ls":
             f = item.files

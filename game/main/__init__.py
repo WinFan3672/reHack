@@ -25,9 +25,9 @@ def main():
     print("Please register a user.")
     div()
     u = "admin"
-    while u in data.BLACKLIST:
+    while u in data.BLOCKLIST:
         u = input("Enter a username $")
-        if u in data.BLACKLIST:
+        if u in data.BLOCKLIST:
             print("ERROR: The username is disallowed to prevent game instability.")
     p, cp = "x",""
     while p != cp:
@@ -43,8 +43,12 @@ def main():
     br()
     cls()
     print("Connecting to 127.0.0.1...")
+    time.sleep(2.5)
     cls()
-    # time.sleep(2.5)
+    div()
+    print("NOTIFICATION: You have unread emails. View them by running 'jmail'.")
+    br()
+    cls()
     p.main()
         
 def start():

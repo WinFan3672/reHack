@@ -8,19 +8,22 @@ import random
 global PORTS, NODES, PROGRAMS
 def getNode(uid):
     for item in NODES:
-        if uid == item.uid:
+        if uid == item.uid or uid == item.address:
             return item
 def generateIP():
     c = []
     for i in range(4):
         c.append(random.randint(0,255))
-    return ".".join([str(x) for x in c])
+    ip = ".".join([str(x) for x in c])
+    if ip in [x.address for x in NODES]:
+        return generateIP()
+    return ip
 def getPort(num, isOpen = False):
     for item in PORTS:
         if item.num == num:
             item.open = isOpen
             return item
-DISALLOWED_USERNAMES = [
+BLOCKLIST = [
     "admin",
     ]        
 PORTS = [
@@ -45,10 +48,11 @@ testSrvFiles = [
         File("test.txt","open sesame"),
         ]),
     ]
-NODES = [
+NODES = []        
+N = [
     Node("International ISP Hub","isp", "1.1.1.1",ports = [getPort(21),getPort(22), getPort(1443,True)], minPorts = 2, linked=["usagov"]),
     Node("SHODAN","shodan",generateIP(), ports = [getPort(80)], minPorts=1),
-    Node("reHack Test Server","rehacktest","255.255.255.3",ports = [getPort(21),getPort(22)], files = testSrvFiles, hacked = True),
+    Node("reHack Test Server","rehacktest","test.rehack.org",ports = [getPort(21),getPort(22)], files = testSrvFiles),
     programs.MessageBoard("reHack News", "rehack.news","rehacknews","rehack.news"),
     programs.WebServer("United States Government","usagov", "usa.gov", "usa.gov"),
     programs.WebServer("reHack Official","rehack","rehack.org","rehack.org"),
@@ -56,9 +60,14 @@ NODES = [
     programs.WebServer("World Wide Web Directory","w3d","w3d.org","w3d.org"),
     programs.WebServer("reHack Directory","rehack_dir","directory.rehack.org","directory.rehack.org"),
     programs.MessageBoard("reHack News (Private)","news.rehack.org","rehack_news","news.rehack.org"),
-    programs.WebServer("PWNED YOU GOT","pwned.reha.ck","pwned.reha.ck","pwned.reha.ck"),
+    programs.WebServer("reHack pwnlist","pwned.reha.ck","pwned.reha.ck","pwned.reha.ck"),
     programs.WebServer("UK Government","gov.uk","gov.uk","gov.uk"),
+    programs.WebServer("FFC Corporate Home","ffc.com","ffc.com","ffc.com"),
+    programs.WebServer("XWebDesign Home","xwebdesign.com","xwebdesign.com","xwebdesign.com"),
+    programs.WebServer("Mail.com","mail.com","mail.com","mail.com"),
     ]
+for item in N:
+    NODES.append(item)
 PROGRAMS = [
     Program("help",programs.Help, True),
     Program("nmap",programs.nmap, True),
@@ -66,9 +75,12 @@ PROGRAMS = [
     Program("sshkill",programs.sshkill,True),
     Program("ftpkill",programs.ftpkill,True),
     Program("connect",game.programs.connect.main,True),
-    Program("webworm",programs.webworm, price = 2500),
-    Program("debug",programs.debuginfo,True,classPlease=True),
-    Program("mxlookup",programs.mxlookup,True),
+    Program("webworm",programs.webworm, price = 500),
+    Program("debug",programs.debuginfo,price=0,classPlease=True),
+    Program("mxlookup",programs.mxlookup,price=0),
+    Program("jmail",programs.jmail,True,classPlease=True),
+    Program("mailoverflow",programs.mailoverflow,price=2500,classPlease=True),
+    Program("sweep",programs.sweep,price=0),
     ]
 SPICES = [
     "Basil",
@@ -141,3 +153,4 @@ SPICES = [
     "Baharat",
     "Mexican chili powder"
 ]
+WHOIS = {}
