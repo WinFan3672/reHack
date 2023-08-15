@@ -2,6 +2,7 @@ from resource.classes import *
 import resource.information as resourceInfo
 from resource.libs import *
 from game.player import *
+from game.programs import JmailServer, MailAccount, EmailData, Email
 import data
 import sys
 def getProgram(name):
@@ -23,24 +24,28 @@ class PlayerNode(Node):
         self.ports = [getPort("reHackOS Local Server")]
         self.creditCount = 0
         self.lvl = 0
+        data.NODES.append(JmailServer(self))
     def main(self):
-        ch = input("{}@{} $".format(self.name, self.address))
-        if ch in ["exit","quit"]:
-            sys.exit()
-        elif ch == "":
-            pass
-        elif ch in ["clear","cls"]:
-            cls()
-        else:
-            parts = ch.split(" ")
-            if len(parts) == 1:
-                args = []
+        while True:
+            ch = input("{}@{} $".format(self.name, self.address))
+            if ch in ["exit","quit"]:
+                return
+            elif ch == "":
+                pass
+            elif ch in ["clear","cls"]:
+                cls()
             else:
-                args = parts[1:]
-            name = parts[0]
-            program = getProgram(name)
-            if program and program.unlocked:
-                program.execute(args)
-            else:
-                print("FATAL ERROR: The program was not found.")
-        self.main()
+                parts = ch.split(" ")
+                if len(parts) == 1:
+                    args = []
+                else:
+                    args = parts[1:]
+                name = parts[0]
+                program = getProgram(name)
+                if program and program.unlocked:
+                    if program.classPlease:
+                        program.execute(args, self)
+                    else:
+                        program.execute(args)
+                else:
+                    print("FATAL ERROR: The program was not found.")

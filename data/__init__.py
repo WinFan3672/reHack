@@ -65,6 +65,7 @@ PROGRAMS = [
     Program("ftpkill",programs.ftpkill,True),
     Program("connect",game.programs.connect.main,True),
     Program("webworm",programs.webworm, price = 2500),
+    Program("debug",programs.debuginfo,True,classPlease=True)
     ]
 SPICES = [
     "Basil",

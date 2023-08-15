@@ -11,14 +11,20 @@ class Base:
     def __init__(self):
         pass
 class Program(Base):
-    def __init__(self, name, function, unlocked = False, price = 0):
+    def __init__(self, name, function, unlocked = False, price = 0, classPlease = False):
         super().__init__()
         self.name = name
         self.function = function
         self.unlocked = unlocked
         self.price = price
-    def execute(self, args):
-        return self.function(args)
+        self. classPlease = classPlease
+    def execute(self, args, player = None):
+        if player:
+            return self.function(args, player)
+        else:
+            return self.function(args)
+    def __lt__(self, other):
+        return self.name < other.name
 class User(Base):
     def __init__(self, name, password = None, isAdmin = False):
         super().__init__()    
@@ -67,10 +73,11 @@ class Folder(Base):
                 result.append(item)
         return result        
 class Node(Base):
-    def __init__(self, name, uid, address, files = [], users = [], ports = [], minPorts = 0, linked = [], hacked = False):
+    def __init__(self, name, uid, address, files = [], users = [], ports = [], minPorts = 0, linked = [], hacked = False, player=None):
         super().__init__()
         self.name = name
         self.uid = uid
+        self.player = player
         self.address = address
         self.files = files + [Folder("sys",[File("core.sys"),File("x-server.sys")])]
         self.ports = ports

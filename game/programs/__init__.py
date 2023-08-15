@@ -3,6 +3,9 @@ from resource.classes import *
 from resource.libs import *
 import data
 import time
+import json
+import types
+import inspect
 
 def div():
     print("--------------------")
@@ -15,10 +18,44 @@ def cls():
     """
     res = platform.uname()
     os.system("cls" if res[0] == "Windows" else "clear")
-    
+def objToDict(obj,addItemType=True):
+    """
+    Recursively convert an object and all its attributes to a dictionary.
+    """
+    if isinstance(obj, (int, float, bool, str)):
+        return obj
+    if inspect.isclass(obj):
+        return {"__class__": obj.__name__}
+
+    if isinstance(obj, (tuple, list)):
+        return [objToDict(x) for x in obj]
+
+    if isinstance(obj, dict):
+        if addItemType:
+            obj2 = {"@itemType":type({}).__name__}
+        obj2.update(obj)
+        obj = obj2
+        return {key: objToDict(value) for key, value in obj.items()}
+    obj_dict = {}
+    if addItemType:
+        obj_dict["@itemType"] = type(obj).__name__
+    for attr in dir(obj):
+        if attr.startswith("__") and attr.endswith("__"):
+            continue
+        if attr == "dic":
+            continue
+        if getattr(obj, attr) is None:
+            obj_dict[attr] = "<class 'none'>"
+            continue
+        if callable(getattr(obj, attr)):
+            obj_dict[attr] = f"<function '{attr}'>"
+            continue
+        value = getattr(obj, attr)
+        obj_dict[attr] = objToDict(value)
+    return obj_dict
 def Help(args):
     div()
-    for item in data.PROGRAMS:
+    for item in sorted(data.PROGRAMS):
         if item.unlocked:
             print(item.name)
     div()
@@ -204,4 +241,56 @@ def ftpkill(args):
         print("ftpkill <IP address(es)>")
         div()
         print("Attacks port 21 and opens it.")
-        div()                    
+        div()               
+def debuginfo(args, player):
+    d = objToDict(player)
+    x = json.dumps(d,indent=4)
+    print(x)
+class Email(Base):
+    def __init__(self, sender, receiver,subject=None, body=None):
+        self.sender = sender
+        self.receiver = receiver
+        self.subject = subject
+        self.body = body
+class EmailData(Base):
+    def __init__(self):
+        super().__init__()    
+        self.inbox = []
+        self.sent = []
+    def receive(self, email):
+        self.inbox.append(email)
+    def send(self, email):
+        self.sent.append(email)
+class MailAccount(Base):
+    def __init__(self, name):
+        super().__init__()
+        self.name = name
+        self.data = EmailData()
+class JmailServer(Node):
+    def __init__(self, player):
+        super().__init__("JMail","jmail","jmail.com",ports=[data.getPort(21),data.getPort(22),data.getPort(25),data.getPort(80)],minPorts=4,player=player)
+        self. files += [
+            Folder("Mail",[
+                Folder("accounts",[
+                    Folder("admin",[
+                        File("account","password=rosebud")
+                        ]),
+                    Folder(player.name,[
+                        File("account","password={}".format(player.password))
+                        ])
+                    ]),
+                Folder("config",[
+                    File("mailserver"),
+                    File("mailserver.lib.so"),
+                    ])
+                ])
+            ]
+        self.users = [User("admin","rosebud",True),User(player.name,player.password)]
+        self.accounts = [MailAccount("admin"),MailAccount(player.name)]
+    def main(self, args=None, player=None):
+        div()
+        print("Welcome to JMail.")
+        print("Use the official jmail client to read your email.")
+        div()
+        print("We currently do not have a web interface.")
+        div()

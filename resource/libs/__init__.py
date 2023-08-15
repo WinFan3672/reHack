@@ -27,7 +27,6 @@ def serialiseToDict(obj):
         }
     return obj
 
-
 def deserialiseFromDict(dct):
     """
     Custom JSON deserializer for handling class instances and methods.
@@ -46,3 +45,34 @@ def deserialiseFromDict(dct):
             instance.__dict__.update(dct)
             return instance
     return dct
+
+
+def objToDict(obj,addItemType=True):
+    """
+    Recursively convert an object and all its attributes to a dictionary.
+    """
+    if isinstance(obj, (int, float, bool, str)):
+        return obj
+    if inspect.isclass(obj):
+        return {"__class__": obj.__name__}
+
+    if isinstance(obj, (tuple, list)):
+        return [obj_to_dict(x) for x in obj]
+
+    if isinstance(obj, dict):
+        if addItemType:
+            obj2 = {"@itemType":type({}).__name__}
+        obj2.update(obj)
+        obj = obj2
+        return {key: obj_to_dict(value) for key, value in obj.items()}
+    obj_dict = {}
+    if addItemType:
+        obj_dict["@itemType"] = type(obj).__name__
+    for attr in dir(obj):
+        if attr.startswith("__") and attr.endswith("__"):
+            continue
+        if attr == "dic":
+            continue
+        value = getattr(obj, attr)
+        obj_dict[attr] = obj_to_dict(value)
+    return obj_dict
