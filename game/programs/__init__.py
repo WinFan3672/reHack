@@ -29,7 +29,15 @@ def sendEmail(email):
                 "Your message to {} could not be delivered.".format(recipient),
                 "The email address is invalid.",
                 "Please check that the email address is valid and try again.",
-                "You can use the `mxlookup` utility for a list of email accounts on our server."
+                "You can use the `mxlookup` utility for a list of email accounts on our server.",
+                "",
+                "FROM: {}".format(email.sender),
+                "TO: {}".format(email.receiver),
+                "SUBJECT: {}".format(email.subject),
+                "",
+                "EMAIL START",
+                email.body,
+                "EMAIL END",
                 ]
             m = "\n".join(m)
             e = Email("accounts-daemon@{}".format(parts[1]),email.sender,"Your message could not be delivered",m)
@@ -318,26 +326,59 @@ class MailServer(Node):
         self.hideLookup = hideLookup
         x = []
         for user in self.users:
-            g = Folder(user.name,[
-                File("account","password={}".format(user.password))
-                ])
-            x.append(g)
-        f = [
-            Folder("Mail",[
-                Folder("accounts",[x])
-                ])
-            ]
-        for user in self.users:
-            a = MailAccount(user.name)
-            self.accounts.append(a)
-        self.files += f
+            self.accounts.append(MailAccount(user.name))
     def main(self, args=None, player=None):
         print("To access this mail server, log in with a mail client.")
     def lookup(self):
         return self.accounts if not self.hideLookup else []
+    def main_hacked(self):
+        def grabEmails(self):
+            emails = []
+            for acc in self.accounts:
+                for item in acc.data.inbox:
+                    emails.append(item)
+                for item in acc.data.sent:
+                    emails.append(item)
+            return emails
+        print("Mail Server Admin Panel")
+        print("Run 'help' for a command list.")
+        while True:
+            ch = input("admin@{} $".format(self.address))
+            if ch in ["quit","exit"]:
+                return
+            elif ch == "help":
+                div()
+                print("help: command list")
+                print("list: list all emails in server")
+                print("read <id>: view an email")
+                print("exit: disconnect from host")
+                div()
+            elif ch == "users":
+                for item in self.accounts:
+                    print(item.name)
+            elif ch.startswith("read "):
+                try:
+                    emails = grabEmails(self)
+                    index = int(ch[5:])
+                    if 0 <= index < len(emails):
+                        email = emails[index]
+                        div()
+                        print("FROM: {}".format(email.sender))
+                        print("TO: {}".format(email.receiver))
+                        print("SUBJECT: {}".format(email.subject))
+                        div()
+                        print(email.body)
+                        div()
+                except Exception as e:
+                    print("ERROR: {}".format(e))
+            elif ch == "list":
+                i = 0
+                for item in grabEmails(self):
+                    print("{}: {} ({}-->{})".format(i,item.subject,item.sender,item.receiver))
+                    i += 1
 class JmailServer(MailServer):
     def __init__(self, player):
-        super().__init__("JMail","jmail","jmail.com",player, [User("admin","rosebud"),User(player.name,player.password)])
+        super().__init__("JMail","jmail","jmail.com",player, [User("admin","rosebud"),User(player.name,player.password),User("xwebdesign")])
         self.ports = [data.getPort(25),data.getPort(80),data.getPort(22)]
         self.minPorts = 2
     def main(self, args=None, player=None):
@@ -478,17 +519,27 @@ class LinkNode(Node):
         self.link_address = link_address
     def main(self):
         connect.connectStart(self.link_address)
-class MailDotCom(MailServer):
-    def __init__(self, name, address, player, users=[]):
-        self.users = users + [User("admin")]
-        super().__init__(name,address,address,player, hideLookup = True)
-        self.ports = [data.getPort(21),data.getPort(22),data.getPort(25),data.getPort(80)]
-        self.minPorts = 3
-    def main(self):
-        div()
-        print("This mail server is provided by mail.com")
-        print("Log in using an email client to use this mail server.")
-        div()
+# class MailDotCom(MailServer):
+#     def __init__(self, name, address, player, users=[]):
+#         self.users = users + [User("admin")]
+#         super().__init__(name, address, address, player, hideLookup=True)
+#         self.ports = [data.getPort(21), data.getPort(22), data.getPort(25), data.getPort(80)]
+#         self.minPorts = 4
+#         for user in self.users:
+#             self.accounts.append(MailAccount(user.name))
+#     def main(self):
+#         div()
+#         print("This mail server is provided by mail.com")
+#         print("Log in using an email client to use this mail server.")
+#         div()
+def MailDotCom(name, address, player, users=[]):
+    s = MailServer(name, address, address, player, hideLookup=True)
+    s.ports= [data.getPort(21), data.getPort(22), data.getPort(25), data.getPort(80)]
+    s.minPorts = 4
+    s.accounts = [MailAccount("admin")]
+    for item in users:
+        s.accounts.append(MailAccount(item.name))
+    return s
 def mailoverflow(args, player):
     if args:
         for arg in args:

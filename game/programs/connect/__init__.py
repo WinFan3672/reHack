@@ -82,6 +82,8 @@ def connectStart(address):
             resolved = True
             if item.address in BLOCKLIST:
                 resolved = False
+            elif item.hacked and "main_hacked" in dir(item):
+                item.main_hacked()
             elif item.hacked:
                 print("Connecting to {}...".format(address))
                 # time.sleep(2.5)

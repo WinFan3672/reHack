@@ -56,7 +56,7 @@ class PlayerNode(Node):
             MailServer("reHack Mail Server","rehack-mail","rehack.mail",self,[User("welcome")],hideLookup=True),
             AnonMail(self),
             SoftwareStore(self),
-            MailDotCom("XWebDesign Mail","xwebdesign.mail.com", self, [User("sales")]),
+            MailDotCom("XWebDesign Mail","xwebdesign.mail.com", self,[User("sales")]),
             MailDotCom("Mail Dot Com","root.mail.com", self, [User("sales")]),
             ]
         bodies = [
@@ -114,8 +114,8 @@ class PlayerNode(Node):
             Email("welcome@rehack.mail","{}@jmail.com".format(self.name),"Welcome to reHack",bodies[0]),
             Email("marketing@anon.mail",f"{self.name}@jmail.com","AD: Try AnonMail",bodies[1]),
             # Email("null@null",f"{self.name}@jmail.com","A Personal Invitation",bodies[2])
-            Email("sales@root.mail.com","xwebdesign@jmail.com","Client: XWebDesign",bodies[3]),
-            Email("sales@xwebdesign.mail.com","sales@root.mail.com","Invoice",bodies[4]),
+            Email("xwebdesign@jmail.com","sales@root.mail.com","Client: XWebDesign",bodies[3]),
+            Email("sales@root.mail.com","sales@xwebdesign.mail.com","Invoice",bodies[4]),
             ]
         for item in servers:
             data.NODES.append(item)

@@ -83,5 +83,5 @@ class Node(Base):
         self.ports = ports
         self.minPorts = minPorts
         self.users = users
-        self.hacked = hacked
+        self.hacked = True
         self.linked = linked
