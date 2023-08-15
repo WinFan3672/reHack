@@ -2,7 +2,7 @@ from resource.classes import *
 import resource.information as resourceInfo
 from resource.libs import *
 from game.player import *
-from game.programs import JmailServer, MailAccount, EmailData, Email, sendEmail, MailServer, AnonMail, SoftwareStore, MailDotCom
+from game.programs import JmailServer, MailAccount, EmailData, Email, sendEmail, MailServer, AnonMail, MailDotCom
 import data
 import sys
 def getProgram(name):
@@ -22,7 +22,7 @@ class PlayerNode(Node):
         self.files = [Folder("home"),Folder("bin"),Folder("sys"),[File("system.ini")]]
         self.minPorts = 100
         self.ports = [getPort(7777),getPort(22)]
-        self.creditCount = 0
+        self.creditCount = 500
         self.lvl = 0
         self.startActions()
     def main(self):
@@ -53,11 +53,11 @@ class PlayerNode(Node):
         servers = [
             self,
             JmailServer(self),
-            MailServer("reHack Mail Server","rehack-mail","rehack.mail",self,[User("welcome")],hideLookup=True),
+            MailServer("reHack Mail Server","rehack-mail","rehack.mail",self,[User("welcome"),User("careers"),User("sales"),User("support"),User("contracts")],hideLookup=True),
             AnonMail(self),
-            SoftwareStore(self),
             MailDotCom("XWebDesign Mail","xwebdesign.mail.com", self,[User("sales")]),
             MailDotCom("Mail Dot Com","root.mail.com", self, [User("sales")]),
+            MailDotCom("Jmail Corporate Mail","jmail.mail.com",self,[User("sales")]),
             ]
         bodies = [
                 [
@@ -76,10 +76,10 @@ class PlayerNode(Node):
                     "A rehack.org email address is a huge red flag, and a jmail.com email is easy to trace.",
                     "AnonMail is neither. We have over a million accounts, 99% of which are privacy-savvy users.",
                     "As such, your email blends right in.",
-                    "You get a randomly generated username and get to send up to 100 emails before your mailbox shuts down.",
+                    "You get a randomly generated username and get to receive up to 100,000 emails before your mailbox shuts down.",
                     "We also use port masking and hide our MX records, meaning script kiddies can't break in easily.",
                     "",
-                    "To register, purchase the AnonMail client from store.rehack.org for just 100 credits.",
+                    "To register, purchase the AnonMail client using the 'store' command for just 100 credits.",
                 ],
                 [
                     "Hello, fellow hacker.",
@@ -98,7 +98,7 @@ class PlayerNode(Node):
                     "We aim to have 25 accounts and want full security.",
                 ],
                 [
-                    "Dear XWebDesign,",
+                    "Dear {},",
                     "Thank you for purchasing mail.com.",
                     "See the invoice below:",
                     "",
@@ -112,10 +112,11 @@ class PlayerNode(Node):
         bodies = ["\n".join(x) for x in bodies]
         emails = [
             Email("welcome@rehack.mail","{}@jmail.com".format(self.name),"Welcome to reHack",bodies[0]),
-            Email("marketing@anon.mail",f"{self.name}@jmail.com","AD: Try AnonMail",bodies[1]),
+            # Email("marketing@anon.mail",f"{self.name}@jmail.com","AD: Try AnonMail",bodies[1]),
             # Email("null@null",f"{self.name}@jmail.com","A Personal Invitation",bodies[2])
             Email("xwebdesign@jmail.com","sales@root.mail.com","Client: XWebDesign",bodies[3]),
-            Email("sales@root.mail.com","sales@xwebdesign.mail.com","Invoice",bodies[4]),
+            Email("sales@root.mail.com","sales@xwebdesign.mail.com","Invoice",bodies[4].format("XWebDesign")),
+            Email("sales@root.mail.com","sales@jmail.mail.com","Invoice",bodies[4].format("JMail")),
             ]
         for item in servers:
             data.NODES.append(item)

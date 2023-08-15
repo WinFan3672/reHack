@@ -12,6 +12,8 @@ div()
         * Introducing the Search MegaPixel 7.
     * JMail: jmail.com
         * Mail made simple.
+    * AnonMail: www.anon.mail
+        * Untraceable email forwarding. Over a million users.
 * Education:
     * United University Association: uua.edu
         * A collection of 25 US universities operating in unison.

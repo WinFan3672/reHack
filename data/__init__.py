@@ -65,6 +65,7 @@ N = [
     programs.WebServer("FFC Corporate Home","ffc.com","ffc.com","ffc.com"),
     programs.WebServer("XWebDesign Home","xwebdesign.com","xwebdesign.com","xwebdesign.com"),
     programs.WebServer("Mail.com","mail.com","mail.com","mail.com"),
+    programs.WebServer("AnonMail Home","www.anon.mail","www.anon.mail","www.anon.mail"),
     ]
 for item in N:
     NODES.append(item)
@@ -80,7 +81,8 @@ PROGRAMS = [
     Program("mxlookup",programs.mxlookup,price=0),
     Program("jmail",programs.jmail,True,classPlease=True),
     Program("mailoverflow",programs.mailoverflow,price=2500,classPlease=True),
-    Program("sweep",programs.sweep,price=0),
+    Program("store",programs.store,True,classPlease=True),
+    Program("anonmail",programs.anonclient,price=0,classPlease=True)
     ]
 SPICES = [
     "Basil",

@@ -17,7 +17,7 @@ def sendEmail(email):
         if item.address == parts[1]:
             server = item
             break
-    if server:
+    if isinstance(server,MailServer):
         account = None
         for item in server.accounts:
             if item.name == parts[0]:
@@ -351,8 +351,11 @@ class MailServer(Node):
                 print("help: command list")
                 print("list: list all emails in server")
                 print("read <id>: view an email")
+                print("users: print all users")
                 print("exit: disconnect from host")
                 div()
+            elif ch in ["cls","clear"]:
+                cls()
             elif ch == "users":
                 for item in self.accounts:
                     print(item.name)
@@ -376,6 +379,8 @@ class MailServer(Node):
                 for item in grabEmails(self):
                     print("{}: {} ({}-->{})".format(i,item.subject,item.sender,item.receiver))
                     i += 1
+            else:
+                print("ERROR: Invalid command.")
 class JmailServer(MailServer):
     def __init__(self, player):
         super().__init__("JMail","jmail","jmail.com",player, [User("admin","rosebud"),User(player.name,player.password),User("xwebdesign")])
@@ -412,34 +417,34 @@ def mxlookup(args,player=None):
         div()
         print("Lists all email addresses attached to a particular mail server.")
         div()
+class ForwardingData(EmailData):
+    def __init__(self, address):
+        super().__init__()
+        self.inbox, self.sent = [], []
+        self.address = address
+    def receive(self, email):
+        email.receiver = self.address
+        sendEmail(email)
+    def send(self, email):
+        self.sent.append(email)
+class ForwardingAccount(MailAccount):
+    def __init__(self, name, email):
+        super().__init__(name)
+        self.data = ForwardingData(email)
 class AnonMail(MailServer):
     def __init__(self, player):
-        super().__init__("AnonMail","anonmail","anon.mail",player,[User("admin"),User("noreply"),User("welcome"),User("marketing")])
+        super().__init__("AnonMail","anonmail","anon.mail",player,[User("admin"),User("noreply"),User("welcome"),User("marketing")],hideLookup=True)
         self.ports = []
-        self.minPorts= 1
-    def lookup(self):
-        return []
-class SoftwareStore(Node):
-    def __init__(self, player):
-        super().__init__("reHack Store","rehack_store","store.rehack.org",player=player, ports=[data.getPort(23),data.getPort(22),data.getPort(1443)],minPorts=3)
-    def main(self):
-        print("Welcome to the Store.")
-        print("For a list of commands, type HELP.")
-        while True:
-            ch = input("{}@{} $".format(self.player.name, self.address))
-            if ch == "help":
-                div()
-                print("help: list of commands")
-                print("about: display version information")
-                print("exit: disconnect from host")
-                div()
-            elif ch in ["quit","exit"]:
-                return
-            elif ch == "about":
-                div()
-                print("StoreSoft 2012.11.4")
-                print("StoreSoft is a state-of-the-art online storefront making use of Telnet-over-SSH.")
-                div()
+        self.minPorts= 4
+    def create_user(self, address):
+        u = User("").password
+        acc = ForwardingAccount(u,address)
+        self.accounts.append(acc)
+        d = objToDict(acc)
+        x = json.dumps(d,indent=4)
+        print(x)
+        br()
+        return u
 def jmail(args, player):
     if args == ["list"]:
         node = data.getNode("jmail")
@@ -499,6 +504,8 @@ def jmail(args, player):
                 print("ERROR: Invalid jmail account.")
         except:
             print(traceback.format_exc())
+    elif "send" in args and len(args) == 2:
+        e = Email("{}@jmail.com".format(player.name),args[1],"Automated Email","GET Request made by JMail client.")
     else:
         div()
         print("jmail [args]")
@@ -508,7 +515,7 @@ def jmail(args, player):
         print("jmail list: list all emails in inbox")
         print("jmail read <id>: read an email")
         print("jmail cleanup: removes all blank and useless emails.")
-        # print("jmail send <address>: send an email (automated systems only).")
+        print("jmail send <address>: send an email (automated systems only).")
         # print("jmail del <id>: delete an email.")
         div()
         print("Account: {}@jmail.com".format(player.name))
@@ -573,24 +580,119 @@ class MediaWikiServer(Node):
             ]
     def main(self):
         print("ERROR: Client incorrectly configured.")
-def sweep(args):
-    print("Begin sweep...")
-    nodes = []
-    try:
-        for a in range(256):
-            for b in range(256):
-                print("Begin {}.{}.x.x".format(a,b))
-                for c in range(256):
-                    for d in range(256):
-                        node = data.getNode(f"{a}.{b}.{c}.{d}")
-                        if node:
-                            print("{}: {}".format(node.address,node.name))
-                            nodes.append(node)
-    except KeyboardInterrupt:
-        pass
-    print("Finished sweep.")
-    if nodes:
-        for node in nodes:
-            print("{}: {}".format(node.address,node.name))
+# def sweep(args):
+#     print("Begin sweep...")
+#     nodes = []
+#     try:
+#         for a in range(256):
+#             for b in range(256):
+#                 print("Begin {}.{}.x.x".format(a,b))
+#                 for c in range(256):
+#                     for d in range(256):
+#                         node = data.getNode(f"{a}.{b}.{c}.{d}")
+#                         if node:
+#                             print("{}: {}".format(node.address,node.name))
+#                             nodes.append(node)
+#     except KeyboardInterrupt:
+#         pass
+#     print("Finished sweep.")
+#     if nodes:
+#         for node in nodes:
+#             print("{}: {}".format(node.address,node.name))
+#     else:
+#         print("No nodes found.")
+def store(args, player):
+    def getPrograms(player):
+        return [x for x in data.PROGRAMS if not x.unlocked]
+    if args == ["list"]:
+        i = 0
+        for item in getPrograms(player):
+            print("{}: {} ({} Cr.)".format(i, item.name, item.price))
+            i += 1
+    elif "buy" in args and len(args) == 2:
+        try:
+            pid = int(args[1])
+            programs = getPrograms(player)
+            if 0 <= pid <= len(programs):
+                program = programs[pid]
+                if player.creditCount >= program.price:
+                    player.creditCount -= program.price
+                    program.unlocked = True
+                    print("Successfully purchased {} for {} Cr.".format(program.name, program.price))
+                else:
+                    print("ERROR: Cannot afford program.")
+            else:
+                print("ERROR: Invalid ID.")
+        except Exception as e:
+            print("ERROR: {}".format(e))
+    elif args == ["balance"]:
+        print(player.creditCount)
     else:
-        print("No nodes found.")
+        div()
+        print("store <args>")
+        div()
+        print("Store for purchasing software.")
+        div()
+        print("store list: list all software for sale.")
+        print("store buy <ID>: buy a program")
+        print("store balance: prints out how many credits you have.")
+        div()
+def anonclient(args, player):
+    print("AnonMail is temporarily unavailable.")
+    return
+    if "create" in args and len(args) == 2:
+        try:
+            address = args[1]
+            parts = address.split("@")
+            server = None
+            for item in data.NODES:
+                if item.address == parts[1]:
+                    server = item
+                    break
+            if isinstance(server, MailServer):
+                account = None
+                for item in server.accounts:
+                    if item.name == parts[0]:
+                        account = item
+                if account:
+                    node = data.getNode("anon.mail")
+                    u = node.create_user(address)
+                    print("Successfully created: {}@anon.mail".format(u))
+                else:
+                    print("ERROR: The email account is invalid.")
+            else:
+                print("ERROR: '{}' is not a valid email server.".format(parts[1]))
+        except Exception as e:
+            print("ERROR: {}".format(e))
+    elif args == ["create"]:
+        try:
+            address = "{}@jmail.com".format(player.name)
+            parts = address.split("@")
+            server = None
+            for item in data.NODES:
+                if item.address == parts[1]:
+                    server = item
+                    break
+            if isinstance(server, MailServer):
+                account = None
+                for item in server.accounts:
+                    if item.name == parts[0]:
+                        account = item
+                if account:
+                    node = data.getNode("anon.mail")
+                    u = node.create_user(address)
+                    print("Successfully created: {}@anon.mail".format(u))
+                else:
+                    print("ERROR: The email account is invalid.")
+            else:
+                print("ERROR: '{}' is not a valid email server.".format(parts[1]))
+        except Exception as e:
+            print("ERROR: {}".format(e))                
+    else:
+        div()
+        print("anonmail [args]")
+        div()
+        print("Client for anonmail, the anonymous email forwarder.")
+        div()
+        print("anonmail create [email address]: create a new identity.")
+        div()
