@@ -5,8 +5,34 @@ import data
 import time
 import json
 import types
-import inspect
-
+import inspect    
+def sendEmail(email):
+    recipient = email.receiver
+    parts = recipient.split("@")
+    server = None
+    for item in data.NODES:
+        if item.address == parts[1]:
+            server = item
+            break
+    if server:
+        account = None
+        for item in server.accounts:
+            if item.name == parts[0]:
+                account = item
+        if account:
+            account.data.receive(email)
+        else:
+            m = [
+                "Your message to {} could not be delivered.",
+                "The email address is invalid.",
+                "Please check that the email address is valid and try again.",
+                "You can use the `mxlookup` utility for a list of email accounts on our server."
+                ]
+            m = "\n".join(m)
+            e = Email("accounts-daemon@{}".format(parts[1]),email.sender,"Your message could not be delivered",m)
+            sendEmail(e)
+    else:
+        raise TypeError("Invalid mail server: {}".format(parts[1]))
 def div():
     print("--------------------")
 def br():
@@ -266,31 +292,59 @@ class MailAccount(Base):
         super().__init__()
         self.name = name
         self.data = EmailData()
-class JmailServer(Node):
-    def __init__(self, player):
-        super().__init__("JMail","jmail","jmail.com",ports=[data.getPort(21),data.getPort(22),data.getPort(25),data.getPort(80)],minPorts=4,player=player)
-        self. files += [
+class MailServer(Node):
+    def __init__(self, name, uid, address, player, users=[]):
+        super().__init__(name, uid,address,ports=[data.getPort(21),data.getPort(22),data.getPort(25),data.getPort(80)],minPorts=4,player=player)
+        self.users = users
+        self.accounts = [MailAccount("accounts-daemon")]
+        x = []
+        for user in self.users:
+            g = Folder(user.name,[
+                File("account","password={}".format(user.password))
+                ])
+            x.append(g)
+        f = [
             Folder("Mail",[
-                Folder("accounts",[
-                    Folder("admin",[
-                        File("account","password=rosebud")
-                        ]),
-                    Folder(player.name,[
-                        File("account","password={}".format(player.password))
-                        ])
-                    ]),
-                Folder("config",[
-                    File("mailserver"),
-                    File("mailserver.lib.so"),
-                    ])
+                Folder("accounts",[x])
                 ])
             ]
-        self.users = [User("admin","rosebud",True),User(player.name,player.password)]
-        self.accounts = [MailAccount("admin"),MailAccount(player.name)]
+        for user in self.users:
+            a = MailAccount(user.name)
+            self.accounts.append(a)
+        self.files += f
+    def main(self, args=None, player=None):
+        print("To access this mail server, log in with a mail client.")
+class JmailServer(MailServer):
+    def __init__(self, player):
+        super().__init__("JMail","jmail","jmail.com",player, [User("admin","rosebud"),User(player.name,player.password)])
     def main(self, args=None, player=None):
         div()
         print("Welcome to JMail.")
         print("Use the official jmail client to read your email.")
         div()
         print("We currently do not have a web interface.")
+        div()
+def mxlookup(args,player=None):
+    if args:
+        for arg in args:
+            server = None
+            for node in data.NODES:
+                if node.address == arg and isinstance(node,MailServer):
+                    server = node
+                    break
+            if node:
+                div()
+                print(arg)
+                div()
+                for account in node.accounts:
+                    print("{}@{}".format(account.name,node.address))
+            else:
+                div()
+                print("Invalid mail server: {}".format(arg))
+        div()
+    else:
+        div()
+        print("mxlookup [ip address(es)]")
+        div()
+        print("Lists all email addresses attached to a particular mail server.")
         div()

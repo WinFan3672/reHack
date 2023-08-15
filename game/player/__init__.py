@@ -2,7 +2,7 @@ from resource.classes import *
 import resource.information as resourceInfo
 from resource.libs import *
 from game.player import *
-from game.programs import JmailServer, MailAccount, EmailData, Email
+from game.programs import JmailServer, MailAccount, EmailData, Email, sendEmail, MailServer
 import data
 import sys
 def getProgram(name):
@@ -21,10 +21,28 @@ class PlayerNode(Node):
         self.password = password
         self.files = [Folder("home"),Folder("bin"),Folder("sys"),[File("system.ini")]]
         self.minPorts = 100
-        self.ports = [getPort("reHackOS Local Server")]
+        self.ports = [getPort(7777),getPort(22)]
         self.creditCount = 0
         self.lvl = 0
-        data.NODES.append(JmailServer(self))
+        servers = [
+            self,
+            JmailServer(self),
+            MailServer("reHack Mail Server","rehack-mail","rehack.mail",self,[User("welcome")])
+            ]
+        bodies = [
+                [
+                "Welcome to reHack!",
+                "To get you started, we recommend running the `tutorial` command.",
+                ]
+            ]
+        bodies = ["\n".join(x) for x in bodies]
+        emails = [
+            Email("welcome@rehack.mail","{}@jmail.com".format(self.name),bodies[0])
+            ]
+        for item in servers:
+            data.NODES.append(item)
+        for item in emails:
+            sendEmail(item)
     def main(self):
         while True:
             ch = input("{}@{} $".format(self.name, self.address))

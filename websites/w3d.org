@@ -4,6 +4,8 @@ div()
 * Technology
     * reHack: rehack.org
         * reHack is a professional organisation specialising in agent recruitment.
+    * Nanosoft: nanosoft.com
+        * Operating systems and system utilities made easy.
 * Government
     * USA: usa.gov
         * Federal government of the United States.

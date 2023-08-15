@@ -20,7 +20,9 @@ def getPort(num, isOpen = False):
         if item.num == num:
             item.open = isOpen
             return item
-        
+DISALLOWED_USERNAMES = [
+    "admin",
+    ]        
 PORTS = [
     Port(21,"FTP"),
     Port(22,"SSH"),
@@ -65,7 +67,8 @@ PROGRAMS = [
     Program("ftpkill",programs.ftpkill,True),
     Program("connect",game.programs.connect.main,True),
     Program("webworm",programs.webworm, price = 2500),
-    Program("debug",programs.debuginfo,True,classPlease=True)
+    Program("debug",programs.debuginfo,True,classPlease=True),
+    Program("mxlookup",programs.mxlookup,True),
     ]
 SPICES = [
     "Basil",

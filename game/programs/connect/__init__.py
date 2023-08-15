@@ -36,7 +36,7 @@ def div():
     print("--------------------")
 def connect(item):
     while True:
-        ch = input("Administrator@{} $".format(item.address))
+        ch = input("admin{} $".format(item.address))
         ch = ch.split(" ")
         name = ch[0]
         args = ch[1:]
@@ -73,11 +73,14 @@ def connect(item):
         else:
             print("ssh: syntax error.\nType `help` for a command list.")
 def connectStart(address):
+    BLOCKLIST = ["127.0.0.1"]
     resolved = False
     for item in data.NODES:
         if item.address == address:
             resolved = True
-            if item.hacked:
+            if item.address in BLOCKLIST:
+                resolved = False
+            elif item.hacked:
                 print("Connecting to {}...".format(address))
                 # time.sleep(2.5)
                 connect(item)

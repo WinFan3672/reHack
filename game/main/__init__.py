@@ -24,7 +24,11 @@ def main():
     print("Welcome to reHack.")
     print("Please register a user.")
     div()
-    u = input("Enter a username $")
+    u = "admin"
+    while u in data.BLACKLIST:
+        u = input("Enter a username $")
+        if u in data.BLACKLIST:
+            print("ERROR: The username is disallowed to prevent game instability.")
     p, cp = "x",""
     while p != cp:
         p = getpass.getpass("Enter a password $")
@@ -68,5 +72,5 @@ def start():
         return
     elif ch == 10:
         cls()
-        PlayerNode("root","root").main()
+        PlayerNode("winfan3672","root").main()
     start()
