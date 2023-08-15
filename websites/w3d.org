@@ -1,0 +1,26 @@
+div()
+WORLD WIDE WEB DIRECTORY
+div()
+* Technology
+    * reHack: rehack.org
+        * reHack is a professional organisation specialising in agent recruitment.
+* Government
+    * USA: usa.gov
+        * Federal government of the United States.
+    * UK: gov.uk
+        * Aggregated resources and information about the UK government.
+* Food and Beverages
+    * FFC: ffc.com
+        * Factory Farmed Chicken: 100% non-free-range chicken with 69 secret herbs and spices
+    * Duck Donald: duckdonalds.com
+        * We cause obesity, addiction and cancer.
+* News
+    * MHT: mht.com
+        * Technology journalism done right
+    * 5chan: [REDACTED]
+        * anonymous image board and forum
+        * w3d notice: The URL of 5chan has been recacted from the directory by request of the US government.
+          To access this website, please contact us: support@w3d.org
+div()
+w3d notice: We cannot guarantee that all links to websites are valid. Due to link rot, some links may be dead.
+div()

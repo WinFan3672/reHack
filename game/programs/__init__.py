@@ -105,10 +105,10 @@ def sshkill(args):
                             port.open = True
                             print("SUCCESSFULLY OPENED PORT 22 @ {}".format(item))
                             success = True
-                if not success:
-                    print("Failed to attack port 22:")
-                    print("* Confirm that the IP is correct.")
-                    print("* Confirm that `{}` is a valid IP.".format(item))
+            if not success:
+                print("Failed to attack port 22:")
+                print("* Confirm port 22 is valid.")
+                print("* Confirm that `{}` is a valid IP.".format(item))
     else:
         div()
         print("sshkill <IP address(es)>")
@@ -152,9 +152,16 @@ class MessageBoard(Node):
         self.minPorts = 3
     def main(self):
         div()
-        print(sellf.name)
-        for item in os.path.lisdir("msgboard/{}".format(self.path)):
-            
+        print(self.name)
+        for item in os.listdir("msgboard/{}".format(self.path)):
+            div()
+            print("* "+item)
+            with open("msgboard/{}/{}".format(self.path, item)) as f:
+                for line in f.read().split("\n"):
+                    if line == "div()":
+                        div()
+                    else:
+                        print(line)
         div() 
     def add_message(self, message):
         if isinstance(message, MessageBoardMessage):
@@ -174,3 +181,27 @@ class WebServer(Node):
                     div()
                 else:
                     print(line)
+def ftpkill(args):
+    if args:
+        for item in args:
+            success = False
+            print("TRYING {}...".format(item))
+            for node in data.NODES:
+                if node.address == item:
+                    print("ATTACKING PORT 21...")
+                    for port in node.ports:
+                        if port.num == 21:
+                            time.sleep(2.5)
+                            port.open = True
+                            print("SUCCESSFULLY OPENED PORT 21 @ {}".format(item))
+                            success = True
+            if not success:
+                print("Failed to attack port 21:")
+                print("* Confirm port 21 is valid.")
+                print("* Confirm that `{}` is a valid IP.".format(item))
+    else:
+        div()
+        print("ftpkill <IP address(es)>")
+        div()
+        print("Attacks port 21 and opens it.")
+        div()                    

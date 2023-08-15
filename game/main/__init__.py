@@ -39,6 +39,7 @@ def main():
     br()
     cls()
     print("Connecting to 127.0.0.1...")
+    cls()
     # time.sleep(2.5)
     p.main()
         
@@ -66,5 +67,6 @@ def start():
     elif ch == 6:
         return
     elif ch == 10:
+        cls()
         PlayerNode("root","root").main()
     start()
