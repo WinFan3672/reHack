@@ -58,6 +58,8 @@ class PlayerNode(Node):
             MailDotCom("XWebDesign Mail","xwebdesign.mail.com", self,[User("sales")]),
             MailDotCom("Mail Dot Com","root.mail.com", self, [User("sales")]),
             MailDotCom("Jmail Corporate Mail","jmail.mail.com",self,[User("sales")]),
+            MailServer("WinFan3672 Personal Mail","mail3672","winfan3672.mail.com",self,[User("admin","somesecretpassword")]),
+            MailServer("null.null","nullmail","null.null",self,[User("null")],minPorts=0),
             ]
         bodies = [
                 [
@@ -117,6 +119,27 @@ class PlayerNode(Node):
                     "I trust that jmail is secure enough that you won't somehow leak it.",
                     "It's only the web portal, but you are the webmaster, so it's only fair.",
                 ],
+                [
+                    "Hello,",
+                    "",
+                    "This is a message intended for easter egg hunters.",
+                    "Thank you for enjoying my game.",
+                    "I put a lot of effort into creating a lot of complex systems (such as mail servers)",
+                    "and I'm really proud of my work.",
+                    "All I can leave you with is a hint for some gameplay:",
+                    "",
+                    "There's a hidden ISP database that offers some pretty powerful functionality.",
+                    "It allows you to reassign any IP address, including your own, so that any traces you leave behind are gone.",
+                    "Connect to it: 1.1.1.1",
+                    "",
+                    "Signed,",
+                    "WinFan3672",
+                    "Creator of reHack",
+                ],
+                [
+                    "This email server is reserved by W3D for the use of spoofing the FROM field of an email.",
+                    "Set the FROM field to null@null.null and SMTP will do the rest.",
+                ],
             ]
         bodies = ["\n".join(x) for x in bodies]
         emails = [
@@ -126,6 +149,9 @@ class PlayerNode(Node):
             Email("xwebdesign@jmail.com","sales@root.mail.com","Client: XWebDesign",bodies[3]),
             Email("sales@root.mail.com","sales@xwebdesign.mail.com","Invoice",bodies[4].format("XWebDesign")),
             Email("sales@root.mail.com","sales@jmail.mail.com","Invoice",bodies[4].format("JMail")),
+            Email("null@null.null","admin@winfan3672.mail.com","A Message",bodies[6]),
+            Email("null@null.null","null@null.null","Notice",bodies[7]),
+            
             ]
         for item in servers:
             data.NODES.append(item)

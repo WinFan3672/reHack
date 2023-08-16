@@ -8,6 +8,8 @@ import types
 import inspect 
 import traceback
 import game.programs.connect as connect
+import uuid
+import random
 
 def sendEmail(email):
     recipient = email.receiver
@@ -235,7 +237,7 @@ class MessageBoard(Node):
     def __init__(self, name, address, uid, path, minPorts=3):
         super().__init__(name, uid, address)
         self.path = path
-        self.ports = [data.getPort(80),data.getPort(1443),data.getPort(24525)]
+        self.ports = [data.getPort(80),data.getPort(1433),data.getPort(24525)]
         self.minPorts = minPorts
     def main(self):
         div()
@@ -320,8 +322,8 @@ class MailAccount(Base):
         self.name = name
         self.data = EmailData()
 class MailServer(Node):
-    def __init__(self, name, uid, address, player, users=[], hideLookup=False):
-        super().__init__(name, uid,address,ports=[data.getPort(21),data.getPort(22),data.getPort(25),data.getPort(80)],minPorts=4,player=player)
+    def __init__(self, name, uid, address, player, users=[], hideLookup=False, minPorts=4):
+        super().__init__(name, uid,address,ports=[data.getPort(21),data.getPort(22),data.getPort(25),data.getPort(80)],minPorts=minPorts,player=player)
         self.users = users
         self.accounts = [MailAccount("accounts-daemon")]
         self.hideLookup = hideLookup
@@ -570,7 +572,7 @@ def mailoverflow(args, player):
         div()
 class MediaWikiServer(Node):
     def __init__(self, name, uid, address, directory, homepage):
-        super().__init__(name, uid, address, ports=[data.getPort(80),data.getPort(1443),getPort(22),getPort(23)],minPorts=4)
+        super().__init__(name, uid, address, ports=[data.getPort(80),data.getPort(1433),getPort(22),getPort(23)],minPorts=4)
         self.files += [
             Folder("MediaWiki",[
                 File("index.php"),
@@ -728,7 +730,7 @@ def login(args):
 class ISPNode(Node):
     def __init__(self, name="International ISP Hub",address="1.1.1.1"):
         super().__init__(name,address,address)
-        self.ports = [data.getPort(21),data.getPort(22), data.getPort(1443), data.getPort(80)]
+        self.ports = [data.getPort(21),data.getPort(22), data.getPort(1433), data.getPort(80)]
         self.minPorts = 4
         self.linked = ["shodan"]
         self.users = [User("admin","potholes")]
@@ -823,16 +825,116 @@ class XOSMailAccount(Base):
         super().__init__()
         self.address = address
         self.password = password
+        self.secret_key = str(uuid.uuid4())
 class XOSDevice(Node):
-    def __init__(self, name, uid, address, notes = [], accounts = [], password="alpine"):
+    def __init__(self, name, uid, address, notes = [], accounts = [], password="alpine",model="xphone"):
         super().__init__(name, uid, address)
         self.users = [User("admin",password)]
         self.ports = [data.getPort(22),data.getPort(21),data.getPort(23),data.getPort(6881)]
         self.minPorts = 5
         self.notes = notes
         self.accounts = accounts
+        self.model=model
+        self.battery_health = random.randint(60,99)
     def main(self):
         div()
         print("ERROR: You cannot access this xOS device without the root password.")
         print("The root password is only known by xOS employees.")
         div()
+    def main_hacked(self):
+        print("xOS Console: HELP for a command list")
+        while True:
+            ch = input("admin@{} $".format(self.address))
+            if ch == "help":
+                div()
+                print("help: command list")
+                print("info: print device information")
+                print("notes: lists all notes on the device.")
+                print("accounts: list all email accounts saved to the device.")
+                print("cls: clear the screen")
+                print("exit: disconnect from host")
+                div()
+            elif ch in ["quit","exit"]:
+                return
+            elif ch == "accounts":
+                if self.accounts:
+                    for account in self.accounts:
+                        div()
+                        print("Email Addr. {}".format(account.address))
+                        print("Password: {}".format(account.password))
+                        print("Secret Key: {}".format(account.secret_key))
+                    div()
+                else:
+                    print("ERROR: No email accounts are saved to the device.")
+            elif ch =="info":
+                inf = data.XOS_DEVICES[self.model]
+                div()
+                print("Model: {}".format(inf.get("name","Unknown Device")))
+                print("CPU Freq: {}".format(inf.get("cpu","Unreported")))
+                print("Total Memory: {}".format(inf.get("ram","Unreported")))
+                print("Storage: {}".format(inf.get("storage","Unreported")))
+                print("Battery Capacity: {}".format(inf.get("battery","Unknown")))
+                print("Battery Health: {}%".format(self.battery_health))
+                div()
+            elif ch in ["clear","cls"]:
+                cls()
+            elif ch == "notes":
+                if self.notes:
+                    div()
+                    for note in self.notes:
+                        print("* {}".format(note.text))
+                    div()
+                else:
+                    print("ERROR: No notes have been stored on the device.")
+            else:
+                print("ERROR: Invalid command.")
+class WikiServer(Node):
+    def __init__(self, name, uid, address, folder, homepage="Main Page"):
+        super().__init__(name, uid, address)
+        self.ports = [data.getPort(22),data.getPort(80),data.getPort(1433)]
+        self.minPorts = 3
+        self.folder = folder
+        self.homepage = homepage
+    def main(self):
+        with open("wikis/{}/{}".format(self.folder,self.homepage)) as f:
+            for line in f.read().split("\n"):
+                if line == "div()":
+                    div()
+                else:
+                    print(line)
+        while True:
+            ch = input("{} #".format(self.name))
+            if ch == "help":
+                div()
+                print("help: list commands")
+                print("list: list all articles")
+                print("read <article>: read an article")
+                print("cls: clear the terminal")
+                print("exit: disconenct from host")
+                div()
+            elif ch == "list":
+                div()
+                for item in os.listdir("wikis/{}".format(self.folder)):
+                    print(item)
+                div()
+            elif ch == "read":
+                div()
+                print("read <article>")
+                div()
+                print("Read an article.")
+            elif ch.startswith("read "):
+                try:
+                    with open("wikis/{}/{}".format(self.folder,ch[5:])) as f:
+                        for line in f.read().split("\n"):
+                            if line == "div()":
+                                div()
+                            else:
+                                print(line)
+                except:
+                    print("ERROR: Invalid page name.")
+            elif ch in ["quit","exit"]:
+                return
+            elif ch in ["cls","clear"]:
+                cls()
+            else:
+                print("ERROR: Invalid command.")

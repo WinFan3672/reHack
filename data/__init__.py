@@ -33,7 +33,7 @@ PORTS = [
     Port(6881,"BitTorrent Tracker"),
     Port(7777,"reHackOS Node"),
     Port(80,"Web Server"),
-    Port(1443,"SQL Database"),
+    Port(1433,"SQL Database"),
     Port(123,"NTP Time Server"),
     Port(1194,"VPN Server"),
     Port(25,"Mail Server"),
@@ -48,6 +48,14 @@ testSrvFiles = [
         File("test.txt","open sesame"),
         ]),
     ]
+XOS_DEVICES = {
+    "xphone":{"name":"xPhone","cpu":"1 GHz","ram":"500 MB","storage":"8 GB","battery":"500 mAh"},
+    "xphone2":{"name":"xPhone 2","cpu":"1.33 GHz","ram":"1000 MB","storage":"16 GB","battery":"1000 mAh"},
+    "xphone3":{"name":"xPhone 3","cpu":"2.7 GHz","ram":"2000 MB","storage":"64 GB","battery":"3000 mAh"},
+    "xpad":{"name":"xPad","cpu":"1.5 GHz","ram":"750 MB","storage":"16 GB","battery":"2500 mAh"},
+    "xpad2":{"name":"xPad 2","cpu":"2.5 GHz","ram":"1450 MB","storage":"64 GB","battery":"4000 mAh"},
+    "xpad3":{"name":"xPad 3","cpu":"3.5 GHz","ram":"2500 MB","storage":"256 GB","battery":"5000 mAh"},
+    }
 NODES = []        
 N = [
     programs.ISPNode(),
@@ -66,6 +74,8 @@ N = [
     programs.WebServer("XWebDesign Home","xwebdesign.com","xwebdesign.com","xwebdesign.com"),
     programs.WebServer("Mail.com","mail.com","mail.com","mail.com", users = [User("admin","superuser")]),
     programs.WebServer("AnonMail Home","www.anon.mail","www.anon.mail","www.anon.mail"),
+    programs.XOSDevice("WinFan3672's xPhone","3672_xphone","192.168.1.1",notes=[programs.Note("This is a test")],accounts=[programs.XOSMailAccount("admin@winfan3672.mail.com","supersecretpassword")],model="xphone3"),
+    programs.WikiServer("rehack Wiki","rehack_wiki","wiki.rehack.org","wiki.rehack.org"),
     ]
 for item in N:
     NODES.append(item)

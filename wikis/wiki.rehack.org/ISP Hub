@@ -1,0 +1,9 @@
+div()
+The ISP hub is a secret server that allows you to directly manipulates IP addresses.
+You can:
+* Reassign IP addresses to new ones
+* Delete nodes from the Internet if you know their IP address
+* List all nodes you've visited
+div()
+To access the ISP hub, you need to find its IP address. The reHack Wiki will not list said IP address. 
+div()
