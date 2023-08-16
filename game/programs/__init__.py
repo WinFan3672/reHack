@@ -747,6 +747,7 @@ class ISPNode(Node):
             elif ch == "help":
                 div()
                 print("help: Command list")
+                print("list: list all nodes you have connected to.")
                 print("reassign: reassign an existing IP to a new one.")
                 print("delete: Delete an IP from DNS records, making it unreachable. DANGEROUS!")
                 print("mklink: Creates a node link")
@@ -754,7 +755,7 @@ class ISPNode(Node):
                 div()
             elif ch == "list":
                 div()
-                for node in data.NODES:
+                for node in [x for x  in data.NODES if x.visited]:
                     print("{}: {}".format(node.name,node.address))
                 div()
             elif ch == "delete":
@@ -813,3 +814,25 @@ class ISPNode(Node):
                     print(args)
             else:
                 print("ERROR: Invalid command.")
+class Note(Base):
+    def __init__(self, text):
+        super().__init__()
+        self.text = text
+class XOSMailAccount(Base):
+    def __init__(self, address, password):
+        super().__init__()
+        self.address = address
+        self.password = password
+class XOSDevice(Node):
+    def __init__(self, name, uid, address, notes = [], accounts = [], password="alpine"):
+        super().__init__(name, uid, address)
+        self.users = [User("admin",password)]
+        self.ports = [data.getPort(22),data.getPort(21),data.getPort(23),data.getPort(6881)]
+        self.minPorts = 5
+        self.notes = notes
+        self.accounts = accounts
+    def main(self):
+        div()
+        print("ERROR: You cannot access this xOS device without the root password.")
+        print("The root password is only known by xOS employees.")
+        div()

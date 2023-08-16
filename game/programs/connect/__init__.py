@@ -80,6 +80,7 @@ def connectStart(address):
     for item in data.NODES:
         if item.address == address:
             resolved = True
+            item.visited = True
             if item.address in BLOCKLIST:
                 resolved = False
             elif item.hacked and "main_hacked" in dir(item):
