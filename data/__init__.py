@@ -50,17 +50,17 @@ testSrvFiles = [
     ]
 NODES = []        
 N = [
-    Node("International ISP Hub","isp", "1.1.1.1",ports = [getPort(21),getPort(22), getPort(1443,True)], minPorts = 2, linked=["usagov"]),
+    Node("International ISP Hub","isp", "1.1.1.1",ports = [getPort(21),getPort(22), getPort(1443,True)], minPorts = 2, linked=["shodan"],users=[User("admin","*******")]),
     Node("SHODAN","shodan",generateIP(), ports = [getPort(80)], minPorts=1),
     Node("reHack Test Server","rehacktest","test.rehack.org",ports = [getPort(21),getPort(22)], files = testSrvFiles),
-    programs.MessageBoard("reHack News", "rehack.news","rehacknews","rehack.news"),
+    programs.MessageBoard("reHack News", "rehack.news","rehacknews","rehack.news",minPorts=4),
     programs.WebServer("United States Government","usagov", "usa.gov", "usa.gov"),
-    programs.WebServer("reHack Official","rehack","rehack.org","rehack.org"),
-    programs.WebServer("reHack Intranet","rehack_intranet","intranet.rehack.org","intranet.rehack.org"),
-    programs.WebServer("World Wide Web Directory","w3d","w3d.org","w3d.org"),
-    programs.WebServer("reHack Directory","rehack_dir","directory.rehack.org","directory.rehack.org"),
-    programs.MessageBoard("reHack News (Private)","news.rehack.org","rehack_news","news.rehack.org"),
-    programs.WebServer("reHack pwnlist","pwned.reha.ck","pwned.reha.ck","pwned.reha.ck"),
+    programs.WebServer("reHack Official","rehack","rehack.org","rehack.org",minPorts=4),
+    programs.WebServer("reHack Intranet","rehack_intranet","intranet.rehack.org","intranet.rehack.org",minPorts=4),
+    programs.WebServer("World Wide Web Directory","w3d","w3d.org","w3d.org",minPorts=4),
+    programs.WebServer("reHack Directory","rehack_dir","directory.rehack.org","directory.rehack.org",minPorts=4),
+    programs.MessageBoard("reHack News (Private)","news.rehack.org","rehack_news","news.rehack.org",minPorts=4),
+    programs.WebServer("reHack pwnlist","pwned.reha.ck","pwned.reha.ck","pwned.reha.ck",minPorts=4),
     programs.WebServer("UK Government","gov.uk","gov.uk","gov.uk"),
     programs.WebServer("FFC Corporate Home","ffc.com","ffc.com","ffc.com"),
     programs.WebServer("XWebDesign Home","xwebdesign.com","xwebdesign.com","xwebdesign.com"),
@@ -82,7 +82,8 @@ PROGRAMS = [
     Program("jmail",programs.jmail,True,classPlease=True),
     Program("mailoverflow",programs.mailoverflow,price=2500,classPlease=True),
     Program("store",programs.store,True,classPlease=True),
-    Program("anonmail",programs.anonclient,price=0,classPlease=True)
+    Program("anonmail",programs.anonclient,price=0,classPlease=True),
+    Program("login",programs.login,True),
     ]
 SPICES = [
     "Basil",

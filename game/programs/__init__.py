@@ -232,11 +232,11 @@ class MessageBoardMessage(Base):
         self.title = title
         self.text = text
 class MessageBoard(Node):
-    def __init__(self, name, address, uid, path):
+    def __init__(self, name, address, uid, path, minPorts=3):
         super().__init__(name, uid, address)
         self.path = path
         self.ports = [data.getPort(80),data.getPort(1443),data.getPort(24525)]
-        self.minPorts = 3
+        self.minPorts = minPorts
     def main(self):
         div()
         print(self.name)
@@ -256,11 +256,11 @@ class MessageBoard(Node):
         else:
             raise TypeError("The message you tried to add is invalid.")
 class WebServer(Node):
-    def __init__(self, name, uid, address, path, linked = [], hacked = False):
+    def __init__(self, name, uid, address, path, linked = [], hacked = False, minPorts=2):
         super().__init__(name, uid, address,files = [Folder("WebServer",[File("index.html")])], linked=linked, hacked=hacked)
         self.ports = [data.getPort(22),data.getPort(21),data.getPort(80)]
         self.path = path
-        self.minPorts = 2
+        self.minPorts = minPorts
     def main(self):
         with open("websites/{}".format(self.path)) as f:
             for line in f.read().split("\n"):
@@ -695,4 +695,31 @@ def anonclient(args, player):
         print("Client for anonmail, the anonymous email forwarder.")
         div()
         print("anonmail create [email address]: create a new identity.")
+        div
+def login(args):
+    if len(args) == 2:
+        node = None
+        for item in data.NODES:
+            if item.address == args[0]:
+                node = item
+        if node:
+            account = None
+            for user in node.users:
+                if user.name == "admin":
+                    account = user
+            if account:
+                if account.password == args[1]:
+                    node.hacked = True
+                    print("Successfully infected device.")
+                    print("You can now connect to it as an admin.")
+                else:
+                    print("ERROR: The supplied password is incorrect.")
+            else:
+                print("ERROR: The server does not have an administrator account.")
+        else:
+            print("ERROR: Invalid node.")
+    else:
         div()
+        print("login <IP Address> <password>")
+        div()
+        print("Runs `porthack` using a known admin password.")
