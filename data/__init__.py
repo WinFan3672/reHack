@@ -50,7 +50,7 @@ testSrvFiles = [
     ]
 NODES = []        
 N = [
-    Node("International ISP Hub","isp", "1.1.1.1",ports = [getPort(21),getPort(22), getPort(1443,True)], minPorts = 2, linked=["shodan"],users=[User("admin","*******")]),
+    programs.ISPNode(),
     Node("SHODAN","shodan",generateIP(), ports = [getPort(80)], minPorts=1),
     Node("reHack Test Server","rehacktest","test.rehack.org",ports = [getPort(21),getPort(22)], files = testSrvFiles),
     programs.MessageBoard("reHack News", "rehack.news","rehacknews","rehack.news",minPorts=4),
@@ -64,7 +64,7 @@ N = [
     programs.WebServer("UK Government","gov.uk","gov.uk","gov.uk"),
     programs.WebServer("FFC Corporate Home","ffc.com","ffc.com","ffc.com"),
     programs.WebServer("XWebDesign Home","xwebdesign.com","xwebdesign.com","xwebdesign.com"),
-    programs.WebServer("Mail.com","mail.com","mail.com","mail.com"),
+    programs.WebServer("Mail.com","mail.com","mail.com","mail.com", users = [User("admin","superuser")]),
     programs.WebServer("AnonMail Home","www.anon.mail","www.anon.mail","www.anon.mail"),
     ]
 for item in N:

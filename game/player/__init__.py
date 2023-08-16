@@ -108,6 +108,15 @@ class PlayerNode(Node):
                     "",
                     "Thank you for shopping with mail.com",
                 ],
+                [
+                    "Dear Joe",
+                    "See below the mail.com admin password:",
+                    "",
+                    "superuser",
+                    "",
+                    "I trust that jmail is secure enough that you won't somehow leak it.",
+                    "It's only the web portal, but you are the webmaster, so it's only fair.",
+                ],
             ]
         bodies = ["\n".join(x) for x in bodies]
         emails = [

@@ -256,10 +256,11 @@ class MessageBoard(Node):
         else:
             raise TypeError("The message you tried to add is invalid.")
 class WebServer(Node):
-    def __init__(self, name, uid, address, path, linked = [], hacked = False, minPorts=2):
+    def __init__(self, name, uid, address, path, linked = [], hacked = False, minPorts=2, users = []):
         super().__init__(name, uid, address,files = [Folder("WebServer",[File("index.html")])], linked=linked, hacked=hacked)
         self.ports = [data.getPort(22),data.getPort(21),data.getPort(80)]
         self.path = path
+        self.users = users
         self.minPorts = minPorts
     def main(self):
         with open("websites/{}".format(self.path)) as f:
@@ -723,3 +724,92 @@ def login(args):
         print("login <IP Address> <password>")
         div()
         print("Runs `porthack` using a known admin password.")
+        div()
+class ISPNode(Node):
+    def __init__(self):
+        super().__init__("International ISP Hub","1.1.1.1", "1.1.1.1")
+        self.ports = [data.getPort(21),data.getPort(22), data.getPort(1443,True)]
+        self.minPorts = 2
+        self.linked = ["shodan"]
+        self.users = [User("admin","potholes")]
+    def main(self):
+        div()
+        print("This is the International ISP Hub.")
+        print("It is important to the function of the Internet.")
+        div()
+    def main_hacked(self):
+        print("Welcome to the IIH Console.")
+        print("Run 'help' for a command list.")
+        while True:
+            ch = input("admin@{} $".format(self.address))
+            if ch in ["quit","exit"]:
+                return
+            elif ch == "help":
+                div()
+                print("help: Command list")
+                print("reassign: reassign an existing IP to a new one.")
+                print("delete: Delete an IP from DNS records, making it unreachable. DANGEROUS!")
+                print("mklink: Creates a node link")
+                print("exit: Disconnect from host")
+                div()
+            elif ch == "list":
+                div()
+                for node in data.NODES:
+                    print("{}: {}".format(node.name,node.address))
+                div()
+            elif ch == "delete":
+                div()
+                print("delete <IP Address>")
+                div()
+                print("Removes an IP from all DNS records.")
+                print("This is permanent.")
+            elif ch.startswith("delete "):
+                ip = ch[7:]
+                node = data.getNode(ip)
+                if node:
+                    print("WARNING! This is irreversible!")
+                    print("By doing this, the server you are targeting ({}) will be inaccessible FOREVER.".format(ip))
+                    print("If you understand this, type 'I KNOW WHAT I AM DOING'.")
+                    if input(">>>") == "I KNOW WHAT I AM DOING":
+                        data.NODES.remove(node)
+                        print("Removed node successfully.")
+                    else:
+                        print("Operation canceled.")
+                else:
+                    print("ERROR: Invalid IP address.")
+            elif ch == "reassign":
+                div()
+                print("reassign <IP>")
+                div()
+                print("Reassigns an existing server to a new IP.")
+                div()
+            elif ch.startswith("reassign "):
+                ip = ch[9:]
+                node = data.getNode(ip)
+                if node:
+                    node.address = data.generateIP()
+                    print("Reassigned {} to {}.".format(node.name, node.address))
+                else:
+                    print("ERROR: Invalid IP.")
+            elif ch == "mklink":
+                div()
+                print("mklink <original ip> <link ip>")
+                div()
+                print("Creates a DNS link to an IP address.")
+                div()
+            elif ch.startswith("mklink "):
+                args = ch[7:].split(" ")
+                if len(args) == 2:
+                    node = data.getNode(args[0])
+                    if node:
+                        lnk = LinkNode(node.name, args[1], args[1], args[0])
+                        data.NODES.append(lnk)
+                        print("Created DNS link.")
+                        print("NOTE: DNS links are not standardised and not all programs work well with them.")
+                    else:
+                        print("ERROR: Invalid IP address.")
+                else:
+                    print("ERROR: Invalid syntax.")
+                    print(args)
+            else:
+                print("ERROR: Invalid command.")
