@@ -726,10 +726,10 @@ def login(args):
         print("Runs `porthack` using a known admin password.")
         div()
 class ISPNode(Node):
-    def __init__(self):
-        super().__init__("International ISP Hub","1.1.1.1", "1.1.1.1")
-        self.ports = [data.getPort(21),data.getPort(22), data.getPort(1443,True)]
-        self.minPorts = 2
+    def __init__(self, name="International ISP Hub",address="1.1.1.1"):
+        super().__init__(name,address,address)
+        self.ports = [data.getPort(21),data.getPort(22), data.getPort(1443), data.getPort(80)]
+        self.minPorts = 4
         self.linked = ["shodan"]
         self.users = [User("admin","potholes")]
     def main(self):
