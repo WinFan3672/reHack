@@ -5,6 +5,7 @@ from game.player import *
 import data
 import getpass
 import time
+import missions
 
 def credits():
     cls()

@@ -1046,3 +1046,10 @@ def logview(args):
         print("Views the logs of a node.")
         print("The node must be already hacked for this to work.")
         div()
+class MissionServer(Node):
+    def __init__(self, name, uid, address, player, missions=[]):
+        super().__init__(name, uid, address)
+        self.player = player
+        self.ports = [data.getPort(22),data.getPort(1433),data.getPort(23)]
+        self.users = [User("admin"),User(self.player.name)]
+        self.minPorts = 4
