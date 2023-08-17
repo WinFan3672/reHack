@@ -106,12 +106,6 @@ def nmap(args):
         args = args[0]
         s = False
         for item in data.NODES:
-            if item.address == args:
-                if isinstance(item,LinkNode):
-                    item = data.getNode(item.link_address)
-                    linkMode = True
-                else:
-                    linkMode = False
                 item.nmap = True
                 div()
                 print("Found Target")
@@ -142,8 +136,6 @@ def webworm(args):
             print("TRYING {}...".format(item))
             for node in data.NODES:
                 if node.address == item:
-                    if isinstance(node, LinkNode):
-                        node = data.getNode(node.link_address)
                     print("ATTACKING PORT 80...")
                     for port in node.ports:
                         if port.num == 80:
@@ -181,8 +173,6 @@ def sshkill(args):
             print("TRYING {}...".format(item))
             for node in data.NODES:
                 if node.address == item:
-                    if isinstance(node, LinkNode):
-                        node = data.getNode(node.link_address)
                     print("ATTACKING PORT 22...")
                     for port in node.ports:
                         if port.num == 22:
@@ -205,8 +195,6 @@ def porthack(args):
         valid = False
         for item in data.NODES:
             if args[0] == item.address:
-                if isinstance(item, LinkNode):
-                    item = data.getNode(item.link_address)
                 valid = True
                 openPorts = 0
                 for port in item.ports:
@@ -282,8 +270,6 @@ def ftpkill(args):
             print("TRYING {}...".format(item))
             for node in data.NODES:
                 if node.address == item:
-                    if isinstance(node, LinkNode):
-                        node = data.getNode(node.link_address)
                     print("ATTACKING PORT 21...")
                     for port in node.ports:
                         if port.num == 21:
@@ -556,25 +542,7 @@ def jmail(args, player):
         div()
         print("Account: {}@jmail.com".format(player.name))
         div()
-class LinkNode(Node):
-    def __init__(self, name, uid, address, link_address):
-        super().__init__(name, uid, address)
-        self.link_address = link_address
-    def main(self):
-        connect.connectStart(self.link_address)
-# class MailDotCom(MailServer):
-#     def __init__(self, name, address, player, users=[]):
-#         self.users = users + [User("admin")]
-#         super().__init__(name, address, address, player, hideLookup=True)
-#         self.ports = [data.getPort(21), data.getPort(22), data.getPort(25), data.getPort(80)]
-#         self.minPorts = 4
-#         for user in self.users:
-#             self.accounts.append(MailAccount(user.name))
-#     def main(self):
-#         div()
-#         print("This mail server is provided by mail.com")
-#         print("Log in using an email client to use this mail server.")
-#         div()
+
 def MailDotCom(name, address, player, users=[]):
     s = MailServer(name, address, address, player, hideLookup=True)
     s.ports= [data.getPort(21), data.getPort(22), data.getPort(25), data.getPort(80)]
@@ -763,6 +731,7 @@ def login(args):
 class ISPNode(Node):
     def __init__(self, name="International ISP Hub",address="1.1.1.1"):
         super().__init__(name,address,address)
+        self.blocklist = ["localhost","jmail","anonmail"]
         self.ports = [data.getPort(21),data.getPort(22), data.getPort(1433), data.getPort(80)]
         self.minPorts = 4
         self.linked = ["shodan"]
@@ -782,12 +751,15 @@ class ISPNode(Node):
             elif ch == "help":
                 div()
                 print("help: Command list")
+                print("cls: clear terminal")
                 print("list: list all nodes you have connected to.")
                 print("reassign: reassign an existing IP to a new one.")
-                print("delete: Delete an IP from DNS records, making it unreachable. DANGEROUS!")
+                print("delete: Delete an IP from DNS records, making it unreachable.")
                 print("mklink: Creates a node link")
                 print("exit: Disconnect from host")
                 div()
+            elif ch in ["clear","cls"]:
+                cls()
             elif ch == "list":
                 div()
                 for node in [x for x  in data.NODES if x.visited]:
@@ -807,8 +779,11 @@ class ISPNode(Node):
                     print("By doing this, the server you are targeting ({}) will be inaccessible FOREVER.".format(ip))
                     print("If you understand this, type 'I KNOW WHAT I AM DOING'.")
                     if input(">>>") == "I KNOW WHAT I AM DOING":
-                        data.NODES.remove(node)
-                        print("Removed node successfully.")
+                        if node.address in [data.getNode(x).address for x in self.blocklist]:
+                            print("ERROR: This node is not removable.")
+                        else:
+                            data.NODES.remove(node)
+                            print("Removed node successfully.")
                     else:
                         print("Operation canceled.")
                 else:
@@ -838,7 +813,7 @@ class ISPNode(Node):
                 if len(args) == 2:
                     node = data.getNode(args[0])
                     if node:
-                        lnk = LinkNode(node.name, args[1], args[1], args[0])
+                        lnk = LinkNode(args[0],args[1])
                         data.NODES.append(lnk)
                         print("Created DNS link.")
                         print("NOTE: DNS links are not standardised and not all programs work well with them.")
@@ -972,7 +947,7 @@ class WikiServer(Node):
             else:
                 print("ERROR: Invalid command.")
 class Mission(Base):
-    def __init__(self, player, mission_id, name, target, start_email, end_email=None, reward=0, next_id=None):
+    def __init__(self, player, mission_id, name, target, start_email, end_email=None, reward=0, next_id=None, start_function = None, end_function = None):
         super().__init__()
         self.mission_id = mission_id
         self.name = name
@@ -982,10 +957,16 @@ class Mission(Base):
         self.target = target
         self.next_id = next_id
         self.player = player
+        self.start_function = start_function
+        self.end_function = end_function
     def start(self):
         sendEmail(self.start_email)
         self.player.currentMission = self
+        if callable(self.start_function):
+            self.start_function()
     def check_end(self):
+        if callable(self.end_function):
+            self.end_function()
         return data.getNode(self.target).hacked
     def end(self):
         if self.end_email:
@@ -1053,3 +1034,34 @@ class MissionServer(Node):
         self.ports = [data.getPort(22),data.getPort(1433),data.getPort(23)]
         self.users = [User("admin"),User(self.player.name)]
         self.minPorts = 4
+        self.main_hacked = self.main
+        self.missions = missions
+    def main(self):
+        print("Welcome.")
+        print("There are {} contracts available.".format(len(self.missions)))
+        print("For a command list, type HELP.")
+        while True:
+            ch = input("{} #".format(self.name))
+            if ch == "help":
+                div()
+                print("help: command list")
+                print("cls: clear terminal")
+                print("exit: disconnect from host")
+                div()
+            elif ch in ["clear","cls"]:
+                cls()
+            elif ch in ["ls","list"]:
+                if self.missions:
+                    i = 0
+                    for mission in self.missions:
+                        print("{}: {} ({:,} Cr.)".format(i,mission.name,mission.reward))
+                        i += 1
+                else:
+                    print("There are no contracts available on this server.")
+            elif ch in ["quit","exit"]:
+                return
+            else:
+                print("ERROR: Invalid command.")
+class BuyMission(Mission):
+    def check_end(self):
+        return self.target in [x for x in data.PROGRAMS if x.unlocked]

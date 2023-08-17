@@ -73,9 +73,12 @@ class Folder(Base):
                 result.append(item)
         return result        
 class Log(Base):
-    def __init__(self, address, text):
+    def __init__(self, text, address = None):
         super().__init__()
-        self.address = address
+        if address:
+            self.address = address
+        else:
+            self.address = data.getNode("localhost").address
         self.text = text
 class Node(Base):
     def __init__(self, name, uid, address, files = [], users = [], ports = [], minPorts = 0, linked = [], hacked = False, player=None):
@@ -95,3 +98,18 @@ class Node(Base):
         self.logs = []
     def create_log(self, ip_address, text):
         self.logs.append(Log(ip_address, text))
+    def clone(self, new_address):
+        cloned_node = type(self)(
+            name=self.name,
+            uid=self.uid,
+            address=new_address,
+            files=self.files,  # Here, files will be shared between the original and the clone
+            users=self.users.copy(),  # Other attributes that should be copied
+            ports=self.ports.copy(),
+            minPorts=self.minPorts,
+            linked=self.linked.copy(),
+            hacked=self.hacked,
+            player=self.player
+        )
+
+        return cloned_node        

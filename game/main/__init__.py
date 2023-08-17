@@ -5,7 +5,6 @@ from game.player import *
 import data
 import getpass
 import time
-import missions
 
 def credits():
     cls()
@@ -18,6 +17,9 @@ def credits():
         print("The following people are former contributors:")
         for item in resourceInfo.formerContributors:
             print("* {}".format(item))
+    div()
+    print("LEGAL NOTICE: Any companies referenced are intended solely for parody. ")
+    print("              Any resemblance to real companies is entirely coincidental.")
     br()
 def main():
     cls()

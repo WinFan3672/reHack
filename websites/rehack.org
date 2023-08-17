@@ -3,5 +3,15 @@ reHack.org
 div()
 reHack is a professional organisation specialising in agent recruitment.
 div()
-NOTE FOR AGENTS: Connect to the intranet through using intranet.rehack.org
+Testimonials
+div()
+* "We were receiving regular DDOS attacks and breaches, but when we hired an agent at reHack, it all stopped. Our security has never been stronger!"
+- Emerging tech startup
+* "I asked my boss if we should hire them to analyse our security, and he was skeptical at first. When we hired an agent, he found several critical vulnerabilities in our servers and helped us patch them. Stellar work."
+- Popular beverage company
+* "The pay is good, the work diverse and exciting. Most of all, the clients are genuinely enthusiastic about security and pentesting. It's great!"
+- Full-Time Agent
+div()
+To become an agent: careers@rehack.mail
+To hire an agent: sales@rehack.mail
 div()
