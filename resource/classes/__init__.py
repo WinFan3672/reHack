@@ -72,6 +72,11 @@ class Folder(Base):
             else:
                 result.append(item)
         return result        
+class Log(Base):
+    def __init__(self, address, text):
+        super().__init__()
+        self.address = address
+        self.text = text
 class Node(Base):
     def __init__(self, name, uid, address, files = [], users = [], ports = [], minPorts = 0, linked = [], hacked = False, player=None):
         super().__init__()
@@ -87,3 +92,6 @@ class Node(Base):
         self.linked = linked
         self.visited = False  
         self.nmap = False
+        self.logs = []
+    def create_log(self, ip_address, text):
+        self.logs.append(Log(ip_address, text))

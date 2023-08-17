@@ -516,8 +516,32 @@ def jmail(args, player):
                 print("ERROR: Invalid jmail account.")
         except:
             print(traceback.format_exc())
-    elif "send" in args and len(args) == 2:
-        e = Email("{}@jmail.com".format(player.name),args[1],"Automated Email","GET Request made by JMail client.")
+    # elif "send" in args and len(args) == 2:
+    #     e = Email("{}@jmail.com".format(player.name),args[1],"Automated Email","GET Request made by JMail client.")
+    elif args == ["del"]:
+        div()
+        print("jmail del <id>")
+        div()
+        print("Delete a message.")
+        div()
+    elif "del" in args and len(args) == 2:
+        try:
+            index = int(args[1])
+            node = data.getNode("jmail.com")
+            account = None
+            for acc in node.accounts:
+                if acc.name == player.name:
+                    account = acc
+            if account:
+                if 0 <= index <= len(account.data.inbox):
+                    account.data.inbox.pop(index)
+                    print("Removed email.")
+                else:
+                    print("ERROR: Invalid email index.")
+            else:
+                pritn("ERROR: Invalid jmail account.")
+        except Exception as e:
+            print("ERROR: {}".format(e))
     else:
         div()
         print("jmail [args]")
@@ -527,8 +551,8 @@ def jmail(args, player):
         print("jmail list: list all emails in inbox")
         print("jmail read <id>: read an email")
         print("jmail cleanup: removes all blank and useless emails.")
-        print("jmail send <address>: send an email (automated systems only).")
-        # print("jmail del <id>: delete an email.")
+        # print("jmail send <address>: send an email (automated systems only).")
+        print("jmail del <id>: delete an email.")
         div()
         print("Account: {}@jmail.com".format(player.name))
         div()
@@ -997,3 +1021,28 @@ class ConnectMission(Mission):
 class NMapMission(Mission):
     def check_end(self):
         return data.getNode(self.target).nmap
+def logview(args):
+    if args:
+        for arg in args:
+            div()
+            print("Trying {}...".format(arg))
+            node = data.getNode(arg)
+            if node:
+                if node.hacked:
+                    if node.logs:
+                        for log in node.logs:
+                            print("* {}: {}".format(log.address,log.text))
+                    else:
+                        print("No logs for provided node.")
+                else:
+                    print("ERROR: Access denied.")
+            else:
+                print("ERROR: Invalid node.")
+            div()
+    else:
+        div()
+        print("logivew <IP Address>")
+        div()
+        print("Views the logs of a node.")
+        print("The node must be already hacked for this to work.")
+        div()

@@ -83,6 +83,7 @@ N = [
     programs.WikiServer("rehack Wiki","rehack_wiki","wiki.rehack.org","wiki.rehack.org"),
     Node("reHack Test Server #2","test2",generateIP(),ports=[],minPorts=2,users=[User("admin","trollface")]),
     programs.MessageBoard("ColonSlash","colonsla.sh","colonslash","colonsla.sh",minPorts=2,ports=[getPort(22),getPort(21)]),
+    programs.WebServer("Test Hub","testhub","test.hub","test.hub"),
     ]
 for item in N:
     NODES.append(item)
@@ -102,6 +103,7 @@ PROGRAMS = [
     Program("anonmail",programs.anonclient,price=0,classPlease=True),
     Program("login",programs.login,True),
     Program("mission",programs.mission_program,True,classPlease=True),
+    Program("logview",programs.logview,price=0),
     
     ]
 SPICES = [

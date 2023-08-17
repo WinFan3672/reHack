@@ -143,6 +143,18 @@ class PlayerNode(Node):
                 [
                     "This email server is reserved by W3D for the use of spoofing the FROM field of an email.",
                     "Set the FROM field to null@null.null and SMTP will do the rest.",
+                    "The email server actively ignores any emails sent to it.",
+                    "If you send an email, it will be sent back to you and not stored.",
+                ],
+                [
+                    "The email you provided was sent to null@null.null.",
+                    "This is usually because you are replying to an email which had its FROM address spoofed.",
+                    "For security purposes, your email has been sent back to you:",
+                    "FROM: {}",
+                    "TO: null@null.null",
+                    "SUBJECT: {}",
+                    "",
+                    "{}",
                 ],
             ]
         bodies = ["\n".join(x) for x in bodies]
@@ -252,5 +264,6 @@ class PlayerNode(Node):
             data.NODES.append(item)
         for item in emails:
             sendEmail(item)
+        data.getNode("null.null").accounts[0].autoresponse = Email("null@null.null","","Your email could not be sent",bodies[8])
         self.currentMission = data.getMission("start1",self)
         self.currentMission.start()
