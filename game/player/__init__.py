@@ -2,9 +2,10 @@ from resource.classes import *
 import resource.information as resourceInfo
 from resource.libs import *
 from game.player import *
-from game.programs import JmailServer, MailAccount, EmailData, Email, sendEmail, MailServer, AnonMail, MailDotCom
+from game.programs import JmailServer, MailAccount, EmailData, Email, sendEmail, MailServer, AnonMail, MailDotCom, Mission, ConnectMission, NMapMission
 import data
 import sys
+
 def getProgram(name):
     for item in data.PROGRAMS:
         if item.name == name:
@@ -24,6 +25,7 @@ class PlayerNode(Node):
         self.ports = [getPort(7777),getPort(22)]
         self.creditCount = 500
         self.lvl = 0
+        self.currentMission = None
         self.startActions()
     def main(self):
         while True:
@@ -130,7 +132,9 @@ class PlayerNode(Node):
                     "",
                     "There's a hidden ISP database that offers some pretty powerful functionality.",
                     "It allows you to reassign any IP address, including your own, so that any traces you leave behind are gone.",
+                    "",
                     "Connect to it: 1.1.1.1",
+                    "Before you do that, the admin password is potholes. Use the login command to take advantage of that.",
                     "",
                     "Signed,",
                     "WinFan3672",
@@ -153,7 +157,100 @@ class PlayerNode(Node):
             Email("null@null.null","null@null.null","Notice",bodies[7]),
             
             ]
+        mission_bodies = [
+            [
+                "Hello and welcome to reHack.",
+                "I hope that you've been getting used to your Node.",
+                "This is your first mission, out of many.",
+                "This one's simple. You need to connect to the reHack Test Server.",
+                "The IP address is: test.rehack.org.",
+                "If this works, you'll be denied access.",
+                "",
+                "Once you've connected once, you can run the 'mission' command.",
+                "This command simply completes your mission. Simple, right?",
+                "We'll find out.",
+            ],
+            [
+                "OK. You did it. Now for the next bit.",
+                "You need to run the nmap command on it.",
+                "Run the following command:",
+                "",
+                "nmap test.rehack.org",
+                "",
+                "This will reveal the exposed ports on the node as well as how many you need to open.",
+                "I'll be waiting.",
+            ],
+            [
+                "You ran the nmap command, great. The output should have looked something like this:"
+                "",
+                "--------------------",
+                "Found Target",
+                "Hostname: reHack Test Server",
+                "Min. Ports To Crack: 0",
+                "--------------------",
+                "[CLOSED] PORT 21: FTP",
+                "[CLOSED] PORT 22: SSH",
+                "--------------------",
+                "",
+                "As you can see, there are 2 closed ports: 21 and 22.",
+                "The important part is the 'Min. Ports To Crack' section.",
+                "It shows how many you need to open to hack the device.",
+                "This node has weak security, so it can be hacked instantly.",
+                "Let's do it!",
+                "",
+                "Use the porthack command on test.rehack.org.",
+                "Once you're done, run 'mission' and read my next email."
+            ],
+            [
+                "Good job.",
+                "Now for a bit of an explanation.",
+                "",
+                "There are different types of nodes (devices connected to the Internet).",
+                "As such, some of them do different things, and have different levels of security.",
+                "When you connect to a node as a normal user, it can do one thing, such as display a webpage, or just deny access.",
+                "When you hack in, it performs a different function, such as opening an admin panel or allowing you to run commands on it.",
+                "",
+                "With multiple types of security comes multiple ways to break it. For instance, you may one day stumble on a node's admin password.",
+                "If this happens, you can run the following command:",
+                "",
+                "login <IP address> <password>",
+                "",
+                "This will break into the system in the same way porthack does, but without you forcing your way in.",
+                "",
+                "Try it. The admin password for one of our throwaway test servers is 'trollface'.",
+                "The IP address is {}.",
+            ],
+            [
+                "You're doing well. Now for a REAL test.",
+                "A forum called ColonSlash has been spreading lies about us.",
+                "We as a collective are not pleased.",
+                "I would like you to break in.",
+                "If you run nmap, you'll notice that ports 21 and 22 are exposed.",
+                "There are 2 built-in programs that expose those ports.",
+                "To expose port 21, you use ftpkill.",
+                "To expose port 22, you use sshkill.",
+                "",
+                "Break into colonsla.sh and run 'mission' once you are done.",
+            ],
+            ]
+        mission_bodies = ["\n".join(x) for x in mission_bodies]
+        missionEmails = [
+            Email("contracts@rehack.org",f"{self.name}@jmail.com","Tutorial Mission Pt. 1",mission_bodies[0]),
+            Email("contracts@rehack.org",f"{self.name}@jmail.com","Tutorial Mission Pt. 2",mission_bodies[1]),
+            Email("contracts@rehack.org",f"{self.name}@jmail.com","Tutorial Mission Pt. 3",mission_bodies[2]),
+            Email("contracts@rehack.org",f"{self.name}@jmail.com","Tutorial Mission Pt. 4",mission_bodies[3].format(data.getNode("test2").address)),
+            Email("contracts@rehack.org",f"{self.name}@jmail.com","Tutorial Mission Pt. 5",mission_bodies[4]),
+            ]
+        self.MISSIONS = [
+            ConnectMission(self, "start1","Start (Pt. 1)","test.rehack.org",missionEmails[0],reward=500,next_id = "start2"),
+            NMapMission(self, "start2","Start (Pt. 2)","test.rehack.org",missionEmails[1],reward=500,next_id="start3"),
+            Mission(self, "start3","Start (Pt. 3)","test.rehack.org",missionEmails[2],reward=500,next_id="start4"),
+            Mission(self, "start4","Start (Pt. 4)","test2",missionEmails[3],reward=500,next_id="start5"),
+            Mission(self, "start5","Start (Pt. 5)","colonsla.sh",missionEmails[4],reward=500,next_id="start6"),
+            ]
         for item in servers:
             data.NODES.append(item)
         for item in emails:
             sendEmail(item)
+        self.currentMission = data.getMission("start1",self)
+        self.currentMission.start()

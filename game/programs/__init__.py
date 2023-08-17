@@ -10,7 +10,6 @@ import traceback
 import game.programs.connect as connect
 import uuid
 import random
-
 def sendEmail(email):
     recipient = email.receiver
     parts = recipient.split("@")
@@ -113,6 +112,7 @@ def nmap(args):
                     linkMode = True
                 else:
                     linkMode = False
+                item.nmap = True
                 div()
                 print("Found Target")
                 print("Hostname: {}".format(item.name))
@@ -234,10 +234,14 @@ class MessageBoardMessage(Base):
         self.title = title
         self.text = text
 class MessageBoard(Node):
-    def __init__(self, name, address, uid, path, minPorts=3):
+    def __init__(self, name, address, uid, path, ports=None,minPorts=3):
+        if ports is None:
+            self.ports = [data.getPort(80),data.getPort(1433),data.getPort(24525)]
+        else:
+            self.ports = ports
         super().__init__(name, uid, address)
         self.path = path
-        self.ports = [data.getPort(80),data.getPort(1433),data.getPort(24525)]
+        self.ports = ports
         self.minPorts = minPorts
     def main(self):
         div()
@@ -308,19 +312,24 @@ class Email(Base):
         self.subject = subject
         self.body = body
 class EmailData(Base):
-    def __init__(self):
+    def __init__(self, autoresponse):
         super().__init__()    
         self.inbox = []
         self.sent = []
+        self.autoresponse = autoresponse
     def receive(self, email):
         self.inbox.append(email)
+        if self.autoresponse:
+            self.autoresponse.receiver = email.sender
+            sendEmail(self.autoresponse)
+            self.send(self.autoresponse)
     def send(self, email):
         self.sent.append(email)
 class MailAccount(Base):
-    def __init__(self, name):
+    def __init__(self, name, autoresponse = None):
         super().__init__()
         self.name = name
-        self.data = EmailData()
+        self.data = EmailData(autoresponse)
 class MailServer(Node):
     def __init__(self, name, uid, address, player, users=[], hideLookup=False, minPorts=4):
         super().__init__(name, uid,address,ports=[data.getPort(21),data.getPort(22),data.getPort(25),data.getPort(80)],minPorts=minPorts,player=player)
@@ -938,3 +947,53 @@ class WikiServer(Node):
                 cls()
             else:
                 print("ERROR: Invalid command.")
+class Mission(Base):
+    def __init__(self, player, mission_id, name, target, start_email, end_email=None, reward=0, next_id=None):
+        super().__init__()
+        self.mission_id = mission_id
+        self.name = name
+        self.reward = reward
+        self.start_email = start_email
+        self.end_email = end_email
+        self.target = target
+        self.next_id = next_id
+        self.player = player
+    def start(self):
+        sendEmail(self.start_email)
+        self.player.currentMission = self
+    def check_end(self):
+        return data.getNode(self.target).hacked
+    def end(self):
+        if self.end_email:
+            sendEmail(self.end_email)
+        if self.next_id:
+            self.player.currentMission = data.getMission(self.next_id, self.player)
+            if self.player.currentMission:
+                self.player.currentMission.start()
+        else:
+            self.player.currentMission = None
+        self.player.creditCount += self.reward
+def mission_program(args, player):
+    if player.currentMission:
+        if player.currentMission.check_end():
+            div()
+            print("Congratulations! You finished the mission!")
+            print("You have been awarded {} credits.".format(player.currentMission.reward))
+            if player.currentMission.end_email:
+                print("NOTE: An ending email has been sent. Read it.")
+            if player.currentMission.next_id:
+                print("NOTE: This mission's follow-up mission has been started.")
+                print("Check your email for instructions.")
+            div()
+            player.currentMission.end()
+        else:
+            print("ERROR: Mission incomplete.")
+            print("Check your email for instructions.")
+    else:
+        print("ERROR: No current mission.")
+class ConnectMission(Mission):
+    def check_end(self):
+        return data.getNode(self.target).visited
+class NMapMission(Mission):
+    def check_end(self):
+        return data.getNode(self.target).nmap

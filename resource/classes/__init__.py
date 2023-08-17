@@ -85,4 +85,5 @@ class Node(Base):
         self.users = users
         self.hacked = hacked
         self.linked = linked
-        self.visited = False        
+        self.visited = False  
+        self.nmap = False

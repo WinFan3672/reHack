@@ -6,6 +6,11 @@ from resource.libs import *
 import random
 
 global PORTS, NODES, PROGRAMS
+
+def getMission(mission_id, player):
+    for mission in player.MISSIONS:
+        if mission_id == mission.mission_id:
+            return mission
 def getNode(uid):
     for item in NODES:
         if uid == item.uid or uid == item.address:
@@ -76,6 +81,8 @@ N = [
     programs.WebServer("AnonMail Home","www.anon.mail","www.anon.mail","www.anon.mail"),
     programs.XOSDevice("WinFan3672's xPhone","3672_xphone","192.168.1.1",notes=[programs.Note("This is a test")],accounts=[programs.XOSMailAccount("admin@winfan3672.mail.com","supersecretpassword")],model="xphone3"),
     programs.WikiServer("rehack Wiki","rehack_wiki","wiki.rehack.org","wiki.rehack.org"),
+    Node("reHack Test Server #2","test2",generateIP(),ports=[],minPorts=2,users=[User("admin","trollface")]),
+    programs.MessageBoard("ColonSlash","colonsla.sh","colonslash","colonsla.sh",minPorts=2,ports=[getPort(22),getPort(21)]),
     ]
 for item in N:
     NODES.append(item)
@@ -94,6 +101,8 @@ PROGRAMS = [
     Program("store",programs.store,True,classPlease=True),
     Program("anonmail",programs.anonclient,price=0,classPlease=True),
     Program("login",programs.login,True),
+    Program("mission",programs.mission_program,True,classPlease=True),
+    
     ]
 SPICES = [
     "Basil",

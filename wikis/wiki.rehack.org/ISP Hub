@@ -6,4 +6,5 @@ You can:
 * List all nodes you've visited
 div()
 To access the ISP hub, you need to find its IP address. The reHack Wiki will not list said IP address. 
+Once you find the IP address, break in. Its ports are 21, 22, 1433 and 80. You'll need to crack all of them.
 div()
