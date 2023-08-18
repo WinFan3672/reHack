@@ -10,6 +10,8 @@ import traceback
 import game.programs.connect as connect
 import uuid
 import random
+import copy
+
 def sendEmail(email):
     recipient = email.receiver
     parts = recipient.split("@")
@@ -1046,10 +1048,53 @@ class MissionServer(Node):
                 div()
                 print("help: command list")
                 print("cls: clear terminal")
+                print("list: lists all available missions")
+                print("current: displays the current mission")
+                print("accept <id>: accept a mission.")
+                print("cancel: cancel the current mission")
                 print("exit: disconnect from host")
                 div()
             elif ch in ["clear","cls"]:
                 cls()
+            elif ch == "accept":
+                div()
+                print("accept <id>")
+                div()
+                print("Accept a mission.")
+                div()
+            elif ch.startswith("accept "):
+                try:
+                    index = int(ch[7:])
+                    if not self.player.currentMission:
+                        if 0 <= index <= len(self.missions):
+                            self.player.currentMission = self.missions[index]
+                            self.missions.pop(index)
+                            self.player.currentMission.start()
+                            print("Accepted mission.")
+                            print("An email has been sent to your inbox.")
+                        else:
+                            print("ERROR: Invalid mission index.")
+                    else:
+                        print("ERROR: A mission has already been accepted.")
+                        print("Complete it or cancel it first.")
+                except Exception as e:
+                    print("ERROR: {}".format(e))
+            elif ch == "cancel":
+                if self.player.currentMission:
+                    data.getNode("rejected").missions.append(copy.deepcopy(self.player.currentMission))
+                    self.player.currentMission = None
+                    print("Cancelled the mission.")
+                    print("You can re-accept cancelled missions in the Rejects Hub: rejects.rehack.org")
+                else:
+                    print("ERROR: No mission to cancel.")
+            elif ch == "current":
+                if self.player.currentMission:
+                    div()
+                    print("Name: {}".format(self.player.currentMission.name))
+                    print("Reward: {} Cr.".format(self.player.currentMission.reward))
+                    div()
+                else:
+                    print("No current mission.")
             elif ch in ["ls","list"]:
                 if self.missions:
                     i = 0
@@ -1060,6 +1105,8 @@ class MissionServer(Node):
                     print("There are no contracts available on this server.")
             elif ch in ["quit","exit"]:
                 return
+            elif ch == "":
+                continue
             else:
                 print("ERROR: Invalid command.")
 class BuyMission(Mission):
