@@ -1,7 +1,7 @@
 div()
 How to buy software
 div()
-Buying software is simple. The built-in 'store' command is used to purchase software. To purchase software, you need credits. Credits are purchased by completing missions.
+Buying software is simple. The built-in 'store' command is used to purchase software. To purchase software, you need credits. Credits are earned by completing missions.
 div()
 * To get a list of software, run 'store list'. You'll see a list in the format <program name> (<cost> Cr.)".
 * To buy a program, run 'store buy <program name>'. 

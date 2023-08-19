@@ -15,7 +15,7 @@ div()
         * We took reha.ck from its owners. Fuck them. 
     * org
         * We offer "domain protection services", which secure your domain forever, making sure it never expires. Currently, over 500 clients have paid.
-        * Get yours for $1500 per domain: domains@rehack.org.
+        * Get yours for $1500 per domain: domains@rehack.mail.
         * Notable clients: [UNAVAILABLE FOR LEGAL REASONS]
     * edu
         * We offer domain registration for the .edu TLD, allowing you to reap the rewards of an EDU email when, in reality, it's just a forwarding rule to your jmail account.

@@ -1,17 +1,25 @@
 import platform
 import os
 import data
+
+
 def div():
     print("--------------------")
+
+
 def br():
     div()
     input("Press ENTER to continue.")
+
+
 def cls():
     """
     Clears the terminal screen.
     """
     res = platform.uname()
     os.system("cls" if res[0] == "Windows" else "clear")
+
+
 def serialiseToDict(obj):
     """
     Custom JSON serializer for handling class instances and methods.
@@ -26,6 +34,7 @@ def serialiseToDict(obj):
             **obj.__dict__,
         }
     return obj
+
 
 def deserialiseFromDict(dct):
     """
@@ -47,7 +56,7 @@ def deserialiseFromDict(dct):
     return dct
 
 
-def objToDict(obj,addItemType=True):
+def objToDict(obj, addItemType=True):
     """
     Recursively convert an object and all its attributes to a dictionary.
     """
@@ -61,7 +70,7 @@ def objToDict(obj,addItemType=True):
 
     if isinstance(obj, dict):
         if addItemType:
-            obj2 = {"@itemType":type({}).__name__}
+            obj2 = {"@itemType": type({}).__name__}
         obj2.update(obj)
         obj = obj2
         return {key: obj_to_dict(value) for key, value in obj.items()}

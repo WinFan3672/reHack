@@ -4,25 +4,35 @@ from resource.libs import *
 import data
 import time
 import json
+
+
 def div():
     print("--------------------")
+
+
 def br():
     div()
     input("Press ENTER to continue.")
+
+
 def cls():
     """
     Clears the terminal screen.
     """
     res = platform.uname()
     os.system("cls" if res[0] == "Windows" else "clear")
+
+
 def listDirTree(directory):
     d = []
     for item in directory:
         if isinstance(item, Folder):
-            d.append([item.name,listDirTree(item.files)])
+            d.append([item.name, listDirTree(item.files)])
         else:
             d.append(item.name)
     return d
+
+
 def printDirTree(tree, indent=1):
     for item in tree:
         if isinstance(item, str):
@@ -32,15 +42,19 @@ def printDirTree(tree, indent=1):
             sub_tree = item[1]
             print("    " * indent + folder_name + "/")
             printDirTree(sub_tree, indent + 1)
+
+
 def div():
     print("--------------------")
+
+
 def connect(item):
     while True:
         ch = input("admin@{} $".format(item.address))
         ch = ch.split(" ")
         name = ch[0]
         args = ch[1:]
-        if name in ["quit","exit"]:
+        if name in ["quit", "exit"]:
             break
         elif name == "":
             continue
@@ -48,12 +62,16 @@ def connect(item):
             div()
             print("Address: {}".format(item.address))
             print("Hostname: {}".format(item.name))
-            print("Users: {}".format(";".join([x.name for x in item.users]) if item.users else "None"))
+            print(
+                "Users: {}".format(
+                    ";".join([x.name for x in item.users]) if item.users else "None"
+                )
+            )
             print("Has Linked Nodes: {}".format("Yes" if item.linked else "No"))
             div()
         elif name == "ls":
             f = item.files
-            d = (listDirTree(f))
+            d = listDirTree(f)
             print("/")
             printDirTree(d)
         elif name == "cls":
@@ -74,6 +92,8 @@ def connect(item):
                     print("{}: {}".format(n.name, n.address))
         else:
             print("ssh: syntax error.\nType `help` for a command list.")
+
+
 def connectStart(address):
     BLOCKLIST = ["127.0.0.1"]
     resolved = False
@@ -95,6 +115,8 @@ def connectStart(address):
                 print("ERROR: Access denied.")
     if not resolved:
         print("ERROR: Failed to resolve hostname.")
+
+
 def main(args):
     if args:
         connectStart(args[0])

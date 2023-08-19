@@ -5,20 +5,21 @@ from game.player import *
 import data
 from game.programs import Mission, ConnectMission, NMapMission, BuyMission
 
+
 def main_story_missions(self):
     bodies = [
         [
-            "Welcome to an Advanced Tutorial.",
-            "This series covers more advanced topics not covered in the initial tutorial.",
+            "Welcome, fellow hacker.",
             "This tutorial covers the 'scan' command.",
             "In standard nodes (you can check a node's type using 'nodecheck'), there are several commands built in.",
             "One of them is 'scan'. It lists all nodes linked to a node.",
             "This is extremely useful as it allows you to search through more of a network that is normally hidden.",
+            "",
             "To demonstrate, connect to coca.com and hack in.",
             "Once you've done that, connect to it and run the scan command and find the mainframe password.",
-            "Using the mainframe password, log in using the login command."
+            "Using the mainframe password, log in using the login command.",
             "",
-            "They should have the following:",
+            "You may encounter the following nodes:",
             "* A mail server",
             "   * This is really easy to break into and should have a lot of useful info.",
             "* A mainframe",
@@ -26,123 +27,161 @@ def main_story_missions(self):
             "* A few employee nodes.",
             "   * Hack in and run 'ls'. You never know if they left some text notes.",
             "",
-            "Once you're done, run 'mission' on your node and continue the Advanced Tutorials.",
+            "A few tips:",
+            "* You can use 'bruter' to brute-force admin passwords instead of searching.",
+            "* You can use 'mailman' to log into email accounts if you find them.",
+            "   * If you find the admin password, don't bother. Use 'login' and connect, because it lets you see everything."
+            "* Refer to the wiki (wiki.rehack.org) if you're stuck.",
         ],
-        ]
+    ]
     bodies = ["\n".join(x) for x in bodies]
-    end_email = Email("contracts@rehack.org","{}@jmail.com".format(self.name),"Contract Complete","Congratulations. The contract is complete.\nGet more at contracts.rehack.org")
+    end_email = Email(
+        "contracts@rehack.org",
+        "{}@jmail.com".format(self.name),
+        "Contract Complete",
+        "Congratulations. The contract is complete.\nGet more at contracts.rehack.org",
+    )
     emails = [
-        Email("contracts@rehack.org","{}@jmail.com".format(self.name),"Advanced Tutorial #1",bodies[0]),
-        ]
+        Email(
+            "contracts@rehack.org",
+            "{}@jmail.com".format(self.name),
+            "Advanced Tutorial #1",
+            bodies[0],
+        ),
+    ]
     return [
-        Mission(self,"advanced1","Advanced Tutorial #1",None,emails[0],reward=750)
-        ]
+        Mission(self, "advanced1", "Advanced Tutorial #1", None, emails[0], reward=750)
+    ]
+
+
 def start_missions(self):
     bodies = [
-            [
+        [
             "Welcome to reHack!",
             "",
             "As you're new here, you'll want to check out our intranet (intranet.rehack.org).",
             "You can do this using the 'connect' command.",
             "Our intranet contains some useful resources as well as some info for beginners such as yourself.",
-            "We look forward to seeing you succeed."
-            ],
-            [
-                "Hello.",
-                "",
-                "I work for AnonMail, a reHack sponsor.",
-                "AnonMail provides unlimited untraceable email addresses.",
-                "A rehack.org email address is a huge red flag, and a jmail.com email is easy to trace.",
-                "AnonMail is neither. We have over a million accounts, 99% of which are privacy-savvy users.",
-                "As such, your email blends right in.",
-                "You get a randomly generated username and get to receive up to 100,000 emails before your mailbox shuts down.",
-                "We also use port masking and hide our MX records, meaning script kiddies can't break in easily.",
-                "",
-                "To register, purchase the AnonMail client using the 'store' command, free for a limited time.",
-            ],
-            [
-                "Hello, fellow hacker.",
-                "",
-                "I would like to personally invite you to join our forum, 5chan.",
-                "In case you don't know, reHack and 5chan have a, let's just say, toxic relationship.",
-                "That is to say, reHack'ers target anons on 5chan all the time.",
-                "However, I feel that you might be different.",
-                "Because our website URL changes all the time, you'll need to check it out in the",
-                "WorldWide Web Directory: w3d.org.",
-                "",
-                "I hope to see you on 5chan, fellow anon.",
-            ],
-            [
-                "What is the price for having a mail server for the xwebdesign subdomain?",
-                "We aim to have 25 accounts and want full security.",
-            ],
-            [
-                "Dear {},",
-                "Thank you for purchasing mail.com.",
-                "See the invoice below:",
-                "",
-                "INVOICE",
-                "MAIL.COM SERVER <MONTHLY>: $79.99",
-                "INSTALLATION FEE <ONE-TIME>: $49.99",
-                "",
-                "Thank you for shopping with mail.com",
-            ],
-            [
-                "Dear Joe",
-                "See below the mail.com admin password:",
-                "",
-                "superuser",
-                "",
-                "I trust that jmail is secure enough that you won't somehow leak it.",
-                "It's only the web portal, but you are the webmaster, so it's only fair.",
-            ],
-            [
-                "Hello,",
-                "",
-                "This is a message intended for easter egg hunters.",
-                "Thank you for enjoying my game.",
-                "I put a lot of effort into creating a lot of complex systems (such as mail servers)",
-                "and I'm really proud of my work.",
-                "All I can leave you with is a hint for some gameplay:",
-                "",
-                "There's a hidden ISP database that offers some pretty powerful functionality.",
-                "It allows you to reassign any IP address, including your own, so that any traces you leave behind are gone.",
-                "",
-                "Connect to it: 1.1.1.1",
-                "Before you do that, the admin password is potholes. Use the login command to take advantage of that.",
-                "",
-                "Signed,",
-                "WinFan3672",
-                "Creator of reHack",
-            ],
-            [
-                "This email server is reserved by W3D for the use of spoofing the FROM field of an email.",
-                "Set the FROM field to null@null.null and SMTP will do the rest.",
-                "The email server actively ignores any emails sent to it.",
-                "If you send an email, it will be sent back to you and not stored.",
-            ],
-            [
-                "The email you provided was sent to null@null.null.",
-                "This is usually because you are replying to an email which had its FROM address spoofed.",
-                "For security purposes, your email has been sent back to you:",
-                "FROM: {}",
-                "TO: null@null.null",
-                "SUBJECT: {}",
-                "",
-                "{}",
-            ],
-        ]
+            "We look forward to seeing you succeed.",
+        ],
+        [
+            "Hello.",
+            "",
+            "I work for AnonMail, a reHack sponsor.",
+            "AnonMail provides unlimited untraceable email addresses.",
+            "A rehack.org email address is a huge red flag, and a jmail.com email is easy to trace.",
+            "AnonMail is neither. We have over a million accounts, 99% of which are privacy-savvy users.",
+            "As such, your email blends right in.",
+            "You get a randomly generated username and get to receive up to 100,000 emails before your mailbox shuts down.",
+            "We also use port masking and hide our MX records, meaning script kiddies can't break in easily.",
+            "",
+            "To register, visit www.anon.mail and follow the instructions.",
+        ],
+        [
+            "You have been personally invited to become a member of 5chan.",
+            "5chan is a hacking forum consisting entirely of anonymous members, or anons.",
+            "As a warning, 5chan is not for the faint of heart.",
+            "",
+            "Get 1337 hacking advice, share cybersecurity news, and shitpost until the end of the world.",
+            "",
+            "Because our IP address changes constantly, we recommend you look us up on w3d.org and join from there.",
+            "",
+            "Signed:",
+            "",
+            "Anonymous,",
+            "Chief Anon.",
+        ],
+        [
+            "What is the price for having a mail server for the xwebdesign subdomain?",
+            "We aim to have 25 accounts and want full security.",
+        ],
+        [
+            "Dear {},",
+            "Thank you for purchasing mail.com.",
+            "See the invoice below:",
+            "",
+            "INVOICE",
+            "MAIL.COM SERVER <MONTHLY>: $79.99",
+            "INSTALLATION FEE <ONE-TIME>: $49.99",
+            "",
+            "Thank you for shopping with mail.com",
+        ],
+        [
+            "Dear Joe",
+            "See below the mail.com admin password:",
+            "",
+            "superuser",
+            "",
+            "I trust that jmail is secure enough that you won't somehow leak it.",
+            "It's only the web portal, but you are the webmaster, so it's only fair.",
+        ],
+        [
+            "Hello,",
+            "",
+            "This is a message intended for easter egg hunters.",
+            "Thank you for enjoying my game.",
+            "I put a lot of effort into creating a lot of complex systems (such as mail servers)",
+            "and I'm really proud of my work.",
+            "All I can leave you with is a hint for some gameplay:",
+            "",
+            "There's a hidden ISP database that offers some pretty powerful functionality.",
+            "It allows you to reassign any IP address, including your own, so that any traces you leave behind are gone.",
+            "",
+            "Connect to it: 1.1.1.1",
+            "Before you do that, the admin password is potholes. Use the login command to take advantage of that.",
+            "",
+            "Signed,",
+            "WinFan3672",
+            "Creator of reHack",
+        ],
+        [
+            "This email server is reserved by W3D for the use of spoofing the FROM field of an email.",
+            "Set the FROM field to null@null.null and SMTP will do the rest.",
+            "The email server actively ignores any emails sent to it.",
+            "If you send an email, it will be sent back to you and not stored.",
+        ],
+    ]
     bodies = ["\n".join(x) for x in bodies]
     emails = [
-        Email("welcome@rehack.mail","{}@jmail.com".format(self.name),"Welcome to reHack",bodies[0]),
-        # Email("marketing@anon.mail",f"{self.name}@jmail.com","AD: Try AnonMail",bodies[1]),
-        # Email("null@null",f"{self.name}@jmail.com","A Personal Invitation",bodies[2])
-        Email("xwebdesign@jmail.com","sales@root.mail.com","Client: XWebDesign",bodies[3]),
-        Email("sales@root.mail.com","sales@xwebdesign.mail.com","Invoice",bodies[4].format("XWebDesign")),
-        Email("sales@root.mail.com","sales@jmail.mail.com","Invoice",bodies[4].format("JMail")),
-        Email("null@null.null","admin@winfan3672.mail.com","A Message",bodies[6]),
-        Email("null@null.null","null@null.null","Notice",bodies[7]),
-        ]
+        Email(
+            "welcome@rehack.mail",
+            "{}@jmail.com".format(self.name),
+            "Welcome to reHack",
+            bodies[0],
+        ),
+        Email(
+            "marketing@anon.mail",
+            f"{self.name}@jmail.com",
+            "AD: Try AnonMail",
+            bodies[1],
+        ),
+        Email(
+            "invites@5chan.mail.com",
+            f"{self.name}@jmail.com",
+            "A Personal Invitation",
+            bodies[2],
+        ),
+        Email(
+            "xwebdesign@jmail.com",
+            "sales@root.mail.com",
+            "Client: XWebDesign",
+            bodies[3],
+        ),
+        Email(
+            "sales@root.mail.com",
+            "sales@xwebdesign.mail.com",
+            "Invoice",
+            bodies[4].format("XWebDesign"),
+        ),
+        Email(
+            "sales@root.mail.com",
+            "sales@jmail.mail.com",
+            "Invoice",
+            bodies[4].format("JMail"),
+        ),
+        Email("null@null.null", "admin@winfan3672.mail.com", "A Message", bodies[6]),
+        Email("null@null.null", "null@null.null", "Notice", bodies[7]),
+    ]
     mission_bodies = [
         [
             "Hello and welcome to reHack.",
@@ -185,7 +224,7 @@ def start_missions(self):
             "Let's do it!",
             "",
             "Use the porthack command on test.rehack.org.",
-            "Once you're done, run 'mission' and read my next email."
+            "Once you're done, run 'mission' and read my next email.",
         ],
         [
             "Good job.",
@@ -234,7 +273,7 @@ def start_missions(self):
         ],
         [
             "This is the final part of the tutorial.",
-            "Hack into the following IP: test.hub"
+            "Hack into the following IP: test.hub",
         ],
         [
             "Good job. You completed the tutorial.",
@@ -245,26 +284,122 @@ def start_missions(self):
             "",
             "Keep this email for reference purposes, and good luck.",
         ],
-        ]
+    ]
     mission_bodies = ["\n".join(x) for x in mission_bodies]
     missionEmails = [
-        Email("contracts@rehack.org",f"{self.name}@jmail.com","Tutorial Mission Pt. 1",mission_bodies[0]),
-        Email("contracts@rehack.org",f"{self.name}@jmail.com","Tutorial Mission Pt. 2",mission_bodies[1]),
-        Email("contracts@rehack.org",f"{self.name}@jmail.com","Tutorial Mission Pt. 3",mission_bodies[2]),
-        Email("contracts@rehack.org",f"{self.name}@jmail.com","Tutorial Mission Pt. 4",mission_bodies[3].format(data.getNode("test2").address)),
-        Email("contracts@rehack.org",f"{self.name}@jmail.com","Tutorial Mission Pt. 5",mission_bodies[4]),
-        Email("contracts@rehack.org",f"{self.name}@jmail.com","Tutorial Mission Pt. 6",mission_bodies[5]),
-        Email("contracts@rehack.org",f"{self.name}@jmail.com","Tutorial Mission Pt. 7",mission_bodies[6]),
-        Email("contracts@rehack.org",f"{self.name}@jmail.com","You Finished The Tutorial",mission_bodies[7]),
-        ]
+        Email(
+            "contracts@rehack.org",
+            f"{self.name}@jmail.com",
+            "Tutorial Mission Pt. 1",
+            mission_bodies[0],
+        ),
+        Email(
+            "contracts@rehack.org",
+            f"{self.name}@jmail.com",
+            "Tutorial Mission Pt. 2",
+            mission_bodies[1],
+        ),
+        Email(
+            "contracts@rehack.org",
+            f"{self.name}@jmail.com",
+            "Tutorial Mission Pt. 3",
+            mission_bodies[2],
+        ),
+        Email(
+            "contracts@rehack.org",
+            f"{self.name}@jmail.com",
+            "Tutorial Mission Pt. 4",
+            mission_bodies[3].format(data.getNode("test2").address),
+        ),
+        Email(
+            "contracts@rehack.org",
+            f"{self.name}@jmail.com",
+            "Tutorial Mission Pt. 5",
+            mission_bodies[4],
+        ),
+        Email(
+            "contracts@rehack.org",
+            f"{self.name}@jmail.com",
+            "Tutorial Mission Pt. 6",
+            mission_bodies[5],
+        ),
+        Email(
+            "contracts@rehack.org",
+            f"{self.name}@jmail.com",
+            "Tutorial Mission Pt. 7",
+            mission_bodies[6],
+        ),
+        Email(
+            "contracts@rehack.org",
+            f"{self.name}@jmail.com",
+            "You Finished The Tutorial",
+            mission_bodies[7],
+        ),
+    ]
     for item in emails:
         sendEmail(item)
     return [
-        ConnectMission(self, "start1","Start (Pt. 1)","test.rehack.org",missionEmails[0],reward=500,next_id = "start2"),
-        NMapMission(self, "start2","Start (Pt. 2)","test.rehack.org",missionEmails[1],reward=500,next_id="start3"),
-        Mission(self, "start3","Start (Pt. 3)","test.rehack.org",missionEmails[2],reward=500,next_id="start4"),
-        Mission(self, "start4","Start (Pt. 4)","test2",missionEmails[3],reward=500,next_id="start5"),
-        Mission(self, "start5","Start (Pt. 5)","colonsla.sh",missionEmails[4],reward=500,next_id="start6"),
-        BuyMission(self, "start6","Start (Pt. 6)",["webworm","mxlookup"],missionEmails[5],reward=500,next_id = "start7"),
-        Mission(self, "start7","Start (Pt. 7)","test.hub",missionEmails[6],reward=2500, end_email = missionEmails[7]),
-        ]
+        ConnectMission(
+            self,
+            "start1",
+            "Start (Pt. 1)",
+            "test.rehack.org",
+            missionEmails[0],
+            reward=500,
+            next_id="start2",
+        ),
+        NMapMission(
+            self,
+            "start2",
+            "Start (Pt. 2)",
+            "test.rehack.org",
+            missionEmails[1],
+            reward=500,
+            next_id="start3",
+        ),
+        Mission(
+            self,
+            "start3",
+            "Start (Pt. 3)",
+            "test.rehack.org",
+            missionEmails[2],
+            reward=500,
+            next_id="start4",
+        ),
+        Mission(
+            self,
+            "start4",
+            "Start (Pt. 4)",
+            "test2",
+            missionEmails[3],
+            reward=500,
+            next_id="start5",
+        ),
+        Mission(
+            self,
+            "start5",
+            "Start (Pt. 5)",
+            "colonsla.sh",
+            missionEmails[4],
+            reward=500,
+            next_id="start6",
+        ),
+        BuyMission(
+            self,
+            "start6",
+            "Start (Pt. 6)",
+            ["webworm", "mxlookup"],
+            missionEmails[5],
+            reward=500,
+            next_id="start7",
+        ),
+        Mission(
+            self,
+            "start7",
+            "Start (Pt. 7)",
+            "test.hub",
+            missionEmails[6],
+            reward=2500,
+            end_email=missionEmails[7],
+        ),
+    ]
