@@ -21,8 +21,10 @@ def credits():
         for item in resourceInfo.formerContributors:
             print("* {}".format(item))
     div()
-    print("LEGAL NOTICE: Any companies referenced are intended solely for parody. ")
-    print("              Any resemblance to real companies is entirely coincidental.")
+    print("LEGAL NOTICES")
+    div()
+    print("Any companies referenced are intended solely for parody. ")
+    print("Any resemblance to real companies is entirely coincidental.")
     br()
 
 

@@ -44,11 +44,13 @@ class PlayerNode(Node):
             Folder("sys"),
             [File("system.ini")],
         ]
-        self.minPorts = 100
+        self.minPorts = 2 ** 16
         self.ports = [getPort(7777), getPort(22)]
         self.creditCount = 500
         self.lvl = 0
-        self.saved_accounts = {}
+        self.saved_accounts = {
+            f"{self.name}@jmail.com":self.password,
+            }
         self.currentMission = None
         self.startActions()
 
@@ -98,7 +100,7 @@ class PlayerNode(Node):
             ),
             AnonMail(self),
             MailDotCom("XWebDesign Mail", "xwebdesign.mail.com", self, [User("sales")]),
-            MailDotCom("Mail Dot Com", "root.mail.com", self, [User("sales")]),
+            MailDotCom("Mail Dot Com", "root.mail.com", self, [User("sales"),User("beryl","anderson")]),
             MailDotCom("Jmail Corporate Mail", "jmail.mail.com", self, [User("sales")]),
             MailDotCom(
                 "5chan Corporate Mail", "5chan.mail.com", self, [User("invites")]

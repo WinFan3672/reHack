@@ -259,15 +259,10 @@ class MessageBoardMessage(Base):
 
 
 class MessageBoard(Node):
-    def __init__(self, name, address, uid, path, ports=None, minPorts=3):
-        if ports is None:
-            self.ports = [data.getPort(80), data.getPort(1433), data.getPort(24525)]
-        else:
-            self.ports = ports
-        super().__init__(name, uid, address)
-        self.path = path
+    def __init__(self, name, address, uid, path, ports=[], minPorts=3, linked=[], users = []):
+        ports = ports if ports else [data.getPort(80), data.getPort(1433), data.getPort(24525)]
+        super().__init__(name, uid, address, linked=linked, users=users, ports=ports, minPorts = minPorts)
         self.ports = ports
-        self.minPorts = minPorts
 
     def main(self):
         div()
@@ -478,21 +473,34 @@ class MailServer(Node):
                 div()
             elif ch in ["cls", "clear"]:
                 cls()
-            elif "reset" in args and len(args) == 2:
-                account = None
-                for acc in self.accounts:
-                    if acc.name == args[0]:
-                        account = acc
-                if account:
-                    account.password = args[1]
-                    print("Successfully reset password.")
+            elif ch == "useradd":
+                div()
+                print("useradd <username>")
+                div()
+                print("Create a mail account.")
+                div()
+                
+            elif ch.startswith("reset "):
+                ch = ch[6:]
+                args = ch.split(" ")
+                if len(args) == 2:
+                    account = None
+                    for acc in self.accounts:
+                        if acc.name == args[0]:
+                            account = acc
+                    if account:
+                        account.password = args[1]
+                        print("Successfully reset password.")
+                    else:
+                        print("ERROR: Invalid account name.")
                 else:
-                    print("ERROR: Invalid account name.")
+                    print("ERROR: Invalid syntax.")
             elif ch == "reset":
                 div()
                 print("reset <username> <password>")
                 div()
                 print("Reset a user's password.")
+                div()
             elif ch == "users":
                 for item in self.accounts:
                     print(item.name)
@@ -628,125 +636,29 @@ class AnonMail(MailServer):
 
 
 def jmail(args, player):
-    if args == ["list"]:
-        node = data.getNode("jmail")
-        acc = None
-        for item in node.accounts:
-            if item.name == player.name:
-                acc = item
-                break
-        if acc:
-            i = 0
-            if acc.data.inbox:
-                div()
-                for mail in acc.data.inbox:
-                    print(
-                        "{}: {} ({}) {}".format(
-                            i, mail.subject, mail.sender, "[!]" if not mail.read else ""
-                        )
-                    )
-                    i += 1
-                div()
-                print("To view an email, run 'jmail read <id>'")
-                div()
-            else:
-                print("Your inbox is empty.")
-        else:
-            print("ERROR: Invalid jmail account.")
-    elif args == ["cleanup"]:
-        node = data.getNode("jmail")
-        for item in node.accounts:
-            if item.name == player.name:
-                acc = item
-                break
-        if acc:
-            old = len(acc.data.inbox)
-            acc.data.inbox = [
-                x
-                for x in acc.data.inbox
-                if x.subject not in ["", None, "Your message could not be delivered"]
-            ]
-            print("Deleted {} emails.".format(abs(len(acc.data.inbox) - old)))
-        else:
-            print("ERROR: Your jmail account could not be found.")
-    elif "read" in args and len(args) == 2:
-        try:
-            index = int(args[1])
-            node = data.getNode("jmail")
-            for item in node.accounts:
-                if item.name == player.name:
-                    acc = item
-                    break
-            if acc:
-                i = 0
-                if 0 <= index < len(acc.data.inbox):
-                    email = acc.data.inbox[index]
-                    email.read = True
-                    div()
-                    print("FROM: {}".format(email.sender))
-                    print("TO: {}".format(email.receiver))
-                    print("SUBJECT: {}".format(email.subject))
-                    div()
-                    print(email.body)
-                    div()
-                else:
-                    print("ERROR: Invalid email index.")
-            else:
-                print("ERROR: Invalid jmail account.")
-        except:
-            print(traceback.format_exc())
-    # elif "send" in args and len(args) == 2:
-    #     e = Email("{}@jmail.com".format(player.name),args[1],"Automated Email","GET Request made by JMail client.")
-    elif args == ["del"]:
-        div()
-        print("jmail del <id>")
-        div()
-        print("Delete a message.")
-        div()
-    elif "del" in args and len(args) == 2:
-        try:
-            index = int(args[1])
-            node = data.getNode("jmail.com")
-            account = None
-            for acc in node.accounts:
-                if acc.name == player.name:
-                    account = acc
-            if account:
-                if 0 <= index <= len(account.data.inbox):
-                    account.data.inbox.pop(index)
-                    print("Removed email.")
-                else:
-                    print("ERROR: Invalid email index.")
-            else:
-                pritn("ERROR: Invalid jmail account.")
-        except Exception as e:
-            print("ERROR: {}".format(e))
-    else:
-        div()
-        print("jmail [args]")
-        div()
-        print("Client for JMail accounts.")
-        div()
-        print("jmail list: list all emails in inbox")
-        print("jmail read <id>: read an email")
-        print("jmail cleanup: removes all blank and useless emails.")
-        # print("jmail send <address>: send an email (automated systems only).")
-        print("jmail del <id>: delete an email.")
-        div()
-        print("Account: {}@jmail.com".format(player.name))
-        div()
+    acc = "{}@jmail.com".format(player.name)
+    mailman_base([acc], player)
+# def MailDotCom(name, address, player, users=[]):
+#     s = MailServer(name, address, address, player)
+#     s.lookup = lambda:return [MailAccount("admin")]
+#     s.ports = [data.getPort(21), data.getPort(22), data.getPort(25), data.getPort(80)]
+#     s.minPorts = 4
+#     s.accounts = [MailAccount("admin")]
+#     for item in users:
+#         s.accounts.append(MailAccount(item.name))
+#     return s
 
 
-def MailDotCom(name, address, player, users=[]):
-    s = MailServer(name, address, address, player, hideLookup=True)
-    s.ports = [data.getPort(21), data.getPort(22), data.getPort(25), data.getPort(80)]
-    s.minPorts = 4
-    s.accounts = [MailAccount("admin")]
-    for item in users:
-        s.accounts.append(MailAccount(item.name))
-    return s
-
-
+class MailDotCom(MailServer):
+    def __init__(self, name, address, player, users = []):
+        super().__init__(name, address, address, player)
+        self.ports = [data.getPort(21), data.getPort(22), data.getPort(25), data.getPort(80)]
+        self.minPorts = 4
+        self.accounts = [MailAccount("admin")]
+        for item in users:
+            self.accounts.append(MailAccount(item.name, item.password))
+    def lookup(self):
+        return [MailAccount("admin")]
 def mailoverflow(args, player):
     if args:
         for arg in args:
@@ -1404,11 +1316,12 @@ def nodecheck(args):
     d = {
         Node: "standard",
         WebServer: "website",
-        MailServer: "mailserver",
+        MailServer: "mailserver",        
         WikiServer: "wiki",
         MessageBoard: "messageboard",
         JmailServer: "jmail",
         AnonMail: "anonmail",
+        MailDotCom: "maildotcom_instance",
         ISPNode: "isp",
         XOSDevice: "xosdevice",
         MissionServer: "contract_hub",
@@ -1438,7 +1351,8 @@ def mailman(self, domain, player):
             div()
             print("help: command list")
             print("cls: clear the screen")
-            print("save: save this account for future use")
+            if not f"{self.name}@{domain}" in player.saved_accounts.keys():
+                print("save: save this account for future use")
             print("list: list all emails")
             print("read <id>: read an email")
             print("exit: exit mailman")
@@ -1452,6 +1366,7 @@ def mailman(self, domain, player):
         elif ch == "list":
             i = 0
             if getEmails(self.data):
+                div()
                 for item in getEmails(self.data):
                     print(
                         "{}: {} ({}-->{}) {}".format(
@@ -1463,6 +1378,7 @@ def mailman(self, domain, player):
                         )
                     )
                     i += 1
+                div()
             else:
                 print("Your inbox is empty.")
         elif ch == "read":
@@ -1481,7 +1397,9 @@ def mailman(self, domain, player):
                 if 0 <= index <= len(getEmails(self.data)):
                     email = getEmails(self.data)[index]
                     email.read = True
+                    div()
                     print(email.body)
+                    div()
                 else:
                     print("ERROR: Invalid email.")
             except:
@@ -1518,15 +1436,25 @@ def mailman_base(args, player):
     elif args == ["list"]:
         if player.saved_accounts:
             for item in player.saved_accounts.keys():
-                print("{}: {}".format(item, player.saved_accounts[item]))
+                print("{}:{}".format(item, player.saved_accounts[item]))
         else:
             print("ERROR: No saved accounts.")
             print("To save an account, log in with mailman and run the `save` command.")
+    elif len(args) == 1:
+        try:
+            email = args[0]
+            passwd = player.saved_accounts[email]
+            mailman_base([email, passwd],player)
+        except KeyError:
+            print("ERROR: You have not saved the email address.")
     else:
         div()
-        print("mailman <email address> <password>")
+        print("mailman <email address> [password]")
         div()
         print("Email client.")
+        div()
+        print("mailman list: show list of saved accounts")
+        print("              If you have saved an email account, you do not need to enter the password.")
         div()
 
 
@@ -1544,7 +1472,7 @@ def bruter(args, player):
                     found = False
                     for passwd in data.PASSLIST:
                         node.create_log(
-                            player.address, "Attempted login admin:{}".format(passwd)
+                            player.address, "Attempted admin login"
                         )
                         if account.password == passwd:
                             print("Found password: {}".format(passwd))
@@ -1571,7 +1499,47 @@ def bruter(args, player):
         print("Brute-forces the password of a server.")
         div()
 
-
+def emailbruter(args, player):
+    if args:
+        for item in args:
+            print("TRY: {}".format(item))
+            parts = item.split("@")
+            if len(parts) == 2:
+                node = data.getNode(parts[1])
+                if isinstance(node,MailServer):
+                    account = None
+                    for acc in node.accounts:
+                        if acc.name == parts[0]:
+                            account = acc
+                    if account:
+                        if account.password:
+                            found = False
+                            for passwd in data.PASSLIST:
+                                node.create_log(player.address,"Attempted account login for {}".format(account.name))
+                                if account.password == passwd:
+                                    print("Found password: {}".format(passwd))
+                                    player.saved_accounts[item] = passwd
+                                    node.create_log(player.address,"Logged into account {}".format(account.name))
+                                    found = True
+                                    break
+                            if not found:
+                                print("ERROR: Could not find password.")
+                        else:
+                            print("ERROR: Specified account is disabled.")
+                    else:
+                        print("ERROR: Invalid account")
+                else:
+                    print("ERROR: 404 Not Found")
+            else:
+                print("ERROR: Invalid email account.")
+    else:
+        div()
+        print("mailbruter [list of email addresses]")
+        div()
+        print("Brute-forces the password of a mail account.")
+        div()
+        
+        
 class GitServer(Node):
     def __init__(self, name, uid, address, ports=[], minPorts=0):
         super().__init__(name, uid, address, ports=ports, minPorts=minPorts)

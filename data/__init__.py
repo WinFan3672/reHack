@@ -181,6 +181,7 @@ N = [
             "xwebdesign.mail.com",
             "jmail.mail.com",
             "winfan3672.mail.com",
+            "mailcomdocs",
         ],
     ),
     programs.WebServer(
@@ -246,6 +247,32 @@ N = [
         "nanosoft.com",
         users=[User("admin", "lavender")],
     ),
+    Node(
+        "Beryl Anderson's PC",
+        "berylandserson",
+        generateIP(),
+        ports=[getPort(21), getPort(22), getPort(6881)],
+        linked=["berylanderson_phone"],
+    ),
+    programs.XOSDevice(
+        "Beryl Anderson's xPhone",
+        "berylanderson_phone",
+        generateIP(),
+        accounts = [
+            programs.XOSMailAccount("beryl@root.mail.com","anderson"),
+            ]
+    ),
+    programs.MessageBoard(
+        "Mail.com Documentation",
+        generateIP(),
+        "mailcomdocs",
+        "mail.com",
+        linked=["mail.com","mailcommain","berylandserson"],
+        ports = [getPort(80), getPort(1433), getPort(24525)],
+        minPorts = 2,
+        users = [User("admin","composer")]
+        ),
+    Node("Mail.com Mainframe","mailcommain",generateIP(),users = [User("admin","fuckinganonmailfuckingjmail")]),
 ]
 for item in N:
     NODES.append(item)
@@ -270,6 +297,7 @@ PROGRAMS = [
     Program("nodecheck", programs.nodecheck, price=0),
     Program("mailman", programs.mailman_base, True, classPlease=True),
     Program("bruter", programs.bruter, True, classPlease=True),
+    Program("emailbruter", programs.emailbruter, True, classPlease=True),
 ]
 SPICES = [
     "Basil",
