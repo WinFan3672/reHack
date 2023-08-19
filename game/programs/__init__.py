@@ -12,6 +12,13 @@ import uuid
 import random
 import copy
 
+class Firewall(Base):
+    def __init__(self, solution, time = 1):
+        super().__init__()
+        self.solution = solution
+        self.time = time
+    def check(self, solution):
+        return solution == self.solution
 def sendEmail(email):
     recipient = email.receiver
     parts = recipient.split("@")
@@ -147,29 +154,16 @@ def webworm(args):
                             port.open = True
                             print("SUCCESSFULLY OPENED PORT 80 @ {}".format(item))
                             success = True
-                if not success:
-                    print("Failed to attack port 80:")
-                    print("* Confirm that the IP is correct.")
-                    print("* Confirm that `{}` is a valid IP.".format(item))
+            if not success:
+                print("Failed to attack port 80:")
+                print("* Confirm port 80 is valid.")
+                print("* Confirm that `{}` is a valid IP.".format(item))
     else:
         div()
-        print("webworm <IP address(es)>")
+        print("sshkill <IP address(es)>")
         div()
         print("Attacks port 80 and opens it.")
         div()
-# def Directory(args):
-#     div()
-#     print("This is a list of reHack-related IP addresses.")
-#     div()
-#     print("ISP Database: 1.1.1.1")
-#     print("Mission Server: 255.255.255.0")
-#     print("Program Shop: 255.255.255.1")
-#     print("Credits Machine: 255.255.255.255")
-#     div()
-#     print("It has come to the attention of reHack.Org that agents are sharing their missions server")
-#     print("login credentials to friends and family. DO NOT DO THIS.")
-#     print("If you are found doing this, you will 'disappear' and never return.")
-#     div()
 def sshkill(args):
     if args:
         for item in args:
@@ -292,9 +286,33 @@ def ftpkill(args):
         print("Attacks port 21 and opens it.")
         div()               
 def debuginfo(args, player):
-    d = objToDict(player)
-    x = json.dumps(d,indent=4)
-    print(x)
+    if args == ["player"]:
+        d = objToDict(player)
+        x = json.dumps(d,indent=4)
+        print(x)
+    elif args == ["passwd"]:
+        print(random.choice(data.PASSLIST))
+    elif args == ["nodes"]:
+        div()
+        for item in data.NODES:
+            print("{}: {}".format(item.name, item.address))
+        div()
+    elif args == ["complete-mission"]:
+        while player.currentMission:
+            player.currentMission.end()
+    else:
+        div()
+        print("debug <args>")
+        div()
+        print("debug player: print out player class")
+        print("debug passwd: print a random password that can be brute-forced")
+        print("debug nodes: list all nodes you can connect to")
+        print("debug complete-mission: complete an entire mission series.")
+        div()
+        print("WARNING: This program is not intended for use by anyone other than the developers.")
+        print("It WILL ruin the fun significantly if used incorrectly.")
+        print("It's also mostly useless.")
+        div()
 class Email(Base):
     def __init__(self, sender, receiver,subject=None, body=None):
         self.sender = sender
@@ -317,19 +335,21 @@ class EmailData(Base):
     def send(self, email):
         self.sent.append(email)
 class MailAccount(Base):
-    def __init__(self, name, autoresponse = None):
+    def __init__(self, name, password=None,autoresponse = None):
         super().__init__()
         self.name = name
+        self.password = password if password else makeRandomString()
         self.data = EmailData(autoresponse)
 class MailServer(Node):
-    def __init__(self, name, uid, address, player, users=[], hideLookup=False, minPorts=4):
+    def __init__(self, name, uid, address, player, users=[], accounts = [], hideLookup=False, minPorts=4):
         super().__init__(name, uid,address,ports=[data.getPort(21),data.getPort(22),data.getPort(25),data.getPort(80)],minPorts=minPorts,player=player)
         self.users = users
         self.accounts = [MailAccount("accounts-daemon")]
+        self.accounts += [x for x in accounts if ininstance(x, MailAccount)]
         self.hideLookup = hideLookup
         x = []
         for user in self.users:
-            self.accounts.append(MailAccount(user.name))
+            self.accounts.append(MailAccount(user.name, user.password))
     def main(self, args=None, player=None):
         print("To access this mail server, log in with a mail client.")
     def lookup(self):
@@ -569,27 +589,25 @@ def mailoverflow(args, player):
                 except:
                     failures += 1
             print("{}: {}/{} Sent".format(arg,successes-failures,successes))
+            argx = arg.split("@")
+            node = data.getNode(argx[1])
+            if node:
+                for port in node.ports:
+                    if port.num == 25:
+                        port.open = True
+                        print("Opened port 25 on {}".format(node.address))
+            else:
+                print("WARNING: The email server was not found.")
+                print("         Check your email address for thousands of bounced emails.")
     else:
         div()
         print("mailoverflow <list of email addresses>")
         div()
         print("Sends 5000 junk emails to each specified email address.")
+        print("Also opens port 25 if it is exposed.")
         print("WARNING: Double-check the email address. If the email server is valid but the username is not, the emails will bounce to your inbox.")
         print("WARNING: Your email account is used to send the emails.")
         div()
-class MediaWikiServer(Node):
-    def __init__(self, name, uid, address, directory, homepage):
-        super().__init__(name, uid, address, ports=[data.getPort(80),data.getPort(1433),getPort(22),getPort(23)],minPorts=4)
-        self.files += [
-            Folder("MediaWiki",[
-                File("index.php"),
-                File("wiki.tar.gz"),
-                File("index.js"),
-                File("favicon.ico"),
-                ])
-            ]
-    def main(self):
-        print("ERROR: Client incorrectly configured.")
 # def sweep(args):
 #     print("Begin sweep...")
 #     nodes = []
@@ -615,28 +633,30 @@ def store(args, player):
     def getPrograms(player):
         return [x for x in data.PROGRAMS if not x.unlocked]
     if args == ["list"]:
-        i = 0
+        div()
         for item in getPrograms(player):
-            print("{}: {} ({} Cr.)".format(i, item.name, item.price))
-            i += 1
+            print("{} ({} Cr.)".format(item.name, item.price))
+        div()
     elif "buy" in args and len(args) == 2:
         try:
-            pid = int(args[1])
+            pid = args[1]
             programs = getPrograms(player)
-            if 0 <= pid <= len(programs):
-                program = programs[pid]
-                if player.creditCount >= program.price:
-                    player.creditCount -= program.price
-                    program.unlocked = True
-                    print("Successfully purchased {} for {} Cr.".format(program.name, program.price))
-                else:
-                    print("ERROR: Cannot afford program.")
-            else:
-                print("ERROR: Invalid ID.")
+            valid = False
+            for program in programs:
+                if program.name == pid:            
+                    valid = True
+                    if player.creditCount >= program.price:
+                        player.creditCount -= program.price
+                        program.unlocked = True
+                        print("Successfully purchased {} for {} Cr.".format(program.name, program.price))
+                    else:
+                        print("ERROR: Cannot afford program.")
+            if not valid:
+                print("ERROR: Invalid program.")
         except Exception as e:
             print("ERROR: {}".format(e))
     elif args == ["balance"]:
-        print(player.creditCount)
+        print("{} Cr.".format(player.creditCount))
     else:
         div()
         print("store <args>")
@@ -644,7 +664,7 @@ def store(args, player):
         print("Store for purchasing software.")
         div()
         print("store list: list all software for sale.")
-        print("store buy <ID>: buy a program")
+        print("store buy <program name>: buy a program")
         print("store balance: prints out how many credits you have.")
         div()
 def anonclient(args, player):
@@ -939,6 +959,7 @@ class WikiServer(Node):
             elif ch.startswith("read "):
                 try:
                     with open("wikis/{}/{}".format(self.folder,ch[5:])) as f:
+                        cls()
                         for line in f.read().split("\n"):
                             if line == "div()":
                                 div()
@@ -1025,7 +1046,7 @@ def logview(args):
                     print("ERROR: Access denied.")
             else:
                 print("ERROR: Invalid node.")
-            div()
+        div()
     else:
         div()
         print("logivew <IP Address>")
@@ -1116,3 +1137,158 @@ class MissionServer(Node):
 class BuyMission(Mission):
     def check_end(self):
         return self.target in [x for x in data.PROGRAMS if x.unlocked]
+def torrentpwn(args):
+    if args:
+        for item in args:
+            success = False
+            print("TRYING {}...".format(item))
+            for node in data.NODES:
+                if node.address == item:
+                    print("ATTACKING PORT 6881...")
+                    for port in node.ports:
+                        if port.num == 6881:
+                            time.sleep(2.5)
+                            port.open = True
+                            print("SUCCESSFULLY OPENED PORT 6881 @ {}".format(item))
+                            success = True
+            if not success:
+                print("Failed to attack port 6881:")
+                print("* Confirm port 6881 is valid.")
+                print("* Confirm that `{}` is a valid IP.".format(item))
+    else:
+        div()
+        print("sshkill <IP address(es)>")
+        div()
+        print("Attacks port 6881 and opens it.")
+        div()    
+def nodecheck(args):
+    d = {
+            Node:"standard",
+            WebServer:"website",
+            MailServer:"mailserver",
+            WikiServer:"wiki",
+            MessageBoard:"messageboard",
+            JmailServer: "jmail",
+            AnonMail: "anonmail",
+            ISPNode: "isp",
+            XOSDevice: "xosdevice",
+            MissionServer:"contract_hub",
+        }
+    if args:
+        for arg in args:
+            node = type(data.getNode(arg))
+            print("{}: {}".format(arg,d.get(node,"unknown")))
+    else:
+        div()
+        print("nodecheck [list of ip addresses]")
+        div()
+        print("Shows a node's type.")
+        div()
+def mailman(self, domain):
+    cls()
+    print("Welcome. For a command list, type HELP.")
+    while True:
+        ch = input("{}@{} $".format(self.name, domain))
+        if ch == "help":
+            div()
+            print("help: command list")
+            print("cls: clear the screen")
+            print("list: list all emails")
+            print("exit: exit mailman")
+            div()
+        elif ch in ["exit","quit"]:
+            return
+        elif ch in ["cls","clear"]:
+            cls()
+        elif ch == "":
+            continue
+        elif ch == "list":
+            i = 0
+            if self.data.inbox:
+                for item in self.data.inbox:
+                    print("{}: {} ({}-->{}) {}".format(i, item.subject, item.sender, item.receiver, "[!]" if not item.read else ''))
+                    i += 1
+            else:
+                print("Your inbox is empty.")
+        elif ch == "read":
+            div()
+            print("read <id>")
+            div()
+            print("Read an email.")
+            div()
+        elif ch.startswith("read "):
+            try:
+                index = int(ch[5:])
+                if 0 <= index <= len(self.data.inbox):
+                    email = self.data.inbox[index]
+                    email.read = True
+                    print(email.body)
+                else:
+                    print("ERROR: Invalid email.")
+            except:
+                print(traceback.format_exc())
+        else:
+            print("ERROR: Invalid command.")
+def mailman_base(args):
+    if len(args) == 2:
+        try:
+            account = args[0]
+            passwd = args[1]
+            parts = account.split("@")
+            node = data.getNode(parts[1])
+            if isinstance(node,MailServer):
+                found_acc = False
+                for acc in node.accounts:
+                    if acc.name == parts[0]:
+                        found_acc = True
+                        if acc.password:
+                            if acc.password == passwd:
+                                mailman(acc,parts[1])
+                            else:
+                                print("ERROR: Incorrect password.")
+                        else:
+                            print("ERROR: The mail account cannot be logged into.")
+                if not found_acc:
+                    print("ERROR: Invalid mail account.")
+            else:
+                print("ERROR: Invalid mail server.")
+        except Exception as e:
+            print(f"ERROR: {e}")
+    else:
+        div()
+        print("mailman <email address> <password>")
+        div()
+        print("Email client.")
+        div()
+def bruter(args, player):
+    if args:
+        for item in args:
+            print("TRY: {}".format(item))
+            node = data.getNode(item)
+            if node:
+                account = None
+                for x in node.users:
+                    if x.name == "admin":
+                        account = x
+                if account:
+                    found = False
+                    for passwd in data.PASSLIST:
+                        node.create_log(player.address, "Attempted login admin:{}".format(passwd))
+                        if account.password == passwd:
+                            print("Success: {}".format(passwd))
+                            found = True
+                            break
+                    if not found:
+                        print("ERROR: Could not find password.")
+                    
+                else:
+                    print("ERROR: No admin account.")
+                    
+            else:
+                print("ERROR: Invalid node.")
+    else:
+        div()
+        print("bruter [list of IP addresses]")
+        div()
+        print("Brute-forces the password of a server.")
+        div()

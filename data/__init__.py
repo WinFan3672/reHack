@@ -6,7 +6,6 @@ from resource.libs import *
 import random
 
 global PORTS, NODES, PROGRAMS
-
 def getMission(mission_id, player):
     for mission in player.MISSIONS:
         if mission_id == mission.mission_id:
@@ -15,6 +14,9 @@ def getNode(uid):
     for item in NODES:
         if uid == item.uid or uid == item.address:
             return item
+def addFirewall(node, firewall):
+    node = getNode(node)
+    node.firewall = firewall
 def generateIP():
     c = []
     for i in range(4):
@@ -35,13 +37,13 @@ PORTS = [
     Port(21,"FTP"),
     Port(22,"SSH"),
     Port(23,"Telnet"),
-    Port(6881,"BitTorrent Tracker"),
-    Port(7777,"reHackOS Node"),
+    Port(25,"Mail Server"),
     Port(80,"Web Server"),
-    Port(1433,"SQL Database"),
     Port(123,"NTP Time Server"),
     Port(1194,"VPN Server"),
-    Port(25,"Mail Server"),
+    Port(1433,"SQL Database"),
+    Port(6881,"BitTorrent Tracker"),
+    Port(7777,"reHackOS Node"),
     Port(24525,"Message Board"),
     Port(65536,"DNS Server"),
     ]
@@ -61,7 +63,12 @@ XOS_DEVICES = {
     "xpad2":{"name":"xPad 2","cpu":"2.5 GHz","ram":"1450 MB","storage":"64 GB","battery":"4000 mAh"},
     "xpad3":{"name":"xPad 3","cpu":"3.5 GHz","ram":"2500 MB","storage":"256 GB","battery":"5000 mAh"},
     }
-NODES = []        
+NODES = []   
+jgreyfiles = [
+    Folder("Notes",[
+        File("mail login is admin:platform"),
+        ])
+    ]
 N = [
     programs.ISPNode(),
     Node("SHODAN","shodan",generateIP(), ports = [getPort(80)], minPorts=1),
@@ -83,7 +90,10 @@ N = [
     programs.WikiServer("rehack Wiki","rehack_wiki","wiki.rehack.org","wiki.rehack.org"),
     Node("reHack Test Server #2","test2",generateIP(),ports=[],minPorts=2,users=[User("admin","trollface")]),
     programs.MessageBoard("ColonSlash","colonsla.sh","colonslash","colonsla.sh",minPorts=2,ports=[getPort(22),getPort(21)]),
-    programs.WebServer("Test Hub","testhub","test.hub","test.hub"),
+    programs.WebServer("Test Hub","testhub","test.hub","test.hub", minPorts=3),
+    programs.WebServer("Coca Homepage","cocaweb","coca.com","coca.com", linked = ["cocamain","cocamail","johngrey"]),
+    Node("Coca Mainframe","cocamain",generateIP(),[getPort(21),getPort(22),getPort(7777)],minPorts=65536, users = [User("admin","anticyclogenesis")]),
+    Node("John Grey's PC","johngrey",generateIP(),ports=[getPort(21),getPort(22),getPort(6881)],files = jgreyfiles,linked=["cocamain"]),
     ]
 for item in N:
     NODES.append(item)
@@ -98,12 +108,16 @@ PROGRAMS = [
     Program("debug",programs.debuginfo,price=0,classPlease=True),
     Program("mxlookup",programs.mxlookup,price=0),
     Program("jmail",programs.jmail,True,classPlease=True),
-    Program("mailoverflow",programs.mailoverflow,price=2500,classPlease=True),
+    Program("mailoverflow",programs.mailoverflow,price=1500,classPlease=True),
     Program("store",programs.store,True,classPlease=True),
     Program("anonmail",programs.anonclient,price=0,classPlease=True),
     Program("login",programs.login,True),
     Program("mission",programs.mission_program,True,classPlease=True),
     Program("logview",programs.logview,price=0),
+    Program("torrentpwn",programs.torrentpwn,price=1500),
+    Program("nodecheck",programs.nodecheck,price=0),
+    Program("mailman",programs.mailman_base,True),
+    Program("bruter",programs.bruter,True,classPlease=True)
     
     ]
 SPICES = [
@@ -178,3 +192,10 @@ SPICES = [
     "Mexican chili powder"
 ]
 WHOIS = {}
+with open("data/passwords.txt") as f:
+    PASSLIST = sorted(f.read().split("\n"))
+    for item in PASSLIST:
+        if "-" in item:
+            PASSLIST.remove(item)
+with open("data/password-wordlist.txt") as f:
+    PASSLIST += sorted(f.read().split("\n"))

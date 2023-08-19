@@ -97,6 +97,7 @@ class Node(Base):
         self.visited = False  
         self.nmap = False
         self.logs = []
+        self.firewall = None
     def create_log(self, ip_address, text):
         self.logs.append(Log(ip_address, text))
     def clone(self, new_address):

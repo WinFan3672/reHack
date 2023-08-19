@@ -65,9 +65,17 @@ class PlayerNode(Node):
             MailServer("null.null","nullmail","null.null",self,[User("null")],minPorts=0),
             MissionServer("Rejected Missions Repository","rejected","rejects.rehack.org",self),
             MissionServer("reHack Contract Hub","rehack_contracts","contracts.rehack.org",self,missions.main_story_missions(self)),
+            MailServer("Coca Official Mail","cocamail","coca.mail",self,[User("admin","platform")]),
+            ]
+        emails = [
+            Email("admin@coca.mail","admin@coca.mail","Mainframe Password","The password is 'anticyclogenesis'.\nCorporate don't want us sharing this, so I'm keeping it safe here."),
+            Email("jennifer@coca.mail","admin@coca.mail","Reset Password","Please reset my network password"),
+            Email("admin@coca.mail","jennifer@coca.mail","RE: Reset Password","I cannot do that as I am not the sysadmin. Contact your line manager if you need assistance.")
             ]
         for item in servers:
             data.NODES.append(item)
+        for email in emails:
+            sendEmail(email)
         self.MISSIONS = missions.start_missions(self)
         self.currentMission = data.getMission("start1",self)
         self.currentMission.start()

@@ -21,6 +21,10 @@ def credits():
     print("LEGAL NOTICE: Any companies referenced are intended solely for parody. ")
     print("              Any resemblance to real companies is entirely coincidental.")
     br()
+def filter_string(str1, str2):
+    for c in str2:
+        str1 = str1.replace(c, '')
+    return str1
 def main():
     cls()
     div()
@@ -30,6 +34,8 @@ def main():
     u = "admin"
     while u in data.BLOCKLIST:
         u = input("Enter a username $")
+        u = u.lower()
+        u = filter_string(u, '@\\/$ ')
         if u in data.BLOCKLIST:
             print("ERROR: The username is disallowed to prevent game instability.")
     p, cp = "x",""

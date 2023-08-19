@@ -6,9 +6,37 @@ import data
 from game.programs import Mission, ConnectMission, NMapMission, BuyMission
 
 def main_story_missions(self):
-    bodies = []
-    emails = []
-    return []
+    bodies = [
+        [
+            "Welcome to an Advanced Tutorial.",
+            "This series covers more advanced topics not covered in the initial tutorial.",
+            "This tutorial covers the 'scan' command.",
+            "In standard nodes (you can check a node's type using 'nodecheck'), there are several commands built in.",
+            "One of them is 'scan'. It lists all nodes linked to a node.",
+            "This is extremely useful as it allows you to search through more of a network that is normally hidden.",
+            "To demonstrate, connect to coca.com and hack in.",
+            "Once you've done that, connect to it and run the scan command and find the mainframe password.",
+            "Using the mainframe password, log in using the login command."
+            "",
+            "They should have the following:",
+            "* A mail server",
+            "   * This is really easy to break into and should have a lot of useful info.",
+            "* A mainframe",
+            "   * This needs a password.",
+            "* A few employee nodes.",
+            "   * Hack in and run 'ls'. You never know if they left some text notes.",
+            "",
+            "Once you're done, run 'mission' on your node and continue the Advanced Tutorials.",
+        ],
+        ]
+    bodies = ["\n".join(x) for x in bodies]
+    end_email = Email("contracts@rehack.org","{}@jmail.com".format(self.name),"Contract Complete","Congratulations. The contract is complete.\nGet more at contracts.rehack.org")
+    emails = [
+        Email("contracts@rehack.org","{}@jmail.com".format(self.name),"Advanced Tutorial #1",bodies[0]),
+        ]
+    return [
+        Mission(self,"advanced1","Advanced Tutorial #1",None,emails[0],reward=750)
+        ]
 def start_missions(self):
     bodies = [
             [
@@ -121,7 +149,7 @@ def start_missions(self):
             "I hope that you've been getting used to your Node.",
             "This is your first mission, out of many.",
             "This one's simple. You need to connect to the reHack Test Server.",
-            "The IP address is: test.rehack.org.",
+            "The IP address is: test.rehack.org",
             "If this works, you'll be denied access.",
             "",
             "Once you've connected once, you can run the 'mission' command.",
@@ -206,14 +234,16 @@ def start_missions(self):
         ],
         [
             "This is the final part of the tutorial.",
-            "This is really simple:",
             "Hack into the following IP: test.hub"
         ],
         [
             "Good job. You completed the tutorial.",
             "If you want to complete more contracts, our contract server (contracts.rehack.org) is full of them.",
-            "Alternatively, you could always look for companies to break into in your free time.",
-            "A good resource is the W3D (w3d.org).",
+            "Alternatively, you could always look for companies to break into in your free time. A good list is the W3D (w3d.org).",
+            "If you need help, our Intranet is a good resource: intranet.rehack.org",
+            "If you find a new form of security and need specific help on it, the Wiki (wiki.rehack.org) is for you.",
+            "",
+            "Keep this email for reference purposes, and good luck.",
         ],
         ]
     mission_bodies = ["\n".join(x) for x in mission_bodies]
@@ -236,5 +266,5 @@ def start_missions(self):
         Mission(self, "start4","Start (Pt. 4)","test2",missionEmails[3],reward=500,next_id="start5"),
         Mission(self, "start5","Start (Pt. 5)","colonsla.sh",missionEmails[4],reward=500,next_id="start6"),
         BuyMission(self, "start6","Start (Pt. 6)",["webworm","mxlookup"],missionEmails[5],reward=500,next_id = "start7"),
-        Mission(self, "start7","Start (Pt. 7)","test.hub",missionEmails[6],reward=2500),
+        Mission(self, "start7","Start (Pt. 7)","test.hub",missionEmails[6],reward=2500, end_email = missionEmails[7]),
         ]

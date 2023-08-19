@@ -1,0 +1,23 @@
+div()
+Opening Ports
+div()
+There are a lot of ports, so this article remains essential for all hackers.
+div()
+Format
+* <port number>
+    * Program: <program name>
+    * <optional notes>
+div()
+* 21
+    * ftpkill
+    * ftpkill is included with your reHackOS install.
+* 22
+    * sshkill
+    * sshkill is included with your reHackOS install.
+* 80
+    * webworm
+    * Cost: 500 Cr.
+* 6881
+    * torrentpwn
+    * Cost: 1500 Cr.
+div()

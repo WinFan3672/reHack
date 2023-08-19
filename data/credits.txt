@@ -1,0 +1,2 @@
+passwords.txt: https://www.wordexample.com/list/nouns-with-8-letters
+passwords-wordlist.txt: https://gist.github.com/cihanmehmet/68abd1a11b3477ebd30eea7ef23183b5

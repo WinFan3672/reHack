@@ -2,12 +2,19 @@ div()
 Useful Articles
 div()
 Format:
-* Category (Not a valid article)
+* Category
     * Article name
+        * Notes and/or description
 div()
 * Articles About reHack
 * Bypassing Security
-* Tutorials
-* Goodies
+    * How to hack
+    * Opening Ports
+        * List of ports and the software used to open them
+* Specific Hacks
+* Specific Nodes
     * ISP Hub
+* Using software
+* Other
+    * How to buy software
 div()
