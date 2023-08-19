@@ -123,6 +123,7 @@ def nmap(args):
                     print("[{}] PORT {}: {} ".format("OPEN" if i.open else "CLOSED", i.num, i.name))
                 div()
                 s = True
+                item.create_log(data.getNode("localhost"),"nmap")
         if not s:
             print("Failed to resolve address.")
     else:
@@ -300,6 +301,7 @@ class Email(Base):
         self.receiver = receiver
         self.subject = subject
         self.body = body
+        self.read = False
 class EmailData(Base):
     def __init__(self, autoresponse):
         super().__init__()    
@@ -459,7 +461,7 @@ def jmail(args, player):
             if acc.data.inbox:
                 div()
                 for mail in acc.data.inbox:
-                    print("{}: {} ({})".format(i,mail.subject,mail.sender))
+                    print("{}: {} ({}) {}".format(i,mail.subject,mail.sender,"[!]" if not mail.read else ""))
                     i += 1
                 div()
                 print("To view an email, run 'jmail read <id>'")
@@ -492,6 +494,7 @@ def jmail(args, player):
                 i = 0
                 if 0 <= index < len(acc.data.inbox):
                     email = acc.data.inbox[index]
+                    email.read = True
                     div()
                     print("FROM: {}".format(email.sender))
                     print("TO: {}".format(email.receiver))

@@ -1,6 +1,7 @@
 import random
 import os
 import string
+
 def makeRandomString(length=8):
     s = ""
     for i in range(length):

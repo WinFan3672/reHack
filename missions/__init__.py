@@ -14,7 +14,7 @@ def start_missions(self):
             [
             "Welcome to reHack!",
             "",
-            "As you're new here, you'll want to check out  our intranet (intranet.rehack.org).",
+            "As you're new here, you'll want to check out our intranet (intranet.rehack.org).",
             "You can do this using the 'connect' command.",
             "Our intranet contains some useful resources as well as some info for beginners such as yourself.",
             "We look forward to seeing you succeed."
@@ -204,6 +204,17 @@ def start_missions(self):
             "The total cost is 500 credits. You should have more than enough.",
             "If not, you've softlocked yourself.",
         ],
+        [
+            "This is the final part of the tutorial.",
+            "This is really simple:",
+            "Hack into the following IP: test.hub"
+        ],
+        [
+            "Good job. You completed the tutorial.",
+            "If you want to complete more contracts, our contract server (contracts.rehack.org) is full of them.",
+            "Alternatively, you could always look for companies to break into in your free time.",
+            "A good resource is the W3D (w3d.org).",
+        ],
         ]
     mission_bodies = ["\n".join(x) for x in mission_bodies]
     missionEmails = [
@@ -213,6 +224,8 @@ def start_missions(self):
         Email("contracts@rehack.org",f"{self.name}@jmail.com","Tutorial Mission Pt. 4",mission_bodies[3].format(data.getNode("test2").address)),
         Email("contracts@rehack.org",f"{self.name}@jmail.com","Tutorial Mission Pt. 5",mission_bodies[4]),
         Email("contracts@rehack.org",f"{self.name}@jmail.com","Tutorial Mission Pt. 6",mission_bodies[5]),
+        Email("contracts@rehack.org",f"{self.name}@jmail.com","Tutorial Mission Pt. 7",mission_bodies[6]),
+        Email("contracts@rehack.org",f"{self.name}@jmail.com","You Finished The Tutorial",mission_bodies[7]),
         ]
     for item in emails:
         sendEmail(item)
@@ -222,5 +235,6 @@ def start_missions(self):
         Mission(self, "start3","Start (Pt. 3)","test.rehack.org",missionEmails[2],reward=500,next_id="start4"),
         Mission(self, "start4","Start (Pt. 4)","test2",missionEmails[3],reward=500,next_id="start5"),
         Mission(self, "start5","Start (Pt. 5)","colonsla.sh",missionEmails[4],reward=500,next_id="start6"),
-        BuyMission(self, "start6","Start (Pt. 5)",["webworm","mxlookup"],missionEmails[5],reward=2500),
+        BuyMission(self, "start6","Start (Pt. 6)",["webworm","mxlookup"],missionEmails[5],reward=500,next_id = "start7"),
+        Mission(self, "start7","Start (Pt. 7)","test.hub",missionEmails[6],reward=2500),
         ]
