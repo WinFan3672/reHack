@@ -6,6 +6,8 @@ import data
 from game.programs import Mission, ConnectMission, NMapMission, BuyMission
 
 def main_story_missions(self):
+    bodies = []
+    emails = []
     return []
 def start_missions(self):
     bodies = [

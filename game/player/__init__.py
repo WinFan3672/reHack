@@ -71,3 +71,4 @@ class PlayerNode(Node):
         self.MISSIONS = missions.start_missions(self)
         self.currentMission = data.getMission("start1",self)
         self.currentMission.start()
+        data.NODES = [x for x in data.NODES if x]

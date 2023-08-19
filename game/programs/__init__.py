@@ -108,6 +108,7 @@ def nmap(args):
         args = args[0]
         s = False
         for item in data.NODES:
+            if item.address == args:
                 item.nmap = True
                 div()
                 print("Found Target")
@@ -804,26 +805,26 @@ class ISPNode(Node):
                     print("Reassigned {} to {}.".format(node.name, node.address))
                 else:
                     print("ERROR: Invalid IP.")
-            elif ch == "mklink":
-                div()
-                print("mklink <original ip> <link ip>")
-                div()
-                print("Creates a DNS link to an IP address.")
-                div()
-            elif ch.startswith("mklink "):
-                args = ch[7:].split(" ")
-                if len(args) == 2:
-                    node = data.getNode(args[0])
-                    if node:
-                        lnk = LinkNode(args[0],args[1])
-                        data.NODES.append(lnk)
-                        print("Created DNS link.")
-                        print("NOTE: DNS links are not standardised and not all programs work well with them.")
-                    else:
-                        print("ERROR: Invalid IP address.")
-                else:
-                    print("ERROR: Invalid syntax.")
-                    print(args)
+            # elif ch == "mklink":
+            #     div()
+            #     print("mklink <original ip> <link ip>")
+            #     div()
+            #     print("Creates a DNS link to an IP address.")
+            #     div()
+            # elif ch.startswith("mklink "):
+            #     args = ch[7:].split(" ")
+            #     if len(args) == 2:
+            #         node = data.getNode(args[0])
+            #         if node:
+            #             lnk = LinkNode(args[0],args[1])
+            #             data.NODES.append(lnk)
+            #             print("Created DNS link.")
+            #             print("NOTE: DNS links are not standardised and not all programs work well with them.")
+            #         else:
+            #             print("ERROR: Invalid IP address.")
+            #     else:
+            #         print("ERROR: Invalid syntax.")
+            #         print(args)
             else:
                 print("ERROR: Invalid command.")
 class Note(Base):
