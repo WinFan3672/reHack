@@ -1,0 +1,13 @@
+div()
+reHack Intranet
+div()
+Welcome, agent.
+div()
+Resources
+div()
+* Directory of reHack resources: directory.rehack.org
+* Directory of official websites: w3d.org
+* Contract hub: contracts.rehack.org
+* Public News Server: rehack.news
+* Private News Server: news.rehack.org
+div()
