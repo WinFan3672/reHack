@@ -25,14 +25,6 @@ def pickSelection(a_list, amount = 1):
         l.remove(z)
     
     return x
-class Firewall(Base):
-    def __init__(self, solution, time=1):
-        super().__init__()
-        self.solution = solution
-        self.time = time
-
-    def check(self, solution):
-        return solution == self.solution
 
 
 def sendEmail(email):
@@ -157,7 +149,7 @@ def nmap(args):
                 div()
                 print("Found Target")
                 print("Hostname: {}".format(item.name))
-                print("Ports: {}".format(len(item.ports)))
+                print("Exposed Ports: {}".format(len(item.ports)))
                 print("Min. Ports To Crack: {}".format(item.minPorts))
                 if item.hacked:
                     print("HOST VULNERABILITY ACTIVE.")
@@ -1449,8 +1441,10 @@ def mailman_base(args, player):
             print(f"ERROR: {e}")
     elif args == ["list"]:
         if player.saved_accounts:
+            div()
             for item in player.saved_accounts.keys():
-                print("{}:{}".format(item, player.saved_accounts[item]))
+                print("{}".format(item))
+            div()
         else:
             print("ERROR: No saved accounts.")
             print("To save an account, log in with mailman and run the `save` command.")

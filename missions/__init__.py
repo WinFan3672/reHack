@@ -51,7 +51,7 @@ def main_story_missions(self):
         "contracts@rehack.org",
         "{}@jmail.com".format(self.name),
         "Contract Complete",
-        "Congratulations.\nIf you want to complete more contratcs, visit contracts.rehack.org",
+        "Congratulations on completing the contract.\nIf you want to complete more contratcs, visit contracts.rehack.org",
     )
     emails = [
         Email(
@@ -69,7 +69,7 @@ def main_story_missions(self):
     ]
     return [
         Mission(self, "advanced1", "Advanced Tutorial #1", "cocamain", emails[0], end_email, reward=750),
-        Mission(self, "advanced2", "Advanced Tutorial #2", None, emails[1], end_email, reward=750),
+        Mission(self, "advanced2", "Advanced Tutorial #2", "brutertest", emails[1], end_email, reward=750),
     ]
 
 

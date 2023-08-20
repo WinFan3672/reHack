@@ -160,3 +160,12 @@ class Person(Base):
         self.surname = surname
         self.address = address
         self.age = random.randint(18, 60)
+        
+class Firewall(Base):
+    def __init__(self, solution, time=1):
+        super().__init__()
+        self.solution = solution
+        self.time = time
+
+    def check(self, solution):
+        return solution == self.solution        

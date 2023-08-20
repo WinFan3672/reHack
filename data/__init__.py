@@ -282,7 +282,7 @@ N = [
         users = [User("admin","composer")]
         ),
     Node("Mail.com Mainframe","mailcommain",generateIP(),users = [User("admin","fuckinganonmailfuckingjmail")]),
-    Node("reHack Tests: Bruter","brutertest","bruter.rehack.test",users = [User("admin","overcoat")])
+    Node("reHack Tests: Bruter","brutertest","bruter.rehack.test",users = [User("admin","overcoat")], minPorts=2**16)
 ]
 for item in N:
     NODES.append(item)
