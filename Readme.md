@@ -9,7 +9,7 @@ You wish you could just leave, but several other reHack agents are actively
 searching for you, hoping to make you disappear without a trace. 
 
 ## Playing
-Download it and run reHack.py. You'll need a modern python installation.
+Download [a release](https://codeberg.org/WinFan3672/reHack/releases) and run reHack.py. You'll need a modern python installation.
 
 reHack has no dependencies you need to install.
 ## Contributing
