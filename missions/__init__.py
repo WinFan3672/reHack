@@ -33,24 +33,40 @@ def main_story_missions(self):
             "   * If you find the admin password, don't bother. Use 'login' and connect, because it lets you see everything."
             "* Refer to the wiki (wiki.rehack.org) if you're stuck.",
         ],
+        [
+            "Hello again.",
+            "Welcome back to another advanced tutorial.",
+            "",
+            "Sometimes, the admin password is easy to guess.",
+            "So easy in fact, that your own computer can crack it.",
+            "Allow me to introduce bruter.",
+            "Bruter is built into reHackOS and "
+        ],
     ]
     bodies = ["\n".join(x) for x in bodies]
     end_email = Email(
         "contracts@rehack.org",
         "{}@jmail.com".format(self.name),
         "Contract Complete",
-        "Congratulations. The contract is complete.\nGet more at contracts.rehack.org",
+        "Congratulations. The contract is complete.\nIf you want to complete more contratcs, visit contracts.rehack.org",
     )
     emails = [
         Email(
-            "contracts@rehack.org",
+            "contracts@rehack.mail",
             "{}@jmail.com".format(self.name),
             "Advanced Tutorial #1",
             bodies[0],
         ),
+        Email(
+            "contracts@rehack.mail",
+            "{}@jmail.com".format(self.name),
+            "Advanced Tutorial #1",
+            bodies[1],
+            ),
     ]
     return [
-        Mission(self, "advanced1", "Advanced Tutorial #1", None, emails[0], reward=750)
+        Mission(self, "advanced1", "Advanced Tutorial #1", "cocamain", emails[0], end_email, reward=750),
+        Mission(self, "advanced2", "Advanced Tutorial #2", None, emails[1], end_email, reward=750),
     ]
 
 

@@ -379,3 +379,7 @@ with open("data/passwords.txt") as f:
 with open("data/password-wordlist.txt") as f:
     PASSLIST += sorted(f.read().split("\n"))
 PASSLIST = sorted(PASSLIST)
+
+with open("data/usernames.txt") as f:
+    USERNAMES = [x.lower() for x in f.read().split("\n")]
+    USERNAMES = random.shuffle(USERNAMES)
