@@ -4,10 +4,19 @@ import game.programs.connect
 import resource.information as resourceInfo
 from resource.libs import *
 import random
+import json
 
 global PORTS, NODES, PROGRAMS
 
-
+def div():
+    print("--------------------")
+    
+    
+def br():
+    div()
+    input("Press ENTER to continue.")
+    
+    
 def getMission(mission_id, player):
     for mission in player.MISSIONS:
         if mission_id == mission.mission_id:
@@ -273,6 +282,7 @@ N = [
         users = [User("admin","composer")]
         ),
     Node("Mail.com Mainframe","mailcommain",generateIP(),users = [User("admin","fuckinganonmailfuckingjmail")]),
+    Node("reHack Tests: Bruter","brutertest","bruter.rehack.test",users = [User("admin","overcoat")])
 ]
 for item in N:
     NODES.append(item)
@@ -293,7 +303,7 @@ PROGRAMS = [
     Program("login", programs.login, True),
     Program("mission", programs.mission_program, True, classPlease=True),
     Program("logview", programs.logview, price=0),
-    Program("torrentpwn", programs.torrentpwn, price=1500),
+    Program("torrentpwn", programs.torrentpwn, price=750),
     Program("nodecheck", programs.nodecheck, price=0),
     Program("mailman", programs.mailman_base, True, classPlease=True),
     Program("bruter", programs.bruter, True, classPlease=True),
@@ -382,4 +392,27 @@ PASSLIST = sorted(PASSLIST)
 
 with open("data/usernames.txt") as f:
     USERNAMES = [x.lower() for x in f.read().split("\n")]
-    USERNAMES = random.shuffle(USERNAMES)
+random.shuffle(USERNAMES)
+random.shuffle(PASSLIST)
+
+with open("data/names.json") as f:
+    d = json.load(f)
+temp_people = []
+for i in range(500):
+    temp_people.append({"fore":random.choice(d["forenames"]),"sur":random.choice(d["surnames"])})
+with open("data/streetnames.json") as f:
+    d = json.load(f)
+nouns, adjectives = d["nouns"], d["adjectives"]
+addresses = []
+for i in range(500):
+    n = str(random.randint(1,2000))
+    a1 = random.choice(nouns)
+    a2 = random.choice(adjectives)
+    addresses.append("{} {} {}".format(n,a1,a2))
+    
+PEOPLE = []
+for i in temp_people:
+    x = random.choice(addresses)
+    addresses.remove(x)
+    p = Person(i["fore"],i["sur"],x)
+    PEOPLE.append(p)

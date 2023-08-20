@@ -25,6 +25,12 @@ Admin passwords are usually shared in emails or left as logged in accounts in xO
 div()
 
 div()
+Method 2.5: Brute-forcing the password
+div()
+Yes, this is a valid strategy. All you need to do is run 'bruter <IP address>' or 'emailbruter <email address>' and pray. Most of the time, it'll fail without a trace. Other times, it won't find much, as the dictionary is quite poor. But sometimes, you'll just get it. You wouldn't believe how many companies have weak passwords. Just a warning, this can leave a MASSIVE trace back to your IP address.
+div()
+
+div()
 Conclusion
 div()
 Hacking can be complex, but the two methods are the underlying methods that you use for almost everything. Most companies underestimate the weaknesses in their security:

@@ -3,7 +3,7 @@ import resource.information as resourceInfo
 from resource.libs import *
 from game.player import *
 import data
-from game.programs import Mission, ConnectMission, NMapMission, BuyMission
+from game.programs import Mission, ConnectMission, NMapMission, BuyMission, pickSelection
 
 
 def main_story_missions(self):
@@ -40,7 +40,10 @@ def main_story_missions(self):
             "Sometimes, the admin password is easy to guess.",
             "So easy in fact, that your own computer can crack it.",
             "Allow me to introduce bruter.",
-            "Bruter is built into reHackOS and "
+            "Bruter is built into reHackOS and allows you to brute-force an admin password.",
+            "As a demonstration, hack into: bruter.rehack.test and guess the admin password.",
+            "",
+            "See you on the other side.",
         ],
     ]
     bodies = ["\n".join(x) for x in bodies]
@@ -48,7 +51,7 @@ def main_story_missions(self):
         "contracts@rehack.org",
         "{}@jmail.com".format(self.name),
         "Contract Complete",
-        "Congratulations. The contract is complete.\nIf you want to complete more contratcs, visit contracts.rehack.org",
+        "Congratulations.\nIf you want to complete more contratcs, visit contracts.rehack.org",
     )
     emails = [
         Email(
@@ -60,7 +63,7 @@ def main_story_missions(self):
         Email(
             "contracts@rehack.mail",
             "{}@jmail.com".format(self.name),
-            "Advanced Tutorial #1",
+            "Advanced Tutorial #2",
             bodies[1],
             ),
     ]
@@ -144,7 +147,7 @@ def start_missions(self):
             "It allows you to reassign any IP address, including your own, so that any traces you leave behind are gone.",
             "",
             "Connect to it: 1.1.1.1",
-            "Before you do that, the admin password is potholes. Use the login command to take advantage of that.",
+            "Before you do that, the admin password is [CENSORED]. Use the login command to take advantage of that.",
             "",
             "Signed,",
             "WinFan3672",

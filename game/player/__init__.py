@@ -12,6 +12,7 @@ from game.programs import (
     AnonMail,
     MailDotCom,
     MissionServer,
+    pickSelection
 )
 import data
 import sys
@@ -105,12 +106,15 @@ class PlayerNode(Node):
             MailDotCom(
                 "5chan Corporate Mail", "5chan.mail.com", self, [User("invites")]
             ),
+            MailDotCom(
+                "W3D Corporate Mail", "w3d.mail.com", self, [User("support","letmein")]
+            ),
             MailServer(
                 "WinFan3672 Personal Mail",
                 "mail3672",
                 "winfan3672.mail.com",
                 self,
-                [User("admin", "somesecretpassword")],
+                [User("admin", "aerobics")],
             ),
             MailServer(
                 "null.null", "nullmail", "null.null", self, [User("null")], minPorts=0
@@ -183,3 +187,36 @@ class PlayerNode(Node):
         self.currentMission = data.getMission("start1", self)
         self.currentMission.start()
         data.NODES = [x for x in data.NODES if x]
+        
+        chan_bodies = [
+            [
+                "Hello. I would like to request the URL to 5chan."
+            ],
+            [
+                "send 5chan pls"
+            ],
+            [
+                "What is the 5chan URL?"
+            ],
+            [
+                "link to 5chan?"
+            ],
+            [
+                "Give 5chan link 2023"
+            ],
+            
+            ]
+        chan_bodies = ["\n".join(x) for x in chan_bodies]
+        jmail = data.getNode("jmail")
+        i = 1337 * 3
+        for item in pickSelection(data.USERNAMES,25):
+            jmail.add_account(item)
+            body = [
+                "SUPPORT TICKET",
+                "EMAIL: {}@jmail.com".format(item),
+                "BODY: {}".format(random.choice(chan_bodies))
+                ]
+            body = "\n".join(body)
+            e = Email("null@null.null","support@w3d.mail.com","Support Ticket # {}".format(i),body)
+            sendEmail(e)
+            i += 1

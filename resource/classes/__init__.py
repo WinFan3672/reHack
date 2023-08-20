@@ -153,3 +153,10 @@ class Node(Base):
         )
 
         return cloned_node
+
+class Person(Base):
+    def __init__(self, forename, surname, address):
+        self.forename = forename
+        self.surname = surname
+        self.address = address
+        self.age = random.randint(18, 60)

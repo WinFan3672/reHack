@@ -12,8 +12,19 @@ import uuid
 import random
 import copy
 import getpass
+import copy
 
-
+def pickSelection(a_list, amount = 1):
+    l = copy.copy(a_list)
+    random.shuffle(l)
+    
+    x = []
+    for i in range(amount):
+        z = random.choice(l)
+        x.append(z)
+        l.remove(z)
+    
+    return x
 class Firewall(Base):
     def __init__(self, solution, time=1):
         super().__init__()
@@ -544,6 +555,7 @@ class JmailServer(MailServer):
                 User(player.name, player.password),
                 User("xwebdesign"),
             ],
+            hideLookup = True,
         )
         self.ports = [data.getPort(25), data.getPort(80), data.getPort(22)]
         self.minPorts = 2
@@ -555,7 +567,9 @@ class JmailServer(MailServer):
                     div()
                 else:
                     print(line)
-
+    def add_account(self, username):
+        a = MailAccount(username)
+        self.accounts.append(a)
 
 def mxlookup(args, player=None):
     if args:
@@ -1506,7 +1520,7 @@ def emailbruter(args, player):
             parts = item.split("@")
             if len(parts) == 2:
                 node = data.getNode(parts[1])
-                if isinstance(node,MailServer):
+                if type(node) in [MailServer, MailDotCom, JmailServer, AnonMail]:
                     account = None
                     for acc in node.accounts:
                         if acc.name == parts[0]:

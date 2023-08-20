@@ -1,3 +1,5 @@
 passwords.txt: https://www.wordexample.com/list/nouns-with-8-letters
 passwords-wordlist.txt: https://gist.github.com/cihanmehmet/68abd1a11b3477ebd30eea7ef23183b5
-usernames.txt: I took it from the BreachForums leaked database. Can't share a link for obvious reasons. I also removed the first 25 usernames to avoid controversy with real hackers.
+usernames.txt: I took it from the BreachForums leaked database. Can't share a link for obvious reasons. I also removed the first 25 usernames (and my own, lol) to avoid controversy with real hackers. If anyone wants their/a name removed from the list, please let me know.
+names.json: generated from openlife, another one of my projects
+street_names.json: generated from openlife, another one of my projects
