@@ -1566,3 +1566,32 @@ class GitServer(Node):
         else:
             print("No commits since 1/1/1970.")
         div()
+class MasterVPS(Node):
+    def __init__(self):
+        super().__init__("MasterVPS Central Server","mastervps_central","mastervps.service")
+        self.ports = [data.getPort(21),data.getPort(22),data.getPort(23)]
+        self.minPorts = 2**16
+        self.player = data.getNode("localhost")
+    def main(self):
+        cls()
+        print("Welcome to MasterVPS.")
+        print("For a command list, type HELP.")
+        while True:
+            ch = input("mastervps #")
+            if ch == "help":
+                div()
+                print("help: command list")
+                print("cls: clear terminal")
+                print("balance: display balance")
+                print("exit: disconnect from host")
+                div()
+            elif ch == "":
+                continue
+            elif ch in ["balance","bal"]:
+                print(self.player.creditCount)
+            elif ch in ["clear","cls"]:
+                cls()
+            elif ch in ["quit","exit"]:
+                return
+            else:
+                print("ERROR: Invalid command.")

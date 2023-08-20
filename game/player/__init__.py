@@ -47,7 +47,7 @@ class PlayerNode(Node):
         ]
         self.minPorts = 2 ** 16
         self.ports = [getPort(7777), getPort(22)]
-        self.creditCount = 500
+        self.creditCount = 0
         self.lvl = 0
         self.saved_accounts = {
             f"{self.name}@jmail.com":self.password,
@@ -187,6 +187,7 @@ class PlayerNode(Node):
         self.currentMission = data.getMission("start1", self)
         self.currentMission.start()
         data.NODES = [x for x in data.NODES if x]
+        data.NODES = [self] + data.NODES
         
         chan_bodies = [
             [

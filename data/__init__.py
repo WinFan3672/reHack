@@ -282,7 +282,9 @@ N = [
         users = [User("admin","composer")]
         ),
     Node("Mail.com Mainframe","mailcommain",generateIP(),users = [User("admin","fuckinganonmailfuckingjmail")]),
-    Node("reHack Tests: Bruter","brutertest","bruter.rehack.test",users = [User("admin","overcoat")], minPorts=2**16)
+    Node("reHack Tests: Bruter","brutertest","bruter.rehack.test",users = [User("admin","overcoat")], minPorts=2**16),
+    programs.MasterVPS(),
+    programs.WebServer("MasterVPS Homepage","mastervps_web","mastervps.me","mastervps.me"),
 ]
 for item in N:
     NODES.append(item)
