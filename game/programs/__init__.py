@@ -174,56 +174,35 @@ def nmap(args):
         div()
 
 
-def webworm(args):
-    if args:
-        for item in args:
-            success = False
-            print("TRYING {}...".format(item))
-            for node in data.NODES:
-                if node.address == item:
-                    print("ATTACKING PORT 80...")
-                    for port in node.ports:
-                        if port.num == 80:
-                            time.sleep(2.5)
-                            port.open = True
-                            print("SUCCESSFULLY OPENED PORT 80 @ {}".format(item))
-                            success = True
-            if not success:
-                print("Failed to attack port 80:")
-                print("* Confirm port 80 is valid.")
-                print("* Confirm that `{}` is a valid IP.".format(item))
-    else:
-        div()
-        print("sshkill <IP address(es)>")
-        div()
-        print("Attacks port 80 and opens it.")
-        div()
 
-
-def sshkill(args):
-    if args:
-        for item in args:
-            success = False
-            print("TRYING {}...".format(item))
-            for node in data.NODES:
-                if node.address == item:
-                    print("ATTACKING PORT 22...")
-                    for port in node.ports:
-                        if port.num == 22:
-                            time.sleep(2.5)
-                            port.open = True
-                            print("SUCCESSFULLY OPENED PORT 22 @ {}".format(item))
-                            success = True
-            if not success:
-                print("Failed to attack port 22:")
-                print("* Confirm port 22 is valid.")
-                print("* Confirm that `{}` is a valid IP.".format(item))
-    else:
-        div()
-        print("sshkill <IP address(es)>")
-        div()
-        print("Attacks port 22 and opens it.")
-        div()
+class PortBreakingTool(Base):
+    def __init__(name, port):
+        self.name = name
+        self.port = port
+    def program(args):
+        if args:
+            for item in args:
+                success = False
+                print("TRYING {}...".format(item))
+                for node in data.NODES:
+                    if node.address == item:
+                        print(f"ATTACKING PORT {self.port}...")
+                        for port in node.ports:
+                            if port.num == self.port:
+                                time.sleep(2.5)
+                                port.open = True
+                                print("SUCCESSFULLY OPENED PORT {} @ {}".format(self.port,item))
+                                success = True
+                if not success:
+                    print("Failed to attack port {}:".format(self.port))
+                    print("* Confirm port {} is valid.".format(self.port))
+                    print("* Confirm that `{}` is a valid IP.".format(item))
+        else:
+            div()
+            print("sshkill <IP address(es)>")
+            div()
+            print("Attacks port 22 and opens it.")
+            div()
 
 
 def porthack(args):
