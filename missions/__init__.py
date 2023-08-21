@@ -5,6 +5,8 @@ from game.player import *
 import data
 from game.programs import Mission, ConnectMission, NMapMission, BuyMission, pickSelection
 
+def base_missions(self):
+    return []
 
 def main_story_missions(self):
     bodies = [
@@ -45,6 +47,15 @@ def main_story_missions(self):
             "",
             "See you on the other side.",
         ],
+        [
+            "Hello again.",
+            "Welcome back. Some nodes have firewalls.",
+            "Firewalls are another hoop you must jump over.",
+            "As a demonstration, break into firewall.rehack.test.",
+            "You'll need to purchase 'firewall' from the store for 750 credits.",
+            "If you can't afford it, cancel this mission and come back.",
+            "Once you've broken in, finish the mission.",
+        ],
     ]
     bodies = ["\n".join(x) for x in bodies]
     end_email = Email(
@@ -66,10 +77,17 @@ def main_story_missions(self):
             "Advanced Tutorial #2",
             bodies[1],
             ),
+        Email(
+            "contracts@rehack.mail",
+            "{}@jmail.com".format(self.name),
+            "Advanced Tutorial #3",
+            bodies[2],
+            ),
     ]
     return [
         Mission(self, "advanced1", "Advanced Tutorial #1", "cocamain", emails[0], end_email, reward=750),
         Mission(self, "advanced2", "Advanced Tutorial #2", "brutertest", emails[1], end_email, reward=750),
+        Mission(self, "advanced3", "Advanced Tutorial #3", "firewalltest", emails[2], end_email, reward=1450),
     ]
 
 
@@ -357,7 +375,8 @@ def start_missions(self):
     ]
     for item in emails:
         sendEmail(item)
-    return [
+    MISSIONS = base_missions(self)
+    MISSIONS += [
         ConnectMission(
             self,
             "start1",
@@ -422,3 +441,4 @@ def start_missions(self):
             end_email=missionEmails[7],
         ),
     ]
+    return MISSIONS

@@ -153,6 +153,8 @@ def nmap(args):
                 print("Min. Ports To Crack: {}".format(item.minPorts))
                 if item.hacked:
                     print("HOST VULNERABILITY ACTIVE.")
+                if item.firewall:
+                    print("WARNING: FIREWALL ACTIVE.")
                 if item.ports:
                     div()
                 for i in item.ports:
@@ -176,10 +178,12 @@ def nmap(args):
 
 
 class PortBreakingTool(Base):
-    def __init__(name, port):
+    def __init__(self, name, port, unlocked = False, price=0):
+        super().__init__()
         self.name = name
         self.port = port
-    def program(args):
+        self.program = Program(self.name, self.function, unlocked=unlocked, price=price)
+    def function(self, args):
         if args:
             for item in args:
                 success = False
@@ -187,12 +191,15 @@ class PortBreakingTool(Base):
                 for node in data.NODES:
                     if node.address == item:
                         print(f"ATTACKING PORT {self.port}...")
-                        for port in node.ports:
-                            if port.num == self.port:
-                                time.sleep(2.5)
-                                port.open = True
-                                print("SUCCESSFULLY OPENED PORT {} @ {}".format(self.port,item))
-                                success = True
+                        if node.firewall:
+                            print("ERROR: Attack blocked by firewall.")
+                        else:
+                            for port in node.ports:
+                                if port.num == self.port:
+                                    time.sleep(2.5)
+                                    port.open = True
+                                    print("SUCCESSFULLY OPENED PORT {} @ {}".format(self.port,item))
+                                    success = True
                 if not success:
                     print("Failed to attack port {}:".format(self.port))
                     print("* Confirm port {} is valid.".format(self.port))
@@ -216,9 +223,12 @@ def porthack(args):
                     openPorts += 1 if port.open else 0
                 if openPorts >= item.minPorts:
                     print("OVERWHELMING HOST...")
-                    time.sleep(7)
-                    item.hacked = True
-                    print("SUCCESS! YOU CAN NOW CONNECT TO THE HOST.")
+                    if item.firewall:
+                        print("ERROR: Attack blocked by firewall.")
+                    else:
+                        time.sleep(7)
+                        item.hacked = True
+                        print("SUCCESS! YOU CAN NOW CONNECT TO THE HOST.")
                 else:
                     print("ERROR: Insufficient open ports.")
         if not valid:
@@ -292,31 +302,6 @@ class WebServer(Node):
                 else:
                     print(line)
 
-
-def ftpkill(args):
-    if args:
-        for item in args:
-            success = False
-            print("TRYING {}...".format(item))
-            for node in data.NODES:
-                if node.address == item:
-                    print("ATTACKING PORT 21...")
-                    for port in node.ports:
-                        if port.num == 21:
-                            time.sleep(2.5)
-                            port.open = True
-                            print("SUCCESSFULLY OPENED PORT 21 @ {}".format(item))
-                            success = True
-            if not success:
-                print("Failed to attack port 21:")
-                print("* Confirm port 21 is valid.")
-                print("* Confirm that `{}` is a valid IP.".format(item))
-    else:
-        div()
-        print("ftpkill <IP address(es)>")
-        div()
-        print("Attacks port 21 and opens it.")
-        div()
 
 
 def debuginfo(args, player):
@@ -666,8 +651,11 @@ def mailoverflow(args, player):
             if node:
                 for port in node.ports:
                     if port.num == 25:
-                        port.open = True
-                        print("Opened port 25 on {}".format(node.address))
+                        if player.firewall:
+                            print("Cannot open port 25: firewall active.")
+                        else:
+                            port.open = True
+                            print("Opened port 25 on {}".format(node.address))
             else:
                 print("WARNING: The email server was not found.")
                 print(
@@ -1271,32 +1259,6 @@ class BuyMission(Mission):
         return self.target in [x for x in data.PROGRAMS if x.unlocked]
 
 
-def torrentpwn(args):
-    if args:
-        for item in args:
-            success = False
-            print("TRYING {}...".format(item))
-            for node in data.NODES:
-                if node.address == item:
-                    print("ATTACKING PORT 6881...")
-                    for port in node.ports:
-                        if port.num == 6881:
-                            time.sleep(2.5)
-                            port.open = True
-                            print("SUCCESSFULLY OPENED PORT 6881 @ {}".format(item))
-                            success = True
-            if not success:
-                print("Failed to attack port 6881:")
-                print("* Confirm port 6881 is valid.")
-                print("* Confirm that `{}` is a valid IP.".format(item))
-    else:
-        div()
-        print("sshkill <IP address(es)>")
-        div()
-        print("Attacks port 6881 and opens it.")
-        div()
-
-
 def nodecheck(args):
     d = {
         Node: "standard",
@@ -1574,3 +1536,57 @@ class MasterVPS(Node):
                 return
             else:
                 print("ERROR: Invalid command.")
+
+def firewall(args):
+    if "test" in args and len(args) == 2:
+        node = data.getNode(args[1])
+        if node:
+            if node.firewall:
+                print("Firewall active.")
+            else:
+                print("Firewall inactive.")
+        else:
+            print("ERROR: Invalid IP address.")
+    elif "analyse" in args and len(args) == 2:
+        node = data.getNode(args[1])
+        if node:
+            if node.firewall:
+                guessed_letters = 0
+                while guessed_letters < len(node.firewall.solution):
+                    s = ""
+                    i = 0
+                    for x in range(guessed_letters):
+                        s += node.firewall.solution[i]
+                        i += 1
+                    for x in range(len(node.firewall.solution)-guessed_letters):
+                        s += "*"
+                    print("Solution: {}".format(s))
+                    time.sleep(node.firewall.time)
+                    guessed_letters += 1
+                print("Solution: {}".format(node.firewall.solution))
+            else:
+                print("ERROR: No firewall active.")
+        else:
+            print("ERROR: Invalid IP address.")
+    elif "solve" in args and len(args) == 3:
+        node = data.getNode(args[1])
+        if node:
+            if node.firewall:
+                if node.firewall.solution == args[2]:
+                    print("Successfully solved firewall.")
+                    print("Firewall disabled.")
+                    node.firewall = None
+                else:
+                    print("ERROR: Incorrect solution.")
+            else:
+                print("ERROR: No firewall active.")
+        else:
+            print("ERROR: Invalid IP address.")
+    else:
+        div()
+        print("firewall [args]")
+        div()
+        print("firewall test <IP address>: check if a firewall is present and active")
+        print("firewall analyse <IP address>: crack a firewall solution")
+        print("firewall solve <IP address> <solution>: solve a firewall")
+        div()

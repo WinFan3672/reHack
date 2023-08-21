@@ -12,11 +12,13 @@ from game.programs import (
     AnonMail,
     MailDotCom,
     MissionServer,
-    pickSelection
+    pickSelection,
+    Firewall,
 )
 import data
 import sys
 import missions
+import time
 
 
 def getProgram(name):
@@ -48,7 +50,7 @@ class PlayerNode(Node):
         self.minPorts = 2 ** 16
         self.ports = [getPort(7777), getPort(22)]
         self.creditCount = 0
-        self.lvl = 0
+        self.firewall = Firewall(makeRandomString())
         self.saved_accounts = {
             f"{self.name}@jmail.com":self.password,
             }
@@ -221,3 +223,4 @@ class PlayerNode(Node):
             e = Email("null@null.null","support@w3d.mail.com","Support Ticket # {}".format(i),body)
             sendEmail(e)
             i += 1
+        data.addFirewall("firewalltest", Firewall("smartheap11",0.5))
