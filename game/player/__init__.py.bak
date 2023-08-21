@@ -47,13 +47,13 @@ class PlayerNode(Node):
             Folder("sys"),
             [File("system.ini")],
         ]
-        self.minPorts = 2**16
+        self.minPorts = 2 ** 16
         self.ports = [getPort(7777), getPort(22)]
         self.creditCount = 0
         self.firewall = Firewall(makeRandomString())
         self.saved_accounts = {
-            f"{self.name}@jmail.com": self.password,
-        }
+            f"{self.name}@jmail.com":self.password,
+            }
         self.currentMission = None
         self.startActions()
 
@@ -103,18 +103,13 @@ class PlayerNode(Node):
             ),
             AnonMail(self),
             MailDotCom("XWebDesign Mail", "xwebdesign.mail.com", self, [User("sales")]),
-            MailDotCom(
-                "Mail Dot Com",
-                "root.mail.com",
-                self,
-                [User("sales"), User("beryl", "anderson")],
-            ),
+            MailDotCom("Mail Dot Com", "root.mail.com", self, [User("sales"),User("beryl","anderson")]),
             MailDotCom("Jmail Corporate Mail", "jmail.mail.com", self, [User("sales")]),
             MailDotCom(
                 "5chan Corporate Mail", "5chan.mail.com", self, [User("invites")]
             ),
             MailDotCom(
-                "W3D Corporate Mail", "w3d.mail.com", self, [User("support", "letmein")]
+                "W3D Corporate Mail", "w3d.mail.com", self, [User("support","letmein")]
             ),
             MailServer(
                 "WinFan3672 Personal Mail",
@@ -195,31 +190,37 @@ class PlayerNode(Node):
         self.currentMission.start()
         data.NODES = [x for x in data.NODES if x]
         data.NODES = [self] + data.NODES
-
+        
         chan_bodies = [
-            ["Hello. I would like to request the URL to 5chan."],
-            ["send 5chan pls"],
-            ["What is the 5chan URL?"],
-            ["link to 5chan?"],
-            ["Give 5chan link 2023"],
-        ]
+            [
+                "Hello. I would like to request the URL to 5chan."
+            ],
+            [
+                "send 5chan pls"
+            ],
+            [
+                "What is the 5chan URL?"
+            ],
+            [
+                "link to 5chan?"
+            ],
+            [
+                "Give 5chan link 2023"
+            ],
+            
+            ]
         chan_bodies = ["\n".join(x) for x in chan_bodies]
         jmail = data.getNode("jmail")
         i = 1337 * 3
-        for item in pickSelection(data.USERNAMES, 25):
+        for item in pickSelection(data.USERNAMES,25):
             jmail.add_account(item)
             body = [
                 "SUPPORT TICKET",
                 "EMAIL: {}@jmail.com".format(item),
-                "BODY: {}".format(random.choice(chan_bodies)),
-            ]
+                "BODY: {}".format(random.choice(chan_bodies))
+                ]
             body = "\n".join(body)
-            e = Email(
-                "null@null.null",
-                "support@w3d.mail.com",
-                "Support Ticket # {}".format(i),
-                body,
-            )
+            e = Email("null@null.null","support@w3d.mail.com","Support Ticket # {}".format(i),body)
             sendEmail(e)
             i += 1
-        data.addFirewall("firewalltest", Firewall("smartheap11", 0.5))
+        data.addFirewall("firewalltest", Firewall("smartheap11",0.5))

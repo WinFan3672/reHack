@@ -3,10 +3,18 @@ import resource.information as resourceInfo
 from resource.libs import *
 from game.player import *
 import data
-from game.programs import Mission, ConnectMission, NMapMission, BuyMission, pickSelection
+from game.programs import (
+    Mission,
+    ConnectMission,
+    NMapMission,
+    BuyMission,
+    pickSelection,
+)
+
 
 def base_missions(self):
     return []
+
 
 def main_story_missions(self):
     bodies = [
@@ -76,18 +84,42 @@ def main_story_missions(self):
             "{}@jmail.com".format(self.name),
             "Advanced Tutorial #2",
             bodies[1],
-            ),
+        ),
         Email(
             "contracts@rehack.mail",
             "{}@jmail.com".format(self.name),
             "Advanced Tutorial #3",
             bodies[2],
-            ),
+        ),
     ]
     return [
-        Mission(self, "advanced1", "Advanced Tutorial #1", "cocamain", emails[0], end_email, reward=750),
-        Mission(self, "advanced2", "Advanced Tutorial #2", "brutertest", emails[1], end_email, reward=750),
-        Mission(self, "advanced3", "Advanced Tutorial #3", "firewalltest", emails[2], end_email, reward=1450),
+        Mission(
+            self,
+            "advanced1",
+            "Advanced Tutorial #1",
+            "cocamain",
+            emails[0],
+            end_email,
+            reward=750,
+        ),
+        Mission(
+            self,
+            "advanced2",
+            "Advanced Tutorial #2",
+            "brutertest",
+            emails[1],
+            end_email,
+            reward=750,
+        ),
+        Mission(
+            self,
+            "advanced3",
+            "Advanced Tutorial #3",
+            "firewalltest",
+            emails[2],
+            end_email,
+            reward=1450,
+        ),
     ]
 
 

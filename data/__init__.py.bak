@@ -8,16 +8,15 @@ import json
 
 global PORTS, NODES, PROGRAMS
 
-
 def div():
     print("--------------------")
-
-
+    
+    
 def br():
     div()
     input("Press ENTER to continue.")
-
-
+    
+    
 def getMission(mission_id, player):
     for mission in player.MISSIONS:
         if mission_id == mission.mission_id:
@@ -268,44 +267,25 @@ N = [
         "Beryl Anderson's xPhone",
         "berylanderson_phone",
         generateIP(),
-        accounts=[
-            programs.XOSMailAccount("beryl@root.mail.com", "anderson"),
-        ],
+        accounts = [
+            programs.XOSMailAccount("beryl@root.mail.com","anderson"),
+            ]
     ),
     programs.MessageBoard(
         "Mail.com Documentation",
         generateIP(),
         "mailcomdocs",
         "mail.com",
-        linked=["mail.com", "mailcommain", "berylandserson"],
-        ports=[getPort(80), getPort(1433), getPort(24525)],
-        minPorts=2,
-        users=[User("admin", "composer")],
-    ),
-    Node(
-        "Mail.com Mainframe",
-        "mailcommain",
-        generateIP(),
-        users=[User("admin", "fuckinganonmailfuckingjmail")],
-    ),
-    Node(
-        "reHack Tests: Bruter",
-        "brutertest",
-        "bruter.rehack.test",
-        users=[User("admin", "overcoat")],
-        minPorts=2**16,
-    ),
-    Node(
-        "reHack Tests: Firewall",
-        "firewalltest",
-        "firewall.rehack.test",
-        users=[User("admin")],
-        minPorts=0,
-    ),
+        linked=["mail.com","mailcommain","berylandserson"],
+        ports = [getPort(80), getPort(1433), getPort(24525)],
+        minPorts = 2,
+        users = [User("admin","composer")]
+        ),
+    Node("Mail.com Mainframe","mailcommain",generateIP(),users = [User("admin","fuckinganonmailfuckingjmail")]),
+    Node("reHack Tests: Bruter","brutertest","bruter.rehack.test",users = [User("admin","overcoat")], minPorts=2**16),
+    Node("reHack Tests: Firewall","firewalltest","firewall.rehack.test",users = [User("admin")], minPorts=0),
     programs.MasterVPS(),
-    programs.WebServer(
-        "MasterVPS Homepage", "mastervps_web", "mastervps.me", "mastervps.me"
-    ),
+    programs.WebServer("MasterVPS Homepage","mastervps_web","mastervps.me","mastervps.me"),
 ]
 for item in N:
     NODES.append(item)
@@ -313,10 +293,10 @@ PROGRAMS = [
     Program("help", programs.Help, True),
     Program("nmap", programs.nmap, True),
     Program("porthack", programs.porthack, True),
-    programs.PortBreakingTool("ftpkill", 21, True).program,
-    programs.PortBreakingTool("sshkill", 22, True).program,
-    programs.PortBreakingTool("webworm", 80, price=500).program,
-    programs.PortBreakingTool("torrentpwn", 6881, price=750).program,
+    programs.PortBreakingTool("ftpkill",21,True).program,
+    programs.PortBreakingTool("sshkill",22,True).program,
+    programs.PortBreakingTool("webworm",80,price=500).program,
+    programs.PortBreakingTool("torrentpwn",6881,price=750).program,
     Program("connect", game.programs.connect.main, True),
     Program("debug", programs.debuginfo, price=0, classPlease=True),
     Program("mxlookup", programs.mxlookup, price=0),
@@ -331,7 +311,7 @@ PROGRAMS = [
     Program("mailman", programs.mailman_base, True, classPlease=True),
     Program("bruter", programs.bruter, True, classPlease=True),
     Program("emailbruter", programs.emailbruter, True, classPlease=True),
-    Program("firewall", programs.firewall, price=0),
+    Program("firewall",programs.firewall, price=0),
 ]
 SPICES = [
     "Basil",
@@ -423,22 +403,20 @@ with open("data/names.json") as f:
     d = json.load(f)
 temp_people = []
 for i in range(500):
-    temp_people.append(
-        {"fore": random.choice(d["forenames"]), "sur": random.choice(d["surnames"])}
-    )
+    temp_people.append({"fore":random.choice(d["forenames"]),"sur":random.choice(d["surnames"])})
 with open("data/streetnames.json") as f:
     d = json.load(f)
 nouns, adjectives = d["nouns"], d["adjectives"]
 addresses = []
 for i in range(500):
-    n = str(random.randint(1, 2000))
+    n = str(random.randint(1,2000))
     a1 = random.choice(nouns)
     a2 = random.choice(adjectives)
-    addresses.append("{} {} {}".format(n, a1, a2))
-
+    addresses.append("{} {} {}".format(n,a1,a2))
+    
 PEOPLE = []
 for i in temp_people:
     x = random.choice(addresses)
     addresses.remove(x)
-    p = Person(i["fore"], i["sur"], x)
+    p = Person(i["fore"],i["sur"],x)
     PEOPLE.append(p)

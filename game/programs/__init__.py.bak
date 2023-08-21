@@ -14,17 +14,16 @@ import copy
 import getpass
 import copy
 
-
-def pickSelection(a_list, amount=1):
+def pickSelection(a_list, amount = 1):
     l = copy.copy(a_list)
     random.shuffle(l)
-
+    
     x = []
     for i in range(amount):
         z = random.choice(l)
         x.append(z)
         l.remove(z)
-
+    
     return x
 
 
@@ -177,13 +176,13 @@ def nmap(args):
         div()
 
 
+
 class PortBreakingTool(Base):
-    def __init__(self, name, port, unlocked=False, price=0):
+    def __init__(self, name, port, unlocked = False, price=0):
         super().__init__()
         self.name = name
         self.port = port
         self.program = Program(self.name, self.function, unlocked=unlocked, price=price)
-
     def function(self, args):
         if args:
             for item in args:
@@ -199,11 +198,7 @@ class PortBreakingTool(Base):
                                 if port.num == self.port:
                                     time.sleep(2.5)
                                     port.open = True
-                                    print(
-                                        "SUCCESSFULLY OPENED PORT {} @ {}".format(
-                                            self.port, item
-                                        )
-                                    )
+                                    print("SUCCESSFULLY OPENED PORT {} @ {}".format(self.port,item))
                                     success = True
                 if not success:
                     print("Failed to attack port {}:".format(self.port))
@@ -256,23 +251,9 @@ class MessageBoardMessage(Base):
 
 
 class MessageBoard(Node):
-    def __init__(
-        self, name, address, uid, path, ports=[], minPorts=3, linked=[], users=[]
-    ):
-        ports = (
-            ports
-            if ports
-            else [data.getPort(80), data.getPort(1433), data.getPort(24525)]
-        )
-        super().__init__(
-            name,
-            uid,
-            address,
-            linked=linked,
-            users=users,
-            ports=ports,
-            minPorts=minPorts,
-        )
+    def __init__(self, name, address, uid, path, ports=[], minPorts=3, linked=[], users = []):
+        ports = ports if ports else [data.getPort(80), data.getPort(1433), data.getPort(24525)]
+        super().__init__(name, uid, address, linked=linked, users=users, ports=ports, minPorts = minPorts)
         self.ports = ports
 
     def main(self):
@@ -320,6 +301,7 @@ class WebServer(Node):
                     div()
                 else:
                     print(line)
+
 
 
 def debuginfo(args, player):
@@ -464,7 +446,7 @@ class MailServer(Node):
                 div()
                 print("Create a mail account.")
                 div()
-
+                
             elif ch.startswith("reset "):
                 ch = ch[6:]
                 args = ch.split(" ")
@@ -529,7 +511,7 @@ class JmailServer(MailServer):
                 User(player.name, player.password),
                 User("xwebdesign"),
             ],
-            hideLookup=True,
+            hideLookup = True,
         )
         self.ports = [data.getPort(25), data.getPort(80), data.getPort(22)]
         self.minPorts = 2
@@ -541,11 +523,9 @@ class JmailServer(MailServer):
                     div()
                 else:
                     print(line)
-
     def add_account(self, username):
         a = MailAccount(username)
         self.accounts.append(a)
-
 
 def mxlookup(args, player=None):
     if args:
@@ -628,8 +608,6 @@ class AnonMail(MailServer):
 def jmail(args, player):
     acc = "{}@jmail.com".format(player.name)
     mailman_base([acc], player)
-
-
 # def MailDotCom(name, address, player, users=[]):
 #     s = MailServer(name, address, address, player)
 #     s.lookup = lambda:return [MailAccount("admin")]
@@ -642,23 +620,15 @@ def jmail(args, player):
 
 
 class MailDotCom(MailServer):
-    def __init__(self, name, address, player, users=[]):
+    def __init__(self, name, address, player, users = []):
         super().__init__(name, address, address, player)
-        self.ports = [
-            data.getPort(21),
-            data.getPort(22),
-            data.getPort(25),
-            data.getPort(80),
-        ]
+        self.ports = [data.getPort(21), data.getPort(22), data.getPort(25), data.getPort(80)]
         self.minPorts = 4
         self.accounts = [MailAccount("admin")]
         for item in users:
             self.accounts.append(MailAccount(item.name, item.password))
-
     def lookup(self):
         return [MailAccount("admin")]
-
-
 def mailoverflow(args, player):
     if args:
         for arg in args:
@@ -1293,7 +1263,7 @@ def nodecheck(args):
     d = {
         Node: "standard",
         WebServer: "website",
-        MailServer: "mailserver",
+        MailServer: "mailserver",        
         WikiServer: "wiki",
         MessageBoard: "messageboard",
         JmailServer: "jmail",
@@ -1423,7 +1393,7 @@ def mailman_base(args, player):
         try:
             email = args[0]
             passwd = player.saved_accounts[email]
-            mailman_base([email, passwd], player)
+            mailman_base([email, passwd],player)
         except KeyError:
             print("ERROR: You have not saved the email address.")
     else:
@@ -1433,9 +1403,7 @@ def mailman_base(args, player):
         print("Email client.")
         div()
         print("mailman list: show list of saved accounts")
-        print(
-            "              If you have saved an email account, you do not need to enter the password."
-        )
+        print("              If you have saved an email account, you do not need to enter the password.")
         div()
 
 
@@ -1452,7 +1420,9 @@ def bruter(args, player):
                 if account:
                     found = False
                     for passwd in data.PASSLIST:
-                        node.create_log(player.address, "Attempted admin login")
+                        node.create_log(
+                            player.address, "Attempted admin login"
+                        )
                         if account.password == passwd:
                             print("Found password: {}".format(passwd))
                             program = None
@@ -1478,7 +1448,6 @@ def bruter(args, player):
         print("Brute-forces the password of a server.")
         div()
 
-
 def emailbruter(args, player):
     if args:
         for item in args:
@@ -1495,19 +1464,11 @@ def emailbruter(args, player):
                         if account.password:
                             found = False
                             for passwd in data.PASSLIST:
-                                node.create_log(
-                                    player.address,
-                                    "Attempted account login for {}".format(
-                                        account.name
-                                    ),
-                                )
+                                node.create_log(player.address,"Attempted account login for {}".format(account.name))
                                 if account.password == passwd:
                                     print("Found password: {}".format(passwd))
                                     player.saved_accounts[item] = passwd
-                                    node.create_log(
-                                        player.address,
-                                        "Logged into account {}".format(account.name),
-                                    )
+                                    node.create_log(player.address,"Logged into account {}".format(account.name))
                                     found = True
                                     break
                             if not found:
@@ -1526,8 +1487,8 @@ def emailbruter(args, player):
         div()
         print("Brute-forces the password of a mail account.")
         div()
-
-
+        
+        
 class GitServer(Node):
     def __init__(self, name, uid, address, ports=[], minPorts=0):
         super().__init__(name, uid, address, ports=ports, minPorts=minPorts)
@@ -1546,17 +1507,12 @@ class GitServer(Node):
         else:
             print("No commits since 1/1/1970.")
         div()
-
-
 class MasterVPS(Node):
     def __init__(self):
-        super().__init__(
-            "MasterVPS Central Server", "mastervps_central", "mastervps.service"
-        )
-        self.ports = [data.getPort(21), data.getPort(22), data.getPort(23)]
+        super().__init__("MasterVPS Central Server","mastervps_central","mastervps.service")
+        self.ports = [data.getPort(21),data.getPort(22),data.getPort(23)]
         self.minPorts = 2**16
         self.player = data.getNode("localhost")
-
     def main(self):
         cls()
         print("Welcome to MasterVPS.")
@@ -1572,15 +1528,14 @@ class MasterVPS(Node):
                 div()
             elif ch == "":
                 continue
-            elif ch in ["balance", "bal"]:
+            elif ch in ["balance","bal"]:
                 print(self.player.creditCount)
-            elif ch in ["clear", "cls"]:
+            elif ch in ["clear","cls"]:
                 cls()
-            elif ch in ["quit", "exit"]:
+            elif ch in ["quit","exit"]:
                 return
             else:
                 print("ERROR: Invalid command.")
-
 
 def firewall(args):
     if "test" in args and len(args) == 2:
@@ -1603,7 +1558,7 @@ def firewall(args):
                     for x in range(guessed_letters):
                         s += node.firewall.solution[i]
                         i += 1
-                    for x in range(len(node.firewall.solution) - guessed_letters):
+                    for x in range(len(node.firewall.solution)-guessed_letters):
                         s += "*"
                     print("Solution: {}".format(s))
                     time.sleep(node.firewall.time)
