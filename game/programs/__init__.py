@@ -1560,8 +1560,25 @@ class MasterVPS(Node):
         self.currentId = 2 ** 14
         self.currentId -= (2**random.randint(1,11))
         self.offerings = {
-            "base":Node("","","")
+            "base":
+                {
+                    "node":Node("","","",ports=[data.getPort(22),data.getPort(6881)]),
+                    "price":500,
+                    "description":"A basic node with no security."
+                 },
+            "base_plus":{
+                "node":Node("","","",ports=[data.getPort(22),data.getPort(6881)], minPorts=2**16),
+                "price":750,
+                "description":"A basic node with full security, including a firewall.",
+                },
+            "xphone":{
+                "node":XOSDevice("","",""),
+                "price":300,
+                "description":"A standard xPhone 3.",
+                },
             }
+        self.offerings["base_plus"]["node"].firewall = Firewall(makeRandomString(64),15)
+        self.buckets = []
     def main(self, player):
         cls()
         print("Welcome to MasterVPS.")
@@ -1572,9 +1589,42 @@ class MasterVPS(Node):
                 div()
                 print("help: command list")
                 print("cls: clear terminal")
+                print("list: list all purchase options")
+                print("bucket list: lists all running buckets")
+                print("bucket spinup: spin up a bucket")
                 print("balance: display balance")
                 print("exit: disconnect from host")
                 div()
+            elif ch == "list":
+                for bucket in self.offerings.keys():
+                    b = self.offerings[bucket]
+                    div()
+                    print(bucket)
+                    div()
+                    print(b["description"])
+                    print("Price: {}".format(b["price"]))
+                div()
+            elif ch == "bucket spinup":
+                div()
+                print("bucket spinup <id>")
+                div()
+                print("Spin up a bucket of type <id>.")
+                print("For a list of ID's, run 'list'.")
+                div()
+            elif ch.startswith("bucket spinup "):
+                ch = ch[14:]
+                if ch in self.offerings.keys():
+                    if player.creditCount >= self.offerings[ch]["price"]:
+                        pass
+                    else:
+                        print("ERROR: Cannot afford bucket.")
+                else:
+                    print("ERROR: Invalid bucket ID.")
+            elif ch == "bucket list":
+                if self.buckets:
+                    pass
+                else:
+                    print("You have not spun up any buckets.")
             elif ch == "":
                 continue
             elif ch in ["balance", "bal"]:

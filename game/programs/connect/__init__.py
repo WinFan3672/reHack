@@ -107,7 +107,7 @@ def connectStart(address, player):
                 if item.playerPlease:
                     item.main_hacked(player)
                 else:
-                    item.main_hacked(player)
+                    item.main_hacked()
             elif item.hacked:
                 print("Connecting to {}...".format(address))
                 # time.sleep(2.5)
