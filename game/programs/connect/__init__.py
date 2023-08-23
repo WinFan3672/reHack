@@ -94,7 +94,7 @@ def connect(item):
             print("ssh: syntax error.\nType `help` for a command list.")
 
 
-def connectStart(address):
+def connectStart(address, player):
     BLOCKLIST = ["127.0.0.1"]
     resolved = False
     for item in data.NODES:
@@ -104,22 +104,28 @@ def connectStart(address):
             if item.address in BLOCKLIST:
                 resolved = False
             elif item.hacked and "main_hacked" in dir(item):
-                item.main_hacked()
+                if item.playerPlease:
+                    item.main_hacked(player)
+                else:
+                    item.main_hacked(player)
             elif item.hacked:
                 print("Connecting to {}...".format(address))
                 # time.sleep(2.5)
                 connect(item)
             elif "main" in dir(item):
-                item.main()
+                if item.playerPlease:
+                    item.main(player)
+                else:
+                    item.main()
             else:
                 print("ERROR: Access denied.")
     if not resolved:
         print("ERROR: Failed to resolve hostname.")
 
 
-def main(args):
+def main(args, player):
     if args:
-        connectStart(args[0])
+        connectStart(args[0], player)
     else:
         div()
         print("connect <IP address>")

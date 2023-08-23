@@ -317,7 +317,7 @@ PROGRAMS = [
     programs.PortBreakingTool("sshkill", 22, True).program,
     programs.PortBreakingTool("webworm", 80, price=500).program,
     programs.PortBreakingTool("torrentpwn", 6881, price=750).program,
-    Program("connect", game.programs.connect.main, True),
+    Program("connect", game.programs.connect.main, True, classPlease=True),
     Program("debug", programs.debuginfo, price=0, classPlease=True),
     Program("mxlookup", programs.mxlookup, price=0),
     Program("jmail", programs.jmail, True, classPlease=True),

@@ -416,7 +416,7 @@ class MailServer(Node):
             player=player,
         )
         self.users = users
-        self.accounts = [MailAccount("accounts-daemon"), MailAccount("mirror-daemon")]
+        self.accounts = [MailAccount("accounts-daemon")]
         self.accounts += [x for x in accounts if ininstance(x, MailAccount)]
         self.hideLookup = hideLookup
         x = []
@@ -1555,9 +1555,14 @@ class MasterVPS(Node):
         )
         self.ports = [data.getPort(21), data.getPort(22), data.getPort(23)]
         self.minPorts = 2**16
-        self.player = data.getNode("localhost")
-
-    def main(self):
+        self.playerPlease = True
+        self.main_hacked = self.main
+        self.currentId = 2 ** 14
+        self.currentId -= (2**random.randint(1,11))
+        self.offerings = {
+            "base":Node("","","")
+            }
+    def main(self, player):
         cls()
         print("Welcome to MasterVPS.")
         print("For a command list, type HELP.")
@@ -1573,7 +1578,7 @@ class MasterVPS(Node):
             elif ch == "":
                 continue
             elif ch in ["balance", "bal"]:
-                print(self.player.creditCount)
+                print(player.creditCount)
             elif ch in ["clear", "cls"]:
                 cls()
             elif ch in ["quit", "exit"]:

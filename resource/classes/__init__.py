@@ -134,6 +134,8 @@ class Node(Base):
         self.nmap = False
         self.logs = []
         self.firewall = None
+        self.playerPlease = False # if true, connect will pass player
+                                  # to main() or main_hacked()
 
     def create_log(self, ip_address, text):
         self.logs.append(Log(ip_address, text))
