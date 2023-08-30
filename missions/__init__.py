@@ -60,8 +60,7 @@ def main_story_missions(self):
             "Welcome back. Some nodes have firewalls.",
             "Firewalls are another hoop you must jump over.",
             "As a demonstration, break into firewall.rehack.test.",
-            "You'll need to purchase 'firewall' from the store for 750 credits.",
-            "If you can't afford it, cancel this mission and come back.",
+            "You'll need to purchase 'firewall' from the store.",
             "Once you've broken in, finish the mission.",
         ],
     ]
