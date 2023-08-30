@@ -2,9 +2,10 @@ div()
 AnonMail
 div()
 AnonMail is simple.
-Using the free and open source email client, generate a new forwarding account for your email.
-When someone sends an email to that forwarding account, you receive the email.
-We don't store it, and we don't log anything.
+Using the free and open source email client, generate an anonymous, semi-permanent email account.
+No-one will be able to trace who made the email account, not even us.
+Even better, all emails sent to AnonMail accounts are end-to-end-encrypted.
+We use zero-trust encryption to ensure that only you can read your emails.
 div()
 We offer:
 * MX Masking
