@@ -332,6 +332,7 @@ PROGRAMS = [
     Program("bruter", programs.bruter, True, classPlease=True),
     Program("emailbruter", programs.emailbruter, True, classPlease=True),
     Program("firewall", programs.firewall, price=0),
+    # Program("sweep", programs.sweep, price=0),
 ]
 SPICES = [
     "Basil",

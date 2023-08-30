@@ -13,6 +13,7 @@ import random
 import copy
 import getpass
 import copy
+import concurrent.futures
 
 
 def pickSelection(a_list, amount=1):
@@ -703,7 +704,6 @@ def mailoverflow(args, player):
         print("WARNING: Your email account is used to send the emails.")
         div()
 
-
 # def sweep(args):
 #     print("Begin sweep...")
 #     nodes = []
@@ -725,6 +725,8 @@ def mailoverflow(args, player):
 #             print("{}: {}".format(node.address,node.name))
 #     else:
 #         print("No nodes found.")
+
+
 def store(args, player):
     def getPrograms(player):
         return [x for x in data.PROGRAMS if not x.unlocked]
@@ -1647,7 +1649,7 @@ def firewall(args):
                 print("Firewall inactive.")
         else:
             print("ERROR: Invalid IP address.")
-    elif "analyse" in args and len(args) == 2:
+    elif "crack" in args and len(args) == 2:
         node = data.getNode(args[1])
         if node:
             if node.firewall:
@@ -1687,6 +1689,45 @@ def firewall(args):
         print("firewall [args]")
         div()
         print("firewall test <IP address>: check if a firewall is present and active")
-        print("firewall analyse <IP address>: crack a firewall solution")
+        print("firewall crack <IP address>: crack a firewall solution")
         print("firewall solve <IP address> <solution>: solve a firewall")
         div()
+class Sweeper:
+    def __init__(self):
+        self.nodes = []
+
+    def sweep_range(self, a, b):
+        for c in range(256):
+            for d in range(256):
+                node = data.getNode(f"{a}.{b}.{c}.{d}")
+                if node:
+                    self.nodes.append(node)
+                if [a, b, c, d] == [255, 255, 255, 255]:
+                    return True  # Indicate that stopping condition is met
+        return False  # Stopping condition not met
+
+    def sweep(self):
+        print("Begin sweep...")
+        stop_sweep = False
+
+        with concurrent.futures.ThreadPoolExecutor() as executor:
+            for a in range(256):
+                for b in range(256):
+                    print("Begin {}.{}.x.x".format(a, b))
+                    future = executor.submit(self.sweep_range, a, b)
+                    if future.result():
+                        stop_sweep = True
+                        break
+                if stop_sweep:
+                    break
+
+        print("Finished sweep.")
+        if self.nodes:
+            for node in self.nodes:
+                print("{}: {}".format(node.address, node.name))
+        else:
+            print("No nodes found.")
+
+def sweep(args):
+    sweeper = Sweeper()
+    sweeper.sweep()
