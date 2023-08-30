@@ -1434,10 +1434,7 @@ def mailman_base(args, player):
         div()
         print("Email client.")
         div()
-        print("mailman list: show list of saved accounts")
-        print(
-            "              If you have saved an email account, you do not need to enter the password."
-        )
+        print("mailman list: show list of saved accounts. If you have saved an email account, you do not need to enter the password.")
         div()
 
 

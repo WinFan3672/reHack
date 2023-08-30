@@ -63,6 +63,16 @@ def main_story_missions(self):
             "You'll need to purchase 'firewall' from the store.",
             "Once you've broken in, finish the mission.",
         ],
+        [
+            "Hello. I need to be discreet about this as I am asking you to hack my employer.",
+            "I want to access the secret recipe for Mountain View, and I know that it's on the mainframe.",
+            "If you can get into their mainframe for me, I would be willing to pay you nicely for it.",
+            "As a warning, their security is top notch and I doubt you'll be able to break in directly.",
+            "You might need to fish around for the admin password or something.",
+            "Get back to me if you find anything.",
+            "",
+            "Oh, yeah, their website is 'mountain.view'.",
+        ],
     ]
     bodies = ["\n".join(x) for x in bodies]
     end_email = Email(
@@ -89,6 +99,12 @@ def main_story_missions(self):
             "{}@jmail.com".format(self.name),
             "Advanced Tutorial #3",
             bodies[2],
+        ),
+        Email(
+            "contracts@rehack.mail",
+            "{}@jmail.com".format(self.name),
+            "Top of the Mountain",
+            bodies[3],
         ),
     ]
     return [
@@ -118,6 +134,15 @@ def main_story_missions(self):
             emails[2],
             end_email,
             reward=1450,
+        ),
+        Mission(
+            self,
+            "mission1",
+            "Top of the Mountain",
+            "firewalltest",
+            emails[3],
+            end_email,
+            reward=500,
         ),
     ]
 
