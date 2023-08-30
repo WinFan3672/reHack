@@ -388,7 +388,7 @@ SPICES = [
     "Curry leaves",
     "Star anise",
     "Smoked paprika",
-    "Saffron",
+    "Himalayan Salt",
     "Herbes de Provence",
     "Italian seasoning",
     "Garam masala",
