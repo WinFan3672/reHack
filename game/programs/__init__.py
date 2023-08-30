@@ -44,6 +44,7 @@ def sendEmail(email):
                 account = item
         if account:
             account.data.receive(email)
+            server.emails.append(email)
         else:
             m = [
                 "Your message to {} could not be delivered.".format(recipient),
@@ -420,6 +421,7 @@ class MailServer(Node):
         self.accounts = [MailAccount("accounts-daemon")]
         self.accounts += [x for x in accounts if ininstance(x, MailAccount)]
         self.hideLookup = hideLookup
+        self.emails = []
         x = []
         for user in self.users:
             self.accounts.append(MailAccount(user.name, user.password))
@@ -432,13 +434,7 @@ class MailServer(Node):
 
     def main_hacked(self):
         def grabEmails(self):
-            emails = []
-            for acc in self.accounts:
-                for item in acc.data.inbox:
-                    emails.append(item)
-                for item in acc.data.sent:
-                    emails.append(item)
-            return emails
+            return self.emails
 
         print("Mail Server Admin Panel")
         print("Run 'help' for a command list.")

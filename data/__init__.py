@@ -308,7 +308,13 @@ N = [
     ),
     programs.WebServer("Mountain View", "mountainweb", "mountain.view", "mountain.view",linked=["mountainmain","mountainmail","moutainremote"]),
     Node("Mountain View Mainframe","mountainmain", generateIP(), ports=[],minPorts=2**16,users=[User("admin","backdrop2252")]),
-    Node("Mountain View Remote Work Hub","moutainremote",generateIP(),ports=[getPort(22),getPort(21)],minPorts=2),
+    Node("Mountain View Remote Work Hub","moutainremote",generateIP(),ports=[getPort(22),getPort(21)],minPorts=2, linked =["jrallypc","nbaileypc","mflange"]),
+    programs.XOSDevice("James Rally's xPhone","jrallyphone",generateIP(),accounts=[programs.XOSMailAccount("james.rally@mview.mail.com","monica")]),
+    programs.XOSDevice("Noah Bailey's xPhone","nbaileyphone",generateIP(),notes=[programs.Note("Get back at James Rally, I know he fired me.")],accounts=[programs.XOSMailAccount("admin@mview.mail.com","redhat")]),
+    programs.XOSDevice("Monica Flange's xPhone","mflangephone",generateIP(),notes=[programs.Note("I know James Rally likes me. Fucking creep.")]),
+    Node("James Rally's PC","jrallypc",generateIP(),ports=[getPort(21),getPort(22)],minPorts=2,linked=["jrallyphone"]),
+    Node("Noah Bailey's PC","nbaileypc",generateIP(),ports=[getPort(21),getPort(22)],minPorts=2,linked=["nbaileyphone"]),
+    Node("Monica Flange's PC","mflange",generateIP(),ports=[getPort(21),getPort(22)],minPorts=2,linked=["mflangephone"]),
 ]
 for item in N:
     NODES.append(item)
@@ -320,6 +326,7 @@ PROGRAMS = [
     programs.PortBreakingTool("sshkill", 22, True).program,
     programs.PortBreakingTool("webworm", 80, price=500).program,
     programs.PortBreakingTool("torrentpwn", 6881, price=750).program,
+    programs.PortBreakingTool("sqldump", 1433, price=2500).program,
     Program("connect", game.programs.connect.main, True, classPlease=True),
     Program("debug", programs.debuginfo, price=0, classPlease=True),
     Program("mxlookup", programs.mxlookup, price=0),

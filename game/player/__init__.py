@@ -147,8 +147,28 @@ class PlayerNode(Node):
                     User("sysadmin", "weakness"),
                 ],
             ),
-            MailServer("Mountain Mail","mountainmail","mview.mail.com",self,[User("admin","redhat"),User("sales"),User("accounting"),User("customer-support"),User("james.rally","monica")]),
+            MailServer("Mountain Mail","mountainmail","mview.mail.com",self,[User("admin","redhat"),User("sales"),User("accounting"),User("customer-support"),User("james.rally","monica"),User("hr")]),
         ]
+        bodies = [
+            [
+                "Dear NOAH BAILEY,",
+                "",
+                "If you are reading this message, you have been dismissed from your position as System Administrator and are required to vacate the property",
+                "within 90 minutes of this message being sent.",
+                "You will be given 6 months' salary ($125,000) as a severance package.",
+                "",
+                "We understand that this may be difficult to hear, especially given your long-term employment at Mountain View.",
+                "However, given your quote, INABILITY TO COMPLY WITH INSTRUCTIONS AND A REFUSAL TO BE FLEXIBLE, unquote, we firmly believe that the dismissal has been justified.",
+                "When you signed your employment contract, you waived the following:",
+                "",
+                "* The right to a class-action lawsuit over unfair dismissal",
+                "* The right to a class-action lawsuit over unpaid severance or other benefits",
+                "* The right to a class-action lawsuit over workplace health and safety concerns",
+                "",
+                "Thank you for working for Mountain View, LLC.",
+            ],
+            ]
+        bodies = ["\n".join(x) for x in bodies]
         emails = [
             Email(
                 "admin@coca.mail",
@@ -186,6 +206,30 @@ class PlayerNode(Node):
                 "RE: FW: Reset Password",
                 "Thank you for bringing this to my attention.\nThis will be investigated soon.",
             ),
+            Email(
+                "james.rally@mview.mail.com",
+                "admin@mview.mail.com",
+                "Password Request",
+                "Please reply to this email with the admin password for the mainframe or you lose your fucking job.",
+                ),
+            Email(
+                "admin@mview.mail.com",
+                "james.rally@mview.mail.com",
+                "RE: Password Request",
+                "For security reasons, I cannot comply with this request.",
+                ),
+            Email(
+                "james.rally@mview.mail.com",
+                "hr@mview.mail.com",
+                "Request For Dismissal",
+                "EMPLOYEE: Dean Noah Bailey\nEMAIL ADDR: admin@mview.mail.com\nREASON: Inability to comply with instructions and a refusal to be flexible",
+                ),
+            Email(
+                "hr@mview.mail.com",
+                "admin@mview.mail.com",
+                "Notice of Dismissal",
+                bodies[0],
+                ),
         ]
         for item in servers:
             data.NODES.append(item)
