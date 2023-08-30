@@ -1521,7 +1521,7 @@ def emailbruter(args, player):
                 print("ERROR: Invalid email account.")
     else:
         div()
-        print("mailbruter [list of email addresses]")
+        print("emailbruter [list of email addresses]")
         div()
         print("Brute-forces the password of a mail account.")
         div()

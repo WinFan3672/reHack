@@ -147,6 +147,7 @@ class PlayerNode(Node):
                     User("sysadmin", "weakness"),
                 ],
             ),
+            MailServer("Mountain Mail","mountainmail","mview.mail.com",self,[User("admin","redhat"),User("sales"),User("accounting"),User("customer-support"),User("james.rally","monica")]),
         ]
         emails = [
             Email(

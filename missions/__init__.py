@@ -139,7 +139,7 @@ def main_story_missions(self):
             self,
             "mission1",
             "Top of the Mountain",
-            "firewalltest",
+            "",
             emails[3],
             end_email,
             reward=500,

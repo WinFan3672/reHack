@@ -306,8 +306,9 @@ N = [
     programs.WebServer(
         "MasterVPS Homepage", "mastervps_web", "mastervps.me", "mastervps.me"
     ),
-    programs.WebServer("Mountain View", "mountainweb", "mountain.view", "mountain.view",linked=["mountainmain"]),
+    programs.WebServer("Mountain View", "mountainweb", "mountain.view", "mountain.view",linked=["mountainmain","mountainmail","moutainremote"]),
     Node("Mountain View Mainframe","mountainmain", generateIP(), ports=[],minPorts=2**16,users=[User("admin","backdrop2252")]),
+    Node("Mountain View Remote Work Hub","moutainremote",generateIP(),ports=[getPort(22),getPort(21)],minPorts=2),
 ]
 for item in N:
     NODES.append(item)
