@@ -147,7 +147,7 @@ class PlayerNode(Node):
                     User("sysadmin", "weakness"),
                 ],
             ),
-            MailServer("Mountain Mail","mountainmail","mview.mail.com",self,[User("admin","redhat"),User("sales"),User("accounting"),User("customer-support"),User("james.rally","monica"),User("hr")]),
+            MailServer("Mountain Mail","mountainmail","mview.mail.com",self,[User("admin","redhat"),User("sales"),User("accounting"),User("customer-support"),User("james.rally","monica"),User("hr"),User("monica.flange")]),
         ]
         bodies = [
             [
@@ -166,6 +166,9 @@ class PlayerNode(Node):
                 "* The right to a class-action lawsuit over workplace health and safety concerns",
                 "",
                 "Thank you for working for Mountain View, LLC.",
+            ],
+            [
+                "NOTE TO SELF: The IP for the notes server is {}"
             ],
             ]
         bodies = ["\n".join(x) for x in bodies]
@@ -222,13 +225,25 @@ class PlayerNode(Node):
                 "james.rally@mview.mail.com",
                 "hr@mview.mail.com",
                 "Request For Dismissal",
-                "EMPLOYEE: Dean Noah Bailey\nEMAIL ADDR: admin@mview.mail.com\nREASON: Inability to comply with instructions and a refusal to be flexible",
+                "EMPLOYEE: Noah Bailey\nEMAIL ADDR: admin@mview.mail.com\nREASON: Inability to comply with instructions and a refusal to be flexible",
                 ),
             Email(
                 "hr@mview.mail.com",
                 "admin@mview.mail.com",
                 "Notice of Dismissal",
                 bodies[0],
+                ),
+            Email(
+                "james.rally@mview.mail.com",
+                "james.rally@mview.mail.com",
+                "Note To Self",
+                bodies[1].format(data.getNode("mountainnotes").address),
+                ),
+            Email(
+                "monicaf332@jmail.com",
+                "amdin@mview.mail.com",
+                "Mainframe Password",
+                "It's backdrop2252 by the way",
                 ),
         ]
         for item in servers:

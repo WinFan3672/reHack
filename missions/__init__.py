@@ -73,6 +73,16 @@ def main_story_missions(self):
             "",
             "Oh, yeah, their website is 'mountain.view'.",
         ],
+        [
+            "Hey, thanks a lot.",
+            "The administration team is very small, so I guess you know who I am now.",
+            "I found the recipe, so there's that.",
+            "I'm gonna have to clear your tracks as well as mine, but I'm a sysadmin, I designed that mainframe, I can do it.",
+            "I'm gonna hold onto the formula for a couple years before selling it on some kinda marketplace.",
+            "Depends on what ones are around.",
+            "",
+            "Anyway, stay safe, alright?",
+        ],
     ]
     bodies = ["\n".join(x) for x in bodies]
     end_email = Email(
@@ -105,6 +115,12 @@ def main_story_missions(self):
             "{}@jmail.com".format(self.name),
             "Top of the Mountain",
             bodies[3],
+        ),
+        Email(
+            "contracts@rehack.mail",
+            "{}@jmail.com".format(self.name),
+            "RE: Top of the Mountain",
+            bodies[4],
         ),
     ]
     return [
@@ -141,7 +157,7 @@ def main_story_missions(self):
             "Top of the Mountain",
             "mountainmain",
             emails[3],
-            end_email,
+            emails[4],
             reward=500,
         ),
     ]

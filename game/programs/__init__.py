@@ -525,6 +525,7 @@ class JmailServer(MailServer):
                 User("admin", "rosebud"),
                 User(player.name, player.password),
                 User("xwebdesign"),
+                User("monicaf332","letmein"),
             ],
             hideLookup=True,
         )
