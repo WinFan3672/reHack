@@ -1727,3 +1727,12 @@ class Sweeper:
 def sweep(args):
     sweeper = Sweeper()
     sweeper.sweep()
+
+class GlobalDNS(Node):
+    def __init__(self):
+        super().__init__("Global DNS Service","gdns","8.8.8.8",minPorts=2**16,ports=[data.getPort(65536)])
+        self.main_hacked = self.main
+    def main(self):
+        print("This is the Global DNS Server.")
+        print("It is important for the function of the Internet.")
+
