@@ -42,7 +42,7 @@ def generateIP():
         c.append(random.randint(0, 255))
     ip = ".".join([str(x) for x in c])
     if ip in [x.address for x in NODES]:
-        return generateIP()
+        return generateIP() ## prevents duplicate IP addresses.
     return ip
 
 
