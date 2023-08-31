@@ -14,6 +14,7 @@ from game.programs import (
     MissionServer,
     pickSelection,
     Firewall,
+    MasterVPS,
 )
 import data
 import sys
@@ -49,7 +50,7 @@ class PlayerNode(Node):
         ]
         self.minPorts = 2**16
         self.ports = [getPort(7777), getPort(22)]
-        self.creditCount = 0
+        self.creditCount = 500
         self.firewall = Firewall(makeRandomString())
         self.saved_accounts = {
             f"{self.name}@jmail.com": self.password,
@@ -147,6 +148,7 @@ class PlayerNode(Node):
                     User("sysadmin", "weakness"),
                 ],
             ),
+            MasterVPS(self),
             MailServer("Mountain Mail","mountainmail","mview.mail.com",self,[User("admin","redhat"),User("sales"),User("accounting"),User("customer-support"),User("james.rally","monica"),User("hr"),User("monica.flange")]),
         ]
         bodies = [

@@ -1547,7 +1547,7 @@ class GitServer(Node):
 
 
 class MasterVPS(Node):
-    def __init__(self):
+    def __init__(self, player):
         super().__init__(
             "MasterVPS Central Server", "mastervps_central", "mastervps.service"
         )
@@ -1574,8 +1574,19 @@ class MasterVPS(Node):
                 "price":300,
                 "description":"A standard xPhone 3.",
                 },
+            "mail":{
+                "node":MailServer("","","",player),
+                "description":"A fully-fledged mail server.",
+                "price":1500,
+                },
+            "mailplus":{
+                "node":MailServer("","","",player, hideLookup=True, minPorts=2**16),
+                "description":"A fully-fledged mail server with full security.",
+                "price":2500,
+                },
             }
         self.offerings["base_plus"]["node"].firewall = Firewall(makeRandomString(64),15)
+        self.offerings["mailplus"]["node"].firewall = Firewall(makeRandomString(64),15)
         self.buckets = []
     def main(self, player):
         cls()
@@ -1613,14 +1624,31 @@ class MasterVPS(Node):
                 ch = ch[14:]
                 if ch in self.offerings.keys():
                     if player.creditCount >= self.offerings[ch]["price"]:
-                        pass
+                        passwd = getpass.getpass("Admin Password $")
+                        node = copy.deepcopy(self.offerings[ch]["node"])
+                        node.name = "MasterVPS: {}".format(ch)
+                        node.uid = "mastervps_{}".format(random.randint(2**16,2**32))
+                        node.address = data.generateIP()
+                        node.offeringType = ch
+                        node.linked = ["mastervps_central"]
+                        node.users = [User("admin",passwd if passwd else "password")]
+                        self.buckets.append(node)
+                        data.NODES.append(node)
+                        print("Successfully spun up bucket.")
+                        print("The IP address is: {}".format(node.address))
+                        print("For a list, run 'bucket list'.")
+                        if not passwd:
+                            print("WARNING: You did not specify a password. A default password ('password') has been used instead.")
+                        player.creditCount -= self.offerings[ch]["price"]
                     else:
                         print("ERROR: Cannot afford bucket.")
                 else:
                     print("ERROR: Invalid bucket ID.")
             elif ch == "bucket list":
                 if self.buckets:
-                    pass
+                    i = 0
+                    for node in self.buckets:
+                        print("{}: {} ({})".format(i,node.address,node.offeringType))
                 else:
                     print("You have not spun up any buckets.")
             elif ch == "":

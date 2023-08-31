@@ -303,7 +303,6 @@ N = [
         users=[User("admin")],
         minPorts=0,
     ),
-    programs.MasterVPS(),
     programs.WebServer(
         "MasterVPS Homepage", "mastervps_web", "mastervps.me", "mastervps.me"
     ),
