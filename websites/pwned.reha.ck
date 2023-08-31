@@ -9,8 +9,6 @@ div()
     * USA
     * UK
 * TLD's
-    * zip and mov
-        * all zip/mov domains redirect to infect.rehack.org, which installs a RAT personalised for the OS of the client joining.
     * ck
         * We took reha.ck from its owners. Fuck them. 
     * org

@@ -1,0 +1,19 @@
+div()
+Firewalls are programs that actively monitor ports on a node. If a firewall is enabled, opening exposed ports becomes much more challenging.
+Thankfully, firewalls are almost always trivially easy to bypass.
+div()
+1. Getting the right software
+div()
+Breaking firewalls requires specialised software. The 'firewall' program is available from the Store and allows you to fully take down a firewall in almost all cases.
+div()
+2. Finding the firewall solution
+div()
+To disable a firewall, you need to ask it to shut down. Firewalls need authentication in the form of a solution. There are 2 ways to get this solution: cracking it and finding it lying around somewhere.
+If some idiot has left the solution right there for you, usually by sending the solution to a coworker or friend, your work has been done for you. In the case of complex firewalls, this is usually your only option.
+
+However, you can also crack the firewall. If you run 'firewall crack <IP address>', you can usually crack the solution in a matter of seconds.
+div()
+3. Disabling the firewall
+div()
+Once you have the firewall solution, if you run 'firewall solve <IP address> <solution>', the firewall gets disabled and you are free to break open as many ports as you wish.
+div()
