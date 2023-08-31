@@ -187,35 +187,36 @@ class PortBreakingTool(Base):
         self.program = Program(self.name, self.function, unlocked=unlocked, price=price)
 
     def function(self, args):
-        if args:
-            for item in args:
-                success = False
-                print("TRYING {}...".format(item))
-                for node in data.NODES:
-                    if node.address == item:
-                        print(f"ATTACKING PORT {self.port}...")
-                        if node.firewall:
-                            print("ERROR: Attack blocked by firewall.")
-                        else:
-                            for port in node.ports:
-                                if port.num == self.port:
-                                    time.sleep(2.5)
-                                    port.open = True
-                                    print(
-                                        "SUCCESSFULLY OPENED PORT {} @ {}".format(
-                                            self.port, item
-                                        )
-                                    )
-                                    success = True
-                if not success:
-                    print("Failed to attack port {}:".format(self.port))
-                    print("* Confirm port {} is valid.".format(self.port))
-                    print("* Confirm that `{}` is a valid IP.".format(item))
+        if len(args) == 1:
+            item = args[0]
+            success = False
+            node = data.getNode(item)
+            if node:
+                print(f"ATTACKING PORT {self.port}...")
+                if node.firewall:
+                    print("ERROR: Attack blocked by firewall.")
+                else:
+                    for port in node.ports:
+                        if port.num == self.port:
+                            time.sleep(2.5)
+                            port.open = True
+                            print(
+                                "SUCCESSFULLY OPENED PORT {} @ {}".format(
+                                    self.port, item
+                                )
+                            )
+                            success = True
+            if not node:
+                print("ERROR: Invalid IP address.")
+            elif not success:
+                print("Failed to attack port {}:".format(self.port))
+                print("* Confirm port {} is valid.".format(self.port))
+                print("* Confirm that `{}` is a valid IP.".format(item))
         else:
             div()
-            print("sshkill <IP address(es)>")
+            print("{} <IP address>".format(self.name))
             div()
-            print("Attacks port 22 and opens it.")
+            print("Attacks port {} and opens it.".format(self.port))
             div()
 
 
