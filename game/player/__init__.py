@@ -85,7 +85,6 @@ class PlayerNode(Node):
 
     def startActions(self):
         servers = [
-            self,
             JmailServer(self),
             MailServer(
                 "reHack Mail Server",

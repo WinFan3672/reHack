@@ -70,11 +70,10 @@ def connect(item):
             print("Has Linked Nodes: {}".format("Yes" if item.linked else "No"))
             div()
         elif name == "ls":
-            f = item.files
-            d = listDirTree(f)
+            d = listDirTree(item.files)
             print("/")
             printDirTree(d)
-        elif name == "cls":
+        elif name in ["clear","cls"]:
             cls()
         elif name == "help":
             div()

@@ -463,7 +463,10 @@ class MailServer(Node):
                 div()
                 print("Create a mail account.")
                 div()
-
+            elif ch.startswith("useradd "):
+                usr = ch[8:]
+                self.accounts.append(MailAccount(usr))
+                print("Successfully added user.")
             elif ch.startswith("reset "):
                 ch = ch[6:]
                 args = ch.split(" ")
@@ -627,7 +630,7 @@ class AnonMail(MailServer):
 
 def jmail(args, player):
     acc = "{}@jmail.com".format(player.name)
-    mailman_base([acc], player)
+    mailman_base([acc, player.password], player)
 
 
 # def MailDotCom(name, address, player, users=[]):
@@ -1317,7 +1320,7 @@ def nodecheck(args):
 
 
 def getEmails(account):
-    return account.inbox + account.sent
+    return account.inbox
 
 
 def mailman(self, domain, player):
