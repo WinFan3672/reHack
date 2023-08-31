@@ -317,6 +317,7 @@ N = [
     Node("Noah Bailey's PC","nbaileypc",generateIP(),ports=[getPort(21),getPort(22)],minPorts=2,linked=["nbaileyphone"]),
     Node("Monica Flange's PC","mflange",generateIP(),ports=[getPort(21),getPort(22)],minPorts=2,linked=["mflangephone"]),
     programs.MessageBoard("Mountain View Message Board",generateIP(),"mountainnotes","mview"),
+    programs.MessageBoard("MHT Web","mht.com","mhtweb","mht.com"),
 ]
 for item in N:
     NODES.append(item)

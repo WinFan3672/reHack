@@ -276,6 +276,7 @@ class MessageBoard(Node):
             ports=ports,
             minPorts=minPorts,
         )
+        self.path = path
         self.ports = ports
 
     def main(self):
