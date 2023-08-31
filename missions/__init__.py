@@ -79,7 +79,7 @@ def main_story_missions(self):
         "contracts@rehack.org",
         "{}@jmail.com".format(self.name),
         "Contract Complete",
-        "Congratulations on completing the contract.\nIf you want to complete more contratcs, visit contracts.rehack.org",
+        "Congratulations on completing the contract.\nIf you want to complete more contracts, visit contracts.rehack.org",
     )
     emails = [
         Email(
