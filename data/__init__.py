@@ -5,6 +5,7 @@ import resource.information as resourceInfo
 from resource.libs import *
 import random
 import json
+import copy
 
 global PORTS, NODES, PROGRAMS
 
@@ -49,7 +50,7 @@ def getPort(num, isOpen=False):
     for item in PORTS:
         if item.num == num:
             item.open = isOpen
-            return item
+            return copy.deepcopy(item)
 
 
 BLOCKLIST = [
