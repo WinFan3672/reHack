@@ -84,7 +84,10 @@ class PlayerNode(Node):
         while True:
             ch = input("{}@{} $".format(self.name, self.address))
             if ch in ["exit", "quit"]:
-                return
+                if input("Retype command to confirm $") == ch:
+                    exit()
+                else:
+                    print("Action cancelled.")
             elif ch == "":
                 pass
             elif ch in ["clear", "cls"]:
