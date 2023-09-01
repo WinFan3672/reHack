@@ -46,7 +46,7 @@ def main():
         u = u.lower()
         u = filter_string(u, "@\\/$ ")
         if u in data.BLOCKLIST:
-            print("ERROR: The username is disallowed to prevent game instability.")
+            print("ERROR: This username is disallowed to prevent game instability.")
     p, cp = "x", ""
     while p != cp:
         p = getpass.getpass("Enter a password $")

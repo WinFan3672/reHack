@@ -7,7 +7,7 @@ import random
 import json
 import copy
 
-global PORTS, NODES, PROGRAMS
+global PORTS, NODES, PROGRAMS, GENERATED
 
 
 def div():
@@ -18,6 +18,7 @@ def br():
     div()
     input("Press ENTER to continue.")
 
+GENERATED = []
 
 def getMission(mission_id, player):
     for mission in player.MISSIONS:
@@ -43,6 +44,7 @@ def generateIP():
     ip = ".".join([str(x) for x in c])
     if ip in [x.address for x in NODES]:
         return generateIP() ## prevents duplicate IP addresses.
+    GENERATED.append(ip)
     return ip
 
 
@@ -307,6 +309,7 @@ N = [
         "MasterVPS Homepage", "mastervps_web", "mastervps.me", "mastervps.me"
     ),
     programs.WebServer("Mountain View", "mountainweb", "mountain.view", "mountain.view",linked=["mountainmain","mountainmail","moutainremote"]),
+    programs.WebServer("DomainExpert Home", "dexpertweb", "domain.expert", "domain.expert"),
     Node("Mountain View Mainframe","mountainmain", generateIP(), ports=[],minPorts=2**16,users=[User("admin","backdrop2252")]),
     Node("Mountain View Remote Work Hub","moutainremote",generateIP(),ports=[getPort(22),getPort(21)],minPorts=2, linked =["jrallypc","nbaileypc","mflange"]),
     programs.XOSDevice("James Rally's xPhone","jrallyphone",generateIP(),accounts=[programs.XOSMailAccount("james.rally@mview.mail.com","monica")]),
@@ -319,6 +322,7 @@ N = [
     programs.MessageBoard("MHT Web","mht.com","mhtweb","mht.com"),
     programs.MessageBoard("AnonMail Blog","blog.anon.mail","anonmail_blog","blog.anon.mail"),
     programs.GlobalDNS(),
+    programs.VersionControl("Version Control Test","vctest","vc.rehack.test",[Commit("Test commit")],[User("admin","alpine")])
 ]
 for item in N:
     NODES.append(item)
@@ -347,6 +351,8 @@ PROGRAMS = [
     Program("emailbruter", programs.emailbruter, True, classPlease=True),
     Program("firewall", programs.firewall, price=0),
     # Program("sweep", programs.sweep, price=0),
+    # Program("save",programs.save,True,classPlease=True),
+    # Program("load",programs.load,True,classPlease=True),
 ]
 SPICES = [
     "Basil",

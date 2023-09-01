@@ -173,3 +173,11 @@ class Firewall(Base):
 
     def check(self, solution):
         return solution == self.solution
+
+
+class Commit(Base):
+    def __init__(self, text, origin="127.0.0.1"):
+        self.text = text
+        self.origin = origin
+    def __str__(self):
+        return "{}: {}".format(self.origin,self.text)

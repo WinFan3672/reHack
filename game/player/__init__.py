@@ -20,6 +20,8 @@ import data
 import sys
 import missions
 import time
+import os
+import pickle
 
 
 def getProgram(name):
@@ -50,14 +52,34 @@ class PlayerNode(Node):
         ]
         self.minPorts = 2**16
         self.ports = [getPort(7777), getPort(22)]
-        self.creditCount = 500
+        self.creditCount = 0
         self.firewall = Firewall(makeRandomString())
         self.saved_accounts = {
             f"{self.name}@jmail.com": self.password,
         }
         self.currentMission = None
         self.startActions()
-
+    # def save(self):
+    #     ## ensure directory
+    #     if not os.path.isdir("savegames"):
+    #         os.mkdir("savegames")
+    #     ## get file name
+    #     fn = input("Save file name $")
+    #     ## pickle data
+    #     with open("savegames/{}.pkl".format(fn),"wb") as f:
+    #         pickle.dump(self,f)
+    #     print("Successfully saved game.")
+    # def load(self):
+    #     if os.path.isdir("savegames"):
+    #         fn = input("Save file name $")
+    #         if os.path.isfile("savegames/{}.pkl".format(fn)):
+    #             with open("savegames/{}.pkl".format(fn),"rb") as f:
+    #                 self = pickle.load(f)
+    #                 print("Loaded game successfully.")
+    #         else:
+    #             print("ERROR: Invalid save file name")
+    #     else:
+    #         print("ERROR: No saved files.")
     def main(self):
         while True:
             ch = input("{}@{} $".format(self.name, self.address))
@@ -148,7 +170,7 @@ class PlayerNode(Node):
                 ],
             ),
             MasterVPS(self),
-            MailServer("Mountain Mail","mountainmail","mview.mail.com",self,[User("admin","redhat"),User("sales"),User("accounting"),User("customer-support"),User("james.rally","monica"),User("hr"),User("monica.flange")]),
+            MailDotCom("Mountain Mail","mview.mail.com",self,[User("admin","redhat"),User("sales"),User("accounting"),User("customer-support"),User("james.rally","monica"),User("hr"),User("monica.flange")]),
         ]
         bodies = [
             [

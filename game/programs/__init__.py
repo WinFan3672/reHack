@@ -69,7 +69,7 @@ def sendEmail(email):
             )
             sendEmail(e)
     else:
-        raise TypeError("Invalid mail server: {}".format(parts[1]))
+        raise TypeError("Invalid mail server: {} ({}>{})".format(parts[1],email.sender, email.receiver))
 
 
 def div():
@@ -342,6 +342,8 @@ def debuginfo(args, player):
     elif args == ["complete-mission"]:
         while player.currentMission:
             player.currentMission.end()
+    elif args == ["gen"]:
+        print(data.GENERATED)
     else:
         div()
         print("debug <args>")
@@ -1306,6 +1308,9 @@ def nodecheck(args):
         ISPNode: "isp",
         XOSDevice: "xosdevice",
         MissionServer: "contract_hub",
+        VersionControl: "version_control",
+        type(None): "invalid",
+        GlobalDNS: "global_dns",
     }
     if args:
         for arg in args:
@@ -1767,3 +1772,25 @@ class GlobalDNS(Node):
         print("This is the Global DNS Server.")
         print("It is important for the function of the Internet.")
 
+class VersionControl(Node):
+    def __init__(self, name, uid, address, commits = [], users = [], linked = []):
+        super().__init__(name, uid, address, users=users, linked=linked, ports=[data.getPort(1433),data.getPort(80),data.getPort(22),data.getPort(21)],minPorts=4)
+        self.commits = [x for x in commits if isinstance(x,Commit)]
+    def main_hacked(self):
+        if self.commits:
+            for x in self.commits:
+                print("* {}".format(x))
+        else:
+            print("ERROR: No commit history.")
+
+def save(args, player):
+    try:
+        player.save()
+    except Exception as e:
+        print(e)
+
+def load(args, player):
+    try:
+        player.load()
+    except Exception as e:
+        print(e)

@@ -86,7 +86,7 @@ def main_story_missions(self):
     ]
     bodies = ["\n".join(x) for x in bodies]
     end_email = Email(
-        "contracts@rehack.org",
+        "contracts@rehack.mail",
         "{}@jmail.com".format(self.name),
         "Contract Complete",
         "Congratulations on completing the contract.\nIf you want to complete more contracts, visit contracts.rehack.org",
@@ -397,49 +397,49 @@ def start_missions(self):
     mission_bodies = ["\n".join(x) for x in mission_bodies]
     missionEmails = [
         Email(
-            "contracts@rehack.org",
+            "contracts@rehack.mail",
             f"{self.name}@jmail.com",
             "Tutorial Mission Pt. 1",
             mission_bodies[0],
         ),
         Email(
-            "contracts@rehack.org",
+            "contracts@rehack.mail",
             f"{self.name}@jmail.com",
             "Tutorial Mission Pt. 2",
             mission_bodies[1],
         ),
         Email(
-            "contracts@rehack.org",
+            "contracts@rehack.mail",
             f"{self.name}@jmail.com",
             "Tutorial Mission Pt. 3",
             mission_bodies[2],
         ),
         Email(
-            "contracts@rehack.org",
+            "contracts@rehack.mail",
             f"{self.name}@jmail.com",
             "Tutorial Mission Pt. 4",
             mission_bodies[3].format(data.getNode("test2").address),
         ),
         Email(
-            "contracts@rehack.org",
+            "contracts@rehack.mail",
             f"{self.name}@jmail.com",
             "Tutorial Mission Pt. 5",
             mission_bodies[4],
         ),
         Email(
-            "contracts@rehack.org",
+            "contracts@rehack.mail",
             f"{self.name}@jmail.com",
             "Tutorial Mission Pt. 6",
             mission_bodies[5],
         ),
         Email(
-            "contracts@rehack.org",
+            "contracts@rehack.mail",
             f"{self.name}@jmail.com",
             "Tutorial Mission Pt. 7",
             mission_bodies[6],
         ),
         Email(
-            "contracts@rehack.org",
+            "contracts@rehack.mail",
             f"{self.name}@jmail.com",
             "You Finished The Tutorial",
             mission_bodies[7],
