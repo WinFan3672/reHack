@@ -83,6 +83,10 @@ def main_story_missions(self):
             "",
             "Anyway, stay safe, alright?",
         ],
+        [
+            "Alright.",
+            ""
+        ],
     ]
     bodies = ["\n".join(x) for x in bodies]
     end_email = Email(

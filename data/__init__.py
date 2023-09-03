@@ -322,7 +322,8 @@ N = [
     programs.MessageBoard("MHT Web","mht.com","mhtweb","mht.com"),
     programs.MessageBoard("AnonMail Blog","blog.anon.mail","anonmail_blog","blog.anon.mail"),
     programs.GlobalDNS(),
-    programs.VersionControl("Version Control Test","vctest","vc.rehack.test",[Commit("Test commit")],[User("admin","alpine")])
+    programs.VersionControl("Version Control Test","vctest","vc.rehack.test",[Commit("Test commit")],[User("admin","alpine")]),
+    programs.DomainExpert(),
 ]
 for item in N:
     NODES.append(item)
@@ -352,7 +353,6 @@ PROGRAMS = [
     Program("firewall", programs.firewall, price=0),
     # Program("sweep", programs.sweep, price=0),
     # Program("save",programs.save,True,classPlease=True),
-    # Program("load",programs.load,True,classPlease=True),
 ]
 SPICES = [
     "Basil",

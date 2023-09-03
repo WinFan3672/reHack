@@ -14,6 +14,7 @@ import copy
 import getpass
 import copy
 import concurrent.futures
+import re
 
 
 def pickSelection(a_list, amount=1):
@@ -1789,8 +1790,59 @@ def save(args, player):
     except Exception as e:
         print(e)
 
-def load(args, player):
-    try:
-        player.load()
-    except Exception as e:
-        print(e)
+def filterDomainSafeCharacters(inputString):
+    # Define a regular expression pattern to match domain-safe characters
+    pattern = r'[a-z0-9\-._]'
+
+    # Use the re module to find all matching characters in the input string
+    safe_chars = ''.join(re.findall(pattern, inputString.lower()))
+
+    return safe_chars
+
+class DomainExpert(Node):
+    def __init__(self):
+        super().__init__("DomainExpert Admin Panel","dexpertmain","service.domain.expert")
+        self.ports = [data.getPort(22),data.getPort(80),data.getPort(1433)]
+        self.minPorts = 2**16
+        self.firewall = Firewall(makeRandomString(),15)
+        self.playerPlease = True
+        self.domains = []
+        self.pricing = {
+            "com":100,
+            "org":150,
+            "net":200,
+            "mail":350,
+            "me":50,
+            "uk":150,
+            "co.uk":125,
+            "org.uk":125,
+            "fail":75,
+            }
+    def main(self, player):
+        print("Welcome. Type 'help' for a command list.")
+        while True:
+            ch = input("DomainExpert #")
+            if ch in ["help","?"]:
+                print("help: prints help")
+                print("opt: list all domain offerings")
+                print("list: list all owned domains")
+                print("exit: disconenct from host")
+            elif ch == "":
+                continue
+            elif ch == "list":
+                if self.domains:
+                    pass
+                else:
+                    print("No owned domains.")
+            elif ch in ["clear","cls"]:
+                cls()
+            elif ch == "opt":
+                for item in self.pricing:
+                    print("{}: {} Cr.".format(item, self.pricing[item]))
+            elif ch in ["quit","exit"]:
+                return
+            else:
+                print("ERROR: Invalid command.")
+    def main_hacked(self, player):
+        print("ERROR: The admin panel has been disabled by the site administrator.")
+
