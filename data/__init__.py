@@ -324,6 +324,7 @@ N = [
     programs.GlobalDNS(),
     programs.VersionControl("Version Control Test","vctest","vc.rehack.test",[Commit("Test commit")],[User("admin","alpine")]),
     programs.DomainExpert(),
+    programs.WebServer("Central Intelligence Agency", "ciaweb", "cia.gov", "cia.gov",linked = ["ciamail"]),
 ]
 for item in N:
     NODES.append(item)
@@ -342,7 +343,7 @@ PROGRAMS = [
     Program("jmail", programs.jmail, True, classPlease=True),
     Program("mailoverflow", programs.mailoverflow, price=1500, classPlease=True),
     Program("store", programs.store, True, classPlease=True),
-    Program("anonmail", programs.anonclient, price=0, classPlease=True),
+    Program("anonmail", programs.anonclient, price=250, classPlease=True),
     Program("login", programs.login, True),
     Program("mission", programs.mission_program, True, classPlease=True),
     Program("logview", programs.logview, price=0),
