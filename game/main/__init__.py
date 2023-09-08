@@ -75,7 +75,8 @@ def main():
 def start():
     cls()
     div()
-    print("Welcome To ReHack")
+    with open("logo.txt") as f:
+        print(f.read())
     div()
     print("[1] New Game")
     print("[x] Load Game")
