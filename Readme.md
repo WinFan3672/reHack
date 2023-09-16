@@ -1,4 +1,1 @@
-# reHack
-reHack is an open-source hacking/simulation game. It operates fully in the terminal.
-## Progress
-I have barely started. Please ignore this. 
+This repository has moved: https://codeberg.org/WinFan3672/reHack/
