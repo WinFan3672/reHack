@@ -6,8 +6,9 @@ from resource.libs import *
 import random
 import json
 import copy
+import string
 
-global PORTS, NODES, PROGRAMS, GENERATED
+global PORTS, NODES, TOR_NODES, PROGRAMS, GENERATED
 
 
 def div():
@@ -31,11 +32,32 @@ def getNode(uid):
         if uid == item.uid or uid == item.address:
             return item
 
+def getTorNode(uid):
+    for item in TOR_NODES:
+        if uid == item.uid or uid == item.address:
+            return item
 
 def addFirewall(node, firewall):
     node = getNode(node)
     node.firewall = firewall
 
+def generateTorURL(prefix=""):
+    '''
+    Generates a Tor URL from an optional prefix in the format:
+    $ <prefix><random hex digits>.onion
+    The URL is guaranteed to be 64 characters long.
+    '''
+    def genString(genLength):
+        s = ""
+        for x in range(genLength):
+            s += random.choice(list(string.hexdigits))
+        return s
+    if type(prefix) != str:
+        raise TypeError("Prefix must be a string.")
+    if len(prefix) > 64:
+        raise TypeError("Prefix cannot be > 64 characters long.")
+    genLength = 64 - len(prefix)
+    return prefix + genString(genLength) + ".onion"
 
 def generateIP():
     c = []
@@ -69,6 +91,7 @@ PORTS = [
     Port(1433, "SQL Database"),
     Port(6881, "BitTorrent Tracker"),
     Port(7777, "reHackOS Node"),
+    Port(9200, "Tor Node"),
     Port(24525, "Message Board"),
     Port(65536, "DNS Server"),
 ]
@@ -325,6 +348,10 @@ N = [
     programs.VersionControl("Version Control Test","vctest","vc.rehack.test",[Commit("Test commit")],[User("admin","alpine")]),
     programs.DomainExpert(),
     programs.WebServer("Central Intelligence Agency", "ciaweb", "cia.gov", "cia.gov",linked = ["ciamail"]),
+    Node("CIA File Transfer Protocol Server", "ciaftp", "ftp.cia.gov", ports=[getPort(21)], minPorts=1, linked=[]),
+    programs.WebServer("The Onion Router :: Official Site", "torweb", "tor.org", "tor.org"),
+    programs.MessageBoard("EnWired: Home", "enwired.com", "enwired-web", "enwired"),
+    Node("Project Autocrat :: Mainframe", "autocratmain", generateIP(), ports=[], minPorts=65536, users=[User("admin", "roses.are.red.violets.are.blue")]),
 ]
 for item in N:
     NODES.append(item)
@@ -352,6 +379,7 @@ PROGRAMS = [
     Program("bruter", programs.bruter, True, classPlease=True),
     Program("emailbruter", programs.emailbruter, True, classPlease=True),
     Program("firewall", programs.firewall, price=0),
+    Program("tor", programs.tor, True, classPlease=True),
     # Program("sweep", programs.sweep, price=0),
     # Program("save",programs.save,True,classPlease=True),
 ]
@@ -464,3 +492,18 @@ for i in temp_people:
     addresses.remove(x)
     p = Person(i["fore"], i["sur"], x)
     PEOPLE.append(p)
+
+
+TOR_NODES = []
+
+TN = [
+        programs.TorWebServer("The Onion Router :: Official Site", "tor", "tor.onion", "tor"),
+        programs.TorWebServer("World Wide Web Directory :: Onionsite", "w3d", "w3d.onion", "w3d"),
+        programs.MessageBoard("EnWired: Home", "enwired.onion", "enwired-onion", "enwired"),
+        programs.TorWebServer("Apache HTTP Server 1.0", "rehack.onion", "rehack-onion", "httpserver"),
+        programs.TorWebServer("Euclid :: Homepage", "euclid.onion", "euclid-web", "euclid"),
+        programs.SignupService("euclid-signup", "signup.euclid.onion", "jmail"),
+]
+
+for node in TN:
+    TOR_NODES.append(node)

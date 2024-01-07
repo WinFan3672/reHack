@@ -1,0 +1,120 @@
+div()
+Tor is a haven for 100% legal activity. As such, it is important to be familiar with it.
+div()
+1 Installing Tor
+div()
+To install Tor, purchase it on the reHackOS store.
+div()
+1.1 Using Tor
+div()
+To connect to an onionsite, run "tor <onionsite>".
+div()
+2 First Sites
+div()
+* The official tor site: tor.onion
+    * Just to test your connection.
+* reHack's official Tor Node: rehack.onion
+    * This is just a honeypot; our actual onion service is private.
+* W3D onion site: w3d.onion
+    * The w3d maintains a directory of onionsites for your viewing 'pleasure'; it's mostly corporate sites that have tor mirrors.
+div()
+3 Email
+div()
+Receiving email from Tor can be tricky; most email services automatically rejcect Tor emails, including mail.com and JMail. Yes, even mail.com with its terrible security blocks tor traffic, and the industry follows mail.com, so you need a tor mail client and service. 
+div()
+3.1 Client
+div()
+There's only really one game in town; `tormail`. It's free in the reHackOS store and it just works. 
+When you get a login and password, run:
+$ tormail login <email address> <password>
+div()
+3.2 Email accounts
+div()
+There are several offerings, some public, some private.
+div()
+3.2.1 Public services
+div()
+* Euclid (www.euclid.onion)
+    * Owned by AnonMail.
+    * Free.
+    * Secure.
+* MailTor (www.mail-tor.onion)
+    * Paid (150 Cr. per account)
+    * Owners unknown; suspected to be owned by mail.com, which suggests bad security.
+    * Do not use.
+div()
+3.2.2 Private services
+div()
+Private services are invite-only, and are used as a credential of sorts; being a member here unlocks exclusive opportunities. They are bad for anonymity, as they stick out like a sore thumb. They're also on the blocklist of most public onion email providers.
+* reHack OnionMail (onionmail.intranet.rehack.org)
+    * Most agents can get invited with relative ease.
+        * This includes beginner-,level agents!
+* 5mail
+    * Maintained by 5chan itself for use by its anons.
+    * Almost impossible to access without a 5chan membership.
+* SCSI Group
+    * Elite hacker collective. Call themselves "the bottom of the barrel."
+* VC-Mail
+    * Dished out to users of VC-Forum.
+div()
+4 Private Services
+div()
+Private services are invite-only. They require certain email services to be invited.
+Key:
+[x] Service allows access
+[ ] Service does not allow access
+div()
+4.1 Dark.Store
+div()
+Purchase black-market programs not even we sell.
+
+[x] Euclid
+[x] reHack
+[x] 5mail
+[x] SCSI
+
+div()
+4.2 5chan
+div()
+A hacker forum for the ages.
+
+[ ] Euclid
+[x] reHack
+[x] 5mail
+[x] SCSI
+
+div()
+4.3 VC-Forum
+div()
+Makes 5chan look like a bunch of script kiddies. Forums, stores, contracts, insider secrets, free deets of victims, corporate espionage. This is where the real criminals live.
+
+[ ] reHack
+[ ] 5mail
+[x] SCSI
+
+div()
+4.4 VC-Politburo
+div()
+Associate of VC-Forum with access to more advanced missions.
+
+[ ] SCSI
+[x] VC-Mail
+div()
+5 Getting Into Each Service
+div()
+5.1 Dark.Store && 5.2 5chan
+div()
+It is one of the ads that arrives in your inbox when you create a reHack OnionMail account.
+div()
+5.3 VC-Forum
+div()
+You need to get into SCSI group first. For that, we have no tutorial. 
+div()
+5.4 VC-Politburo
+div()
+Complete enough jobs and you're let in. Simple as.
+div()
+6 Hacking
+div()
+Main article: Hacking Tor
+div()

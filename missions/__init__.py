@@ -13,6 +13,8 @@ from game.programs import (
 
 
 def base_missions(self):
+    bodies = []
+    emails = []
     return []
 
 
@@ -79,13 +81,17 @@ def main_story_missions(self):
             "I found the recipe, so there's that.",
             "I'm gonna have to clear your tracks as well as mine, but I'm a sysadmin, I designed that mainframe, I can do it.",
             "I'm gonna hold onto the formula for a couple years before selling it on some kinda marketplace.",
-            "Depends on what ones are around.",
             "",
-            "Anyway, stay safe, alright?",
+            "Anyway, I wish you luck on your quest.",
+            "Oh, and Mountain View contains flourine, so I don't think I'll be drinking it anytime soon.",
         ],
         [
-            "Alright.",
-            ""
+            "Hello, fellow hacker.",
+            "I think I just uncovered a conspiracy.",
+            "I recently uncovered a secret CIA project called 'Project Autocrat'.",
+            "It's really suspicious, and I need you to break into the CIA website (cia.gov).",
+            "Then, I'll use the resources at my disposal to try and work out what Project Aurocrat is.",
+            "Get going.",
         ],
     ]
     bodies = ["\n".join(x) for x in bodies]
@@ -126,6 +132,12 @@ def main_story_missions(self):
             "RE: Top of the Mountain",
             bodies[4],
         ),
+        Email(
+            "contracts@rehack.mail",
+            "{}@jmail.com".format(self.name),
+            "Hidden In The Depths",
+            bodies[5],
+        ),
     ]
     return [
         Mission(
@@ -163,6 +175,15 @@ def main_story_missions(self):
             emails[3],
             emails[4],
             reward=500,
+        ),
+        Mission(
+            self,
+            "mission2",
+            "Government Intervention",
+            "ciaweb",
+            emails[4],
+            end_email,
+            reward=2500,
         ),
     ]
 

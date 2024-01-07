@@ -1,0 +1,35 @@
+div()
+Hacking Tor nodes is possible, but a lot more complex.
+div()
+1 The tools
+div()
+There are several tools rumoured to be for sale on Tor marketplaces that allow you to exploit the Tor network to find vulnerabilities in it and expose Nodes. We cannot confirm their authenticity, but some high-up agents vouch for their existence.
+* deanon
+    * This tool can (allegedly) expose a Tor site to the clearnet.
+    * Doubts: Very High
+* torcrack
+    * This tool can (allegedly) break open port 9200 and allow you to access its admin infopanel.
+    * Doubts: Low
+* porthack-tor
+    * Allegedly, it's an *official* port of porthack to the Tor network. 
+    * Doubts: High
+
+A few tools are also known to exist.
+* torlogin
+    * This tool logs into a tor node using its admin password.
+    * Sold at the Dark-Store.
+* onionmap
+    * This is a port of nmap to Tor.
+    * Sold at the Dark-Store.
+div()
+2 Breaking Open a Tor Node
+div()
+If you can access the admin infopanel of a Tor node, either by logging on or using the elusive Tools, you can see two things:
+* The HTTP status of the Tor node
+    * Will always be OK if you're looking at an online Tor node.
+* The email address of the webmaster.
+div()
+2.1 The Email Address
+div()
+The Tor Node service requires you to add a valid email address to the config file. This is used to send emails about Tor updates that are required. A lot of people fail to realise that this means that their email could be exposed when making the node, and as such they leave it there. This allows you to identify them or access their email.
+div()

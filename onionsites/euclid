@@ -1,0 +1,8 @@
+div()
+Euclid: Free Email For Tor
+div()
+The Onion Router (tor) is a decentralised network of anonymous websites with no associated IP addresses designed by the US navy (usa.gov). When the Tor email extension (RFC-TOR-EML_v1) was being proposed, the decision to only make emails sent in Tor only viewable from Tor was made. 
+
+While it is possible to send clearnet emails from Tor using a basic proxy server, it is discouraged as clearnet email, unlike Tor email, is unencrypted. The Tor network's obfuscation of IP addresses through decentraliser, user-run nodes allows for mail servers to never know the true destination or recipient of an email beyond its email address and onion domain.
+
+This is where Euclid comes in. Euclid is an email service running RFC-TOR-EML_v1 servers to provide an email address compatible with Tor. To sign up, go to `signup.euclid.onion`.

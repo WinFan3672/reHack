@@ -52,11 +52,12 @@ class PlayerNode(Node):
         ]
         self.minPorts = 2**16
         self.ports = [getPort(7777), getPort(22)]
-        self.creditCount = 0
+        self.creditCount = 500
         self.firewall = Firewall(makeRandomString())
         self.saved_accounts = {
             f"{self.name}@jmail.com": self.password,
         }
+        self.saved_tor_accounts = {}
         self.currentMission = None
         self.startActions()
     # def save(self):
@@ -174,18 +175,62 @@ class PlayerNode(Node):
             ),
             MasterVPS(self),
             MailDotCom("Mountain Mail","mview.mail.com",self,[User("admin","redhat"),User("sales"),User("accounting"),User("customer-support"),User("james.rally","monica"),User("hr"),User("monica.flange")]),
+            MailServer(
+                "CIA Mail",
+                "ciamail",
+                "cia.mail.gov",
+                self,
+                [
+                    User("admin","sympathy"),
+                    User("police-relations"),
+                    User("defense-response"),
+                    User("public-relations"),
+                    User("webmaster","spider"),
+                ],
+                hideLookup = True,
+            ),
+            MailServer(
+                "Mail Dot Gov",
+                "usagovmail",
+                "mail.gov",
+                self,
+                [
+                    User("admin","sympathy"),
+                    User("back.oboma"),
+                    User("linkbot"),
+                ],
+                hideLookup=True,
+            ),
+            MailServer("EnWired Mail", "enwired-mail", "enwired.mail", self, [User("elliot"), User("sales")]),
         ]
         bodies = [
             [
                 "Dear NOAH BAILEY,",
                 "",
-                "If you are reading this message, you have been dismissed from your position as System Administrator and are required to vacate the property",
+                "If you are reading this message, you have been dismissed from your position as SYSTEM ADMINISTRATOR and are required to vacate the property",
                 "within 90 minutes of this message being sent.",
                 "You will be given 6 months' salary ($125,000) as a severance package.",
                 "",
                 "We understand that this may be difficult to hear, especially given your long-term employment at Mountain View.",
                 "However, given your quote, INABILITY TO COMPLY WITH INSTRUCTIONS AND A REFUSAL TO BE FLEXIBLE, unquote, we firmly believe that the dismissal has been justified.",
-                "When you signed your employment contract, you waived the following:",
+                "When you signed your employment contract, you waived:",
+                "",
+                "* The right to a class-action lawsuit over unfair dismissal",
+                "* The right to a class-action lawsuit over unpaid severance or other benefits",
+                "* The right to a class-action lawsuit over workplace health and safety concerns",
+                "",
+                "Thank you for working for Mountain View, LLC.",
+            ],
+            [
+                "Dear MONICA FLANGE,",
+                "",
+                "If you are reading this message, you have been dismissed from your position as OFFICE WORKER and are required to vacate the property",
+                "within 90 minutes of this message being sent.",
+                "You will be given 6 months' salary ($15,000) as a severance package.",
+                "",
+                "We understand that this may be difficult to hear, especially given your long-term employment at Mountain View.",
+                "However, given your quote, ATTEMPTED CORPORATE ESPIONAGE IN THE FORM OF SENDING AN ADMIN PASSWORD OVER AN UNENCRYPTED NETWORK (JMAIL), unquote, we firmly believe that the dismissal has been justified.",
+                "When you signed your employment contract, you waived:",
                 "",
                 "* The right to a class-action lawsuit over unfair dismissal",
                 "* The right to a class-action lawsuit over unpaid severance or other benefits",
@@ -195,6 +240,23 @@ class PlayerNode(Node):
             ],
             [
                 "NOTE TO SELF: The IP for the notes server is {}"
+            ],
+            [
+                "Hello,",
+                "This is an official email approving the launch of Project Autocrat.",
+                "Please inform relevant departments immediately.",
+            ],
+            [
+                "Dear admin,",
+                "One of our employers, Monica Flange (monicaf332@jmail.com) has performed corporate espionage on your network.",
+                "We would like to request that you delete ALL emails Monica has sent from your network, or we will sue for mishandling of corporate data.",
+                "Signed,",
+                "Administrator of Mountain View Private Mail.",
+            ],
+            [
+                    "Dear Administrator,",
+                    "We have complied with your request. All user data has been purged. In fact, because we take user data seriously, our servers run on arrays of small, 256mb hard drives which contain the user data for one user at a time. As such, we simply removed the hard-drive for the user 'monicaf332@jmail.com' and placed it into an ISO/IEC 27001 compliant de-gaussing and shredding process.",
+                    "We thank you for being a JMail customer.",
             ],
             ]
         bodies = ["\n".join(x) for x in bodies]
@@ -263,7 +325,7 @@ class PlayerNode(Node):
                 "james.rally@mview.mail.com",
                 "james.rally@mview.mail.com",
                 "Note To Self",
-                bodies[1].format(data.getNode("mountainnotes").address),
+                bodies[2].format(data.getNode("mountainnotes").address),
                 ),
             Email(
                 "monicaf332@jmail.com",
@@ -271,12 +333,26 @@ class PlayerNode(Node):
                 "Mainframe Password",
                 "It's backdrop2252 by the way",
                 ),
+            Email(
+                "hr@mview.mail.com",
+                "monica.flange@mview.mail.com",
+                "Notice of Dismissal",
+                bodies[1],
+                ),
+            Email(
+                "back.oboma@mail.gov",
+                "admin@cia.mail.gov",
+                "IMPORTANT: *****************",
+                bodies[3],
+                ),
+            Email("admin@mview.mail.com", "admin@jmail.com", "IMPORTANT: Data Destruction Request", bodies[4]),
+            Email("admin@jmail.com", "admin@mview.mail.com", "RE: IMPORTANT: Data Destruction Request", bodies[5]),
         ]
         for item in servers:
             data.NODES.append(item)
         for email in emails:
             sendEmail(email)
-        self.MISSIONS = missions.start_missions(self)
+        self.MISSIONS = missions.start_missions(self) + missions.base_missions(self)
         self.currentMission = data.getMission("start1", self)
         self.currentMission.start()
         data.NODES = [x for x in data.NODES if x]

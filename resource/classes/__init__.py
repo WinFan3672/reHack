@@ -181,3 +181,13 @@ class Commit(Base):
         self.origin = origin
     def __str__(self):
         return "{}: {}".format(self.origin,self.text)
+
+class Domain(Base):
+    def __init__(self, name, base, assign=None):
+        self.name = name
+        self.base = base
+        self.assign = assign
+    def assign(self, addr):
+        self.assign = addr
+    def getName(self):
+        return ".".join([self.name, self.base])

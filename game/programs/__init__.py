@@ -15,6 +15,7 @@ import getpass
 import copy
 import concurrent.futures
 import re
+import getpass
 
 
 def pickSelection(a_list, amount=1):
@@ -325,7 +326,36 @@ class WebServer(Node):
                     div()
                 else:
                     print(line)
+class TorWebServer(Node):
+    def __init__(
+            self, name, uid, address, path, linked=[], hacked=False, minPorts=2, users=[], webmaster="null@null.null"
+    ):
+        super().__init__(
+            name,
+            uid,
+            address,
+            files=[Folder("Tor",[File("torserver.elf")]), Folder("WebBrowser", [File("index.html")])],
+            linked=linked,
+            hacked=hacked,
+        )
+        self.ports = [data.getPort(80), data.getPort(9200)]
+        self.path = path
+        self.users = users
+        self.minPorts = minPorts
+        self.webmaster = webmaster
 
+    def main(self):
+        with open("onionsites/{}".format(self.path)) as f:
+            for line in f.read().split("\n"):
+                if line == "div()":
+                    div()
+                else:
+                    print(line)
+    def main_hacked(self):
+        div()
+        print("Tor web server status: 200 OK")
+        print("Contact the webmaster: {}".format(self.webmaster))
+        div()
 
 def debuginfo(args, player):
     if args == ["player"]:
@@ -1633,7 +1663,10 @@ class MasterVPS(Node):
                 ch = ch[14:]
                 if ch in self.offerings.keys():
                     if player.creditCount >= self.offerings[ch]["price"]:
-                        passwd = getpass.getpass("Admin Password $")
+                        if ch in ["xphone"]:
+                            passwd = "alpine"
+                        else:
+                            passwd = getpass.getpass("Admin Password $")
                         node = copy.deepcopy(self.offerings[ch]["node"])
                         node.name = "MasterVPS: {}".format(ch)
                         node.uid = "mastervps_{}".format(random.randint(2**16,2**32))
@@ -1648,6 +1681,8 @@ class MasterVPS(Node):
                         print("For a list, run 'bucket list'.")
                         if not passwd:
                             print("WARNING: You did not specify a password. A default password ('password') has been used instead.")
+                        elif ch in ["xphone"]:
+                            print("WARNING: The password for an xOS device is 'alpine'.")
                         player.creditCount -= self.offerings[ch]["price"]
                     else:
                         print("ERROR: Cannot afford bucket.")
@@ -1791,13 +1826,7 @@ def save(args, player):
         print(e)
 
 def filterDomainSafeCharacters(inputString):
-    # Define a regular expression pattern to match domain-safe characters
-    pattern = r'[a-z0-9\-._]'
-
-    # Use the re module to find all matching characters in the input string
-    safe_chars = ''.join(re.findall(pattern, inputString.lower()))
-
-    return safe_chars
+    return ''.join(re.findall(r'[a-z0-9\-_]', inputString.lower()))
 
 class DomainExpert(Node):
     def __init__(self):
@@ -1814,35 +1843,170 @@ class DomainExpert(Node):
             "mail":350,
             "me":50,
             "uk":150,
-            "co.uk":125,
-            "org.uk":125,
+            "us":165,
             "fail":75,
             }
     def main(self, player):
         print("Welcome. Type 'help' for a command list.")
         while True:
             ch = input("DomainExpert #")
+            args = ch.split(" ")
             if ch in ["help","?"]:
+                div()
                 print("help: prints help")
                 print("opt: list all domain offerings")
                 print("list: list all owned domains")
+                print("balance: prints balance")
+                print("purchase <domain>: purchase a domain")
+                print("assign <domain> <IP address>: assign a purchased domain to a MasterVPS node")
                 print("exit: disconenct from host")
+                div()
             elif ch == "":
                 continue
+            elif ch == "nodes":
+                node = data.getNode("mastervps_central")
+                if node.buckets:
+                    div()
+                    for x in node.buckets:
+                        print("{} ({})".format(x.address,x.offeringType))
+                    div()
+                else:
+                    div()
+                    print("No purchased nodes.")
+                    print("Purchase a node from 'mastervps.me'.")
+                    div()
+            elif ch == "assign":
+                div()
+                print("assign <domain> <ip address>")
+                div()
+                print("Assign an owned domain to a MasterVPS node.")
+                print("Run 'nodes' for a list.")
+            elif "assign" in args and len(args) == 3:
+                master = data.getNode("mastervps_central")
+                if args[1] in [x.getName() for x in self.domains]:
+                    if args[2] in [x.address for x in master.buckets]:
+                        d = [x for x in self.domains if x.getName() == args[1]][0] ## Hacky workaround because the normal way doesn't work.
+                        node = data.getNode(args[2])
+                        d.addr = copy.copy(node.address)
+                        node.address = d.getName()
+                        print("Successfully connected {} to {}.".format(args[2],args[1]))
+
+                    else:
+                        print("ERROR: Invalid IP address.")
+                else:
+                    print("ERROR: Invalid domain.")
+            elif ch == "purchase":
+                div()
+                print("purchase <domain>")
+                div()
+                print("Purchase a domain.")
+                div()
+            elif ch.startswith("purchase "):
+                ch = ch[9:]
+                dom = ch.split(".")
+                if len(dom) == 2:
+                    if dom[1] in self.pricing.keys():
+                        if player.creditCount >= self.pricing[dom[1]]:
+                            node = data.getNode(".".join(dom))
+                            if node:
+                                print("ERROR: Domain is already taken.")
+                            else:
+                                player.creditCount -= self.pricing[dom[1]]
+                                d = Domain(dom[0], dom[1])
+                                self.domains.append(d)
+                                print("Successfully purchased {} for {} Cr.".format(".".join(dom),self.pricing[dom[1]]))
+                        else:
+                            print("ERROR: Cannot afford domain of this type.")
+                    else:
+                        print("ERROR: Invalid domain ending.")
+                        print("For a list, type 'opt'.")
+                else:
+                    print("ERROR: Format must be <name>.<ending>.")
             elif ch == "list":
                 if self.domains:
-                    pass
+                    for x in self.domains:
+                        n = ".".join([x.name,x.base])
+                        if x.assign:
+                            print("{} --> {}".format(n,x.assign))
+                        else:
+                            print("{} (Unassigned)".format(n))
                 else:
                     print("No owned domains.")
             elif ch in ["clear","cls"]:
                 cls()
             elif ch == "opt":
+                div()
                 for item in self.pricing:
                     print("{}: {} Cr.".format(item, self.pricing[item]))
+                div()
             elif ch in ["quit","exit"]:
                 return
+            elif ch in ["bal","balance"]:
+                print("{} Cr.".format(player.creditCount))
             else:
                 print("ERROR: Invalid command.")
     def main_hacked(self, player):
         print("ERROR: The admin panel has been disabled by the site administrator.")
 
+def tor(args, player):
+    if args:
+        for arg in args:
+            node = data.getTorNode(arg)
+            if node:
+                if node.hacked and "main_hacked" in dir(node):
+                    if item.playerPlease:
+                        node.main_hacked(player)
+                    else:
+                        node.main_hacked()
+                else:
+                    if node.playerPlease:
+                        node.main(player)
+                    else:
+                        node.main()
+            else:
+                print("ERROR: Onionsite '{}' not found.".format(arg))
+    else:
+        div()
+        print("tor [onionsite]")
+        div()
+        print("Connects to a Tor node.")
+        div()
+
+class SignupService(Node):
+    def __init__(self, uid, url, agent_id):
+        super().__init__("Signup Service", uid, url, ports=[data.getPort(80), data.getPort(21), data.getPort(22)], minPorts=65536)
+        self.name = "Signup Service"
+        self.agent_id = agent_id
+    def main(self):
+        node = data.getNode(self.agent_id)
+        print("Welcome to the signup server for {}.".format(node.name))
+
+        username = ""
+        while not username:
+            username = input("Enter Your Username $")
+            if not username:
+                print("ERROR: Must type a username.")
+            if username in [x.name for x in node.users]:
+                print("ERROR: That user already exists.")
+                username = ""
+
+        password = ""
+        while not password:
+            password = getpass.getpass("Enter a password $")
+            if not password:
+                print("ERROR: You must type a password.")
+
+        node.users.append(User(username, password))
+        print("Successfully added user.")
+        if isinstance(Node, MailServer):
+            print("Your email address is: {}@{}".format(username, node.address))
+
+def tormail(args):
+    if args:
+        pass
+    else:
+        div()
+        print("tormail <email address> [password]")
+        div()
+        print("Log into a Tor email service.")
+        div()
