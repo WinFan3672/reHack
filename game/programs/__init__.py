@@ -365,30 +365,58 @@ def debuginfo(args, player):
     elif args == ["passwd"]:
         with open("data/passwords.txt") as f:
             print(random.choice(f.read().split("\n")))
-    elif args == ["nodes"]:
-        div()
-        for item in data.NODES:
-            print("{}: {}".format(item.name, item.address))
-        div()
-    elif args == ["complete-mission"]:
+    elif args == ["mission"]:
         while player.currentMission:
             player.currentMission.end()
+    elif args == ["ip"]:
+        div()
+        print("debug ip [arguments]")
+        div()
+        print("Positional arguments:")
+        print("    list: lists all nodes and their info")
+        print("    info: get info about a node")
+        div()
+    elif args == ["ip", "list"]:
+        div()
+        print("UID\t\t\tHOSTNAME")
+        div()
+        for x in data.NODES:
+            print("{}\t\t\t{}".format(x.uid, x.name))
+        div()
+    elif args == ["ip", "info"]:
+        div()
+        print("debug ip info <uid>")
+        div()
+        print("Prints info about a node.")
+        div()
+    elif "ip" in args and "info" in args and len(args) == 3:
+        node = data.getNode(args[2])
+        if not node:
+            raise Exception("Invalid node given.")
+        div()
+        print("Name: {}".format(node.name))
+        print("IP Address: {}".format(node.address))
+        print("Linked Nodes: {}".format("; ".join(node.linked) if node.linked else "None"))
+        print("Ports: {}".format("; ".join([x.name for x in node.ports]) if node.ports else "None"))
+        print("Min. Ports To Hack: {}".format(node.minPorts))
+        for user in node.users:
+            print("User {}:{}".format(user.name, user.password))
+        div()
     elif args == ["gen"]:
-        print(data.GENERATED)
+        print("\n".join(data.GENERATED))
     else:
         div()
         print("debug <args>")
         div()
-        print("debug player: print out player class")
-        print("debug passwd: print a random password that can be brute-forced")
-        print("debug nodes: list all nodes you can connect to")
-        print("debug complete-mission: complete an entire mission series.")
+        print("Positional arguments:")
+        print("    player: print out player class")
+        print("    passwd: print a random password that can be brute-forced")
+        print("    ip: lists information about nodes")
+        print("    mission: complete an entire mission series.")
+        print("    gen: lists all IP addresses generated randomly.")
         div()
-        print(
-            "WARNING: This program is not intended for use by anyone other than the developers."
-        )
+        print("WARNING: This program is not intended for use by anyone other than the developers.")
         print("It WILL ruin the fun significantly if used incorrectly.")
-        print("It's also mostly useless.")
         div()
 
 
@@ -2009,4 +2037,39 @@ def tormail(args):
         print("tormail <email address> [password]")
         div()
         print("Log into a Tor email service.")
+        div()
+
+class LocalAreaNetwork(Node):
+    def __init__(self, name, uid, address):
+        super().__init__(name, uid, address, ports = [data.getPort(1)], minPorts=1)
+        self.devices = []
+        self.locked = False
+    def add_device(self, device):
+        if not self.locked:
+            self.devices.append(device)
+    def add_router(self):
+        self.devices.append(Router(self.devices))
+        self.locked = True
+    def main_hacked(self):
+        print("ERROR: A LAN client such as `lanconnect` is required to connect to a LAN router and access its network.")
+    def getNode(self, uid):
+        for node in self.devices:
+            if node.uid == uid or node.address == uid:
+                return node
+
+    def generateIP(self):
+        ## Returns the next valid local IP
+        iplist = [x.address for x in self.devices]
+        nums = [0, 1]
+
+class Router(Node):
+    def __init__(self, devices):
+        super().__init__("Cicso Router", "router", "192.168.0.0", ports=[data.getPort(80), data.getPort(22)])
+        self.devices = devices
+    def main_hacked(self):
+        div()
+        print("IP ADDR\t\tHOSTNAME")
+        div()
+        for x in sorted(self.devices, key=lambda x: x.address):
+            print("{}\t\t{}".format(x.address, x.name))
         div()

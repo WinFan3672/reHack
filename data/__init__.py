@@ -81,6 +81,7 @@ BLOCKLIST = [
     "admin",
 ]
 PORTS = [
+    Port(1, "Local Area Network Router"),
     Port(21, "FTP"),
     Port(22, "SSH"),
     Port(23, "Telnet"),
@@ -364,6 +365,7 @@ PROGRAMS = [
     programs.PortBreakingTool("webworm", 80, price=500).program,
     programs.PortBreakingTool("torrentpwn", 6881, price=750).program,
     programs.PortBreakingTool("sqldump", 1433, price=2500).program,
+    programs.PortBreakingTool("lancrack", 1, price=0).program,
     Program("connect", game.programs.connect.main, True, classPlease=True),
     Program("debug", programs.debuginfo, price=0, classPlease=True),
     Program("mxlookup", programs.mxlookup, price=0),

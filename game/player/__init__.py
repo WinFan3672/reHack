@@ -22,6 +22,7 @@ import missions
 import time
 import os
 import pickle
+import nodes
 
 
 def getProgram(name):
@@ -202,6 +203,7 @@ class PlayerNode(Node):
                 hideLookup=True,
             ),
             MailServer("EnWired Mail", "enwired-mail", "enwired.mail", self, [User("elliot"), User("sales")]),
+            nodes.cialan,
         ]
         bodies = [
             [
