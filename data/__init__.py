@@ -353,6 +353,8 @@ N = [
     programs.WebServer("The Onion Router :: Official Site", "torweb", "tor.org", "tor.org"),
     programs.MessageBoard("EnWired: Home", "enwired.com", "enwired-web", "enwired"),
     Node("Project Autocrat :: Mainframe", "autocratmain", generateIP(), ports=[], minPorts=65536, users=[User("admin", "roses.are.red.violets.are.blue")]),
+    programs.WebServer("reHack Test Suite Home", "rehacktestmain", "rehack.test", "rehack.test"),
+    Node("Blank Node Test", "blanktest", "blank.rehack.test"),
 ]
 for item in N:
     NODES.append(item)
@@ -365,7 +367,7 @@ PROGRAMS = [
     programs.PortBreakingTool("webworm", 80, price=500).program,
     programs.PortBreakingTool("torrentpwn", 6881, price=750).program,
     programs.PortBreakingTool("sqldump", 1433, price=2500).program,
-    programs.PortBreakingTool("lancrack", 1, price=0).program,
+    programs.PortBreakingTool("lancrack", 1, True).program,
     Program("connect", game.programs.connect.main, True, classPlease=True),
     Program("debug", programs.debuginfo, price=0, classPlease=True),
     Program("mxlookup", programs.mxlookup, price=0),
@@ -384,6 +386,7 @@ PROGRAMS = [
     Program("tor", programs.tor, True, classPlease=True),
     # Program("sweep", programs.sweep, price=0),
     # Program("save",programs.save,True,classPlease=True),
+    Program("lanconnect", programs.LANConnect, True, classPlease=True),
 ]
 SPICES = [
     "Basil",
@@ -464,11 +467,9 @@ with open("data/passwords.txt") as f:
             PASSLIST.remove(item)
 with open("data/password-wordlist.txt") as f:
     PASSLIST += sorted(f.read().split("\n"))
+
 PASSLIST = sorted(PASSLIST)
 
-with open("data/usernames.txt") as f:
-    USERNAMES = [x.lower() for x in f.read().split("\n")]
-random.shuffle(USERNAMES)
 random.shuffle(PASSLIST)
 
 with open("data/names.json") as f:
