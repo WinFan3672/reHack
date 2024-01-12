@@ -522,7 +522,7 @@ def start_missions(self):
         BuyMission(
             self,
             "start6",
-            "Start (Pt. 6)",lan.rehack.test
+            "Start (Pt. 6)",
             ["webworm", "mxlookup"],
             missionEmails[5],
             reward=500,
