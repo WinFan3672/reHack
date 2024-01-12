@@ -152,7 +152,6 @@ def nmap(args):
             if item.address == args:
                 item.nmap = True
                 div()
-                print("Found Target")
                 print("Hostname: {}".format(item.name))
                 print("Exposed Ports: {}".format(len(item.ports)))
                 print("Min. Ports To Crack: {}".format(item.minPorts))
@@ -162,12 +161,10 @@ def nmap(args):
                     print("WARNING: FIREWALL ACTIVE.")
                 if item.ports:
                     div()
-                for i in item.ports:
-                    print(
-                        "[{}] PORT {}: {} ".format(
-                            "OPEN" if i.open else "CLOSED", i.num, i.name
-                        )
-                    )
+                    print("PORT\tSTATE\tNAME")
+                    div()
+                for i in sorted(item.ports, key=lambda x:x.num):
+                    print("{}\t{}\t{}".format(i.num, "OPEN" if i.open else "CLOSED", i.name))
                 div()
                 s = True
         if not s:
@@ -200,7 +197,7 @@ class PortBreakingTool(Base):
                 else:
                     for port in node.ports:
                         if port.num == self.port:
-                            time.sleep(2.5)
+                            time.sleep(2.5 / len(node.ports) + 1)
                             port.open = True
                             print(
                                 "SUCCESSFULLY OPENED PORT {} @ {}".format(
@@ -404,6 +401,23 @@ def debuginfo(args, player):
         div()
     elif args == ["gen"]:
         print("\n".join(data.GENERATED))
+    elif args == ["lan"]:
+        div()
+        print("debug lan <uid>")
+        div()
+        print("Displays info about a LAN.")
+        div()
+    elif "lan" in args and len(args) == 2:
+        node = data.getNode(args[1])
+        if isinstance(node, LocalAreaNetwork):
+            div()
+            print("ADDR\tHOSTNAME")
+            div()
+            for x in node.devices:
+                print("{}\t{}".format(x.address, x.name))
+            div()
+        else:
+            print("ERROR: Invalid LAN.")
     else:
         div()
         print("debug <args>")
@@ -414,6 +428,7 @@ def debuginfo(args, player):
         print("    ip: lists information about nodes")
         print("    mission: complete an entire mission series.")
         print("    gen: lists all IP addresses generated randomly.")
+        print("    lan: displays info about a LAN")
         div()
         print("WARNING: This program is not intended for use by anyone other than the developers.")
         print("It WILL ruin the fun significantly if used incorrectly.")
@@ -2050,6 +2065,7 @@ class LocalAreaNetwork(Node):
     def add_router(self):
         self.devices.append(Router(self.devices))
         self.locked = True
+        self.devices.sort(key = lambda x:x.address)
     def main_hacked(self):
         print("ERROR: A LAN client such as `lanconnect` is required to connect to a LAN router and access its network.")
     def getNode(self, uid):
@@ -2058,18 +2074,130 @@ class LocalAreaNetwork(Node):
                 return node
 
     def generateIP(self):
-        ## Returns the next valid local IP
         iplist = [x.address for x in self.devices]
         nums = [0, 1]
+        nums[1] += len(iplist)
+        while nums[1] > 255:
+            nums[0] += 1
+            nums[1] -= 255
+
+        return "192.168.{}.{}".format(nums[0], nums[1])
 
 class Router(Node):
     def __init__(self, devices):
-        super().__init__("Cicso Router", "router", "192.168.0.0", ports=[data.getPort(80), data.getPort(22)])
+        super().__init__("LAN Router", "router", "192.168.0.0", ports=[data.getPort(80), data.getPort(22)])
+        self.hacked = True
+        self.ports = [data.getPort(1)]
         self.devices = devices
     def main_hacked(self):
         div()
-        print("IP ADDR\t\tHOSTNAME")
+        print("ADDR\t\tHOSTNAME")
         div()
-        for x in sorted(self.devices, key=lambda x: x.address):
-            print("{}\t\t{}".format(x.address, x.name))
+        for x in self.devices:
+            print("{}\t{}".format(x.address, x.name))
+        div()
+def LANTool(args):
+    print("ERROR: This program is intended for use with `lanconnect`.")
+    print("       Run it while connected to a LAN.")
+def LANConnect(args, player):
+    def main(node, player):
+        def connect(node, player):
+            if node.hacked and "main_hacked" in dir(node):
+                if node.playerPlease:
+                    node.main_hacked(player)
+                else:
+                    node.main_hacked()
+            else:
+                if node.playerPlease:
+                    node.main(player)
+                else:
+                    node.main()
+        def getNode(node, address):
+            for x in node.devices:
+                if x.address == address:
+                    return x
+        def breakPort(node, num):
+            for port in node.ports:
+                if port.num == num:
+                    print("ATTACKING PORT {}...".format(num))
+                    time.sleep(2.5 / len(node.ports) + 1)
+                    port.open = True
+                    print("SUCCESSFULLY ATTACKED PORT.")
+                    return
+
+        programs = sorted([x.name for x in data.PROGRAMS if x.unlocked])
+        unlocked = {}
+        for x in ["sshkill", "ftpkill", "webworm"]:
+            unlocked[x] = x in programs
+        cls()
+        print("Welcome to {}.".format(node.name))
+        print("For a command list, type HELP.")
+        while True:
+            ch = input("{} $".format(node.address))
+            if ch == "":
+                pass
+            elif ch in ["clear","cls"]:
+                cls()
+            elif ch == "debug":
+                for x in node.devices:
+                    print("{}".format(x.address))
+            elif ch == "info":
+                print(unlocked)
+                print(programs)
+            elif ch == "sshkill" and unlocked["sshkill"]:
+                div()
+                print("sshkill <address>")
+                div()
+                print("Breaks port 22 for <address>.")
+                div()
+            elif ch.startswith("sshkill ") and unlocked["sshkill"]:
+                ch = ch[8:]
+                target = getNode(node, ch)
+                breakPort(target, 22)
+            elif ch == "connect":
+                div()
+                print("connect <address>")
+                div()
+                print("Connects to a node.")
+                div()
+            elif ch.startswith("connect "):
+                target = getNode(node, ch[8:])
+                if target:
+                    connect(target, player)
+                else:
+                    print("ERROR: Invalid hostname.")
+            elif ch == "help":
+                topics = ["help", "clear", "connect"] + [x for x in unlocked.keys() if unlocked[x]] + ["exit"]
+                div()
+                print("\n".join(topics))
+                div()
+            elif ch in ["quit","exit"]:
+                return
+            else:
+                print("ERROR: Invalid program.")
+
+
+    def findNode(address):
+        for n in data.NODES:
+            if n.address == address:
+                return n
+
+    if len(args) == 1:
+        node = findNode(args[0])
+        if not node:
+            print("ERROR: Invalid address.")
+            return 
+        if not isinstance(node, LocalAreaNetwork):
+            print("ERROR: The network is not a LAN.")
+            return
+        if not node.hacked:
+            print("ERROR: Access denied.")
+            # return
+        main(node, player)
+
+    else:
+        div()
+        print("lanconnect <ip address>")
+        div()
+        print("Connects to a LAN and pretends to be a device on it, while remaining hidden.")
         div()

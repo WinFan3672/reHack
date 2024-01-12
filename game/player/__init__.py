@@ -204,6 +204,7 @@ class PlayerNode(Node):
             ),
             MailServer("EnWired Mail", "enwired-mail", "enwired.mail", self, [User("elliot"), User("sales")]),
             nodes.cialan,
+            nodes.testing, 
         ]
         bodies = [
             [
@@ -354,36 +355,10 @@ class PlayerNode(Node):
             data.NODES.append(item)
         for email in emails:
             sendEmail(email)
-        self.MISSIONS = missions.start_missions(self) + missions.base_missions(self)
+        self.MISSIONS = missions.main(self)
         self.currentMission = data.getMission("start1", self)
         self.currentMission.start()
         data.NODES = [x for x in data.NODES if x]
         data.NODES = [self] + data.NODES
 
-        chan_bodies = [
-            ["Hello. I would like to request the URL to 5chan."],
-            ["send 5chan pls"],
-            ["What is the 5chan URL?"],
-            ["link to 5chan?"],
-            ["Give 5chan link 2023"],
-        ]
-        chan_bodies = ["\n".join(x) for x in chan_bodies]
-        jmail = data.getNode("jmail")
-        i = 1337 * 3
-        for item in pickSelection(data.USERNAMES, 25):
-            jmail.add_account(item)
-            body = [
-                "SUPPORT TICKET",
-                "EMAIL: {}@jmail.com".format(item),
-                "BODY: {}".format(random.choice(chan_bodies)),
-            ]
-            body = "\n".join(body)
-            e = Email(
-                "null@null.null",
-                "support@w3d.mail.com",
-                "Support Ticket # {}".format(i),
-                body,
-            )
-            sendEmail(e)
-            i += 1
         data.addFirewall("firewalltest", Firewall("smartheap11", 0.5))
