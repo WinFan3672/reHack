@@ -364,6 +364,7 @@ def debuginfo(args, player):
             print(random.choice(f.read().split("\n")))
     elif args == ["mission"]:
         while player.currentMission:
+            print("Completed: {}".format(player.currentMission.name))
             player.currentMission.end()
     elif args == ["ip"]:
         div()
@@ -1207,8 +1208,8 @@ class Mission(Base):
             sendEmail(self.end_email)
         if self.next_id:
             self.player.currentMission = data.getMission(self.next_id, self.player)
-        if self.player.currentMission:
-            self.player.currentMission.start()
+            if self.player.currentMission:
+                self.player.currentMission.start()
         else:
             self.player.currentMission = None
         self.player.creditCount += self.reward
@@ -1216,8 +1217,8 @@ class Mission(Base):
             self.end_function()
 
 class LANMission(Mission):
-    def __init__(self, player, mission_id, name, target, lanserver, start_email, next_id=None, start_function=None, end_function=None):
-        super().__init__(player, mission_id, name, target, start_email, next_id=next_id, start_function=start_function, end_function=end_function)
+    def __init__(self, player, mission_id, name, target, lanserver, start_email, next_id=None, start_function=None, end_function=None, reward=0):
+        super().__init__(player, mission_id, name, target, start_email, next_id=next_id, start_function=start_function, end_function=end_function, reward=reward)
         self.lanserver = lanserver
     def check_end(self):
         def getNode(node, uid):
@@ -2077,9 +2078,8 @@ class LocalAreaNetwork(Node):
         if not self.locked:
             self.devices.append(device)
     def add_router(self):
-        self.devices.append(Router(self.devices))
+        self.devices.insert(0, Router(self.devices))
         self.locked = True
-        self.devices.sort(key = lambda x:x.address)
     def main_hacked(self):
         print("ERROR: A LAN client such as `lanconnect` is required to connect to a LAN router and access its network.")
     def getNode(self, uid):
@@ -2099,7 +2099,7 @@ class LocalAreaNetwork(Node):
 
 class Router(Node):
     def __init__(self, devices):
-        super().__init__("LAN Router", "router", "192.168.0.0", ports=[data.getPort(80), data.getPort(22)])
+        super().__init__("Router", "router", "192.168.0.0", ports=[data.getPort(80), data.getPort(22)])
         self.hacked = True
         self.ports = [data.getPort(1)]
         self.ports[0].open = True

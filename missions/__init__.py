@@ -5,12 +5,26 @@ from game.player import *
 import data
 from game.programs import (
     Mission,
+    LANMission,
     ConnectMission,
     NMapMission,
     BuyMission,
     pickSelection,
 )
 
+
+def autocrat_missions(self):
+    bodies = [
+            [
+                "This is weird. Very weird. Much weirder than anticipated.",
+                "Okay, I'm gonna need you to find the LAN server for the CIA's Langley office and hack into it.",
+                "If you're unsure of what to do, try completing Advanced Tutorial #4.", 
+                "Make this quick.",
+            ],
+        ]
+    bodies = ["\n".join(x) for x in bodies]
+    emails = []
+    return []
 
 def base_missions(self):
     bodies = []
@@ -93,6 +107,25 @@ def main_story_missions(self):
             "Then, I'll use the resources at my disposal to try and work out what Project Aurocrat is.",
             "Get going.",
         ],
+        [
+                "Welcome to the Advanced Tutorial for LAN's.",
+                "Most respected companies have a LAN set up in their building.",
+                "These contain devices that can only be accessed from within the LAN.",
+                "To actually hack into a LAN, you need 2 tools:",
+                "",
+                "* lanconnect",
+                "This is built into your OS.",
+                "* lancrack",
+                "This costs 2500 credits.",
+                "",
+                "If you have the IP of a LAN's router, you can use lancrack to opern port 1, and lanconnect to connect to it.",
+                "Once you're in, you can connect to different devices on the network.",
+                "However, you need a list of local IP's. Thankfully, the router you just connected to is located at `192.168.0.0`, and you can connect to it and see a list of devices.",
+                "From there, you can hack whatever you need to hack.",
+                "",
+                "Using this knowledge, connect to `lan.rehack.test` and hack the machine with the hostname 'HACK ME'.",
+                "If you complete this, you will be refunded the cost of `lancrack` as a mission reward.",
+        ],
     ]
     bodies = ["\n".join(x) for x in bodies]
     end_email = Email(
@@ -138,6 +171,12 @@ def main_story_missions(self):
             "Hidden In The Depths",
             bodies[5],
         ),
+        Email(
+            "contracts@rehack.mail",
+            "{}@jmail.com".format(self.name),
+            "Advanced Tutorial #4",
+            bodies[6],
+        ),
     ]
     return [
         Mission(
@@ -166,7 +205,17 @@ def main_story_missions(self):
             emails[2],
             end_email,
             reward=1450,
-        ),
+            ),
+        LANMission(
+            self,
+            "advanced4",
+            "Advanced Tutorial #4",
+            "lantest",
+            "hackme",
+            emails[5],
+            end_email,
+            reward=2500,
+            ),
         Mission(
             self,
             "mission1",
@@ -184,7 +233,9 @@ def main_story_missions(self):
             emails[4],
             end_email,
             reward=2500,
+            next_id = "autocrat1",
         ),
+
     ]
 
 
@@ -541,4 +592,4 @@ def start_missions(self):
     return MISSIONS
 
 def main(self):
-    return start_missions(self) + base_missions(self) + main_story_missions(self)
+    return start_missions(self) + base_missions(self) + main_story_missions(self) + autocrat_missions(self)
