@@ -1200,8 +1200,6 @@ class Mission(Base):
             self.start_function()
 
     def check_end(self):
-        if callable(self.end_function):
-            self.end_function()
         return data.getNode(self.target).hacked
 
     def end(self):
@@ -1209,11 +1207,27 @@ class Mission(Base):
             sendEmail(self.end_email)
         if self.next_id:
             self.player.currentMission = data.getMission(self.next_id, self.player)
-            if self.player.currentMission:
-                self.player.currentMission.start()
+        if self.player.currentMission:
+            self.player.currentMission.start()
         else:
             self.player.currentMission = None
         self.player.creditCount += self.reward
+        if callable(self.end_function):
+            self.end_function()
+
+class LANMission(Mission):
+    def __init__(self, player, mission_id, name, target, lanserver, start_email, next_id=None, start_function=None, end_function=None):
+        super().__init__(player, mission_id, name, target, start_email, next_id=next_id, start_function=start_function, end_function=end_function)
+        self.lanserver = lanserver
+    def check_end(self):
+        def getNode(node, uid):
+            for x in node.devices:
+                if x.uid == uid or x.address == uid:
+                    return x
+        node = data.getNode(self.lanserver)
+        subNode = getNode(node, self.target)
+        if subNode:
+            return subNode.hacked
 
 
 def mission_program(args, player):
@@ -2055,8 +2069,8 @@ def tormail(args):
         div()
 
 class LocalAreaNetwork(Node):
-    def __init__(self, name, uid, address):
-        super().__init__(name, uid, address, ports = [data.getPort(1)], minPorts=1)
+    def __init__(self, name, uid, address, minPorts=1):
+        super().__init__(name, uid, address, ports = [data.getPort(1)], minPorts=minPorts)
         self.devices = []
         self.locked = False
     def add_device(self, device):
@@ -2088,6 +2102,7 @@ class Router(Node):
         super().__init__("LAN Router", "router", "192.168.0.0", ports=[data.getPort(80), data.getPort(22)])
         self.hacked = True
         self.ports = [data.getPort(1)]
+        self.ports[0].open = True
         self.devices = devices
     def main_hacked(self):
         div()
@@ -2098,9 +2113,25 @@ class Router(Node):
         div()
 def LANTool(args):
     print("ERROR: This program is intended for use with `lanconnect`.")
-    print("       Run it while connected to a LAN.")
 def LANConnect(args, player):
     def main(node, player):
+        def nmap(node):
+            if not node:
+                print("ERROR: Invalid address.")
+                return
+            div()
+            print("Hostname: {}".format(node.name))
+            print("Exposed Ports: {}".format(len(node.ports)))
+            print("Min. Ports To Crack: {}".format(node.minPorts))
+            if node.hacked:
+                print("HOST VULNERABILITY ACTIVE")
+            if node.ports:
+                div()
+                print("PORT\tSTATE\tNAME")
+                div()
+                for p in node.ports:
+                    print("{}\t{}\t{}".format(p.num, "OPEN" if p.open else "CLOSED", p.name))
+            div()
         def connect(node, player):
             if node.hacked and "main_hacked" in dir(node):
                 if node.playerPlease:
@@ -2117,6 +2148,9 @@ def LANConnect(args, player):
                 if x.address == address:
                     return x
         def breakPort(node, num):
+            if not node:
+                print("ERROR: Invalid address.")
+                return
             for port in node.ports:
                 if port.num == num:
                     print("ATTACKING PORT {}...".format(num))
@@ -2127,7 +2161,7 @@ def LANConnect(args, player):
 
         programs = sorted([x.name for x in data.PROGRAMS if x.unlocked])
         unlocked = {}
-        for x in ["sshkill", "ftpkill", "webworm"]:
+        for x in ["sshkill", "ftpkill", "webworm", "nmap"]:
             unlocked[x] = x in programs
         cls()
         print("Welcome to {}.".format(node.name))
@@ -2154,6 +2188,26 @@ def LANConnect(args, player):
                 ch = ch[8:]
                 target = getNode(node, ch)
                 breakPort(target, 22)
+            elif ch == "ftpkill" and unlocked["ftpkill"]:
+                div()
+                print("ftpkill <address>")
+                div()
+                print("Breaks port 21 for <address>.")
+                div()
+            elif ch.startswith("ftpkill ") and unlocked["ftpkill"]:
+                ch = ch[8:]
+                target = getNode(node, ch)
+                breakPort(target, 21)            
+            elif ch == "webworm" and unlocked["webworm"]:
+                div()
+                print("webworm <address>")
+                div()
+                print("Breaks port 80 for <address>.")
+                div()
+            elif ch.startswith("webworm ") and unlocked["webworm"]:
+                ch = ch[8:]
+                target = getNode(node, ch)
+                breakPort(target, 80)
             elif ch == "connect":
                 div()
                 print("connect <address>")
@@ -2166,6 +2220,16 @@ def LANConnect(args, player):
                     connect(target, player)
                 else:
                     print("ERROR: Invalid hostname.")
+            elif ch == "nmap":
+                div()
+                print("nmap <address>")
+                div()
+                print("Lists all open ports on <address> as well as other related info.")
+                div()
+            elif ch.startswith("nmap "):
+                ch = ch[5:]
+                target = getNode(node, ch)
+                nmap(target)
             elif ch == "help":
                 topics = ["help", "clear", "connect"] + [x for x in unlocked.keys() if unlocked[x]] + ["exit"]
                 div()
