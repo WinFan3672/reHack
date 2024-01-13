@@ -1230,6 +1230,20 @@ class LANMission(Mission):
         if subNode:
             return subNode.hacked
 
+class NestedLANMission(Mission):
+    def __init__(self, player, mission_id, name, target, lanserver, sublanserver, start_email, next_id=None, start_function=None, end_function=None, reward=0):
+        super().__init__(player, mission_id, name, target, start_email, next_id=next_id, start_function=start_function, end_function=end_function, reward=reward)
+        self.lanserver = lanserver
+        self.sublan = sublanserver
+    def check_end(self):
+        def getNode(node, uid):
+            for x in node.devices:
+                if x.uid == uid or x.address == uid:
+                    return x
+        node = data.getNode(self.lanserver).getNode(self.sublan)
+        subNode = getNode(node, self.target)
+        if subNode:
+            return subNode.hacked
 
 def mission_program(args, player):
     if player.currentMission:
