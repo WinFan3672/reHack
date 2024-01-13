@@ -197,7 +197,7 @@ class PortBreakingTool(Base):
                 else:
                     for port in node.ports:
                         if port.num == self.port:
-                            time.sleep(2.5 / len(node.ports) + 1)
+                            time.sleep(2.5)
                             port.open = True
                             print(
                                 "SUCCESSFULLY OPENED PORT {} @ {}".format(
@@ -376,10 +376,10 @@ def debuginfo(args, player):
         div()
     elif args == ["ip", "list"]:
         div()
-        print("UID\t\t\tHOSTNAME")
+        print("UID\t\tHOSTNAME")
         div()
         for x in data.NODES:
-            print("{}\t\t\t{}".format(x.uid, x.name))
+            print("{}\t\t{}".format(x.uid, x.name))
         div()
     elif args == ["ip", "info"]:
         div()
@@ -2080,6 +2080,8 @@ class LocalAreaNetwork(Node):
     def add_router(self):
         self.devices.insert(0, Router(self.devices))
         self.locked = True
+    def main(self):
+        print("ERROR: Access denied.")
     def main_hacked(self):
         print("ERROR: A LAN client such as `lanconnect` is required to connect to a LAN router and access its network.")
     def getNode(self, uid):
@@ -2109,12 +2111,23 @@ class Router(Node):
         print("ADDR\t\tHOSTNAME")
         div()
         for x in self.devices:
-            print("{}\t{}".format(x.address, x.name))
+            print("{}\t\t{}".format(x.address, x.name))
         div()
 def LANTool(args):
     print("ERROR: This program is intended for use with `lanconnect`.")
 def LANConnect(args, player):
     def main(node, player):
+        def hack(node):
+            if not node:
+                print("ERROR: Invalid address.")
+                return
+            if node.minPorts > len([x for x in node.ports if x.open]):
+                print("ERROR: Too few open ports.")
+                return
+            print("INSTALLING EXPLOIT...")
+            time.sleep(2.5 / (len(node.ports) + 1))
+            print("EXPLOIT INSTALLED.")
+            node.hacked = True
         def nmap(node):
             if not node:
                 print("ERROR: Invalid address.")
@@ -2161,7 +2174,7 @@ def LANConnect(args, player):
 
         programs = sorted([x.name for x in data.PROGRAMS if x.unlocked])
         unlocked = {}
-        for x in ["sshkill", "ftpkill", "webworm", "nmap"]:
+        for x in ["porthack", "sshkill", "ftpkill", "webworm", "nmap", "lancrack"]:
             unlocked[x] = x in programs
         cls()
         print("Welcome to {}.".format(node.name))
@@ -2230,11 +2243,42 @@ def LANConnect(args, player):
                 ch = ch[5:]
                 target = getNode(node, ch)
                 nmap(target)
+            elif ch == "porthack":
+                div()
+                print("porthack <address>")
+                div()
+                print("Uses open ports to gain admin access to <address>.")
+                div()
+            elif ch.startswith("porthack "):
+                ch = ch[9:]
+                hack(getNode(node, ch))
+            elif ch == "lancrack" and unlocked["lancrack"]:
+                div()
+                print("lancrack <address>")
+                div()
+                print("Tool for breaking port 1.")
+                div()
+            elif ch.startswith("lancrack ") and unlocked["lancrack"]:
+                ch = ch[9:]
+                breakPort(getNode(node, ch), 1)
             elif ch == "help":
-                topics = ["help", "clear", "connect"] + [x for x in unlocked.keys() if unlocked[x]] + ["exit"]
+                topics = ["help", "clear", "connect", "lanconnect"] + [x for x in unlocked.keys() if unlocked[x]] + ["exit"]
                 div()
                 print("\n".join(topics))
                 div()
+            elif ch == "lanconnect":
+                div()
+                print("lanconnect <address>")
+                div()
+                print("Connect to a LAN within the current LAN.")
+                div()
+            elif ch.startswith("lanconnect "):
+                ch = ch[11:]
+                n = getNode(node, ch)
+                if isinstance(n, LocalAreaNetwork):
+                    LANConnect(n, player)
+                else:
+                    print("ERROR: Invalid hostname.")
             elif ch in ["quit","exit"]:
                 return
             else:
@@ -2245,9 +2289,16 @@ def LANConnect(args, player):
         for n in data.NODES:
             if n.address == address:
                 return n
-
-    if len(args) == 1:
-        node = findNode(args[0])
+    if isinstance(args, LocalAreaNetwork):
+        if not args.hacked:
+            print("ERROR: Access denied.")
+            # return
+        main(args, player)
+    elif len(args) == 1:
+        if isinstance(args, Node):
+            pass
+        else:
+            node = findNode(args[0])
         if not node:
             print("ERROR: Invalid address.")
             return 

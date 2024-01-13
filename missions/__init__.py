@@ -14,17 +14,36 @@ from game.programs import (
 
 
 def autocrat_missions(self):
+    end_email = Email(
+        "contracts@rehack.mail",
+        "{}@jmail.com".format(self.name),
+        "Contract Complete",
+        "Congratulations on completing the contract.\nIf you want to complete more contracts, visit contracts.rehack.org",
+    )
     bodies = [
             [
                 "This is weird. Very weird. Much weirder than anticipated.",
-                "Okay, I'm gonna need you to find the LAN server for the CIA's Langley office and hack into it.",
-                "If you're unsure of what to do, try completing Advanced Tutorial #4.", 
+                "Okay, I'm gonna need you to find the LAN for the CIA's Langley office and hack into it.",
+                "If you're unsure of how to hack a LAN, try completing Advanced Tutorial #4.", 
                 "Make this quick.",
+            ],
+            [
+                "Not bad.",
+                "This really is a collaborative approach.",
             ],
         ]
     bodies = ["\n".join(x) for x in bodies]
-    emails = []
-    return []
+    emails = [
+            Email(
+                "contracts@rehack.mail",
+                "{}@jmail.com".format(self.name),
+                "Autocrat (Part 1)",
+                bodies[0],
+                ),
+            ]
+    return [
+            Mission(self, "autocrat1", "Autocrat (Part 1)", "cialan", emails[0], end_email, reward=2500),
+            ]
 
 def base_missions(self):
     bodies = []
@@ -123,8 +142,7 @@ def main_story_missions(self):
                 "However, you need a list of local IP's. Thankfully, the router you just connected to is located at `192.168.0.0`, and you can connect to it and see a list of devices.",
                 "From there, you can hack whatever you need to hack.",
                 "",
-                "Using this knowledge, connect to `lan.rehack.test` and hack the machine with the hostname 'HACK ME'.",
-                "If you complete this, you will be refunded the cost of `lancrack` as a mission reward.",
+                "Using this knowledge, connect to `lan.rehack.test` and hack the machine with the hostname 'Hack me'.",
         ],
     ]
     bodies = ["\n".join(x) for x in bodies]
@@ -210,11 +228,11 @@ def main_story_missions(self):
             self,
             "advanced4",
             "Advanced Tutorial #4",
-            "lantest",
             "hackme",
-            emails[5],
+            "testlan",
+            emails[6],
             end_email,
-            reward=2500,
+            reward=3500,
             ),
         Mission(
             self,
@@ -230,7 +248,7 @@ def main_story_missions(self):
             "mission2",
             "Government Intervention",
             "ciaweb",
-            emails[4],
+            emails[5],
             end_email,
             reward=2500,
             next_id = "autocrat1",
