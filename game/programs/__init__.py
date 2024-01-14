@@ -1802,7 +1802,7 @@ def firewall(args):
                         i += 1
                     for x in range(len(node.firewall.solution) - guessed_letters):
                         s += "*"
-                    print("Solution: {}".format(s))
+                    print("Solution: {}\r".format(s))
                     time.sleep(node.firewall.time)
                     guessed_letters += 1
                 print("Solution: {}".format(node.firewall.solution))
@@ -2330,3 +2330,118 @@ def LANConnect(args, player):
         div()
         print("Connects to a LAN and pretends to be a device on it, while remaining hidden.")
         div()
+
+class NodeTrackerNode(Base):
+    def __init__(self, address, hostname):
+        self.address = address
+        self.hostname = hostname
+
+class NodeTrackerLanNode(Base):
+    def __init__(self, lan_address, address, hostname):
+        self.lan_address = lan_address
+        self.address = address
+        self.hostname = hostname
+
+class NodeTracker(Node):
+    def __init__(self, name, uid, address):
+        super().__init__(name, uid, address)
+        self.nodes = []
+    def add_node(self, uid):
+        if isinstance(uid, Node):
+            n = uid
+        else:
+            n = data.getNode(uid)
+        self.nodes.append(NodeTrackerNode(n.address, n.name))
+    def add_lan_node(self, lan_uid, uid):
+        lan = data.getNode(lan_uid)
+        node = lan.getNode(uid)
+        self.nodes.append(NodeTrackerLanNode(lan.address, node.address, node.name))
+    def main(self):
+        print("This is a Node Tracker. Node Tracker registers a list of IP addresses and watches them to keep track of them.")
+        print("It is used all around the Intelligence Community (and outside of it) for many purposes, including:")
+        print("- Maintaining lists of employee LAN's in a company")
+        print("- Keeping an internal directory of important servers without running a web server, which requires more maintenance")
+        print("- Surveillance of foreign military cyber-targets")
+        print("(c) 2010 Central Intelligence Agency, all rights reserved.")
+    def main_hacked(self):
+        for node in self.nodes:
+            if isinstance(node, NodeTrackerNode):
+                print("# {} --> {}".format(node.hostname, node.address))
+            elif isinstance(node, NodeTrackerLanNode):
+                print("# {} --> {} --> {}".format(node.hostname, node.lan_address, node.address))
+
+
+class BankTransfer(Base):
+    def __init__(self, fromAcc, toAcc, fromBank, toBank, amount):
+        self.fromAcc = fromAcc
+        self.toAcc = toAcc
+        self.fromBank = fromBank
+        self.toBank = toBank
+        self.amount = amount
+    def __str__(self):
+        return "Account {} (Bank={}) transferred {:,} Cr. to account {} (Bank={})".format(self.fromAcc, self.fromBank, self.amount, self.toAcc, self.toBank)
+class BankAccount(Base):
+    def __init__(self, number, pin, balance):
+        self.number = number
+        self.pin = pin
+        self.balance = balance
+        self.transactions = []
+    def __str__(self):
+        return "Account {} (Balance={:,} Cr.)".format(self.number, self.balance)
+    def check(self, number, pin):
+        return self.number == number and self.pin == pin
+
+class BankBackEnd(Node):
+    def __init__(self, name, uid, address):
+        super().__init__(name, uid, address)
+        self.accounts = [BankAccount(000000, self.gen_pin(), 0)]
+    def get_next_num(self):
+        nums = [x.number for x in self.accounts]
+        running = True
+        while running:
+            num = random.choice(range(11111111,99999999))
+            running = num in nums
+        return num
+    def gen_pin(self):
+        s = ''
+        for x in range(6):
+            s += random.choice(list("1234567890"))
+        return s
+    def add_account(self, number=0, pin='', balance=0):
+        acc = BankAccount(number if number else self.get_next_num(), pin if pin else self.gen_pin(), balance)
+        self.accounts.append(acc)
+        return acc
+    def main(self):
+        print("ERROR: Access denied.")
+    def main_hacked(self):
+        print("Welcome to {}.".format(self.name))
+        print("For a command list, type HELP.")
+        while True:
+            ch = input("$")
+            if ch in ["help", "?"]:
+                div()
+                print("help: lists commands")
+                print("clear/cls: clears terminal")
+                div()
+                print("list: lists all accounts and their balances")
+                div()
+                print("exit/quit: disconnects from host")
+                div()
+            elif ch == "":
+                pass
+            elif ch == "list":
+                for acc in self.accounts:
+                    print(acc)
+            elif ch in ["clear", "cls"]:
+                cls()
+            elif ch in ["quit", "exit"]:
+                return
+            else:
+                print("ERROR: Invalid command.")
+
+class BankServer(Node):
+    def __init__(self, name, uid, address, backend):
+        super().__init__(name, uid, address)
+        self.backend = data.getNode(backend)
+        if not isinstance(self.backend, BankBackEnd):
+            raise Exception("Invalid backend server")

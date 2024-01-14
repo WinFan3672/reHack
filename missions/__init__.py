@@ -23,13 +23,24 @@ def autocrat_missions(self):
     bodies = [
             [
                 "This is weird. Very weird. Much weirder than anticipated.",
-                "Okay, I'm gonna need you to find the LAN for the CIA's Langley office and hack into it.",
-                "If you're unsure of how to hack a LAN, try completing Advanced Tutorial #4.", 
+                "Using the servers linked to the website, I'm gonna need you to find the LAN for the CIA's Langley office.",
+                "Once you've done that, hack it.",
+                "You'll need a special tool (lancrack) to do it, but the previous mission's rewards should cover for that.",
                 "Make this quick.",
+                "Also, I saw that the CIA's mail server is linked to the website. Ignore it. It's useless to us.",
             ],
             [
                 "Not bad.",
                 "This really is a collaborative approach.",
+                "I looked at the LAN and noticed it has some LAN's inside of LAN's, which is rather uncommon.",
+                "However, it does have a 'Network Monitor', which I assume monitors traffic on the LAN and its sub-LANs.",
+                "I need you to just hack that 'Network Monitor'. Should be easy.",
+            ],
+            [
+                "I looked at the monitor you hacked, and it's strange.",
+                "It definitely isn't made by the CIA, so I think this is some script kiddie packet sniffing or whatever.",
+                "Looks like the CIA isn't all it's cracked up to be.",
+                "",
             ],
         ]
     bodies = ["\n".join(x) for x in bodies]
@@ -40,9 +51,25 @@ def autocrat_missions(self):
                 "Autocrat (Part 1)",
                 bodies[0],
                 ),
+            Email(
+                "contracts@rehack.mail",
+                "{}@jmail.com".format(self.name),
+                "Autocrat (Part 2)",
+                bodies[1],
+                ),
             ]
     return [
             Mission(self, "autocrat1", "Autocrat (Part 1)", "cialan", emails[0], end_email, reward=2500),
+            LANMission(
+                self,
+                "autocrat2",
+                "Autocrat (Part 2)",
+                "netmonitor",
+                "cialan",
+                emails[1],
+                end_email,
+                reward=2500,
+                ),
             ]
 
 def base_missions(self):

@@ -15,9 +15,37 @@ cialan = programs.LocalAreaNetwork("CIA Office Langley :: Local Area Network :: 
 breakroom = programs.LocalAreaNetwork("Breakroom Wi-Fi", "breakroom", cialan.generateIP())
 breakroom.add_device(programs.XOSDevice("Jack Skelly's xPhone", "jack_skelly", breakroom.generateIP(), notes=[programs.Note("Test")]))
 breakroom.add_router()
-
 cialan.add_device(breakroom)
-cialan.add_device(Node("Network Monitoring Node v2.22", "netmonitor", cialan.generateIP()))
+
+ciaservers = programs.LocalAreaNetwork("Server Room Net Switch", "servers", cialan.generateIP())
+
+target_watch = programs.NodeTracker("Target Companies and Orgs", "targets", ciaservers.generateIP())
+target_watch.add_node("rehack")
+target_watch.add_node("rehack_intranet")
+target_watch.add_node("torweb")
+
+internal = programs.NodeTracker("Internal LAN Tracker", "lantrack", ciaservers.generateIP())
+
+ciaservers = programs.LocalAreaNetwork("Server Room Net Switch", "servers", cialan.generateIP())
+ciaservers.add_device(target_watch)
+ciaservers.add_device(internal)
+ciaservers.add_router()
+cialan.add_device(ciaservers)
+
+
+target_watch = programs.NodeTracker("Target Companies and Orgs", "targets", ciaservers.generateIP())
+target_watch.add_node("rehack")
+target_watch.add_node("rehack_intranet")
+target_watch.add_node("torweb")
+
+internal = programs.NodeTracker("Internal LAN Tracker", "lantrack", ciaservers.generateIP())
+internal.add_node(cialan)
+
+ciaservers.add_router()
+
+
+cialan.add_device(ciaservers)
+cialan.add_device(Node("Network Monitor v2.22", "netmonitor", cialan.generateIP()))
 cialan.add_router()
 
 ## reHack Test LAN
