@@ -548,8 +548,8 @@ TN = [
         programs.TorWebServer("Apache HTTP Server 1.0", "rehack.onion", "rehack-onion", "httpserver"),
         programs.TorWebServer("Euclid :: Homepage", "euclid.onion", "euclid-web", "euclid"),
         programs.SignupService("euclid-signup", "signup.euclid.onion", "jmail"),
-        programs.SignupService("5chan-signup", generateTorURL(), "5chan"),
-        programs.TorWebServer("Apache HTTP Server 1.0", generateTorURL(), "5chan", "httpserver"),
+        programs.SignupService("5chan-signup", generateTorURL("5chansu"), "5chan"),
+        programs.TorWebServer("Apache HTTP Server 1.0", generateTorURL("5chan"), "5chan", "httpserver"),
 ]
 
 for node in TN:

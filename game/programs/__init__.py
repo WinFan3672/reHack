@@ -649,6 +649,9 @@ class JmailServer(MailServer):
         a = MailAccount(username)
         self.accounts.append(a)
 
+    def create_user(self, username, password=None):
+        self.accounts.append(MailAccount(username, password))
+
 
 def mxlookup(args, player=None):
     if args:
@@ -2081,6 +2084,11 @@ class SignupService(Node):
         self.usernames = usernames
     def main(self):
         node = data.getNode(self.agent_id)
+        if not node:
+            data.getTorNode(self.agent_id)
+        if not node:
+            print("404 Not Found")
+            return
         print("Welcome to the signup server for {}.".format(node.name))
 
         username = "" if self.usernames else data.genString(16)
@@ -2097,7 +2105,6 @@ class SignupService(Node):
             password = getpass.getpass("Enter a password $")
             if not password:
                 print("ERROR: You must type a password.")
-
         node.create_user(username, password)
         print("Successfully added user.")
         if isinstance(node, MailServer):
