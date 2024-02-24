@@ -610,7 +610,7 @@ class MailServer(Node):
                 i = 0
                 for item in grabEmails(self):
                     print(
-                        "{}: {} ({}-->{})".format(
+                        "{}: {} ({} --> {})".format(
                             i, item.subject, item.sender, item.receiver
                         )
                     )
@@ -1471,6 +1471,7 @@ def mailman(self, domain, player):
                 print("save: save this account for future use")
             print("list: list all emails")
             print("read <id>: read an email")
+            print("save: save this email address's details in reHackOS")
             print("exit: exit mailman")
             div()
         elif ch in ["exit", "quit"]:
@@ -1485,7 +1486,7 @@ def mailman(self, domain, player):
                 div()
                 for item in getEmails(self.data):
                     print(
-                        "{}: {} ({}-->{}) {}".format(
+                        "{}: {} ({} --> {}) {}".format(
                             i,
                             item.subject,
                             item.sender,

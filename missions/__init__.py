@@ -12,7 +12,44 @@ from game.programs import (
         NMapMission,
         BuyMission,
         pickSelection,
+        MailAccount,
         )
+
+def pentest1_end():
+    jmail = data.getNode("jmail")
+    jmail.hacked = False
+    jmail.minPorts = 255
+    for user in jmail.users:
+        if user.name == "admin":
+            user.password = data.genString(16)
+            adminPass = user.password
+    for account in jmail.accounts:
+        if account.name == "admin":
+            account.password = "firefly"
+    data.addFirewall(jmail, Firewall("jmail", 5))
+
+    ## Send ransom email
+
+    body = "\n".join([
+        "HELLO.",
+        "WE RECENTLY NOTICED THAT YOU HAVE SECURED YOUR NETWORK, WITH HELP FROM reHACK.",
+        "WE HAVE 2TB OF CLASSIFIED DOCUMENTS WE INTEND TO RELEASE. THE DOCUMENTS INCLUDE YOUR FINANCIAL DATA AS WELL AS",
+        "EVIDENCE OF FRAUD AND CORPORATE ESPIONAGE THAT YOU, JOHN MALLEY, HAVE COMMITTED.",
+        "",
+        "HOWEVER, WE ARE NOT ENTIRELY EVIL. WE WOULD BE WILLING TO DELETE THIS DATA, IF YOU SEND THE PASSWORD",
+        "TO YOUR ADMIN PANEL TO THE FOLLOWING EMAIL ADDRESS:",
+        "",
+        "darkgroup1337@jmail.com",
+        "",
+        "WE ARE WAITING.",
+        ])
+    email = Email("darkgroup1337@jmail.com", "admin@jmail.com", "YOU HAVE BEEN WARNED", body)
+    sendEmail(email)
+    
+    jmail.accounts.append(MailAccount("darkgroup1337", "letmein"))
+
+    sendEmail(Email("admin@jmail.com", "darkgroup1337@jmail.com", "Re: YOU HAVE BEEN WARNED", adminPass))
+
 
 
 def investigate_missions(self):
@@ -52,8 +89,8 @@ def autocrat_missions(self):
                 "How about that Server Room Net Switch? Can you break into that?",
                 ],
             [
-                "We're nearly done, I can feel it. Connected to the Server Room Net Switch is a second LAN called `Server Room Net Switch`.",
-                "I need you to hack into both this LAN and the `Target Companies and Orgs` node on that network.",
+                "We're nearly done, I can feel it.",
+                "I need you to hack into the `Target Companies and Orgs` node on that network we just hacked.",
                 "Once you're done, get back to me."
             ],
             [
@@ -102,7 +139,7 @@ def autocrat_missions(self):
                 bodies[4],
                 ),
             Email(
-                "",
+                "contracts@rehack.mail",
                 "{}@jmail.com".format(self.name),
                 "Thanks for the work",
                 bodies[5],
@@ -134,7 +171,7 @@ def autocrat_missions(self):
                 self,
                 "autocrat3",
                 "Autocrat (Part 3)",
-                "breakroom",
+                "servers",
                 "cialan",
                 emails[2],
                 end_email,
@@ -158,15 +195,54 @@ def autocrat_missions(self):
                 "Autocrat (Part 5)",
                 "autocratmain",
                 emails[4],
+                emails[5],
                 reward=15000,
                 # next_id = "investigate1",
                 ),
             ]
 
 def base_missions(self):
-    bodies = []
-    emails = []
-    return []
+    bodies = [
+            [
+            "We see you have helped a client secure their network.",
+            "In every mission in our Pentest Series, we like to include a secret CTF-style challenge at the end.",
+            "We'd like you to hack into the same network the client just secured, and if you hack it, we'll pay you nicely.",
+            "If you can't hack in, just cancel the mission. We get it. Not all sysadmins suck at their job."
+            "",
+            "Good luck!",
+            ],
+            [
+                "Well done. Your generous payment has been provided.",
+                "The client has not been informed about this.",
+                "Please keep this a secret, in order to keep up with the spirit of the CTF challenges."
+            ],
+        ]
+    bodies = ["\n".join(x) for x in bodies]
+    emails = [
+        Email(
+            "contracts@rehack.org",
+            "{}@jmail.com".format(self.name),
+            "CTF: JMail (7500 Cr. Reward)",
+            bodies[0],
+        ),
+        Email(
+            "contracts@rehack.org",
+            "{}@jmail.com".format(self.name),
+            "Mission Complete",
+            bodies[1],
+        ),
+    ]
+    return [
+        Mission(
+            self,
+            "pentest1_ctf",
+            "CTF: JMail",
+            "jmail",
+            emails[0],
+            emails[1],
+            reward=7500,
+        ),
+    ]
 
 
 def main_story_missions(self):
@@ -262,6 +338,22 @@ def main_story_missions(self):
                 "",
                 "Using this knowledge, connect to `lan.rehack.test` and hack the machine with the hostname 'Hack me'.",
                 ],
+        [
+                "Hello. I am the administrator of JMail, a popular email service. You might've heard of it.",
+                "I am sick and tired of all the negative press our service gets due to its constant attacks.",
+                "As such, I've configured JMail's servers to log extra information for the duration of this mission.",
+                "I'd like you to hack JMail and get back to me, so that I can work out what I need to fix.",
+                "Basic pentesting. Deal?",
+                ],
+        [
+                "That was massively insightful.",
+                "I have increased the security of the server:",
+                "* A firewall was added.",
+                "* I've installed port blockers to prevent port breaking.",
+                "* I've set new passwords for both my user and the admin panel.",
+                "",
+                "Thanks for working with me.",
+                ],
     ]
     bodies = ["\n".join(x) for x in bodies]
     end_email = Email(
@@ -313,6 +405,19 @@ def main_story_missions(self):
                 "Advanced Tutorial #4",
                 bodies[6],
                 ),
+            Email(
+                "admin@jmail.com",
+                "{}@jmail.com".format(self.name),
+                "Pentesting Series: JMail",
+                bodies[7],
+                ),
+            Email(
+                "admin@jmail.com",
+                "{}@jmail.com".format(self.name),
+                "Thanks for your help",
+                bodies[8],
+                ),
+
             ]
     return [
             Mission(
@@ -371,6 +476,18 @@ def main_story_missions(self):
                 reward=2500,
                 next_id = "autocrat1",
                 ),
+            Mission(
+                self,
+                "pentest1",
+                "Pentesting Series: JMail",
+                "jmail",
+                emails[7],
+                emails[8],
+                reward=1500,
+                end_function=pentest1_end,
+                next_id="pentest1_ctf",
+                ),
+
 
     ]
 

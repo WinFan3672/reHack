@@ -62,7 +62,8 @@ def getTorNode(uid):
             return item
 
 def addFirewall(node, firewall):
-    node = getNode(node)
+    if not isinstance(node, Node):
+        node = getNode(node)
     node.firewall = firewall
 
 def genString(genLength):
