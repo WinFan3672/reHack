@@ -29,7 +29,6 @@ def pentest1_end():
     data.addFirewall(jmail, Firewall("jmail", 5))
 
     ## Send ransom email
-
     body = "\n".join([
         "HELLO.",
         "WE RECENTLY NOTICED THAT YOU HAVE SECURED YOUR NETWORK, WITH HELP FROM reHACK.",
@@ -50,14 +49,76 @@ def pentest1_end():
 
     sendEmail(Email("admin@jmail.com", "darkgroup1337@jmail.com", "Re: YOU HAVE BEEN WARNED", adminPass))
 
+def pentest1_ctf_end(self):
+    jmail = data.getNode("jmail")
+
+    jmail.hacked = False
+
+    for user in jmail.users:
+        if user.name == "admin":
+            user.password = data.genString(32)
+
+    jmail.accounts = [x for x in jmail.accounts if x.name != "darkgroup1337"]
+
+    for account in jmail.accounts:
+        if account.name == "admin":
+            account.password = data.genString(32)
+    
+    body = "\n".join([
+        "Hello.",
+        "I have noticed that you recently fell for my honeypot.",
+        "I'm not mad. I'm impressed; you managed to get my password, as well as the burner I created.",
+        "I've changed the passwords for both my admin account and the console to be safe.",
+        "The reason I'm not mad is simple; I was aware of these stupid CTF things, and I wanted proof they exist.",
+        "So I added holes in the security and waited.",
+        "You got your 7500. I got confirmation.",
+        "I imagine reHack don't know that I know. I'd like you to keep it that way.",
+        "If they find out that the CTF is publicly known, it destroys the credibility of their pentesting business.",
+        "It also means they need to discontinue it, which makes the networks weaker because nobody is incentivised to test their new security.",
+        "",
+        "Anyway, I wish you all the best in your quest."
+        ])
+    email = Email(
+            "admin@jmail.com",
+            "{}@jmail.com".format(self.name),
+            "You Fell For It",
+            body
+        )
+
+    sendEmail(email)
 
 
 def investigate_missions(self):
 
-    bodies = []
+    bodies = [
+            [
+                "Hello. This is [DATA EXPUNGED], Administrator of reHack.",
+                "We have noticed that you recently assisted with the exposé of Project Autocrat.",
+                "I know that the news hasn't started recycling the stories yet, but I'm not an idiot.",
+                "You have proven yourself to be VERY skilled, especially since you joined so recently.",
+                "It is obvious you have a lot of talent that needs nurtuting.",
+                "Hopefully, you can take hints as well.",
+                "I have some things that need investigating. If you agree to this, simply complete the mission to proceed.",
+            ],
+            ]
     bodies = ["\n".join(x) for x in bodies]
-    emails = []
-    return []
+    emails = [
+            Email(
+                "admin@rehack.mail",
+                "{}@jmail.com".format(self.name),
+                "Investigations",
+                bodies[0],
+            )
+            ]
+    return [
+            BlankMission(
+                self,
+                "investigate1",
+                "Investigate",
+                None,
+                emails[0],
+            )
+            ]
 
 def autocrat_missions(self):
     end_email = Email(
@@ -197,7 +258,7 @@ def autocrat_missions(self):
                 emails[4],
                 emails[5],
                 reward=15000,
-                # next_id = "investigate1",
+                next_id = "investigate1",
                 ),
             ]
 
@@ -241,6 +302,7 @@ def base_missions(self):
             emails[0],
             emails[1],
             reward=7500,
+            end_function = lambda: pentest1_ctf_end(self),
         ),
     ]
 
@@ -354,6 +416,18 @@ def main_story_missions(self):
                 "",
                 "Thanks for working with me.",
                 ],
+        [
+                "It's no secret that Mail.com is known for its security, and not in a good way.",
+                "With denunciations from many high-ranking cybersecurity firms, our future isn't very bright.",
+                "We have a mail server called Cinnamon, which is used as a default config for our mail servers.",
+                "It's located here: cinnamon.mail.com",
+                "We'd like you to break into it. That's it. We WILL pay you highly, and WILL NOT report you anywere, least of all your employer.",
+                "Go."
+                ],
+        [
+                "Thanks for the quick work. As promised, we have wire 10,000 big ones over to your account.",
+                "The Cinnamon server has been reset and security updates have been released.",
+                ],
     ]
     bodies = ["\n".join(x) for x in bodies]
     end_email = Email(
@@ -416,6 +490,18 @@ def main_story_missions(self):
                 "{}@jmail.com".format(self.name),
                 "Thanks for your help",
                 bodies[8],
+                ),
+            Email(
+                "admin@root.mail.com",
+                "{}@jmail.com".format(self.name),
+                "Pentesting Series: Mail.com",
+                bodies[9],
+                ),
+            Email(
+                "admin@root.mail.com",
+                "{}@jmail.com".format(self.name),
+                "Thanks",
+                bodies[10],
                 ),
 
             ]
@@ -487,6 +573,15 @@ def main_story_missions(self):
                 end_function=pentest1_end,
                 next_id="pentest1_ctf",
                 ),
+            Mission(
+                self,
+                "pentest2",
+                "Pentesting Series: Mail.com",
+                "cinnamon",
+                emails[9],
+                emails[10],
+                reward=10000,
+                )
 
 
     ]
@@ -845,4 +940,4 @@ def start_missions(self):
     return MISSIONS
 
 def main(self):
-    return start_missions(self) + base_missions(self) + main_story_missions(self) + autocrat_missions(self)
+    return start_missions(self) + base_missions(self) + main_story_missions(self) + autocrat_missions(self) + investigate_missions(self)

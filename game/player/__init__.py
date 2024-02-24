@@ -112,6 +112,7 @@ class PlayerNode(Node):
                     print("FATAL ERROR: The program was not found.")
 
     def startActions(self):
+        data.NODES.append(self)
         servers = [
             JmailServer(self),
             MailServer(
@@ -205,7 +206,8 @@ class PlayerNode(Node):
             ),
             MailServer("EnWired Mail", "enwired-mail", "enwired.mail", self, [User("elliot"), User("sales")]),
             nodes.cialan,
-            nodes.testing, 
+            nodes.testing,
+            MailDotCom("Cinnamon Deployment Test", "cinnamon.mail.com", self, [User("cinnamon")]),
         ]
         bodies = [
             [
