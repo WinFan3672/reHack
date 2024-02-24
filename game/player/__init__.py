@@ -61,6 +61,7 @@ class PlayerNode(Node):
         self.saved_tor_accounts = {}
         self.currentMission = None
         self.startActions()
+        self.bankAccounts = []
     # def save(self):
     #     ## ensure directory
     #     if not os.path.isdir("savegames"):
@@ -186,7 +187,7 @@ class PlayerNode(Node):
                     User("police-relations"),
                     User("defense-response"),
                     User("public-relations"),
-                    User("webmaster","spider"),
+                    # User("webmaster","spider"),
                 ],
                 hideLookup = True,
             ),
@@ -260,6 +261,9 @@ class PlayerNode(Node):
                     "Dear Administrator,",
                     "We have complied with your request. All user data has been purged. In fact, because we take user data seriously, our servers run on arrays of small, 256mb hard drives which contain the user data for one user at a time. As such, we simply removed the hard-drive for the user 'monicaf332@jmail.com' and placed it into an ISO/IEC 27001 compliant de-gaussing and shredding process.",
                     "We thank you for being a JMail customer.",
+            ],
+            [
+                "Note to self: the password is roses.are.red.violets.are.blue",
             ],
             ]
         bodies = ["\n".join(x) for x in bodies]
@@ -350,6 +354,7 @@ class PlayerNode(Node):
                 ),
             Email("admin@mview.mail.com", "admin@jmail.com", "IMPORTANT: Data Destruction Request", bodies[4]),
             Email("admin@jmail.com", "admin@mview.mail.com", "RE: IMPORTANT: Data Destruction Request", bodies[5]),
+            Email("admin@cia.mail.gov", "admin@cia.mail.gov", "Autocrat Mainframe Password (DO NOT LOSE!)", bodies[6]),
         ]
         for item in servers:
             data.NODES.append(item)

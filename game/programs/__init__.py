@@ -355,11 +355,11 @@ class TorWebServer(Node):
         div()
 
 def debuginfo(args, player):
-    if args == ["player"]:
-        d = objToDict(player)
-        x = json.dumps(d, indent=4)
-        print(x)
-    elif args == ["passwd"]:
+    # if args == ["player"]:
+        # d = objToDict(player)
+        # x = json.dumps(d, indent=4)
+        # print(x)
+    if args == ["passwd"]:
         with open("data/passwords.txt") as f:
             print(random.choice(f.read().split("\n")))
     elif args == ["mission"]:
@@ -419,19 +419,42 @@ def debuginfo(args, player):
             div()
         else:
             print("ERROR: Invalid LAN.")
+    elif args == ["buy"]:
+        for prog in data.PROGRAMS:
+            prog.unlocked = True
+        print("Purchased all programs.")
+    elif args == ["sm"]:
+        div()
+        print("debug sm <mission-id>")
+        div()
+        print("Start a mission immediately.")
+        print("Adds the current mission to the rejects hub.")
+        div()
+    elif "sm" in args and len(args) == 2:
+        args = args[1]
+        newMission = data.getMission(args, player)
+        if newMission:
+            if player.currentMission:
+                pass
+            player.currentMission = newMission
+            player.currentMission.start()
+        else:
+            print("ERROR: Invalid mission ID.")
     else:
         div()
         print("debug <args>")
         div()
         print("Positional arguments:")
-        print("    player: print out player class")
+        # print("    player: print out player class")
         print("    passwd: print a random password that can be brute-forced")
         print("    ip: lists information about nodes")
         print("    mission: complete an entire mission series.")
         print("    gen: lists all IP addresses generated randomly.")
+        print("    buy: purchases all programs for free")
         print("    lan: displays info about a LAN")
         div()
         print("WARNING: This program is not intended for use by anyone other than the developers.")
+        print("It is meant to be used when debugging the game, not when playing it.")
         print("It WILL ruin the fun significantly if used incorrectly.")
         div()
 
@@ -1216,9 +1239,13 @@ class Mission(Base):
         if callable(self.end_function):
             self.end_function()
 
+class BlankMission(Mission):
+    def check_end(self):
+        return True
+
 class LANMission(Mission):
-    def __init__(self, player, mission_id, name, target, lanserver, start_email, next_id=None, start_function=None, end_function=None, reward=0):
-        super().__init__(player, mission_id, name, target, start_email, next_id=next_id, start_function=start_function, end_function=end_function, reward=reward)
+    def __init__(self, player, mission_id, name, target, lanserver, start_email, end_email, next_id=None, start_function=None, end_function=None, reward=0):
+        super().__init__(player, mission_id, name, target, start_email, end_email, next_id=next_id, start_function=start_function, end_function=end_function, reward=reward)
         self.lanserver = lanserver
     def check_end(self):
         def getNode(node, uid):
@@ -1634,6 +1661,7 @@ def emailbruter(args, player):
         print("emailbruter [list of email addresses]")
         div()
         print("Brute-forces the password of a mail account.")
+        print("TIP: If you only know the IP of a server, try admin@<ip")
         div()
 
 
@@ -2045,15 +2073,16 @@ def tor(args, player):
         div()
 
 class SignupService(Node):
-    def __init__(self, uid, url, agent_id):
+    def __init__(self, uid, url, agent_id, usernames=True):
         super().__init__("Signup Service", uid, url, ports=[data.getPort(80), data.getPort(21), data.getPort(22)], minPorts=65536)
         self.name = "Signup Service"
         self.agent_id = agent_id
+        self.usernames = usernames
     def main(self):
         node = data.getNode(self.agent_id)
         print("Welcome to the signup server for {}.".format(node.name))
 
-        username = ""
+        username = "" if self.usernames else data.genString(16)
         while not username:
             username = input("Enter Your Username $")
             if not username:
@@ -2068,10 +2097,14 @@ class SignupService(Node):
             if not password:
                 print("ERROR: You must type a password.")
 
-        node.users.append(User(username, password))
+        node.create_user(username, password)
         print("Successfully added user.")
-        if isinstance(Node, MailServer):
+        if isinstance(node, MailServer):
             print("Your email address is: {}@{}".format(username, node.address))
+        else:
+            print("Your username is: {}".format(username))
+            print("The service URL is: {}".format(node.address))
+        print("Your password is: [HIDDEN]")
 
 def tormail(args):
     if args:
@@ -2400,13 +2433,21 @@ class BankBackEnd(Node):
         running = True
         while running:
             num = random.choice(range(11111111,99999999))
-            running = num in nums
+            running = num in nums # Ensures no duplicates
         return num
     def gen_pin(self):
         s = ''
         for x in range(6):
             s += random.choice(list("1234567890"))
         return s
+    def get_account(self, number, pin):
+        for acc in self.accounts:
+            if number == acc.number:
+                if acc.pin == acc.pin:
+                    return acc
+                else:
+                    return "BADPASSWORD"
+        return "INVALID"
     def add_account(self, number=0, pin='', balance=0):
         acc = BankAccount(number if number else self.get_next_num(), pin if pin else self.gen_pin(), balance)
         self.accounts.append(acc)
@@ -2424,14 +2465,28 @@ class BankBackEnd(Node):
                 print("clear/cls: clears terminal")
                 div()
                 print("list: lists all accounts and their balances")
+                print("passwd: display PIN's of all accounts")
                 div()
                 print("exit/quit: disconnects from host")
                 div()
+                print("NOTE: The frontend(s) are used to manage accounts, not this console.")
+                div()
             elif ch == "":
                 pass
-            elif ch == "list":
+            elif ch == "passwd":
+                div()
+                print("ACC\tPIN")
+                div()
                 for acc in self.accounts:
-                    print(acc)
+                    print("{}\t{}".format(acc.number, acc.pin))
+                div()
+            elif ch == "list":
+                div()
+                print("ACC\tBALANCE")
+                div()
+                for acc in self.accounts:
+                    print("{}\t{:,}".format(acc.number, acc.balance))
+                div()
             elif ch in ["clear", "cls"]:
                 cls()
             elif ch in ["quit", "exit"]:
@@ -2440,8 +2495,113 @@ class BankBackEnd(Node):
                 print("ERROR: Invalid command.")
 
 class BankServer(Node):
-    def __init__(self, name, uid, address, backend):
+    def __init__(self, name, uid, address, backend, admin_password):
         super().__init__(name, uid, address)
         self.backend = data.getNode(backend)
+        self.users = [User("admin", admin_password)]
+        self.playerPlease = True
+        self.main_hacked = self.main
+
         if not isinstance(self.backend, BankBackEnd):
             raise Exception("Invalid backend server")
+    def new_account(self, player):
+        acc = self.backend.add_account()
+        cls()
+        div()
+        print("New Account")
+        div()
+        print("New account generated.")
+        print("Account Number: {}".format(acc.number))
+        print("PIN: {}".format(acc.pin))
+        print("Balance: {:,} Cr.".format(acc.balance))
+        div()
+        print("WARNING: This information will not be shown to you again.")
+        print("Note down this information, as it is used to access your online banking.")
+        br()
+        player.bankAccounts.append(acc)
+        cls()
+        div()
+        print("Your OS has saved your details to storage.")
+        print("The `account` command lists all saved accounts in all banks.")
+        br()
+    def transaction_history(self, acc):
+        cls()
+        if len(acc.transactions) == 0:
+            print("No transaction history to show.")
+        for transaction in acc.transactions:
+            print(transaction)
+        br()
+    def manage_account(self, acc):
+        running = True
+        while running:
+            try:
+                cls()
+                div()
+                print("Manage Account")
+                print("AccNo: {}".format(acc.number))
+                print("PIN: [HIDDEN]")
+                print("Bank IP: {}".format(self.address))
+                print("Balance: {:,} Cr.".format(acc.balance))
+                div()
+                print("[1] Transaction History")
+                print("[ ] Make Transaction")
+                print("[3] Disconnect")
+                div()
+                ch = int(input("$"))
+                if ch == 1:
+                    self.transaction_history(acc)
+                elif ch == 3:
+                    running = False
+            except:
+                pass
+
+    def existing_account(self):
+        cls()
+        try:
+            number = int(input("ENTER YOUR ACCOUNT NUMBER: "))
+            pin = int(getpass.getpass("ENTER YOUR PIN: "))
+            acc = self.backend.get_account(number, pin)
+            if acc == "INVALID":
+                print("ERROR: Invalid account number.")
+                br()
+            elif acc == "BADPASSWORD":
+                print("ERROR: The PIN you entered is incorrect.")
+                br()
+            else:
+                self.manage_account(acc)
+        except:
+            pass
+    def main(self, player):
+        running = True
+        while running:
+            cls()
+            div()
+            print(self.name)
+            div()
+            print("[1] New Account")
+            print("[2] Existing Account")
+            print("[3] Administration")
+            print("[4] Disconnect")
+            div()
+            try:
+                ch = int(input("$"))
+            except:
+                ch = 0
+            if ch == 1:
+                self.new_account(player)
+            elif ch == 2:
+                self.existing_account()
+            elif ch == 3:
+                cls()
+                div()
+                print("ERROR")
+                div()
+                print("Administration is accessible through the backend server: {}".format(self.backend.address if self.hacked else "[REDACTED]"))
+                br()
+            elif ch == 4:
+                running = False
+
+
+def accountList(args, player):
+    for acc in player.bankAccounts:
+        print(acc)

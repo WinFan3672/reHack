@@ -27,6 +27,30 @@ def getMission(mission_id, player):
             return mission
 
 
+def checkEmailAddress(address):
+    ## Function that returns a boolean value depending on if an email address exists.
+    if not "@" in address:
+        ## User entered something wrong
+        return False
+    parts = address.split("*")
+    if len(parts) != 2:
+        ## User added more than one '@'
+        return False
+    username = parts[0]
+    domain = parts[1]
+
+    node = getNode(domain)
+    if not node:
+        ## Invalid mailserver
+        return False
+
+    users = [x.username for x in node.users]
+
+    if username in users:
+        return True
+    else:
+        return False
+
 def getNode(uid):
     for item in NODES:
         if uid == item.uid or uid == item.address:
@@ -41,17 +65,19 @@ def addFirewall(node, firewall):
     node = getNode(node)
     node.firewall = firewall
 
+def genString(genLength):
+
+    s = ""
+    for x in range(genLength):
+        s += random.choice(list(string.hexdigits))
+    return s
+
 def generateTorURL(prefix=""):
     '''
     Generates a Tor URL from an optional prefix in the format:
     $ <prefix><random hex digits>.onion
     The URL is guaranteed to be 64 characters long.
     '''
-    def genString(genLength):
-        s = ""
-        for x in range(genLength):
-            s += random.choice(list(string.hexdigits))
-        return s
     if type(prefix) != str:
         raise TypeError("Prefix must be a string.")
     if len(prefix) > 64:
@@ -76,6 +102,14 @@ def getPort(num, isOpen=False):
             item.open = isOpen
             return copy.deepcopy(item)
 
+
+def createNodeLink(uid, link_uid):
+    if getNode(link_uid):
+        raise Exception("Cannot link when a node exists in its place")
+    else:
+        ## Grab using getNode(uid), remove the link to the uid and address
+        ## then generate a new IP and put link_uid in its place
+        raise Exception("Not yet implemented")
 
 BLOCKLIST = [
     "admin",
@@ -158,6 +192,10 @@ jgreyfiles = [
         ],
     )
 ]
+
+NODES.append(programs.BankBackEnd("Bank of reHack :: Back-End Server", "rehackbankbe", generateIP()))
+
+
 N = [
     programs.ISPNode(),
     Node("SHODAN", "shodan", generateIP(), ports=[getPort(80)], minPorts=1),
@@ -355,6 +393,8 @@ N = [
     Node("Project Autocrat :: Mainframe", "autocratmain", generateIP(), ports=[], minPorts=65536, users=[User("admin", "roses.are.red.violets.are.blue")]),
     programs.WebServer("reHack Test Suite Home", "rehacktestmain", "rehack.test", "rehack.test"),
     Node("Blank Node Test", "blanktest", "blank.rehack.test"),
+    programs.BankServer("Bank of reHack", "rhbank", "6.5.4.4", getNode("rehackbankbe").address, "socialism"),
+    programs.SignupService("anonmail-signup", "signup.anon.mail", "anonmail", False),
 ]
 for item in N:
     NODES.append(item)
@@ -374,7 +414,7 @@ PROGRAMS = [
     Program("jmail", programs.jmail, True, classPlease=True),
     Program("mailoverflow", programs.mailoverflow, price=1500, classPlease=True),
     Program("store", programs.store, True, classPlease=True),
-    Program("anonmail", programs.anonclient, price=250, classPlease=True),
+    # Program("anonmail", programs.anonclient, price=250, classPlease=True),
     Program("login", programs.login, True),
     Program("mission", programs.mission_program, True, classPlease=True),
     Program("logview", programs.logview, price=0),
@@ -387,6 +427,7 @@ PROGRAMS = [
     # Program("sweep", programs.sweep, price=0),
     # Program("save",programs.save,True,classPlease=True),
     Program("lanconnect", programs.LANConnect, True, classPlease=True),
+    Program("account", programs.accountList, True, classPlease=True),
 ]
 SPICES = [
     "Basil",
@@ -506,6 +547,8 @@ TN = [
         programs.TorWebServer("Apache HTTP Server 1.0", "rehack.onion", "rehack-onion", "httpserver"),
         programs.TorWebServer("Euclid :: Homepage", "euclid.onion", "euclid-web", "euclid"),
         programs.SignupService("euclid-signup", "signup.euclid.onion", "jmail"),
+        programs.SignupService("5chan-signup", generateTorURL(), "5chan"),
+        programs.TorWebServer("Apache HTTP Server 1.0", generateTorURL(), "5chan", "httpserver"),
 ]
 
 for node in TN:

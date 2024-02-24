@@ -69,26 +69,30 @@ def connect(item):
             )
             print("Has Linked Nodes: {}".format("Yes" if item.linked else "No"))
             div()
-        elif name == "ls":
-            d = listDirTree(item.files)
-            print("/")
-            printDirTree(d)
+        # elif name == "ls":
+            # d = listDirTree(item.files)
+            # print("/")
+            # printDirTree(d)
         elif name in ["clear","cls"]:
             cls()
         elif name == "help":
             div()
             print("help: list commands")
             print("cls: clears the screen")
-            print("ls: lists all files on the file system.")
+            # print("ls: lists all files on the file system.")
             print("info: print info about the host")
             print("scan: scans for related IP's.")
             print("exit: disconnect from host")
             div()
         elif name == "scan":
+            valid = False
             for link in item.linked:
                 n = data.getNode(link)
                 if n:
+                    valid = True
                     print("{}: {}".format(n.name, n.address))
+            print("ERROR: No links found.")
+
         else:
             print("ssh: syntax error.\nType `help` for a command list.")
 

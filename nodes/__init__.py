@@ -20,31 +20,20 @@ cialan.add_device(breakroom)
 ciaservers = programs.LocalAreaNetwork("Server Room Net Switch", "servers", cialan.generateIP())
 
 target_watch = programs.NodeTracker("Target Companies and Orgs", "targets", ciaservers.generateIP())
+target_watch.add_node("autocratmain")
 target_watch.add_node("rehack")
 target_watch.add_node("rehack_intranet")
+target_watch.add_node("test2")
 target_watch.add_node("torweb")
-
-internal = programs.NodeTracker("Internal LAN Tracker", "lantrack", ciaservers.generateIP())
+target_watch.add_node("shodan")
 
 ciaservers = programs.LocalAreaNetwork("Server Room Net Switch", "servers", cialan.generateIP())
 ciaservers.add_device(target_watch)
-ciaservers.add_device(internal)
-ciaservers.add_router()
 cialan.add_device(ciaservers)
-
-
-target_watch = programs.NodeTracker("Target Companies and Orgs", "targets", ciaservers.generateIP())
-target_watch.add_node("rehack")
-target_watch.add_node("rehack_intranet")
-target_watch.add_node("torweb")
-
-internal = programs.NodeTracker("Internal LAN Tracker", "lantrack", ciaservers.generateIP())
-internal.add_node(cialan)
 
 ciaservers.add_router()
 
 
-cialan.add_device(ciaservers)
 cialan.add_device(Node("Network Monitor v2.22", "netmonitor", cialan.generateIP()))
 cialan.add_router()
 
