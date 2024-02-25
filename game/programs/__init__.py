@@ -74,6 +74,47 @@ def sendEmail(email):
         raise TypeError("Invalid mail server: {} ({}>{})".format(parts[1],email.sender, email.receiver))
 
 
+def sendTorEmail(email):
+    recipient = email.receiver
+    parts = recipient.split("@")
+    server = None
+    for item in data.TOR_NODES:
+        if item.address == parts[1]:
+            server = item
+            break
+    if isinstance(server, TorMailServer):
+        account = None
+        for item in server.accounts:
+            if item.name == parts[0]:
+                account = item
+        if account:
+            account.data.receive(email)
+            server.emails.append(email)
+        else:
+            m = [
+                "Your message to {} could not be delivered.".format(recipient),
+                "The email address is invalid.",
+                "Please check that the email address is valid and try again.",
+                "",
+                "FROM: {}".format(email.sender),
+                "TO: {}".format(email.receiver),
+                "SUBJECT: {}".format(email.subject),
+                "",
+                "EMAIL START",
+                email.body,
+                "EMAIL END",
+            ]
+            m = "\n".join(m)
+            e = Email(
+                "accounts-daemon@{}".format(parts[1]),
+                email.sender,
+                "Your message could not be delivered",
+                m,
+            )
+            sendTorEmail(e)
+    else:
+        raise TypeError("Invalid mail server: {} ({}>{})".format(parts[1],email.sender, email.receiver))
+
 def div():
     print("--------------------")
 
@@ -355,10 +396,6 @@ class TorWebServer(Node):
         div()
 
 def debuginfo(args, player):
-    # if args == ["player"]:
-        # d = objToDict(player)
-        # x = json.dumps(d, indent=4)
-        # print(x)
     if args == ["passwd"]:
         with open("data/passwords.txt") as f:
             print(random.choice(f.read().split("\n")))
@@ -430,6 +467,11 @@ def debuginfo(args, player):
         print("Start a mission immediately.")
         print("Adds the current mission to the rejects hub.")
         div()
+        print("debug sm list: lists all missions")
+        div()
+    elif args == ["sm", "list"]:
+        for mission in player.MISSIONS:
+            print("{}: {}".format(mission.mission_id, mission.name))
     elif "sm" in args and len(args) == 2:
         args = args[1]
         newMission = data.getMission(args, player)
@@ -445,13 +487,13 @@ def debuginfo(args, player):
         print("debug <args>")
         div()
         print("Positional arguments:")
-        # print("    player: print out player class")
         print("    passwd: print a random password that can be brute-forced")
         print("    ip: lists information about nodes")
         print("    mission: complete an entire mission series.")
         print("    gen: lists all IP addresses generated randomly.")
         print("    buy: purchases all programs for free")
         print("    lan: displays info about a LAN")
+        print("    sm: start a mission")
         div()
         print("WARNING: This program is not intended for use by anyone other than the developers.")
         print("It is meant to be used when debugging the game, not when playing it.")
@@ -530,9 +572,93 @@ class MailServer(Node):
 
     def main(self, args=None, player=None):
         print("To access this mail server, log in with a mail client.")
+   
+    def clientMain(self, account, player):
+        cls()
+        print("Welcome to {}. For a command list, type HELP.".format(self.name))
+
+        while True:
+            ch = input("{}@{} $".format(account.name, self.address))
+
+            if ch == "help":
+                div()
+                print("help: command list")
+                print("cls: clear the screen")
+                if not f"{self.name}@{self.address}" in player.saved_accounts.keys():
+                    print("save: save this account for future use")
+                print("list: list all emails")
+                print("read <id>: read an email")
+                print("save: save this email address's details in reHackOS")
+                print("exit: disconnect from host")
+                div()
+            elif ch in ["quit", "exit"]:
+                return
+            elif ch in ["clear", "cls"]:
+                cls()
+            elif ch == "":
+                pass
+            elif ch == "list":
+                if getEmails(account.data):
+                    div()
+                    i = 0
+                    for item in getEmails(account.data):
+                        print("{}: {} ({} --> {}) {}".format(
+                            i,
+                            item.subject,
+                            item.sender,
+                            item.receiver,
+                            "[!]" if not item.read else "",
+                            )
+                        )
+                        i += 1
+
+                    div()
+                else:
+                    div()
+                    print("Your inbox is empty.")
+                    div()
+            elif ch == "save":
+                player.saved_accounts["{}@{}".format(account.name, self.address)] = account.password
+                print("Successfully saved email account.")
+                print("Check your email client for a list of saved accounts.")
+            elif ch == "read":
+                div()
+                print("read <id>")
+                div()
+                print("Read an email.")
+                div()
+            elif ch.startswith("read "):
+                try:
+                    index = int(ch[5:])
+                    if 0 <= index <= len(getEmails(account.data)):
+                        email = getEmails(account.data)[index]
+                        email.read = True
+                        div()
+                        print("FROM: {}".format(email.sender))
+                        print("TO: {}".format(email.receiver))
+                        print("SUBJECT: {}".format(email.subject))
+                        div()
+                        print(email.body)
+                        div()
+                    else:
+                        print("ERROR: Invalid email.")
+                except:
+                    print(traceback.format_exc())
+            else:
+                print("ERROR: Invalid command.")
+
+    def client(self, username, password, player):
+        print("{}:{}".format(username, password))
+        for account in self.accounts:
+            if account.name == username and account.password == password:
+                return self.clientMain(account, player)
+        print("ERROR: Invalid account.")
 
     def lookup(self):
         return self.accounts if not self.hideLookup else []
+    
+    def create_user(self, username, password):
+        self.accounts.append(MailAccount(username, password))
 
     def main_hacked(self):
         def grabEmails(self):
@@ -734,18 +860,6 @@ class AnonMail(MailServer):
 def jmail(args, player):
     acc = "{}@jmail.com".format(player.name)
     mailman_base([acc, player.password], player)
-
-
-# def MailDotCom(name, address, player, users=[]):
-#     s = MailServer(name, address, address, player)
-#     s.lookup = lambda:return [MailAccount("admin")]
-#     s.ports = [data.getPort(21), data.getPort(22), data.getPort(25), data.getPort(80)]
-#     s.minPorts = 4
-#     s.accounts = [MailAccount("admin")]
-#     for item in users:
-#         s.accounts.append(MailAccount(item.name))
-#     return s
-
 
 class MailDotCom(MailServer):
     def __init__(self, name, address, player, users=[]):
@@ -1437,13 +1551,18 @@ def nodecheck(args):
         MessageBoard: "messageboard",
         JmailServer: "jmail",
         AnonMail: "anonmail",
-        MailDotCom: "maildotcom_instance",
+        MailDotCom: "maildotcom",
         ISPNode: "isp",
-        XOSDevice: "xosdevice",
+        XOSDevice: "xos",
         MissionServer: "contract_hub",
         VersionControl: "version_control",
         type(None): "invalid",
         GlobalDNS: "global_dns",
+        SignupService: "signup",
+        VersionControl: "version_control",
+        BankServer: "bank",
+        BankBackEnd: "bank_backend",
+
     }
     if args:
         for arg in args:
@@ -1461,73 +1580,6 @@ def getEmails(account):
     return account.inbox
 
 
-def mailman(self, domain, player):
-    cls()
-    print("Welcome. For a command list, type HELP.")
-    while True:
-        ch = input("{}@{} $".format(self.name, domain))
-        if ch == "help":
-            div()
-            print("help: command list")
-            print("cls: clear the screen")
-            if not f"{self.name}@{domain}" in player.saved_accounts.keys():
-                print("save: save this account for future use")
-            print("list: list all emails")
-            print("read <id>: read an email")
-            print("save: save this email address's details in reHackOS")
-            print("exit: exit mailman")
-            div()
-        elif ch in ["exit", "quit"]:
-            return
-        elif ch in ["cls", "clear"]:
-            cls()
-        elif ch == "":
-            continue
-        elif ch == "list":
-            i = 0
-            if getEmails(self.data):
-                div()
-                for item in getEmails(self.data):
-                    print(
-                        "{}: {} ({} --> {}) {}".format(
-                            i,
-                            item.subject,
-                            item.sender,
-                            item.receiver,
-                            "[!]" if not item.read else "",
-                        )
-                    )
-                    i += 1
-                div()
-            else:
-                print("Your inbox is empty.")
-        elif ch == "read":
-            div()
-            print("read <id>")
-            div()
-            print("Read an email.")
-            div()
-        elif ch == "save":
-            player.saved_accounts["{}@{}".format(self.name, domain)] = self.password
-            print("Successfully saved account.")
-            print("For a list of accounts, run 'mailman list'.")
-        elif ch.startswith("read "):
-            try:
-                index = int(ch[5:])
-                if 0 <= index <= len(getEmails(self.data)):
-                    email = getEmails(self.data)[index]
-                    email.read = True
-                    div()
-                    print(email.body)
-                    div()
-                else:
-                    print("ERROR: Invalid email.")
-            except:
-                print(traceback.format_exc())
-        else:
-            print("ERROR: Invalid command.")
-
-
 def mailman_base(args, player):
     if len(args) == 2:
         try:
@@ -1536,19 +1588,7 @@ def mailman_base(args, player):
             parts = account.split("@")
             node = data.getNode(parts[1])
             if isinstance(node, MailServer):
-                found_acc = False
-                for acc in node.accounts:
-                    if acc.name == parts[0]:
-                        found_acc = True
-                        if acc.password:
-                            if acc.password == passwd:
-                                mailman(acc, parts[1], player)
-                            else:
-                                print("ERROR: Incorrect password.")
-                        else:
-                            print("ERROR: The mail account cannot be logged into.")
-                if not found_acc:
-                    print("ERROR: Invalid mail account.")
+                node.client(parts[0], passwd, player)
             else:
                 print("ERROR: Invalid mail server.")
         except Exception as e:
@@ -1578,6 +1618,36 @@ def mailman_base(args, player):
         print("mailman list: show list of saved accounts. If you have saved an email account, you do not need to enter the password.")
         div()
 
+def tormail(args, player):
+    if len(args) == 2:
+        try:
+            account = args[0]
+            passwd = args[1]
+            parts = account.split("@")
+            if len(parts) != 2:
+                print("ERROR: Invalid email account format.")
+                return
+            node = data.getTorNode(parts[1])
+            if isinstance(node, MailServer):
+                node.client(parts[0], passwd, player)
+            else:
+                print("404: Mail Server Not Found.")
+        except:
+            print(traceback.format_exc())
+    elif len(args) == 1:
+        try:
+            email = args[0]
+            passwd = player.saved_accounts[email]
+            tormail([email, passwd], player)
+        except:
+            print("ERROR: That account is not saved.")
+    else:
+        div()
+        print("tormail <email address> [password]")
+        div()
+        print("Tor email client.")
+        div()
+        print("mailman list: list all saved email addresses.")
 
 def bruter(args, player):
     if args:
@@ -2077,15 +2147,22 @@ def tor(args, player):
         div()
 
 class SignupService(Node):
-    def __init__(self, uid, url, agent_id, usernames=True):
-        super().__init__("Signup Service", uid, url, ports=[data.getPort(80), data.getPort(21), data.getPort(22)], minPorts=65536)
+    def __init__(self, uid, address, agent_id, usernames=True, junkMail = []):
+        super().__init__("Signup Service", uid, address, ports=[data.getPort(80), data.getPort(21), data.getPort(22)], minPorts=65536)
         self.name = "Signup Service"
         self.agent_id = agent_id
         self.usernames = usernames
+        self.junkMail = junkMail
+    def get_node(self, address):
+        return data.getNode(address)
+
+    def send_mail(self, username):
+        address = data.getNode(self.agent_id).address
+        for email in [copy.deepcopy(x) for x in self.junkMail]:
+            email.receiver = "{}@{}".format(username, address)
+            sendEmail(email)
     def main(self):
-        node = data.getNode(self.agent_id)
-        if not node:
-            data.getTorNode(self.agent_id)
+        node = self.get_node(self.agent_id)
         if not node:
             print("404 Not Found")
             return
@@ -2109,20 +2186,11 @@ class SignupService(Node):
         print("Successfully added user.")
         if isinstance(node, MailServer):
             print("Your email address is: {}@{}".format(username, node.address))
+            self.send_mail(username)
         else:
             print("Your username is: {}".format(username))
             print("The service URL is: {}".format(node.address))
         print("Your password is: [HIDDEN]")
-
-def tormail(args):
-    if args:
-        pass
-    else:
-        div()
-        print("tormail <email address> [password]")
-        div()
-        print("Log into a Tor email service.")
-        div()
 
 class LocalAreaNetwork(Node):
     def __init__(self, name, uid, address, minPorts=1):
@@ -2422,20 +2490,21 @@ class BankTransfer(Base):
     def __str__(self):
         return "Account {} (Bank={}) transferred {:,} Cr. to account {} (Bank={})".format(self.fromAcc, self.fromBank, self.amount, self.toAcc, self.toBank)
 class BankAccount(Base):
-    def __init__(self, number, pin, balance):
+    def __init__(self, ip, number, pin, balance):
+        self.ip = ip
         self.number = number
         self.pin = pin
         self.balance = balance
         self.transactions = []
     def __str__(self):
-        return "Account {} (Balance={:,} Cr.)".format(self.number, self.balance)
+        return "Account {} (Origin={}; Balance={:,} Cr.)".format(self.number, self.ip, self.balance)
     def check(self, number, pin):
         return self.number == number and self.pin == pin
 
 class BankBackEnd(Node):
     def __init__(self, name, uid, address):
         super().__init__(name, uid, address)
-        self.accounts = [BankAccount(000000, self.gen_pin(), 0)]
+        self.accounts = [BankAccount(self.address, 000000, self.gen_pin(), 0)]
     def get_next_num(self):
         nums = [x.number for x in self.accounts]
         running = True
@@ -2456,8 +2525,8 @@ class BankBackEnd(Node):
                 else:
                     return "BADPASSWORD"
         return "INVALID"
-    def add_account(self, number=0, pin='', balance=0):
-        acc = BankAccount(number if number else self.get_next_num(), pin if pin else self.gen_pin(), balance)
+    def add_account(self, address, number=0, pin='', balance=0):
+        acc = BankAccount(address, number if number else self.get_next_num(), pin if pin else self.gen_pin(), balance)
         self.accounts.append(acc)
         return acc
     def main(self):
@@ -2483,10 +2552,10 @@ class BankBackEnd(Node):
                 pass
             elif ch == "passwd":
                 div()
-                print("ACC\tPIN")
+                print("ACC      PIN")
                 div()
                 for acc in self.accounts:
-                    print("{}\t{}".format(acc.number, acc.pin))
+                    print("{}      {}".format(acc.number, acc.pin))
                 div()
             elif ch == "list":
                 div()
@@ -2513,7 +2582,7 @@ class BankServer(Node):
         if not isinstance(self.backend, BankBackEnd):
             raise Exception("Invalid backend server")
     def new_account(self, player):
-        acc = self.backend.add_account()
+        acc = self.backend.add_account(self.address)
         cls()
         div()
         print("New Account")
@@ -2534,6 +2603,7 @@ class BankServer(Node):
         br()
     def transaction_history(self, acc):
         cls()
+        div()
         if len(acc.transactions) == 0:
             print("No transaction history to show.")
         for transaction in acc.transactions:
@@ -2613,3 +2683,87 @@ class BankServer(Node):
 def accountList(args, player):
     for acc in player.bankAccounts:
         print(acc)
+
+
+def bankhack(args, player):
+    if len(args) == 2:
+        try:
+            accno = int(args[1])
+        except:
+            print("ERROR: Bank account must be a number.")
+            return
+        bank = data.getNode(args[0])
+        if isinstance(bank, BankServer):
+            print("Connected to backend.")
+            print("Searching for account...")
+            account = None
+            for acc in bank.backend.accounts:
+                if acc.number == accno:
+                    account = acc
+            if not account:
+                print("ERROR: Invalid account number.")
+                return
+            print("Begin brute-force...")
+            print("Generating PINs...")
+            pinList = [str(x) for x in range(0, 1000000)]
+            pins = []
+            print("Converting PINs...")
+            for p in pinList:
+                while len(p) < 6:
+                    p = "0" + p
+                pins.append(p)
+            for pin in pins:
+                if account.pin == pin:
+                    print("Found PIN: {}".format(pin))
+                    break
+        elif isinstance(bank, BankBackEnd):
+                print("ERROR: Provided a backend server.")
+                print("Bank backends have low security, and can easily be hacked.")
+                print("From there, the `list` command can get the PIN of any user.")
+        else:
+            print("ERROR: Invalid bank server.")
+    else:
+        div()
+        print("bankhack <ip address> <accno>")
+        div()
+        print("Brute-forces the PIN of a bank account.")
+        print("NOTE: The IP address must be the bank FRONTEND server, not the backend.")
+        div()
+
+def tormail_base(args, player):
+    if len(args) == 2:
+        email = args[0]
+        if not "@" in email:
+            print("ERROR: Invalid email address.")
+            return
+
+        parts = email.split("@")
+        if len(parts) != 2:
+            print("ERROR: Invalid email address.")
+            return
+
+        node = data.getTorNode(parts[1])
+
+        if not isinstance(node, MailServer):
+            print("ERROR: Invalid mail server.")
+            return
+
+    else:
+        div()
+        print("tormail <email address> [password]")
+        div()
+        print("Email client for Tor email addresses.")
+        div()
+
+class TorMailServer(MailServer):
+    pass
+
+class TorSignupService(SignupService):
+    def get_node(self, address):
+        return data.getTorNode(address)
+    def send_mail(self, username):
+        address = data.getTorNode(self.agent_id).address
+        emails = [copy.deepcopy(x) for x in self.junkMail]
+        for email in emails:
+            email.receiver = "{}@{}".format(username, address)
+            sendTorEmail(email)

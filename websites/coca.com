@@ -12,5 +12,5 @@ Buy now at:
 div()
 $0.99 per can.
 div()
-Website designed by XWebDesign: xwebdesign.com.
+Website designed by XWebDesign: xwebdesign.com
 div()

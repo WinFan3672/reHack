@@ -87,6 +87,13 @@ def pentest1_ctf_end(self):
 
     sendEmail(email)
 
+def pentest2_end():
+    node = data.getNode("cinnamon")
+    data.addFirewall("cinnamon", Firewall("cinnamon", 5))
+    node.accounts = [MailAccount("admin")]
+    node.minPorts = 65536
+
+
 
 def investigate_missions(self):
 
@@ -100,6 +107,17 @@ def investigate_missions(self):
                 "Hopefully, you can take hints as well.",
                 "I have some things that need investigating. If you agree to this, simply complete the mission to proceed.",
             ],
+            [
+                "Hack into this server: {}",
+            ],
+            [
+                "Thanks for the help. You probably want an explanation, right?",
+                "Well, I don't trust you enough to divulge that. As in, I don't trust anyone.",
+                "So you can take your questions and thake them where the sun don't shine.",
+                "",
+                "[DATA EXPUNGED]",
+                "reHack Administrator"
+            ],
             ]
     bodies = ["\n".join(x) for x in bodies]
     emails = [
@@ -108,7 +126,31 @@ def investigate_missions(self):
                 "{}@jmail.com".format(self.name),
                 "Investigations",
                 bodies[0],
-            )
+            ),
+            Email(
+                "admin@rehack.mail",
+                "{}@jmail.com".format(self.name),
+                "Investigations (Part 2)",
+                bodies[1].format(data.getNode("shodan").address),
+            ),
+            Email(
+                "admin@rehack.mail",
+                "{}@jmail.com".format(self.name),
+                "Investigations (Part 3)",
+                bodies[1].format(data.getNode("testhub").address),
+            ),
+            Email(
+                "admin@rehack.mail",
+                "{}@jmail.com".format(self.name),
+                "Investigations (Part 4)",
+                bodies[1].format(data.getNode("dexpertweb").address),
+            ),
+            Email(
+                "admin@rehack.mail",
+                "{}@jmail.com".format(self.name),
+                "Great Job",
+                bodies[2],
+            ),
             ]
     return [
             BlankMission(
@@ -117,7 +159,33 @@ def investigate_missions(self):
                 "Investigate",
                 None,
                 emails[0],
-            )
+                next_id = "investigate2"
+            ),
+            Mission(
+                self,
+                "investigate2",
+                "Investigate (Part 2)",
+                "shodan",
+                emails[1],
+                next_id = "investigate3",
+            ),
+            Mission(
+                self,
+                "investigate3",
+                "Investigate (Part 3)",
+                "testhub",
+                emails[2],
+                next_id = "investigate4",
+            ),
+            Mission(
+                self,
+                "investigate4",
+                "Investigate (Part 4)",
+                "dexpertweb",
+                emails[3],
+                emails[4],
+                reward=2500,
+            ),
             ]
 
 def autocrat_missions(self):

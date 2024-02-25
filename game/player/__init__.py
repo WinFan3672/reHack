@@ -9,6 +9,7 @@ from game.programs import (
     Email,
     sendEmail,
     MailServer,
+    TorMailServer,
     AnonMail,
     MailDotCom,
     MissionServer,
@@ -209,6 +210,15 @@ class PlayerNode(Node):
             nodes.testing,
             MailDotCom("Cinnamon Deployment Test", "cinnamon.mail.com", self, [User("cinnamon")]),
         ]
+        onionsites = [
+            TorMailServer(
+                "Euclid",
+                "euclid",
+                "euclid.onion",
+                self,
+                [],
+            )
+        ]
         bodies = [
             [
                 "Dear NOAH BAILEY,",
@@ -394,6 +404,8 @@ class PlayerNode(Node):
         ]
         for item in servers:
             data.NODES.append(item)
+        for i in onionsites:
+            data.TOR_NODES.append(i)
         for email in emails:
             sendEmail(email)
         self.MISSIONS = missions.main(self)

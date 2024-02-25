@@ -140,6 +140,78 @@ testSrvFiles = [
         ],
     ),
 ]
+
+JMAIL_BODIES = [
+        "\n".join([
+            "Welcome to JMail!",
+            "JMail is a convenient and secure email service designed for YOU.",
+            "We have over 100,000,000 users, and we are happy to have you amongst them.",
+            "Do note that a few sponsored emails may arrive in your inbox when your account is created.",
+        ]),
+        "\n".join([
+            "For over 130 years, Coca has been the world's most refreshing drink for only 99c a bottle.",
+            "For more info, visit coca.com and find out where YOU can find refreshment.",
+        ]),
+        "\n".join([
+            "If you need a PROFESSIONAL email address, mail.com is here to help.",
+            "Get a domain at yourname.mail.com, high security, and a satisfaction guarantee, for an affordable price.",
+            "Go to mail.com for more info.",
+        ]),
+        "\n".join([
+            "If you need a bank account (and you do), Bank of reHack may be for you!",
+            "We offer low interest rates on loans and guaranteed security (FDIC insurance for up to 2 million Cr.)",
+            "For more info, connect to 6.5.4.4 and make an account.",
+        ]),
+]
+JMAIL_STARTING_EMAILS = [
+        programs.Email("admin@jmail.com", "", "Welcome to JMail", JMAIL_BODIES[0]),
+        programs.Email("admin@coca.mail", "", "Try Coca", JMAIL_BODIES[1]),
+        programs.Email("admin@root.mail.com", "", "Mail For The Pros", JMAIL_BODIES[2]),
+        programs.Email("admin@rehack.mail", "", "Bank of reHack: The Best Bank", JMAIL_BODIES[3]),
+]
+
+ANONMAIL_BODIES = [
+        "\n".join([
+            "Hello and welcome to AnonMail.",
+            "As you might be able to gague from your email address, AnonMail is entirely anonymous.",
+            "We have over a million users, and making a new identity is as easy as connecting",
+            "to our signup service and making a new account. Great for privacy nerds, yes, but also great",
+            "for criminals. However, as a service, we are legally protected from responsibility of our users' content.",
+            "That being said, we do not encourage ANY illegal activity on AnonMail, although we're not sure if any",
+            "has been occuring, because we use zero-access encryption. We can't even read this email.",
+        ]),
+        "\n".join([
+            "I hope this email finds you well.",
+            "Are you interested in finding work?",
+            "Are you skilled in the area of cybersecurity?",
+            "If you answered YES to both, email careers@rehack.mail and we'll get back to you.",
+            ]),
+        "\n".join([
+            "Did you know that there's a whole other Internet out there?",
+            "For more information, connect to tor.org and see for yourself.",
+            "(Oh, and if you're unsure of where to go on Tor, w3d.onion is a good starting point)"
+            ]),
+]
+ANONMAIL_STARTING_EMAILS = [
+        programs.Email("ceo@anon.mail", "", "Welcome", ANONMAIL_BODIES[0]),
+        programs.Email("careers@rehack.mail", "", "Would You Like To Join reHack?", ANONMAIL_BODIES[1]),
+        programs.Email("null", "", "Join Tor Today", ANONMAIL_BODIES[2]),
+]
+
+EUCLID_BODIES = [
+        "\n".join([
+            "Hello and welcome to Euclid.",
+            "We hope you find our services sufficient.",
+            "We would like to kindly remind you that you can only receive email from other Tor mail servers.",
+            "We do not (and never will) provide proxy services to send mail to or receive mail from clearnet mail servers.",
+            "This is for security purposes. Tor emails are untraceable and encrypted by default.",
+            ]),
+]
+
+EUCLID_EMAILS = [
+        programs.Email("admin@euclid.onion", "", "Welcome to Euclid", EUCLID_BODIES[0]),
+]
+
 XOS_DEVICES = {
     "xphone": {
         "name": "xPhone",
@@ -395,7 +467,9 @@ N = [
     programs.WebServer("reHack Test Suite Home", "rehacktestmain", "rehack.test", "rehack.test"),
     Node("Blank Node Test", "blanktest", "blank.rehack.test"),
     programs.BankServer("Bank of reHack", "rhbank", "6.5.4.4", getNode("rehackbankbe").address, "socialism"),
-    programs.SignupService("anonmail-signup", "signup.anon.mail", "anonmail", False),
+    programs.SignupService("anonmail-signup", "signup.anon.mail", "anonmail", False, ANONMAIL_STARTING_EMAILS),
+    programs.WebServer("Dark.Store Landing Page", "darkstore", "dark.store", "dark.store"),
+    programs.SignupService("jmailsu", "signup.jmail.com", "jmail", junkMail=JMAIL_STARTING_EMAILS),
 ]
 for item in N:
     NODES.append(item)
@@ -429,7 +503,12 @@ PROGRAMS = [
     # Program("save",programs.save,True,classPlease=True),
     Program("lanconnect", programs.LANConnect, True, classPlease=True),
     Program("account", programs.accountList, True, classPlease=True),
+    Program("bankhack", programs.bankhack, True, classPlease=True),
+    Program("tormail", programs.tormail, True, classPlease=True),
 ]
+
+DARKSTORE = []
+
 SPICES = [
     "Basil",
     "Thyme",
@@ -544,10 +623,11 @@ TOR_NODES = []
 TN = [
         programs.TorWebServer("The Onion Router :: Official Site", "tor", "tor.onion", "tor"),
         programs.TorWebServer("World Wide Web Directory :: Onionsite", "w3d", "w3d.onion", "w3d"),
+        programs.MessageBoard("The Tor Times", "tortimes", "tortimes.onion", "tortimes"),
         programs.MessageBoard("EnWired: Home", "enwired.onion", "enwired-onion", "enwired"),
         programs.TorWebServer("Apache HTTP Server 1.0", "rehack.onion", "rehack-onion", "httpserver"),
-        programs.TorWebServer("Euclid :: Homepage", "euclid.onion", "euclid-web", "euclid"),
-        programs.SignupService("euclid-signup", "signup.euclid.onion", "jmail"),
+        programs.TorWebServer("Euclid :: Homepage", "www.euclid.onion", "euclid-web", "euclid"),
+        programs.TorSignupService("euclid-signup", "signup.euclid.onion", "euclid", False, EUCLID_EMAILS),
         programs.SignupService("5chan-signup", generateTorURL("5chansu"), "5chan"),
         programs.TorWebServer("Apache HTTP Server 1.0", generateTorURL("5chan"), "5chan", "httpserver"),
 ]
