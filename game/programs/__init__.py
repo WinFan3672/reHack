@@ -2149,7 +2149,7 @@ def tor(args, player):
         div()
 
 class SignupService(Node):
-    def __init__(self, uid, address, agent_id, usernames=True, junkMail = [], usePlayerName=False):
+    def __init__(self, uid, address, agent_id, usernames=True, junkMail = [], usePlayerName=False, signup_function=None):
         super().__init__("Signup Service", uid, address, ports=[data.getPort(80), data.getPort(21), data.getPort(22)], minPorts=65536)
         self.name = "Signup Service"
         self.agent_id = agent_id
@@ -2157,6 +2157,7 @@ class SignupService(Node):
         self.junkMail = junkMail
         self.playerPlease = True
         self.usePlayerName = usePlayerName
+        self.signup_function = signup_function
     def get_node(self, address):
         return data.getNode(address)
 
@@ -2200,6 +2201,8 @@ class SignupService(Node):
             print("Your username is: {}".format(username))
             print("The service URL is: {}".format(node.address))
         print("Your password is: [HIDDEN]")
+        if callable(self.signup_function):
+            self.signup_function()
 
 class LocalAreaNetwork(Node):
     def __init__(self, name, uid, address, minPorts=1):
