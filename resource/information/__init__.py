@@ -1,4 +1,4 @@
-version = [0, 3, 0]
+version = [0, 3, 3]
 friendlyVersion = ".".join([str(x) for x in version])
 contributors = ["Gordinator"]
 formerContributors = []
