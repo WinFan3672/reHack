@@ -16,6 +16,8 @@ from game.programs import (
     pickSelection,
     Firewall,
     MasterVPS,
+    BlankMission,
+    Mission,
 )
 import data
 import sys
@@ -208,7 +210,8 @@ class PlayerNode(Node):
             MailServer("EnWired Mail", "enwired-mail", "enwired.mail", self, [User("elliot"), User("sales")]),
             nodes.cialan,
             nodes.testing,
-            MailDotCom("Cinnamon Deployment Test", "cinnamon.mail.com", self, [User("cinnamon")]),
+            nodes.testforum,
+            MailDotCom("Deployment Test Cinnamon", "cinnamon.mail.com", self, [User("cinnamon")]),
         ]
         onionsites = [
             TorMailServer(
@@ -217,7 +220,8 @@ class PlayerNode(Node):
                 "euclid.onion",
                 self,
                 [],
-            )
+            ),
+            nodes.chan,
         ]
         bodies = [
             [
@@ -415,3 +419,4 @@ class PlayerNode(Node):
         data.NODES = [self] + data.NODES
 
         data.addFirewall("firewalltest", Firewall("smartheap11", 0.5))
+        nodes.tf_offtopic.topics.append(BlankMission(self, "vctest1", "VC Test #1", None, Email("null", "admin@jmail.com", "", "")))

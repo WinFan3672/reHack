@@ -642,6 +642,8 @@ class MailServer(Node):
                         div()
                     else:
                         print("ERROR: Invalid email.")
+                except IndexError:
+                    print("ERROR: Invalid email index.")
                 except:
                     print(traceback.format_exc())
             else:
@@ -2147,12 +2149,14 @@ def tor(args, player):
         div()
 
 class SignupService(Node):
-    def __init__(self, uid, address, agent_id, usernames=True, junkMail = []):
+    def __init__(self, uid, address, agent_id, usernames=True, junkMail = [], usePlayerName=False):
         super().__init__("Signup Service", uid, address, ports=[data.getPort(80), data.getPort(21), data.getPort(22)], minPorts=65536)
         self.name = "Signup Service"
         self.agent_id = agent_id
         self.usernames = usernames
         self.junkMail = junkMail
+        self.playerPlease = True
+        self.usePlayerName = usePlayerName
     def get_node(self, address):
         return data.getNode(address)
 
@@ -2161,14 +2165,19 @@ class SignupService(Node):
         for email in [copy.deepcopy(x) for x in self.junkMail]:
             email.receiver = "{}@{}".format(username, address)
             sendEmail(email)
-    def main(self):
+    def main(self, player):
         node = self.get_node(self.agent_id)
         if not node:
             print("404 Not Found")
             return
         print("Welcome to the signup server for {}.".format(node.name))
-
-        username = "" if self.usernames else data.genString(16)
+        
+        if self.usePlayerName:
+            username = player.name
+        elif not self.usernames:
+            username = data.genString(16)
+        else:
+            username = "" 
         while not username:
             username = input("Enter Your Username $")
             if not username:
@@ -2767,3 +2776,166 @@ class TorSignupService(SignupService):
         for email in emails:
             email.receiver = "{}@{}".format(username, address)
             sendTorEmail(email)
+
+
+class Reply(Base):
+    def __init__(self, username, text):
+        self.username = username
+        self.text = text
+
+class Topic(Base):
+    def __init__(self, username, title, text):
+        self.username = username
+        self.title = title
+        self.text = text
+        self.replies = []
+    def reply(self, username, text):
+        reply = Reply(username, text)
+        self.replies.append(reply)
+    def view(self):
+        cls()
+        div()
+        print(self.title)
+        print("Author: {}".format(self.username))
+        div()
+        print(self.text)
+        div()
+        for reply in self.replies:
+            print("{}: {}".format(reply.username, reply.text))
+        br()
+
+class Board(Base):
+    def __init__(self, name, desc):
+        self.name = name
+        self.desc = desc
+        self.topics = []
+    def add_topic(self, username, title, text):
+        topic = Topic(username, title, text)
+        self.topics.append(topic)
+        return topic
+
+
+class Forum(Node):
+    def __init__(self, name, uid, address, webmaster="null", admin_password=None, private=False):
+        super().__init__(name, uid, address, minPorts=65536, ports=[data.getPort(21), data.getPort(22), data.getPort(25), data.getPort(24525)])
+        self.playerPlease = True
+        self.webmaster = webmaster ## Email address of webmaster
+        self.boards = [Board("General discussion", "Discussion not related to other boards.")]
+        self.private = private
+    def login(self, player):
+        while True:
+            cls()
+            div()
+            print(self.name)
+            div()
+            print("[1] Login")
+            print("[0] Exit")
+            div()
+            ch = input(">")
+            if ch == "1":
+                username = input("Username: ")
+                passwd = getpass.getpass("Password: ")
+                for user in self.users:
+                    print(user.name, user.password)
+                    if user.name == username and user.password == passwd:
+                        return True
+                    else:
+                        div()
+                        print("ERROR: Invalid credentials.")
+                        br()
+                        return False
+            elif ch == "0":
+                return False
+    def main(self, player):
+        if self.private:
+            if not self.login(player):
+                return
+        while True:
+            cls()
+            div()
+            print(self.name)
+            if self.hacked:
+                print("Webmaster: {}".format(self.webmaster))
+            div()
+            i = 1
+            for board in self.boards:
+                print("[{}] {} ({} topics)".format(i, board.name, len(board.topics)))
+                i += 1
+            print("[0] Exit")
+            div()
+            try:
+                ch = int(input(">"))
+            except ValueError:
+                ch = 1
+            try:
+                if ch == 0:
+                    return
+                else:
+                    self.board_view(self.boards[ch - 1], player)
+            except IndexError:
+                pass
+    def mission_view(self, board, mission, player):
+        while True:
+            cls()
+            div()
+            print("Name: {}".format(mission.name))
+            print("Reward: {}".format(mission.reward))
+            div()
+            print("[1] Accept")
+            print("[0] Cancel")
+            div()
+            ch = input(">")
+            if ch == "1":
+                if player.currentMission:
+                    cls()
+                    div()
+                    print("Current mission canceled.")
+                    print("You can find it here: rejects.rehack.org")
+                    br()
+                    data.getNode("rejected").missions.append(player.currentMission)
+                player.currentMission = mission
+                board.topics.remove(mission)
+                return
+    def board_view(self, board, player):
+        while True:
+            cls()
+            div()
+            print(board.name)
+            div()
+            i = 1
+            for topic in board.topics:
+                if isinstance(topic, Topic):
+                    print("[{}] {} ({}; {} replies)".format(i, topic.title, topic.username, len(topic.replies)))
+                elif isinstance(topic, Mission):
+                    print("[{}] {} ({} Cr.)".format(i, topic.name, topic.reward))
+                elif isinstance(topic, Program):
+                    if not topic.unlocked:
+                        print("[{}] {} ({} Cr.)".format(i, topic.name, topic.price))
+            print("[0] Return")
+            div()
+            try:
+                ch = int(input(">"))
+            except ValueError:
+                return
+            if ch == 0:
+                return
+            else:
+                try:
+                    topic = board.topics[ch - 1]
+                    if isinstance(topic, Topic):
+                        topic.view()
+                    elif isinstance(board, topic, Mission):
+                        self.mission_view(topic, player)
+                    else:
+                        print("ERROR: Invalid topic.")
+                        br()
+                except IndexError:
+                    pass
+    def add_board(self, title, desc):
+
+        board = Board(title, desc)
+        self.boards.append(board)
+        return board
+    def create_user(self, username, password):
+        user = User(username, password)
+        self.users.append(user)

@@ -14,6 +14,7 @@ from game.programs import (
         pickSelection,
         MailAccount,
         )
+import nodes
 
 def pentest1_end():
     jmail = data.getNode("jmail")
@@ -93,6 +94,44 @@ def pentest2_end():
     node.accounts = [MailAccount("admin")]
     node.minPorts = 65536
 
+
+def chan_missions(self):
+    """
+    Missions located in the "Jobs" board in 5chan.
+    """
+    bodies = [
+        [
+            "Welcome to 5chan.",
+            "To fund your future escapades, this mission doesn't require you to do anything.",
+            "Simply complete it and get your reward.",
+        ]
+    ]
+    end_email = Email(
+            "null", 
+            "{}@jmail.com".format(self.name),
+            "Mission Complete",
+            "Payment should be credited within the next 2 business days.",
+            )
+    bodies = ["\n".join(x) for x in bodies]
+    emails = [
+        Email(
+            "null",
+            "{}@jmail.com".format(self.name),
+            "Welcome To 5chan",
+            bodies[0],
+        ),
+    ]
+    return [
+        BlankMission(
+            self,
+            "5chan0",
+            "Welcome To 5chan",
+            None,
+            emails[0],
+            end_email,
+            reward=2500,
+        ),
+    ]
 
 
 def investigate_missions(self):
@@ -1008,4 +1047,5 @@ def start_missions(self):
     return MISSIONS
 
 def main(self):
+    nodes.chan_jobs.topics += (chan_missions(self))
     return start_missions(self) + base_missions(self) + main_story_missions(self) + autocrat_missions(self) + investigate_missions(self)

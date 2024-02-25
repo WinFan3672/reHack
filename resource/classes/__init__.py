@@ -156,6 +156,9 @@ class Node(Base):
 
         return cloned_node
 
+    def create_user(self, username, password):
+        self.users.append(User(username, password))
+
 
 class Person(Base):
     def __init__(self, forename, surname, address):
