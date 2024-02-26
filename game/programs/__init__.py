@@ -2914,6 +2914,9 @@ class Forum(Node):
                 elif isinstance(topic, Program):
                     if not topic.unlocked:
                         print("[{}] {} ({} Cr.)".format(i, topic.name, topic.price))
+                elif isinstance(topic, Board):
+                    print("[{}] {} ({} Topics)".format(i, topic.name, len(topic.topics)))
+                i += 1
             print("[0] Return")
             div()
             try:
@@ -2927,8 +2930,10 @@ class Forum(Node):
                     topic = board.topics[ch - 1]
                     if isinstance(topic, Topic):
                         topic.view()
-                    elif isinstance(board, topic, Mission):
-                        self.mission_view(topic, player)
+                    elif isinstance(topic, Mission):
+                        self.mission_view(board, topic, player)
+                    elif isinstance(topic, Board):
+                          self.board_view(topic, player)
                     else:
                         print("ERROR: Invalid topic.")
                         br()
