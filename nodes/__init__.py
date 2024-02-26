@@ -53,7 +53,7 @@ testing.add_router()
 testforum = programs.Forum("Test Forum", "testforum", "forum.rehack.test", admin_password="root")
 
 tf_general = testforum.boards[0]
-tf_offtopic = testforum.add_board("Off topic", "")
+tf_offtopic = testforum.add_board("Off topic")
 
 
 TF_RULES ="\n".join([
@@ -69,17 +69,29 @@ tf_rules.reply("ThirdUser", "+1")
 
 vcforum = programs.Forum("VC Forum", "vcforum", data.generateTorURL("vcforum"), private=True)
 vcgeneral = vcforum.boards[0] ## general discussion
-vcstore = vcforum.add_board("Store", "Buy programs for use in your escapades")
-vcjobs = vcforum.add_board("Jobs", "Get work here")
-vcident = vcforum.add_board("Identities", "Leak the identities of random ppl")
+vcstore = vcforum.add_board("Store")
+vcjobs = vcforum.add_board("Jobs")
+vcident = vcforum.add_board("Identities")
 
 chan = programs.Forum("5chan", "5chan", data.generateTorURL("5chan"), private=True)
 chan_general = chan.boards[0]
-chan_welcome = programs.Board("Welcome", "You are welcome here")
-chan_general.topics.append(chan_welcome)
+chan_general.add_board("Welcome")
+chan_ident = chan_general.add_board("Identities")
 
-chan_ident = programs.Board("Identities", "deets go here")
-chan_general.boards.append(chan_ident)
+CHAN_RULES = "\n".join([
+    "1. Do not target other members of the forum.",
+    "2. No flame wars.",
+    "3. If a topic is locked, do NOT continue the discussion elsewhere.",
+    "4. No discussion of politics outside of random",
+    "5. Put topics in the right channel",
+    "6. NEVER hack medical companies",
+    "7. Do not discuss VC-Forum in an overly positive way",
+    "8. Advertising other forums is permitted, as long as it is not intrusive",
+    "9. Report rule-breaking by mentioning the admin, NEVER enforce the rules yourself",
+    "10. Use common sense.",
+])
+
+chan_rules = chan_general.add_topic("admin", "Forum Rules", CHAN_RULES, True)
 
 chan_hack_advice = chan_general.add_topic("deadhead1337","Advice on hacking?", "I'm new to this kind of thing.")
 chan_hack_advice.reply("admin", "The reHack Wiki (wiki.rehack.org) is a surprisingly good resource, if you're an agent.")
@@ -117,12 +129,12 @@ chan_xos.reply("admin", "shut up nullzsec")
 chan_xos.reply("digit", "Making too many enemies is a bad idea")
 chan_xos.reply("code", "digit: That's rich coming from YOU")
 chan_xos.reply("code", "nullzsec: rude")
-chan_xos.reply("admin", "Because this has diverted from the original discussion, I'll lock this topic.")
+chan_xos.reply("admin", "Because this has turned into a flame war, I'll lock this topic.")
 chan_xos.reply("system", "admin locked this topic")
 
-chan_news = chan.add_board("News", "Reporting the news before the news does")
-chan_jobs = chan.add_board("Jobs", "Find work here.")
-chan_b = chan.add_board("Random (/b/)", "Random it is")
+chan_news = chan.add_board("News")
+chan_jobs = chan.add_board("Jobs")
+chan_b = chan.add_board("Random (/b/)")
 
 chan_userlist = chan_b.add_topic("nullzsec", "Why no userlist?", "I wanna know how many users there are on 5chan, cmon admin!")
 chan_userlist.reply("admin", "Privacy reasons")
@@ -148,7 +160,4 @@ chan_userlist.reply("system", "admin expunged a message")
 chan_userlist.reply("vc", "You keep expunging me, and I'll keep recrutin'.")
 chan_userlist.reply("vc", "For those interested in REAL hacking, search for us")
 chan_userlist.reply("vc", "Those of you with real drive will find us easily")
-chan_xos.reply("system", "admin locked this topic")
-
-chan_music = programs.Board("Music Discussion", "")
-chan_b.boards.append(chan_music)
+chan_userlist.reply("system", "admin locked this topic")

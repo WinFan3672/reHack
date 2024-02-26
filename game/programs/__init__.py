@@ -2802,20 +2802,27 @@ class Topic(Base):
         print("Author: {}".format(self.username))
         div()
         print(self.text)
-        div()
+        if self.replies:
+            div()
         for reply in self.replies:
             print("{}: {}".format(reply.username, reply.text))
         br()
 
 class Board(Base):
-    def __init__(self, name, desc):
+    def __init__(self, name):
         self.name = name
-        self.desc = desc
         self.topics = []
-    def add_topic(self, username, title, text):
+    def add_topic(self, username, title, text, sticky=False):
         topic = Topic(username, title, text)
-        self.topics.append(topic)
+        if sticky:
+            self.topics.insert(0, topic)
+        else:
+            self.topics.append(topic)
         return topic
+    def add_board(self, name):
+        board = Board(name)
+        self.topics.append(board)
+        return board
 
 
 class Forum(Node):
@@ -2823,7 +2830,7 @@ class Forum(Node):
         super().__init__(name, uid, address, minPorts=65536, ports=[data.getPort(21), data.getPort(22), data.getPort(25), data.getPort(24525)])
         self.playerPlease = True
         self.webmaster = webmaster ## Email address of webmaster
-        self.boards = [Board("General discussion", "Discussion not related to other boards.")]
+        self.boards = [Board("General Discussion")]
         self.private = private
     def login(self, player):
         while True:
@@ -2939,9 +2946,8 @@ class Forum(Node):
                         br()
                 except IndexError:
                     pass
-    def add_board(self, title, desc):
-
-        board = Board(title, desc)
+    def add_board(self, title):
+        board = Board(title)
         self.boards.append(board)
         return board
     def create_user(self, username, password):
