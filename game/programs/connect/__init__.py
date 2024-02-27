@@ -85,36 +85,27 @@ def connect(item):
             print("exit: disconnect from host")
             div()
         elif name == "scan":
-            valid = False
-            for link in item.linked:
-                n = data.getNode(link)
-                if n:
-                    valid = True
-                    print("{}: {}".format(n.name, n.address))
-            print("ERROR: No links found.")
+            valid = [data.getNode(x) for x in item.linked if x]
+            for node in valid:
+                print("{}: {}".format(node.name, node.address))
+            if not valid:
+                print("ERROR: No links found.")
 
         else:
             print("ssh: syntax error.\nType `help` for a command list.")
 
 
 def connectStart(address, player):
-    BLOCKLIST = ["127.0.0.1"]
     resolved = False
     for item in data.NODES:
         if item.address == address:
-            resolved = True
+            resolved = item.check_health()
             item.visited = True
-            if item.address in BLOCKLIST:
-                resolved = False
-            elif item.hacked and "main_hacked" in dir(item):
+            if item.hacked and "main_hacked" in dir(item):
                 if item.playerPlease:
                     item.main_hacked(player)
                 else:
                     item.main_hacked()
-            elif item.hacked:
-                print("Connecting to {}...".format(address))
-                # time.sleep(2.5)
-                connect(item)
             elif "main" in dir(item):
                 if item.playerPlease:
                     item.main(player)

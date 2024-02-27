@@ -1,6 +1,16 @@
 import random
 import os
 import string
+import platform
+
+WARN_TEXT = "WARNING! Deleting core.sys will break your system."
+
+def div():
+    print("--------------------")
+
+def br():
+    div()
+    input("Press ENTER to continue.")
 
 
 def makeRandomString(length=8):
@@ -10,6 +20,13 @@ def makeRandomString(length=8):
         s += random.choice(list(c))
     return s
 
+
+def cls():
+    """
+    Clears the terminal screen.
+    """
+    res = platform.uname()
+    os.system("cls" if res[0] == "Windows" else "clear")
 
 class Base:
     def __init__(self):
@@ -77,13 +94,43 @@ class File(Base):
             self.data = data
         else:
             self.data = BinaryFile().data()
+    def __str__(self):
+        return "File('{}')".format(self.name)
+
+    def clone(self):
+        return File(self.name, self.data)
+
+
+
 
 
 class Folder(Base):
-    def __init__(self, name, files=[]):
+    def __init__(self, name, files=[], writeAccess=False):
         super().__init__()
         self.name = name
         self.files = files
+        self.writeAccess = writeAccess
+    def __iter__(self):
+        self.index = 0
+        return self
+
+    def __next__(self):
+        if self.index < len(self.files):
+            result = self.files[self.index]
+            self.index += 1
+            return result
+        else:
+            raise StopIteration
+    def __str__(self):
+        return "Folder('{}', {})".format(self.name, len(self.files))
+    def flatten(self):
+        all_files = []
+        for file_or_folder in self.files:
+            if isinstance(file_or_folder, File):
+                all_files.append(file_or_folder)
+            elif isinstance(file_or_folder, Folder):
+                all_files.extend(file_or_folder.flatten())
+        return all_files    
 
     def listDir(self):
         result = []
@@ -94,6 +141,19 @@ class Folder(Base):
                 result.append(item)
         return result
 
+    def get_file(self, filename, filetype="Any", flatten=False):
+        files = self.flatten() if flatten else self.files
+        for file in files:
+            if file.name == filename:
+                if filetype == "Any":
+                    return file
+                elif filetype == "Folder" and isinstance(file, Folder):
+                    return file
+                elif filetype == "File" and isinstance(file, File):
+                    return file
+    def add_file(self, file):
+        if type(file) in [File, Folder]:
+            self.files.append(file)
 
 class Log(Base):
     def __init__(self, text, address=None):
@@ -124,7 +184,7 @@ class Node(Base):
         self.uid = uid
         self.player = player
         self.address = address
-        self.files = files + [Folder("sys", [File("core.sys"), File("x-server.sys")])]
+        self.files = files + [Folder("sys", [File("core.sys"), File("x-server.sys"), File("warning", WARN_TEXT)])] 
         self.ports = ports
         self.minPorts = minPorts
         self.users = users
@@ -134,8 +194,25 @@ class Node(Base):
         self.nmap = False
         self.logs = []
         self.firewall = None
+        self.readAccess = False ## FTP read access
         self.playerPlease = False # if true, connect will pass player
                                   # to main() or main_hacked()
+        self.motd = "\n".join([
+            "$ Welcome to Bash on Debian GNU/Linux 5.0.5",
+            "$ To open a remote shell, run ssh <address of this node>.",
+            "$ To browse its files, run ssh <address of this node>.",
+        ])
+    def tick(self):
+        ## This is called after every command
+        pass
+    def flatten(self):
+        files = []
+        for file in self.files:
+            if isinstance(file, File):
+                files.append(file)
+            elif isinstance(file, Folder):
+                files.extend(file.flatten())
+        return files
 
     def create_log(self, ip_address, text):
         self.logs.append(Log(ip_address, text))
@@ -155,6 +232,12 @@ class Node(Base):
         )
 
         return cloned_node
+    
+    def check_health(self):
+        return "core.sys" in [x.name for x in self.flatten()]
+
+    def main_hacked(self, player=None):
+        print(self.motd)
 
     def create_user(self, username, password):
         self.users.append(User(username, password))
@@ -194,3 +277,4 @@ class Domain(Base):
         self.assign = addr
     def getName(self):
         return ".".join([self.name, self.base])
+

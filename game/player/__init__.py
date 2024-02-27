@@ -113,16 +113,17 @@ class PlayerNode(Node):
                         program.execute(args)
                 else:
                     print("FATAL ERROR: The program was not found.")
-
+            for node in data.NODES + data.TOR_NODES:
+                node.tick()
+    def check_health(self):
+        return True
     def startActions(self):
-        data.NODES.append(self)
         servers = [
             JmailServer(self),
             MailServer(
                 "reHack Mail Server",
                 "rehack-mail",
                 "rehack.mail",
-                self,
                 [
                     User("welcome"),
                     User("careers"),
@@ -211,6 +212,7 @@ class PlayerNode(Node):
             nodes.cialan,
             nodes.testing,
             nodes.testforum,
+            nodes.mht,
             MailDotCom("Deployment Test Cinnamon", "cinnamon.mail.com", self, [User("cinnamon")]),
         ]
         onionsites = [
@@ -220,6 +222,13 @@ class PlayerNode(Node):
                 "euclid.onion",
                 self,
                 [],
+            ),
+            TorMailServer(
+                "ReHack Onionmail",
+                "rhomail",
+                "rehackmail.onion",
+                self,
+                []
             ),
             nodes.chan,
         ]

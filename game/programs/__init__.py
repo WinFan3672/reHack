@@ -296,6 +296,13 @@ class MessageBoardMessage(Base):
         super().__init__()
         self.title = title
         self.text = text
+    def read(self):
+        cls()
+        div()
+        print(self.title)
+        div()
+        print(self.text)
+        br()
 
 
 class MessageBoard(Node):
@@ -318,26 +325,33 @@ class MessageBoard(Node):
         )
         self.path = path
         self.ports = ports
+        self.messages = []
+        self.posts = [x for x in os.listdir("msgboard/{}".format(self.path))]
+        self.compile()
 
     def main(self):
-        div()
-        print(self.name)
-        for item in os.listdir("msgboard/{}".format(self.path)):
+        while True:
+            cls()
             div()
-            print("* " + item)
+            print(self.name)
+            div()
+            i = 0
+            for message in self.messages:
+                print("[{}] {}".format(i, message.title))
+                i += 1
+            div()
+            try:
+                ch = int(input("$"))
+                message = self.messages[ch]
+                message.read()
+            except:
+                return
+            div()
+    def compile(self):
+        for item in self.posts:
             with open("msgboard/{}/{}".format(self.path, item)) as f:
-                for line in f.read().split("\n"):
-                    if line == "div()":
-                        div()
-                    else:
-                        print(line)
-        div()
-
-    def add_message(self, message):
-        if isinstance(message, MessageBoardMessage):
-            self.messages.append(message)
-        else:
-            raise TypeError("The message you tried to add is invalid.")
+                m = MessageBoardMessage(item, f.read())
+                self.messages.append(m)
 
 
 class WebServer(Node):
@@ -359,7 +373,7 @@ class WebServer(Node):
 
     def main(self):
         with open("websites/{}".format(self.path)) as f:
-            for line in f.read().split("\n"):
+            for line in f.read().rstrip("\n").split("\n"):
                 if line == "div()":
                     div()
                 else:
@@ -411,6 +425,20 @@ def debuginfo(args, player):
         print("    list: lists all nodes and their info")
         print("    info: get info about a node")
         div()
+    elif args == ["ls"]:
+        div()
+        print("debug ls <uid>")
+        div()
+        print("Displays the (flattened) file list of a node.")
+        div()
+    elif "ls" in args and len(args) == 2:
+        node = data.getNode(args[1])
+        if node:
+            print([str(x) for x in data.createFolder(node)])
+    elif args == ["health"]:
+        for node in data.NODES + data.TOR_NODES:
+            if not node.check_health():
+                print(node.uid)
     elif args == ["ip", "list"]:
         div()
         print("UID\t\tHOSTNAME")
@@ -494,6 +522,7 @@ def debuginfo(args, player):
         print("    buy: purchases all programs for free")
         print("    lan: displays info about a LAN")
         print("    sm: start a mission")
+        print("    health: list all dead nodes")
         div()
         print("WARNING: This program is not intended for use by anyone other than the developers.")
         print("It is meant to be used when debugging the game, not when playing it.")
@@ -1064,6 +1093,13 @@ class ISPNode(Node):
         self.minPorts = 4
         self.linked = ["shodan"]
         self.users = [User("admin", "potholes")]
+        self.finalMissionState = False
+
+    def check_health(self):
+        if not self.finalMissionState:
+            return not self.hacked
+        else:
+            return "core.sys" in [x.name for x in self.flatten(self.files)]
 
     def main(self):
         div()
@@ -2953,3 +2989,224 @@ class Forum(Node):
     def create_user(self, username, password):
         user = User(username, password)
         self.users.append(user)
+
+
+class Comment(Base):
+    def __init__(self, author, text):
+        self.author = author
+        self.text = text
+class NewsStory(Base):
+    def __init__(self, title, author, date, text):
+        self.title = title
+        self.author = author
+        self.date = date
+        self.text = text
+        self.comments = []
+    def read(self):
+        cls()
+        div()
+        print(self.title)
+        print("Date: {}".format(self.date))
+        print("Author: {}".format(self.author))
+        div()
+        print(self.text)
+        if self.comments:
+            div()
+            print("Comments")
+            div()
+            for comment in self.comments:
+                print("{}: {}".format(comment.author, comment.text))
+        br()
+    def reply(self, author, text):
+        self.comments.append(Comment(author, text))
+
+class NewsServer(Node):
+    def __init__(self, name, uid, address, webmaster="null"):
+        super().__init__(name, uid, address, ports=[data.getPort(21), data.getPort(22), data.getPort(25), data.getPort(80)], minPorts=4)
+        self.webmaster = webmaster
+        self.stories = []
+    def add_story(self, title, author, date, text):
+        story = NewsStory(title, author, date, text)
+        self.stories.append(story)
+        return story
+    def main(self):
+        while True:
+            cls()
+            div()
+            print(self.name)
+            div()
+            i = 0
+            for story in self.stories:
+                print("[{}] {} ({} by {})".format(i, story.title, story.date, story.author))
+                i += 1
+            div()
+            try:
+                ch = int(input("$"))
+                story = self.stories[ch]
+                story.read()
+            except:
+                return
+
+class Shodan(Node):
+    def __init__(self):
+        super().__init__("SHODAN", "shodan", data.generateIP(), minPorts = 65536)
+    def main(self):
+        print("SHODAN breaks the fourth wall.")
+    def tick(self):
+        ## This node is used for controlling the game;
+        ## As such, this node is unhackable
+        pass
+
+def ssh(args):
+    if len(args) == 1:
+        node = data.getNode(args[0], True)
+        if node:
+            if node.hacked and data.checkPort(node, 22):
+                connect.connect(node)
+            else:
+                print("ERROR: Access denied.")
+        else:
+            print("ERROR: Invalid hostname.")
+    else:
+        div()
+        print("ssh <address>")
+        div()
+        print("Connect to a remote host over SSH.")
+        div()
+
+def ftp(args):
+    if len(args) == 1:
+        node = data.getNode(args[0], True)
+        if node:
+            if node.hacked and data.checkPort(node, 21):
+                data.createFolder(node).view(True)
+            elif data.checkPort(node, 21) and node.readAccess:
+                folderView(data.createFolder(node))
+            else:
+                print("ERROR: Access denied.")
+        else:
+            print("ERROR: Invalid hostname.")
+    else:
+        div()
+        print("ftp <address>")
+        div()
+        print("Browses files on a remote host over FTP.")
+        div()
+
+class Forwarder(Node):
+    name = "Apache Forwarder v1.0"
+    def __init__(self,  uid, address, forwarding_url, show_origin=True):
+        super().__init__(self.name, uid, address, minPorts=1, ports=[data.getPort(80)])
+        self.forwarding_url = forwarding_url
+        self.playerPlease = True
+        self.show_origin = show_origin
+        self.users = [User("admin", "admin")]
+        
+    def get_node(self, address):
+        return data.getNode(self.forwarding_url)
+    def connect(self, node, player):
+        if node.hacked and node.playerPlease:
+            node.main_hacked(player)
+        elif node.hacked:
+            node.main_hacked()
+        elif node.playerPlease:
+            node.main(player)
+        else:
+            node.main()
+    def main(self, player):
+        self.connect(self.get_node(self.forwarding_url), player)
+    def main_hacked(self, player):
+        print("\n".join([
+            "$ Apache Forwarder v1.0",
+            "$ Apache Forwarder is an open-source forwarding server that forwards all traffic to another location.",
+            "$ It supports Tor as well as the clearnet, allowing for:",
+            "$ - Tor --> Tor",
+            "$ - Tor --> Clearnet*",
+            "$ - Clearnet --> Tor*",
+            "$ - Clearnet --> Clearnet",
+            "$ * Using this option de-anonymises users of the proxy. Users connecting over Tor proper are fine.",
+            "$ This node points to: {}".format(self.get_node(self.forwarding_url).address if self.show_origin else "[DATA HIDDEN BY ADMIN]"),
+            ]))
+
+class TorForwarder(Forwarder):
+    def get_node(self, address):
+        return data.getTorNode(address)
+
+class TorRelay(Node):
+    def __init__(self, name, uid, address, webmaster):
+        super().__init__(name, uid, address, ports[data.getTorNode(22), data.getPort(9200)], minPorts=2)
+        self.webmaster = webmaster
+    def main_hacked(self):
+        print("Tor Relay")
+        print("HTTP STATUS: 200 OK")
+        print("WEBMASTER EMAIL: {}".format(self.webmaster))
+
+
+class FTPServer(Node):
+    def __init__(self, node, uid, address, *args, **kwargs):
+        super().__init__(node, uid, address, ports=[data.getPort(21)], files=[Folder("pub"), Folder("icnoming",writeAccess=True)], *args, **kwargs)
+class PublicFTPServer(Node):
+    def __init__(self, node, uid, address, *args, **kwargs):
+        super().__init__(node, uid, address, ports=[data.getPort(21)], files=[Folder("pub"), Folder("incoming",writeAccess=True)], *args, **kwargs)
+        self.readAccess = True
+
+def folderView(self, writeAccess=False):
+    while True:
+        cls()
+        div()
+        print("Index of {} (Permissions: {})".format(self.name, "rw" if writeAccess else "r"))
+        div()
+        i = 1
+        for file in self.files:
+            print("[{}] {} ({})".format(i, file.name, "Folder: ({} files)".format(len(file.files)) if isinstance(file, Folder) else "File"))
+            i += 1
+        div()
+        try:
+            ch = int(input("$"))
+            if ch == 0:
+                return
+            file = self.files [ch-1]
+            if isinstance(file, Folder):
+                if writeAccess:
+                    folderView(file, True)
+                else:
+                    folderView(file, file.writeAccess)
+            elif isinstance(file, File):
+                fileView(file, True if writeAccess else self.writeAccess)
+        except:
+            return
+
+def fileView(self, folder, writeAccess=False):
+    cls()
+    div()
+    print(self.name)
+    div()
+    print("[1] View File")
+    print("[2] Upload File")
+    if writeAccess and folder:
+        print("[3] Delete File")
+    else:
+        print("[ ] Delete File")
+    div()
+    ch = input("$")
+    if ch == "1":
+        cls()
+        div()
+        print(self.data)
+        br()
+    elif ch == "2":
+        target = input("Target IP $")
+        div()
+        node = data.getNode(target, True)
+        if node and data.checkPort(node, 21):
+            inc = data.getFile(node, "incoming", "Folder")
+            if inc and inc.writeAccess:
+                inc.add_file(self.clone())
+                print("Successfully uploaded file.")
+            else:
+                print("ERROR: Cannot upload to server")
+        else:
+            print("ERROR: Invalid FTP server")
+        br()            
+    elif ch == "3" and writeAccess:
+        folder.files = [x for x in folder.files if x.name != self.name]

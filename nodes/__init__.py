@@ -161,3 +161,112 @@ chan_userlist.reply("vc", "You keep expunging me, and I'll keep recrutin'.")
 chan_userlist.reply("vc", "For those interested in REAL hacking, search for us")
 chan_userlist.reply("vc", "Those of you with real drive will find us easily")
 chan_userlist.reply("system", "admin locked this topic")
+
+vcforum = programs.Forum("VC Forum", "vcforum", data.generateTorURL("vcforum"), private=True)
+vc_general = vcforum.boards[0]
+
+vc_rules = vc_general.add_topic("admin", "VC-Forum Rules", CHAN_RULES.replace("VC-Forum", "5chan"))
+
+vc_jobs = vcforum.add_board("Jobs")
+vc_contracts = vcforum.add_board("Contracts")
+vc_leaks = vcforum.add_board("Leaks")
+vc_releaks = vc_leaks.add_board("Releaks")
+
+CHAN_LEAKED_DEETS = "\n".join([
+    "Basics",
+    "",
+    "Name: Mason Ramirez",
+    "Age: 28",
+    "DOB: Dec 2, 1982",
+    "",
+    "Physical",
+    "",
+    "Address: [DATA EXPUNGED], Los Angeles, CA 90017", ## 29 Fincham Road
+    "Phone NO: 760-XXX-XXXX",
+    "SSN: 550-85-XXXX",
+    "",
+    "Credit Card",
+    "",
+    "NUM: 4539 2183 XXXX XXXX",
+    "EXP: 01/2015",
+    "CVV: 592",
+    "",
+    "Unlock Full Deets",
+    "",
+    "For $5000 (20k BTC): Get full deets (1x slots)",
+    "For $15000 (60k BTC): Re-leak w/ full deets (1x slots)",
+    "Address: {}".format(data.genString(64))
+
+])
+
+vc_leaks_chan = vc_leaks.add_topic("[expunged]", "[OWNER OF 5CHAN] Mason Ramirez", CHAN_LEAKED_DEETS)
+vc_leaks_chan.reply("system", "A reminder that all leaks are anonymised to protect the leakers")
+vc_leaks_chan.reply("bit", "take that, anons")
+vc_leaks_chan.reply("5chan", "Why do this to me?")
+vc_leaks_chan.reply("[expunged]", "Shut up anon")
+vc_leaks_chan.reply("5chan", "Can I have this removed?")
+vc_leaks_chan.reply("admin", "You could buy the deets? that way the listing would be removed?")
+vc_leaks_chan.reply("5chan", "But then I'd be financially rewarding identity thieves")
+vc_leaks_chan.reply("admin", "Doesn't 5chan have a culture of blaming its victims for not being careful enough when interacting with it?")
+vc_leaks_chan.reply("[expunged]", "Good luck with your life lol")
+vc_leaks_chan.reply("system", "20000 BTC transfer: 5chan --> [expunged]")
+vc_leaks_chan.reply("system", "20000 BTC transfer: [expunged] --> 5chan")
+vc_leaks_chan.reply("[expunged]", "You don't understand")
+vc_leaks_chan.reply("5chan", "admin: can you force this through?")
+vc_leaks_chan.reply("bit", "look at the big man himself, pleading for his life")
+vc_leaks_chan.reply("[expunged]", "serves you right for leaking 1k+ deets over 7 years")
+vc_leaks_chan.reply("5chan", "You don't understand! I'm wanted by the police! They can easily arrest me with the PUBLIC info, let alone the paid info!")
+vc_leaks_chan.reply("admin", "You think I'm not wanted either? At least I practise half-decent opsec")
+vc_leaks_chan.reply("5chan", "[DATA expunged] you; you're the one who carbon-copied my forum's rules into yours")
+vc_leaks_chan.reply("system", "60000 BTC transfer: singleton --> [expunged]")
+vc_leaks_chan.reply("bit", "singleton: talk about 'x enters the chat")
+vc_leaks_chan.reply("singleton", "I had the cash and I hate 5chan")
+vc_leaks_chan.reply("[expunged]", "Payment confirmed. I will release within 48h")
+vc_leaks_chan.reply("system", "admin locked this topic")
+
+CHAN_FULL_DEETS = "\n".join([
+    "Basics",
+    "",
+    "Name: Mason Ramirez",
+    "Age: 28",
+    "DOB: Dec 2, 1982",
+    "",
+    "Physical",
+    "",
+    "Address: [DATA EXPUNGED], Los Angeles, CA 90017", ## 29 Fincham Road
+    "Phone NO: 760-490-2648",
+    "SSN: 550-85-5867",
+    "",
+    "Credit Card",
+    "",
+    "NUM: 4539 2183 1294 7021", 
+    "EXP: 01/2015",
+    "CVV: 592",
+    "",
+    "Unlock Full Deets",
+    "",
+    "For $5000 (20k BTC): Get full deets (1x slots)",
+    "For $15000 (60k BTC): Re-leak w/ full deets (1x slots)",
+    "Address: {}".format(data.genString(64))
+])
+vc_leaks_chan2 = vc_releaks.add_topic("[expunged]", "[OWNER OF 5CHAN] Mason Ramirez", CHAN_FULL_DEETS)
+vc_leaks_chan2.reply("system", "Details verified; BTC sent from escrow to [expunged]")
+vc_leaks_chan2.reply("[expunged]", "Satisfaction!")
+vc_leaks_chan2.reply("5chan", "you monsters")
+vc_leaks_chan2.reply("admin", "YOU monster; you deserve it")
+vc_leaks_chan2.reply("5chan", "I'm sure the 15k was worth it")
+vc_leaks_chan2.reply("[expunged]", "Worth it to me")
+vc_leaks_chan2.reply("singleton", "+1")
+vc_leaks_chan2.reply("5chan", "I'll be leaving the country soon; I know people")
+vc_leaks_chan2.reply("admin", "Sincerely, from a hacker to another, I hope you stay safe")
+vc_leaks_chan2.reply("5chan", "huh?")
+vc_leaks_chan2.reply("admin", "As much as you might deserve it, the criminal code of honour remains upheld")
+vc_leaks_chan2.reply("admin", "plus I hate the glowies")
+vc_leaks_chan2.reply("5chan", "Anyway I gotta lay low for the next while")
+vc_leaks_chan2.reply("system", "admin closed this topic")
+
+mht = programs.NewsServer("MHT", "mht", "mht.com", "admin@mht.mail.com")
+with open("msgboard/mht.com/Confirming The Rumours") as f:
+    mht_rumours = mht.add_story("Confirming The Rumours", "Admin", "2010-06-01", f.read())
+    mht_rumours.reply("rehack", "Hopefully this encourages xDevices to update their admin password")
+    mht_rumours.reply("admin", "rehack: Probably not, they've ignored it since the OG xPhone")
