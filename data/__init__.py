@@ -11,7 +11,9 @@ import string
 global PORTS, NODES, TOR_NODES, PROGRAMS, GENERATED
 
 def createFolder(node):
-    return Folder("/", node.files)
+    folder = Folder("/", node.files)
+    folder.origin = node.uid
+    return folder
 
 def getFile(node, name, kind="Any"):
     for file in createFolder(node):
@@ -494,8 +496,10 @@ N = [
     programs.SignupService("jmailsu", "signup.jmail.com", "jmail", junkMail=JMAIL_STARTING_EMAILS),
     programs.TorForwarder("rhomail-signup", "om.rehack.org", "rhomail-signup"),
     programs.Forwarder("pwnedlist", "pwned.rehack.org", "pwned.reha.ck"),
-    programs.PublicFTPServer("Test FTP", "ftptest", "ftp.test"),
+    programs.PublicFTPServer("Test FTP", "ftptest", "ftp.test", users=[User("admin", "admin")]),
     programs.PublicFTPServer("reHack Drop Server", "rhdrop", "drop.rehack.org", minPorts=65536),
+    programs.Forwarder("mvps", "mvps.me", "mastervps_central"),
+    programs.TorForwarder("vcsu", "vc.su", "vc-signup"),
 ]
 for item in N:
     NODES.append(item)
@@ -511,6 +515,8 @@ PROGRAMS = [
         programs.PortBreakingTool("sqldump", 1433, price=2500).program,
         programs.PortBreakingTool("lancrack", 1, price=3500).program,
         Program("connect", game.programs.connect.main, True, classPlease=True),
+        Program("history", game.programs.history, True, classPlease = True),
+        Program("note", game.programs.note, True, classPlease=True),
         Program("ssh", programs.ssh, True),
         Program("ftp", programs.ftp, True),
         Program("debug", programs.debuginfo, True, price=0, classPlease=True),
@@ -658,6 +664,7 @@ TN = [
         programs.TorSignupService("euclid-signup", "signup.euclid.onion", "euclid", False, EUCLID_EMAILS),
         programs.TorSignupService("5chan-signup", generateTorURL("5chansu"), "5chan", usePlayerName=True),
         programs.TorSignupService("rhomail-signup", generateTorURL(), "rhomail", usePlayerName=True),
+        programs.TorSignupService("vc-signup", generateTorURL("vcsu"), "vcforum", usePlayerName=True),
         
 ]
 

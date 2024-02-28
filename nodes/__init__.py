@@ -168,8 +168,30 @@ vc_general = vcforum.boards[0]
 vc_rules = vc_general.add_topic("admin", "VC-Forum Rules", CHAN_RULES.replace("VC-Forum", "5chan"))
 
 vc_jobs = vcforum.add_board("Jobs")
+
 vc_contracts = vcforum.add_board("Contracts")
+
+
+CONTRACT_RULES = "\n".join([
+    "1. Only target hackers or glowies",
+    "2. There are 2 types of contracts:",
+    "2a. DEAD - You want that person dead",
+    "2b. CAPTURE - You want the person kidnapped",
+    "2c. BERATE - You wish the person roughed up a little",
+    "3. State your intentions clearly",
+    "4. Minimum bounties as follows (1 USD = 0.25 BTC):",
+    "4a. DEAD: 2k BTC",
+    "4b. CAPTURE: 1k BTC",
+    "4c. BERATE: 10 BTC",
+    "5. Provide as much information about the victim as possible",
+    "6. VC-Forum takes a 2.5% comission on sales",
+    "7. Maintain absolute anonymity for all parties involved",
+    "8. NEVER mention VC-Forum to the victim",
+    ])
+vc_contract_rules = vc_contracts.add_topic("admin", "Contract Rules", CONTRACT_RULES)
+
 vc_leaks = vcforum.add_board("Leaks")
+
 vc_releaks = vc_leaks.add_board("Releaks")
 
 CHAN_LEAKED_DEETS = "\n".join([
@@ -233,7 +255,7 @@ CHAN_FULL_DEETS = "\n".join([
     "",
     "Physical",
     "",
-    "Address: [DATA EXPUNGED], Los Angeles, CA 90017", ## 29 Fincham Road
+    "Address: 29 Fincham Road, Los Angeles, CA 90017",
     "Phone NO: 760-490-2648",
     "SSN: 550-85-5867",
     "",
@@ -242,12 +264,7 @@ CHAN_FULL_DEETS = "\n".join([
     "NUM: 4539 2183 1294 7021", 
     "EXP: 01/2015",
     "CVV: 592",
-    "",
-    "Unlock Full Deets",
-    "",
-    "For $5000 (20k BTC): Get full deets (1x slots)",
-    "For $15000 (60k BTC): Re-leak w/ full deets (1x slots)",
-    "Address: {}".format(data.genString(64))
+
 ])
 vc_leaks_chan2 = vc_releaks.add_topic("[expunged]", "[OWNER OF 5CHAN] Mason Ramirez", CHAN_FULL_DEETS)
 vc_leaks_chan2.reply("system", "Details verified; BTC sent from escrow to [expunged]")
@@ -265,8 +282,50 @@ vc_leaks_chan2.reply("admin", "plus I hate the glowies")
 vc_leaks_chan2.reply("5chan", "Anyway I gotta lay low for the next while")
 vc_leaks_chan2.reply("system", "admin closed this topic")
 
+vc_leak_auction = vc_leaks.add_board("Auctions")
+
+vc_emarksman = vc_leak_auction.add_topic("[expunged]", "[CLOSED] Elliot Marksman", """Elliot Marksman was CEO of EnWired from 1998 to 2008.
+He replaced John Goodard when he retired, and recently shut down EnWired due to increased finacial struggles.
+This auction bids on the following details:
+ * Name, address, SSN
+ * Logins for EnWired servers (inc. Tor Nodes)
+ * IP addresses of phones and computers""")
+vc_emarksman.reply("system", "CURRENT BID: 100 BTC (25 USD) --> [expunged]")
+vc_emarksman.reply("bit", "250")
+vc_emarksman.reply("admin", "500")
+vc_emarksman.reply("5chan", "2500")
+vc_emarksman.reply("mouse", "1000000000")
+vc_emarksman.reply("system", "antifraudbot withdrew mouse from auction")
+vc_emarksman.reply("bit", "3000")
+vc_emarksman.reply("code", "10000")
+vc_emarksman.reply("5chan", "15000")
+vc_emarksman.reply("e_marksman", "20000")
+vc_emarksman.reply("system", "admin withdrew e_marksman from auction")
+vc_emarksman.reply("system", "AUCTION END: 15,000 BTC (5,000 USD) goes to 5chan")
+vc_emarksman.reply("system", "Transaction confirmed, payment sent to [expunged]")
+vc_emarksman.reply("system", "system locked this topic")
+
+
 mht = programs.NewsServer("MHT", "mht", "mht.com", "admin@mht.mail.com")
 with open("msgboard/mht.com/Confirming The Rumours") as f:
     mht_rumours = mht.add_story("Confirming The Rumours", "Admin", "2010-06-01", f.read())
     mht_rumours.reply("rehack", "Hopefully this encourages xDevices to update their admin password")
     mht_rumours.reply("admin", "rehack: Probably not, they've ignored it since the OG xPhone")
+    mht_rumours.reply("duplexity", "what a madman; publishing an article months ahead of time under nda while saying literally nothing")
+    mht_rumours.reply("admin", "thanks")
+
+
+vc_offtopic = vcforum.add_board("Off-Topic")
+
+vc_rule_discuss = vc_general.add_topic("5chan", "VC-Forum rules copy of 5chan rules", """Hello all.
+I've just joined thanks to a generous invite from the founder.
+However, I'd love to know why the rules are just a copy-paste of my forum's rules
+but with the name of VC-Forum replaced with 5chan. Please let me know.""")
+vc_rule_discuss.reply("admin", "Your rules are very good")
+vc_rule_discuss.reply("5chan", "then license the rules from me")
+vc_rule_discuss.reply("code", "did you hear this guy?")
+vc_rule_discuss.reply("bit", "Embarassing")
+vc_rule_discuss.reply("halt", "The 5chan versus vc feud is the gift that keeps on giving")
+vc_rule_discuss.reply("admin", "so is you getting banned")
+vc_rule_discuss.reply("halt", "what did I do?")
+vc_rule_discuss.reply("system", "admin locked this topic")

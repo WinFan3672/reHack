@@ -1292,6 +1292,23 @@ class XOSDevice(Node):
                 print("ERROR: Invalid command.")
 
 
+class WikiPage(Base):
+    def __init__(self, name):
+        self.name = name
+    def read(self):
+        cls()
+        div()
+
+def WikiCategory(Base):
+    def __init__(self, name):
+        self.name = name
+        self.pages = []
+    def add_page(self, page):
+        if isinstance(page, WikiCategory):
+            self.pages.append(page)
+        else:
+
+
 class WikiServer(Node):
     def __init__(self, name, uid, address, folder, homepage="Main Page"):
         super().__init__(name, uid, address)
@@ -1820,6 +1837,16 @@ class MasterVPS(Node):
                 "price":750,
                 "description":"A basic node with full security, including a firewall.",
                 },
+            "ftp":{
+                "node": FTPServer("", "", ""),
+                "price": 1000,
+                "description":"A server to drop your files"
+                },
+            "ftp_plus": {
+                "node": FTPServer("", "", "", minPorts=65536),
+                "price": 1500,
+                "description": "A more secure FTP server",
+                },
             "xphone":{
                 "node":XOSDevice("","",""),
                 "price":300,
@@ -2161,10 +2188,17 @@ class DomainExpert(Node):
         print("ERROR: The admin panel has been disabled by the site administrator.")
 
 def tor(args, player):
-    if args:
+    if args == ["history"]:
+        history = [x for x in data.TOR_NODES if x.visited]
+        for node in history:
+            print("{}: {}".format(node.name, node.address))
+        if not history:
+            print("No history to show.")
+    elif args:
         for arg in args:
             node = data.getTorNode(arg)
             if node:
+                node.visited = True
                 if node.hacked and "main_hacked" in dir(node):
                     if item.playerPlease:
                         node.main_hacked(player)
@@ -2877,7 +2911,7 @@ class Forum(Node):
             print("[1] Login")
             print("[0] Exit")
             div()
-            ch = input(">")
+            ch = input("$")
             if ch == "1":
                 username = input("Username: ")
                 passwd = getpass.getpass("Password: ")
@@ -2912,12 +2946,11 @@ class Forum(Node):
             try:
                 ch = int(input(">"))
             except ValueError:
-                ch = 1
+                return
             try:
                 if ch == 0:
                     return
-                else:
-                    self.board_view(self.boards[ch - 1], player)
+                self.board_view(self.boards[ch - 1], player)
             except IndexError:
                 pass
     def mission_view(self, board, mission, player):
@@ -3079,7 +3112,7 @@ def ftp(args):
         node = data.getNode(args[0], True)
         if node:
             if node.hacked and data.checkPort(node, 21):
-                data.createFolder(node).view(True)
+                folderView(data.createFolder(node), True)
             elif data.checkPort(node, 21) and node.readAccess:
                 folderView(data.createFolder(node))
             else:
@@ -3210,3 +3243,43 @@ def fileView(self, folder, writeAccess=False):
         br()            
     elif ch == "3" and writeAccess:
         folder.files = [x for x in folder.files if x.name != self.name]
+
+def history(args, player):
+    div()
+    print("Internet History")
+    div()
+    connect.main(["history"], player)
+    div()
+    print("Tor History")
+    div()
+    tor(["history"], player)
+    div()
+
+def note_manager(player):
+    print("ERROR: This feature has not yet been implemented.")
+
+def note(args, player):
+    if args in [["list"], ["ls"]]:
+        for note in player.notes:
+            print("* {}".format(note.text))
+    elif args == ["add"]:
+        div()
+        print("note add <text>")
+        div()
+        print("Adds a note.")
+        div()
+    elif "add" in args:
+        note = " ".join(args[1:])
+        player.notes.append(Note(note))
+    elif args == ["manage"]:
+        note_manager(player)
+    else:
+        div()
+        print("note [args]")
+        div()
+        print("Manage notes.")
+        div()
+        print("note ls: list all notes")
+        print("note add <text>: add a note")
+        print("note manage: open graphical note manager")
+        div()

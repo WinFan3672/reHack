@@ -118,7 +118,13 @@ def connectStart(address, player):
 
 
 def main(args, player):
-    if args:
+    if args == ["history"]:
+        history = [x for x in data.NODES if x.visited]
+        for node in history:
+            print("{}: {}".format(node.name, node.address))
+        if not history:
+            print("No history to show.")
+    elif args:
         connectStart(args[0], player)
     else:
         div()

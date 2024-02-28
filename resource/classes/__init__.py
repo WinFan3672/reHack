@@ -87,13 +87,14 @@ class BinaryFile(Base):
 
 
 class File(Base):
-    def __init__(self, name, data=None):
+    def __init__(self, name, data=None, origin=None):
         super().__init__()
         self.name = name
         if data:
             self.data = data
         else:
             self.data = BinaryFile().data()
+        self.origin = origin
     def __str__(self):
         return "File('{}')".format(self.name)
 
@@ -153,6 +154,7 @@ class Folder(Base):
                     return file
     def add_file(self, file):
         if type(file) in [File, Folder]:
+            file.origin = self.origin
             self.files.append(file)
 
 class Log(Base):
@@ -184,7 +186,7 @@ class Node(Base):
         self.uid = uid
         self.player = player
         self.address = address
-        self.files = files + [Folder("sys", [File("core.sys"), File("x-server.sys"), File("warning", WARN_TEXT)])] 
+        self.files = files + [Folder("home"), Folder("bin"), Folder("sys", [File("core.sys"), File("x-server.sys"), File("warning", WARN_TEXT)])] 
         self.ports = ports
         self.minPorts = minPorts
         self.users = users
@@ -278,3 +280,6 @@ class Domain(Base):
     def getName(self):
         return ".".join([self.name, self.base])
 
+class Note(Base):
+    def __init__(self, text):
+        self.text = text

@@ -65,6 +65,7 @@ class PlayerNode(Node):
         self.currentMission = None
         self.startActions()
         self.bankAccounts = []
+        self.notes = []
     # def save(self):
     #     ## ensure directory
     #     if not os.path.isdir("savegames"):
@@ -231,6 +232,7 @@ class PlayerNode(Node):
                 []
             ),
             nodes.chan,
+            nodes.vcforum,
         ]
         bodies = [
             [
