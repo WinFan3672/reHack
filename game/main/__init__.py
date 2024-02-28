@@ -84,8 +84,8 @@ def start():
     print("[6] Exit")
     div()
     print(
-        "Version: {}\nReleased: {}".format(
-            resourceInfo.friendlyVersion, resourceInfo.friendlyRelDate
+        "Version: {}".format(
+            resourceInfo.friendlyVersion
         )
     )
     div()

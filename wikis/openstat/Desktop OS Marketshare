@@ -1,0 +1,40 @@
+OS Type Distribution
+div()
+Unix-Like   99.8%       1,996,000,000
+Other       0.2%        4,000,000
+div()
+Unix-Like OS Distribution
+div()
+Linux                   75.4%       1,504,984,000
+of which Debian         90.5%       1,362,010,520 
+of which Ubuntu         2.3%        34,614,632
+of which Other          7.2%        108,358,848     
+
+NanoSoft Workspaces     18.5%       369,260,000
+of which 7              98%         361,874,800
+of which 6              2%          7,385,200
+
+xOS                     5.0%        99,800,000
+of which 10.6           95% *       94,810,000
+of which 10.5           2% *        1,996,000
+of which 10.4           1% *        998,000
+of which other          2% *        1,996,000
+
+Other/Unknown           1.1%        21,956,000
+div()
+Non-Unix OS Distribution
+div()
+NanoSoft Workspaces     99%         3,960,000
+of which 5              99%         3,920,400
+of which 4              0.9% **     35,640
+of which older          0.1%  **    3,960
+
+Other/Unknown           1%          40,000
+div()
+* This data was provided directly by xOS, due to the difficulty of guaging an xOS version using Web analytics.
+** These OS's are historical, and as such, reliable data about them is difficult to find.
+div()
+Notes
+div()
+- User count is an estimate based on 2 billion Internet users applied as a percentage.
+div()

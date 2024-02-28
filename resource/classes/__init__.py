@@ -106,11 +106,12 @@ class File(Base):
 
 
 class Folder(Base):
-    def __init__(self, name, files=[], writeAccess=False):
+    def __init__(self, name, files=[], writeAccess=False, origin=None):
         super().__init__()
         self.name = name
         self.files = files
         self.writeAccess = writeAccess
+        self.origin = origin
     def __iter__(self):
         self.index = 0
         return self

@@ -329,3 +329,20 @@ vc_rule_discuss.reply("halt", "The 5chan versus vc feud is the gift that keeps o
 vc_rule_discuss.reply("admin", "so is you getting banned")
 vc_rule_discuss.reply("halt", "what did I do?")
 vc_rule_discuss.reply("system", "admin locked this topic")
+
+rhwiki = programs.WikiServer("rehack Wiki", "rehack_wiki", "wiki.rehack.org", "wiki.rehack.org", "reHack Wiki")
+
+wiki_hacking = rhwiki.homepage.add_category("Hacking")
+wiki_hacking.add_page("How to hack")
+wiki_hacking.add_page("Opening Ports")
+wiki_hacking.add_page("Hacking Tor")
+wiki_hacking.add_page("Firewalls")
+
+wiki_nodes = rhwiki.homepage.add_category("Nodes")
+wiki_nodes.add_page("ISP Hub")
+
+wiki_rh = rhwiki.homepage.add_category("reHack")
+wiki_rh.add_page("Who we are")
+
+openstat = programs.WikiServer("OpenStat", "openstat", "openstat.org", "openstat", "OpenStat")
+openstat_os = openstat.homepage.add_category("Operating System Marketshare")

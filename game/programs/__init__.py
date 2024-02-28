@@ -1293,20 +1293,51 @@ class XOSDevice(Node):
 
 
 class WikiPage(Base):
-    def __init__(self, name):
+    def __init__(self, host, name):
+        self.host = host
         self.name = name
     def read(self):
         cls()
         div()
+        with open("wikis/{}/{}".format(self.host, self.name)) as f:
+            print(f.read().replace("div()", "--------------------").rstrip("\n"))
+        br()
 
-def WikiCategory(Base):
-    def __init__(self, name):
+class WikiCategory(Base):
+    def __init__(self, host, name, pageMode=False):
         self.name = name
+        self.host = host
         self.pages = []
+        self.pageMode = pageMode
     def add_page(self, page):
-        if isinstance(page, WikiCategory):
-            self.pages.append(page)
-        else:
+        p = WikiPage(self.host, page)
+        self.pages.append(p)
+    def add_category(self, page, pageMode=False):
+        p = WikiCategory(self.host, page, pageMode)
+        self.pages.append(p)
+        return p
+    def read(self):
+        while True:
+            cls()
+            div()
+            print(self.name)
+            if self.pageMode:
+                div()
+                with open("wikis/{}/{}".format(self.host, self.name)) as f:
+                    print(f.read().replace("div()", "--------------------").rstrip("\n"))
+            div()
+            i = 1
+            for page in self.pages:
+                print("[{}] {}".format(i, page.name))
+                i += 1
+            div()
+            try:
+                ch = int(input("$"))
+                if ch == 0:
+                    return
+                page = self.pages[ch-1].read()
+            except:
+                return
 
 
 class WikiServer(Node):
@@ -1315,9 +1346,10 @@ class WikiServer(Node):
         self.ports = [data.getPort(22), data.getPort(80), data.getPort(1433)]
         self.minPorts = 3
         self.folder = folder
-        self.homepage = homepage
-
+        self.homepage = WikiCategory(folder, homepage, True)
     def main(self):
+        self.homepage.read()
+    def mainold(self):
         with open("wikis/{}/{}".format(self.folder, self.homepage)) as f:
             for line in f.read().split("\n"):
                 if line == "div()":
@@ -2042,21 +2074,34 @@ def sweep(args):
 class GlobalDNS(Node):
     def __init__(self):
         super().__init__("Global DNS Service","gdns","8.8.8.8",minPorts=2**16,ports=[data.getPort(65536)])
-        self.main_hacked = self.main
     def main(self):
         print("This is the Global DNS Server.")
         print("It is important for the function of the Internet.")
 
 class VersionControl(Node):
-    def __init__(self, name, uid, address, commits = [], users = [], linked = []):
-        super().__init__(name, uid, address, users=users, linked=linked, ports=[data.getPort(1433),data.getPort(80),data.getPort(22),data.getPort(21)],minPorts=4)
-        self.commits = [x for x in commits if isinstance(x,Commit)]
+    def __init__(self, name, uid, address, commits = [], publicView=False, *args, **kwargs):
+        super().__init__(name, uid, address, ports=[data.getPort(1433),data.getPort(80),data.getPort(22),data.getPort(21)],minPorts=4, *args, **kwargs)
+        self.commits = [Commit("Initial commit", "127.0.0.1")] + [x for x in commits if isinstance(x,Commit)]
+        self.hacked = publicView
+    def main(self):
+        print("This is a Git server.")
+        print("Git is a version control system that allows developers to collaborate")
+        print("and review, merge, roll back, and much more, changes to source code.")
+        div()
+        print("403: This server does not permit public viewing of commits.")
+        div()
     def main_hacked(self):
         if self.commits:
+            div()
+            print("Commit History for {}".format(self.name))
+            div()
             for x in self.commits:
                 print("* {}".format(x))
+            div()
         else:
+            div()
             print("ERROR: No commit history.")
+            div()
 
 def save(args, player):
     try:
@@ -2219,7 +2264,7 @@ def tor(args, player):
         div()
 
 class SignupService(Node):
-    def __init__(self, uid, address, agent_id, usernames=True, junkMail = [], usePlayerName=False, signup_function=None):
+    def __init__(self, uid, address, agent_id, usernames=True, junkMail = [], usePlayerName=False, signup_function=None, private=[]):
         super().__init__("Signup Service", uid, address, ports=[data.getPort(80), data.getPort(21), data.getPort(22)], minPorts=65536)
         self.name = "Signup Service"
         self.agent_id = agent_id
@@ -2227,6 +2272,7 @@ class SignupService(Node):
         self.junkMail = junkMail
         self.playerPlease = True
         self.usePlayerName = usePlayerName
+        self.private = []
         self.signup_function = signup_function
     def get_node(self, address):
         return data.getNode(address)
@@ -2533,6 +2579,11 @@ class NodeTrackerLanNode(Base):
         self.address = address
         self.hostname = hostname
 
+class NodeTrackerTorNode(Base):
+    def __init__(self, address, hostname):
+        self.address = address
+        self.hostname = hostname
+
 class NodeTracker(Node):
     def __init__(self, name, uid, address):
         super().__init__(name, uid, address)
@@ -2547,6 +2598,12 @@ class NodeTracker(Node):
         lan = data.getNode(lan_uid)
         node = lan.getNode(uid)
         self.nodes.append(NodeTrackerLanNode(lan.address, node.address, node.name))
+    def add_tor_node(self, uid):
+        if isinstance(uid, Node):
+            n = uid
+        else:
+            n = data.getTorNode(uid)
+        self.nodes.append(NodeTrackerTorNode(n.address, n.name))
     def main(self):
         print("This is a Node Tracker. Node Tracker registers a list of IP addresses and watches them to keep track of them.")
         print("It is used all around the Intelligence Community (and outside of it) for many purposes, including:")
@@ -2560,6 +2617,8 @@ class NodeTracker(Node):
                 print("# {} --> {}".format(node.hostname, node.address))
             elif isinstance(node, NodeTrackerLanNode):
                 print("# {} --> {} --> {}".format(node.hostname, node.lan_address, node.address))
+            elif isinstance(node, NodeTrackerTorNode):
+                print("# {} --> {}".format(node.hostname, node.address))
 
 
 class BankTransfer(Base):
@@ -3207,12 +3266,14 @@ def folderView(self, writeAccess=False):
             elif isinstance(file, File):
                 fileView(file, True if writeAccess else self.writeAccess)
         except:
+            # print(traceback.format_exc())
+            # br()
             return
 
 def fileView(self, folder, writeAccess=False):
     cls()
     div()
-    print(self.name)
+    print("{}\nOrigin: {}".format(self.name, self.origin))
     div()
     print("[1] View File")
     print("[2] Upload File")
@@ -3283,3 +3344,26 @@ def note(args, player):
         print("note add <text>: add a note")
         print("note manage: open graphical note manager")
         div()
+
+class IRCMessage(Base):
+    def __init__(self, sender, text):
+        self.sender = sender
+        self.text = text
+    def __str__(self):
+        return "{}: {}".format(self.sender, self.text)
+
+class IRChannel(Base):
+    def __init__(self, name):
+        self.name = name
+        self.messages = []
+    def add_messegs(self, sender, text):
+        self.messages.append(IRCMessage(sender, text))
+
+
+class IRCServer(Node):
+    def __init__(self, name, uid, address, motd, *args, **kwargs):
+        super().__init__(name, uid, address, *args, **kwargs)
+        self.motd = motd
+        self.channels = []
+    def add_channel(self, name):
+        self.channels.append(IRChannel(name))

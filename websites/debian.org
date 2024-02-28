@@ -1,0 +1,15 @@
+div()
+Debian
+div()
+NEWS (14d ago): Debian 5.0.5 released! Download here: ftp.debian.org
+div()
+Debian is the world's most popular Linux distribution. In fact, it's the world's most popular desktop OS. (source: openstat.org)
+div()
+Resources
+div()
+IRC: irc.debian.org
+FTP: ftp.debian.org
+Version control: git.debian.org
+div()
+Debian: A true community-run distro
+div()

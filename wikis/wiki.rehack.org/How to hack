@@ -1,6 +1,3 @@
-div()
-How to hack
-div()
 Hacking is simple. If you're unsure, there are 2 methods to hack a server that this article discusses; exploiting ports and logging in with a known password.
 div()
 
@@ -39,4 +36,3 @@ Hacking can be complex, but the two methods are the underlying methods that you 
 * Companies almost never use firewalls.
 * Companies almost never detect break-ins, despite the logs LITERALLY saying it right there and then.
 * Companies rely on people, and the human elelemt is ALWAYS the weakest link in the chain. Doesn't matter if you use a random password, if Joe sends it over an email, we're still getting in.
-div()

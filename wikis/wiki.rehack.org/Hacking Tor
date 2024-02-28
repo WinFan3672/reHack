@@ -1,4 +1,3 @@
-div()
 Hacking Tor nodes is possible, but a lot more complex.
 div()
 1 The tools
@@ -32,4 +31,3 @@ div()
 2.1 The Email Address
 div()
 The Tor Node service requires you to add a valid email address to the config file. This is used to send emails about Tor updates that are required. A lot of people fail to realise that this means that their email could be exposed when making the node, and as such they leave it there. This allows you to identify them or access their email.
-div()

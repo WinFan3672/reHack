@@ -214,6 +214,8 @@ class PlayerNode(Node):
             nodes.testing,
             nodes.testforum,
             nodes.mht,
+            nodes.rhwiki,
+            nodes.openstat,
             MailDotCom("Deployment Test Cinnamon", "cinnamon.mail.com", self, [User("cinnamon")]),
         ]
         onionsites = [

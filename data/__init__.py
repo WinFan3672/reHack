@@ -50,29 +50,38 @@ def getMission(mission_id, player):
             return mission
 
 
-def checkEmailAddress(address):
+def checkEmailAddress(address, checkDomain=None):
     ## Function that returns a boolean value depending on if an email address exists.
     if not "@" in address:
         ## User entered something wrong
         return False
-    parts = address.split("*")
+    parts = address.split("@")
     if len(parts) != 2:
         ## User added more than one '@'
         return False
     username = parts[0]
     domain = parts[1]
 
+    if checkDomain and domain != checkDomain:
+        ## Email domain does not match, don't bother to check if that domain is valid
+        return False
+
     node = getNode(domain)
     if not node:
         ## Invalid mailserver
         return False
-
+    
     users = [x.username for x in node.users]
 
     if username in users:
         return True
     else:
         return False
+
+def checkEmailDomains(address, domains=[]):
+    for domain in domains:
+        if checkEmailAddress(address, domain):
+            return True
 
 def getNode(uid, strict=False):
     for item in NODES:
@@ -370,9 +379,6 @@ N = [
                 ],
             model="xphone3",
             ),
-    programs.WikiServer(
-            "rehack Wiki", "rehack_wiki", "wiki.rehack.org", "wiki.rehack.org"
-            ),
     Node(
             "reHack Test Server #2",
             "test2",
@@ -481,7 +487,7 @@ N = [
     programs.MessageBoard("Mountain View Message Board",generateIP(),"mountainnotes","mview"),
     programs.MessageBoard("AnonMail Blog","blog.anon.mail","anonmail_blog","blog.anon.mail"),
     programs.GlobalDNS(),
-    programs.VersionControl("Version Control Test","vctest","vc.rehack.test",[Commit("Test commit")],[User("admin","alpine")]),
+    programs.VersionControl("Version Control Test","vctest","vc.rehack.test",users=[User("admin","alpine")]),
     programs.DomainExpert(),
     programs.WebServer("Central Intelligence Agency", "ciaweb", "cia.gov", "cia.gov",linked = ["ciamail", "ciaftp"]),
     Node("CIA File Transfer Protocol Server", "ciaftp", "ftp.cia.gov", ports=[getPort(21)], minPorts=1, linked=["cialan"]),
@@ -500,6 +506,8 @@ N = [
     programs.PublicFTPServer("reHack Drop Server", "rhdrop", "drop.rehack.org", minPorts=65536),
     programs.Forwarder("mvps", "mvps.me", "mastervps_central"),
     programs.TorForwarder("vcsu", "vc.su", "vc-signup"),
+    programs.WebServer("Debian: By the world, for the world", "debianweb", "debian.org", "debian.org"),
+    programs.VersionControl("Debian", "debiangit", "git.debian.org", [Commit("Release 5.0.0", "admin@mail.debian.org"), Commit("Release 5.0.1", "admin@mail.debian.org"), Commit("Release 5.0.2", "admin@mail.debian.org"), Commit("Release 5.0.3", "admin@mail.debian.org"), Commit("Release 5.0.4", "admin@mail.debian.org"),Commit("Release 5.0.5", "admin@mail.debian.org")], True),
 ]
 for item in N:
     NODES.append(item)

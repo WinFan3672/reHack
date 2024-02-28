@@ -1,4 +1,3 @@
-div()
 The ISP hub is a secret server that allows you to directly manipulates IP addresses.
 You can:
 * Reassign IP addresses to new ones
@@ -7,4 +6,3 @@ You can:
 div()
 To access the ISP hub, you need to find its IP address. The reHack Wiki will not list said IP address. 
 Once you find the IP address, break in. Its ports are 21, 22, 1433 and 80. You'll need to crack all of them.
-div()
