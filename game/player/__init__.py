@@ -26,6 +26,9 @@ import time
 import os
 import pickle
 import nodes
+import nodes.lan
+import nodes.forum
+import nodes.test
 
 
 def getProgram(name):
@@ -210,9 +213,9 @@ class PlayerNode(Node):
                 hideLookup=True,
             ),
             MailServer("EnWired Mail", "enwired-mail", "enwired.mail", self, [User("elliot"), User("sales")]),
-            nodes.cialan,
-            nodes.testing,
-            nodes.testforum,
+            nodes.lan.cialan,
+            nodes.test.lan,
+            nodes.test.forum,
             nodes.mht,
             nodes.rhwiki,
             nodes.openstat,
@@ -233,8 +236,8 @@ class PlayerNode(Node):
                 self,
                 []
             ),
-            nodes.chan,
-            nodes.vcforum,
+            nodes.forum.chan,
+            nodes.forum.vcforum,
         ]
         bodies = [
             [
@@ -432,4 +435,3 @@ class PlayerNode(Node):
         data.NODES = [self] + data.NODES
 
         data.addFirewall("firewalltest", Firewall("smartheap11", 0.5))
-        nodes.tf_offtopic.topics.append(BlankMission(self, "vctest1", "VC Test #1", None, Email("null", "admin@jmail.com", "", "")))

@@ -15,6 +15,7 @@ from game.programs import (
         MailAccount,
         )
 import nodes
+import nodes.forum
 
 def pentest1_end():
     jmail = data.getNode("jmail")
@@ -1047,5 +1048,5 @@ def start_missions(self):
     return MISSIONS
 
 def main(self):
-    nodes.chan_jobs.topics += (chan_missions(self))
+    nodes.forum.chan_jobs.topics += (chan_missions(self))
     return start_missions(self) + base_missions(self) + main_story_missions(self) + autocrat_missions(self) + investigate_missions(self)
