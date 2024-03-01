@@ -284,3 +284,6 @@ class Domain(Base):
 class Note(Base):
     def __init__(self, text):
         self.text = text
+
+class NodeError(Exception):
+    pass

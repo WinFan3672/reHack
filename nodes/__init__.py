@@ -23,6 +23,8 @@ wiki_nodes.add_page("ISP Hub")
 
 wiki_rh = rhwiki.homepage.add_category("reHack")
 wiki_rh.add_page("Who we are")
+wiki_rh.add_page("Services")
+wiki_rh.add_page("Test Services")
 
 openstat = programs.WikiServer("OpenStat", "openstat", "openstat.org", "openstat", "OpenStat")
 openstat_os = openstat.homepage.add_category("Operating System Marketshare")
@@ -34,4 +36,3 @@ with open("msgboard/mht.com/Confirming The Rumours") as f:
     mht_rumours.reply("rehack", "Hopefully this encourages xDevices to update their admin password")
     mht_rumours.reply("admin", "rehack: Probably not, they've ignored it since the OG xPhone")
     mht_rumours.reply("duplexity", "what a madman; publishing an article months ahead of time under nda while saying literally nothing")
-    mht_rumours.reply("admin", "thanks")

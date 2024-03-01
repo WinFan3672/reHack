@@ -274,7 +274,8 @@ def porthack(args):
                     if item.firewall:
                         print("ERROR: Attack blocked by firewall.")
                     else:
-                        time.sleep(7)
+                        hackTime = 7 / (openPorts+1)
+                        time.sleep(hackTime)
                         item.hacked = True
                         print("SUCCESS! YOU CAN NOW CONNECT TO THE HOST.")
                 else:
@@ -2324,7 +2325,10 @@ class LocalAreaNetwork(Node):
     def __init__(self, name, uid, address, minPorts=1):
         super().__init__(name, uid, address, ports = [data.getPort(1)], minPorts=minPorts)
         self.devices = []
+        self.alive = True
         self.locked = False
+    def check_health(self):
+        return self.alive
     def add_device(self, device):
         if not self.locked:
             self.devices.append(device)
@@ -2364,8 +2368,6 @@ class Router(Node):
         for x in self.devices:
             print("{}\t\t{}".format(x.address, x.name))
         div()
-def LANTool(args):
-    print("ERROR: This program is intended for use with `lanconnect`.")
 def LANConnect(args, player):
     def main(node, player):
         def hack(node):
@@ -2558,7 +2560,7 @@ def LANConnect(args, player):
             return
         if not node.hacked:
             print("ERROR: Access denied.")
-            # return
+            return
         main(node, player)
 
     else:
@@ -2593,7 +2595,8 @@ class NodeTracker(Node):
             n = uid
         else:
             n = data.getNode(uid)
-        self.nodes.append(NodeTrackerNode(n.address, n.name))
+        nt = NodeTrackerNode(n.address, n.name)
+        self.nodes.append(nt)
     def add_lan_node(self, lan_uid, uid):
         lan = data.getNode(lan_uid)
         node = lan.getNode(uid)
@@ -3316,13 +3319,23 @@ def history(args, player):
     tor(["history"], player)
     div()
 
-def note_manager(player):
-    print("ERROR: This feature has not yet been implemented.")
-
 def note(args, player):
     if args in [["list"], ["ls"]]:
+        i = 0
         for note in player.notes:
-            print("* {}".format(note.text))
+            print("{}. {}".format(i, note.text))
+            i += 1
+    elif args == ["del"]:
+        div()
+        print("note del <id>")
+        div()
+        print("Deletes a note.")
+        div()
+    elif "del" in args and len(args) == 2:
+        try:
+           player.notes.pop(int(args[1]))
+        except IndexError:
+            print("ERROR: Invalid note.")
     elif args == ["add"]:
         div()
         print("note add <text>")
@@ -3332,8 +3345,27 @@ def note(args, player):
     elif "add" in args:
         note = " ".join(args[1:])
         player.notes.append(Note(note))
-    elif args == ["manage"]:
-        note_manager(player)
+        print("Added note (ID: {}).".format(len(player.notes) - 1))
+    elif args == ["share"]:
+        div()
+        print("note share <id> <address")
+        div()
+        print("Share a note over FTP.")
+        div()
+    elif "share" in args and len(args) == 3:
+        try:
+            note = int(args[1])
+            node = data.getNode(args[2], strict=True)
+            if not data.checkPort(node, 21):
+                print("400: Connection refused")
+                return
+            inc = data.getFile(node, "incoming", "Folder")
+            if not inc or not inc.writeAccess:
+                print("ERROR: FTP server does not permit uploading.")
+                return
+            inc.add_file(File(player.notes[note].text, player.notes[note].text))
+        except:
+            print(traceback.format_exc())
     else:
         div()
         print("note [args]")
@@ -3342,7 +3374,8 @@ def note(args, player):
         div()
         print("note ls: list all notes")
         print("note add <text>: add a note")
-        print("note manage: open graphical note manager")
+        print("note del <id>: delete a note")
+        print("note share <id> <address>: Share a note to an FTP server")
         div()
 
 class IRCMessage(Base):
@@ -3367,3 +3400,75 @@ class IRCServer(Node):
         self.channels = []
     def add_channel(self, name):
         self.channels.append(IRChannel(name))
+
+class MailDotComTracker(NodeTracker):
+    def __init__(self):
+        super().__init__("Mail.Com Instance Tracker", "maildotcomtracker", "tracker.mail.com")
+    def tick(self):
+        self.nodes = [x for x in data.NODES if isinstance(x, MailDotCom)]
+
+
+class FileDeletedCheck(Base):
+    def __init__(self, filename, folder="/"):
+        super().__init__()
+        self.filename = filename
+        self.folder = folder
+    def check(self, node):
+        if self.folder == "/":
+            files = data.createFolder(node)
+        else:
+            files = data.getFile(node, self.folder, "Folder")
+        for file in self.files:
+            if file.name == self.filename:
+                return False
+        return True
+
+class FileCopiedCheck(Base):
+    def __init__(self, filename, text=None, origin=None, folder="/"):
+        self.filename = filename
+        self.text = text
+        self.origin = origin
+        self.folder = folder
+    def check(self, node):
+        if self.folder == "/":
+            folder = data.createFolder(node)
+        else:
+            folder = data.getFile(node, self.folder, "Folder")
+
+        for file in folder.flatten():
+            if file.name != self.filename:
+                continue
+            if self.origin and file.origin != self.origin:
+                continue
+            if self.text and file.text != self.text:
+                continue
+            return True
+
+class FileCheck(Base):
+    def __init__(self, node: str):
+        super().__init__()
+        self.node = data.getNode(node)
+        if not self.node:
+            self.node = data.getTorNode(node)
+            if not self.node:
+                raise NodeError("Invalid Node ID")
+        self.checks = []
+    def add(self, check):
+        self.checks.append(check)
+
+class FileCheckMission(Mission):
+    def check(self):
+        if not isinstance(self.target, FileCheck):
+            raise TypeError("Target must be an instance of FileCheck")
+
+def date(args, player):
+    print(player.date)
+
+class HostKillMission(Mission):
+    def check(self):
+        node = data.getNode(target)
+        if not node:
+            node = data.getTorNode(target)
+            if not node:
+                return False
+        return node.check_health()

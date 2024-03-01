@@ -36,21 +36,22 @@ def br():
 GENERATED = []
 
 
-def checkPort(node, num):
+def checkPort(node: Node, num: int) -> bool:
     for port in node.ports:
         if port.num == num:
             return True
+    return False
 
 def getNodeList():
     return [x.uid for x in NODES if x.check_health()]
 
-def getMission(mission_id, player):
+def getMission(mission_id: string, player):
     for mission in player.MISSIONS:
         if mission_id == mission.mission_id:
             return mission
 
 
-def checkEmailAddress(address, checkDomain=None):
+def checkEmailAddress(address: str, checkDomain=None) -> bool:
     ## Function that returns a boolean value depending on if an email address exists.
     if not "@" in address:
         ## User entered something wrong
@@ -78,27 +79,28 @@ def checkEmailAddress(address, checkDomain=None):
     else:
         return False
 
-def checkEmailDomains(address, domains=[]):
+def checkEmailDomains(address: str, domains=[]) -> bool:
     for domain in domains:
         if checkEmailAddress(address, domain):
             return True
+    return False
 
-def getNode(uid, strict=False):
+def getNode(uid: str, strict:bool=False):
     for item in NODES:
             if (uid == item.uid and not strict) or uid == item.address and item.check_health():
                 return item
 
-def getTorNode(uid):
+def getTorNode(uid: str):
     for item in TOR_NODES:
         if uid == item.uid or uid == item.address and item.check_health():
             return item
 
-def addFirewall(node, firewall):
+def addFirewall(node: Node, firewall: Firewall):
     if not isinstance(node, Node):
         node = getNode(node)
     node.firewall = firewall
 
-def genString(genLength):
+def genString(genLength: int) -> str:
 
     s = ""
     for x in range(genLength):
@@ -155,7 +157,7 @@ PORTS = [
         Port(25, "Mail Server"),
         Port(80, "Web Server"),
         Port(123, "NTP Time Server"),
-        Port(1194, "VPN Server"),
+        Port(1194, "OpenVPN Server"),
         Port(1433, "SQL Database"),
         Port(6881, "BitTorrent Tracker"),
         Port(7777, "reHackOS Node"),
@@ -508,6 +510,7 @@ N = [
     programs.TorForwarder("vcsu", "vc.su", "vc-signup"),
     programs.WebServer("Debian: By the world, for the world", "debianweb", "debian.org", "debian.org"),
     programs.VersionControl("Debian", "debiangit", "git.debian.org", [Commit("Release 5.0.0", "admin@mail.debian.org"), Commit("Release 5.0.1", "admin@mail.debian.org"), Commit("Release 5.0.2", "admin@mail.debian.org"), Commit("Release 5.0.3", "admin@mail.debian.org"), Commit("Release 5.0.4", "admin@mail.debian.org"),Commit("Release 5.0.5", "admin@mail.debian.org")], True),
+    programs.MailDotComTracker(),
 ]
 for item in N:
     NODES.append(item)
@@ -547,6 +550,7 @@ PROGRAMS = [
         Program("account", programs.accountList, True, classPlease=True),
         Program("bankhack", programs.bankhack, True, classPlease=True),
         Program("tormail", programs.tormail, True, classPlease=True),
+        Program("date", programs.date, True, classPlease=True),
         ]
 
 DARKSTORE = []

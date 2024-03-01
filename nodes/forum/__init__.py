@@ -261,3 +261,5 @@ vc_rule_discuss.reply("halt", "The 5chan versus vc feud is the gift that keeps o
 vc_rule_discuss.reply("admin", "so is you getting banned")
 vc_rule_discuss.reply("halt", "what did I do?")
 vc_rule_discuss.reply("system", "admin locked this topic")
+
+

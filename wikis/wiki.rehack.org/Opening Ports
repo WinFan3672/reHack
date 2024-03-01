@@ -5,18 +5,25 @@ Format
     * Program: <program name>
     * <optional notes>
 div()
+* 1
+   * lanconnect
+   * Cost: 1500 Cr.
 * 21
     * ftpkill
     * ftpkill is included with your reHackOS install.
 * 22
     * sshkill
     * sshkill is included with your reHackOS install.
+* 23
+    * Telnet; cannot be broken
 * 25
     * mailoverflow
     * Cost: 1500 Cr.
 * 80
     * webworm
     * Cost: 500 Cr.
+* 123
+    * NTP time server; cannot be broken
 * 6881
     * torrentpwn
     * Cost: 1500 Cr.

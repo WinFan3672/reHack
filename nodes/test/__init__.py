@@ -38,3 +38,5 @@ forum_rules = forum_general.add_topic("Administrator", "Rules", FORUM_RULES)
 forum_rules.reply("Administrator", "I like these rules.")
 forum_rules.reply("SecondUser", "+1")
 forum_rules.reply("ThirdUser", "+1")
+
+git = programs.GitServer("Test Server VC", "testgit", "git.rehack.test")

@@ -3,4 +3,13 @@ LAN nodes are common in both home and business networks, and are essentially a s
 div()
 Hacking LANs
 div()
-LAN nodes 
+LAN nodes run on port 1, which can be hacked using `lancrack`. This program is purchaseable from the Store for just 1500 Cr. 
+div()
+Connecting To LANs
+div()
+To connect to a LAN, use `lanconnect`. It can be 'purchased' from the store for free.
+div()
+Navigation
+div()
+When you connect to the LAN, you can now begin connecting to the nodes on it. However, each node has a either private IP address (in the format 192.168.x.x) or a vhost (a sort of web domain that references a device on the LAN, like `git`). 
+This can make navigation almost impossible, but you are saved by the router. The router is located at 192.168.0.0 and you can just connect to it. Because you've already hacked into it (after all, that's what you're connecting through), it will just list all connections on the LAN.

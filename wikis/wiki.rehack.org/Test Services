@@ -1,0 +1,7 @@
+The reHack Test Services (rehack.test) are a collection of servers that are 100% safe to hack, which allows you to become familiar with how to break into real nodes.
+div()
+Node List
+div()
+* git.rehack.test: A basic version control server.
+* lan.rehack.test: A basic LAN.
+* forum.rehack.test: A mostly empty forum. 

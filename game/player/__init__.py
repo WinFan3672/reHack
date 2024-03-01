@@ -18,6 +18,7 @@ from game.programs import (
     MasterVPS,
     BlankMission,
     Mission,
+    NodeTracker,
 )
 import data
 import sys
@@ -69,6 +70,7 @@ class PlayerNode(Node):
         self.startActions()
         self.bankAccounts = []
         self.notes = []
+        self.date = "2010-06-01"
     # def save(self):
     #     ## ensure directory
     #     if not os.path.isdir("savegames"):
@@ -154,13 +156,6 @@ class PlayerNode(Node):
                 "W3D Corporate Mail", "w3d.mail.com", self, [User("support", "letmein")]
             ),
             MailServer(
-                "WinFan3672 Personal Mail",
-                "mail3672",
-                "winfan3672.mail.com",
-                self,
-                [User("admin", "aerobics")],
-            ),
-            MailServer(
                 "null.null", "nullmail", "null.null", self, [User("null")], minPorts=0
             ),
             MissionServer(
@@ -219,6 +214,7 @@ class PlayerNode(Node):
             nodes.mht,
             nodes.rhwiki,
             nodes.openstat,
+            nodes.test.git,
             MailDotCom("Deployment Test Cinnamon", "cinnamon.mail.com", self, [User("cinnamon")]),
         ]
         onionsites = [

@@ -16,40 +16,10 @@ from game.programs import (
         )
 import nodes
 import nodes.forum
+import nodes.lan
+import nodes.test
 
-def pentest1_end():
-    jmail = data.getNode("jmail")
-    jmail.hacked = False
-    jmail.minPorts = 255
-    for user in jmail.users:
-        if user.name == "admin":
-            user.password = data.genString(16)
-            adminPass = user.password
-    for account in jmail.accounts:
-        if account.name == "admin":
-            account.password = "firefly"
-    data.addFirewall(jmail, Firewall("jmail", 5))
 
-    ## Send ransom email
-    body = "\n".join([
-        "HELLO.",
-        "WE RECENTLY NOTICED THAT YOU HAVE SECURED YOUR NETWORK, WITH HELP FROM reHACK.",
-        "WE HAVE 2TB OF CLASSIFIED DOCUMENTS WE INTEND TO RELEASE. THE DOCUMENTS INCLUDE YOUR FINANCIAL DATA AS WELL AS",
-        "EVIDENCE OF FRAUD AND CORPORATE ESPIONAGE THAT YOU, JOHN MALLEY, HAVE COMMITTED.",
-        "",
-        "HOWEVER, WE ARE NOT ENTIRELY EVIL. WE WOULD BE WILLING TO DELETE THIS DATA, IF YOU SEND THE PASSWORD",
-        "TO YOUR ADMIN PANEL TO THE FOLLOWING EMAIL ADDRESS:",
-        "",
-        "darkgroup1337@jmail.com",
-        "",
-        "WE ARE WAITING.",
-        ])
-    email = Email("darkgroup1337@jmail.com", "admin@jmail.com", "YOU HAVE BEEN WARNED", body)
-    sendEmail(email)
-    
-    jmail.accounts.append(MailAccount("darkgroup1337", "letmein"))
-
-    sendEmail(Email("admin@jmail.com", "darkgroup1337@jmail.com", "Re: YOU HAVE BEEN WARNED", adminPass))
 
 def pentest1_ctf_end(self):
     jmail = data.getNode("jmail")
@@ -416,6 +386,39 @@ def base_missions(self):
 
 
 def main_story_missions(self):
+    def pentest1_end():
+        jmail = data.getNode("jmail")
+        jmail.hacked = False
+        jmail.minPorts = 255
+        for user in jmail.users:
+            if user.name == "admin":
+                user.password = data.genString(16)
+                adminPass = user.password
+        for account in jmail.accounts:
+            if account.name == "admin":
+                account.password = "firefly"
+        data.addFirewall(jmail, Firewall("jmail", 5))
+
+        ## Send ransom email
+        body = "\n".join([
+            "HELLO.",
+            "WE RECENTLY NOTICED THAT YOU HAVE SECURED YOUR NETWORK, WITH HELP FROM reHACK.",
+            "WE HAVE 2TB OF CLASSIFIED DOCUMENTS WE INTEND TO RELEASE. THE DOCUMENTS INCLUDE YOUR FINANCIAL DATA AS WELL AS",
+            "EVIDENCE OF FRAUD AND CORPORATE ESPIONAGE THAT YOU, JOHN MALLEY, HAVE COMMITTED.",
+            "",
+            "HOWEVER, WE ARE NOT ENTIRELY EVIL. WE WOULD BE WILLING TO DELETE THIS DATA, IF YOU SEND THE PASSWORD",
+            "TO YOUR ADMIN PANEL TO THE FOLLOWING EMAIL ADDRESS:",
+            "",
+            "darkgroup1337@jmail.com",
+            "",
+            "WE ARE WAITING.",
+            ])
+        email = Email("darkgroup1337@jmail.com", "admin@jmail.com", "YOU HAVE BEEN WARNED", body)
+        sendEmail(email)
+        
+        jmail.accounts.append(MailAccount("darkgroup1337", "letmein"))
+
+        sendEmail(Email("admin@jmail.com", "darkgroup1337@jmail.com", "Re: YOU HAVE BEEN WARNED", adminPass))
     bodies = [
             [
                 "Welcome, fellow hacker.",
@@ -757,25 +760,6 @@ def start_missions(self):
                 "It's only the web portal, but you are the webmaster, so it's only fair.",
                 ],
         [
-                "Hello,",
-                "",
-                "This is a message intended for easter egg hunters.",
-                "Thank you for enjoying my game.",
-                "I put a lot of effort into creating a lot of complex systems (such as mail servers)",
-                "and I'm really proud of my work.",
-                "All I can leave you with is a hint for some gameplay:",
-                "",
-                "There's a hidden ISP database that offers some pretty powerful functionality.",
-                "It allows you to reassign any IP address, including your own, so that any traces you leave behind are gone.",
-                "",
-                "Connect to it: 1.1.1.1",
-                "Before you do that, the admin password is [CENSORED]. Use the login command to take advantage of that.",
-                "",
-                "Signed,",
-                "WinFan3672",
-                "Creator of reHack",
-                ],
-        [
                 "This email server is reserved by W3D for the use of spoofing the FROM field of an email.",
                 "Set the FROM field to null@null.null and SMTP will do the rest.",
                 "The email server actively ignores any emails sent to it.",
@@ -820,8 +804,7 @@ def start_missions(self):
                 "Invoice",
                 bodies[4].format("JMail"),
                 ),
-            Email("null@null.null", "admin@winfan3672.mail.com", "A Message", bodies[6]),
-            Email("null@null.null", "null@null.null", "Notice", bodies[7]),
+            Email("null@null.null", "null@null.null", "Notice", bodies[6]),
             ]
     mission_bodies = [
             [
