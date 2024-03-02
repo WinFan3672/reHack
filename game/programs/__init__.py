@@ -166,10 +166,13 @@ def objToDict(obj, addItemType=True):
 
 def help(args):
     div()
+    print("Program List")
+    div()
     for item in sorted(data.PROGRAMS):
         if item.unlocked:
             print("{}: {}".format(item.name, item.desc))
     div()
+    print("Installed programs: {}".format(len([x for x in data.PROGRAMS if x.unlocked])))
 
 
 def Exit(args):
