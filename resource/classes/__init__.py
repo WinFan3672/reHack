@@ -2,6 +2,7 @@ import random
 import os
 import string
 import platform
+import copy
 
 WARN_TEXT = "WARNING! Deleting core.sys will break your system."
 
@@ -293,26 +294,68 @@ class Note(Base):
 class NodeError(Exception):
     pass
 
+
 class GameDate(Base):
     def __init__(self, year=2010, month=6, day=1):
         self.year = year
         self.month = month
         self.day = day
-        #                    JAN FEB MAR APR MAY JUN JUL AUG SEP OCT NOV DEC
         self.daysPerMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+
     def __str__(self):
         return "{}-{}-{}".format(self.year, "0{}".format(self.month) if self.month < 10 else self.month, "0{}".format(self.day) if self.day < 10 else self.day)
+
     def next_day(self):
         self.daysPerMonth[1] = 29 if self.is_leap() else 28
         self.day += 1
-        if self.day > self.daysPerMonth[self.month-1]:
+        if self.day > self.daysPerMonth[self.month - 1]:
             self.day = 1
             self.month += 1
         if self.month > 12:
             self.month = 1
             self.year += 1
+
     def is_leap(self):
         return (self.year % 400 == 0) or ((self.year % 100 != 0) and (self.year % 4 == 0))
+
+    def clone(self):
+        return GameDate(self.year, self.month, self.day)
+
+    def from_str(self, date):
+        try:
+            year, month, day = date.split("-")[0], date.split("-")[1], date.split("-")[2]
+            if year > GameDate().year:
+                self.year = year
+            if month > GameDate().month:
+                self.month = month
+            if day > GameDate().day:
+                self.day = day
+            return True
+        except IndexError:
+            return False
+
+    def __add__(self, days):
+        new_date = copy.deepcopy(self)
+        for _ in range(days):
+            new_date.next_day()
+        return new_date
+
+    def __lt__(self, other):
+        if self.year != other.year:
+            return self.year < other.year
+        if self.month != other.month:
+            return self.month < other.month
+        return self.day < other.day
+
+    def __gt__(self, other):
+        if self.year != other.year:
+            return self.year > other.year
+        if self.month != other.month:
+            return self.month > other.month
+        return self.day > other.day
+
+    def __eq__(self, other):
+        return self.year == other.year and self.month == other.month and self.day == other.day
 
 class Trace(Base):
     def __init__(self, node, time=60):

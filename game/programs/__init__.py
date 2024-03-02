@@ -17,7 +17,6 @@ import concurrent.futures
 import re
 import getpass
 
-
 def pickSelection(a_list, amount=1):
     l = copy.copy(a_list)
     random.shuffle(l)
@@ -34,11 +33,7 @@ def pickSelection(a_list, amount=1):
 def sendEmail(email):
     recipient = email.receiver
     parts = recipient.split("@")
-    server = None
-    for item in data.NODES:
-        if item.address == parts[1]:
-            server = item
-            break
+    server = data.getNode(parts[1], True) 
     if isinstance(server, MailServer):
         account = None
         for item in server.accounts:
@@ -426,6 +421,37 @@ def debuginfo(args, player):
         print("    list: lists all nodes and their info")
         print("    info: get info about a node")
         div()
+    elif args == ["save"]:
+        print(player.saveBase())
+    elif args == ["date"]:
+        div()
+        print("debug date <function> [args]")
+        div()
+        print("Positional arguments:")
+        print("    set <year> <month> <day>: set the date to a specific date")
+        print("    fwd <days>: Move forward in time <days> times")
+    elif args == ["date", "set"]:
+        div()
+        print("debug date set <year> <month> <day>")
+        div()
+        print("Set the date to a custom date.")
+        div()
+    elif "date" in args and "set" in args and len(args) == 5:
+        newdate = GameDate(int(args[2]), int(args[3]), int(args[4])-1)
+        if newdate < GameDate():
+            print("ERROR: Cannot have a date older than {}".format(GameDate()))
+            return
+        player.date = newdate.clone()
+        player.timeSinceNextDay = time.time()
+    elif args == ["date", "fwd"]:
+        div()
+        print("debug date fwd <days>")
+        div()
+        print("Moves forward in time by <days> days.")
+        div()
+    elif "date" in args and "fwd" in args and len(args) == 3:
+        count = int(args[2])
+        player.date += count
     elif args == ["ls"]:
         div()
         print("debug ls <uid>")
@@ -524,6 +550,7 @@ def debuginfo(args, player):
         print("    lan: displays info about a LAN")
         print("    sm: start a mission")
         print("    health: list all dead nodes")
+        print("    date: control the date and time")
         div()
         print("WARNING: This program is not intended for use by anyone other than the developers.")
         print("It is meant to be used when debugging the game, not when playing it.")
@@ -985,12 +1012,12 @@ def store(args, player):
     if args == ["list"]:
         div()
         if not getPrograms(player):
-            print("ERROR: Nothing to buy.")
-        for item in getPrograms(player):
-            print(item.name)
-            print("    v{}\n    {}\n    {} Cr.".format(item.version, item.desc, item.price))
+            print("ERROR: Store is empty")
             div()
-        div()
+        for item in getPrograms(player):
+            print("{} v{}".format(item.name, item.version))
+            print("    {}\n    {} Cr.".format(item.desc, item.price))
+            div()
     elif "buy" in args and len(args) == 2:
         try:
             pid = args[1]
@@ -1013,7 +1040,7 @@ def store(args, player):
                 print("ERROR: Invalid program.")
         except Exception as e:
             print("ERROR: {}".format(e))
-    elif args == ["balance"]:
+    elif args in [["bal"], ["balance"]]:
         print("{} Cr.".format(player.creditCount))
     else:
         div()
@@ -2277,10 +2304,10 @@ class SignupService(Node):
         self.junkMail = junkMail
         self.playerPlease = True
         self.usePlayerName = usePlayerName
-        self.private = []
+        self.private = private
         self.signup_function = signup_function
     def get_node(self, address):
-        return data.getNode(address)
+        return data.getAnyNode(address)
 
     def send_mail(self, username):
         address = data.getNode(self.agent_id).address
@@ -2288,7 +2315,27 @@ class SignupService(Node):
             email.receiver = "{}@{}".format(username, address)
             sendEmail(email)
     def main(self, player):
+        player = data.getNode("localhost")
         node = self.get_node(self.agent_id)
+        if self.private:
+            private = [data.getAnyNode(x).address for x in self.private]
+            print("This signup service is configured to only accept allowed members.")
+            print("This is enforced using an email address check.")
+            eml = input("Email address $")
+            if not eml:
+                eml = "{}@jmail.com".format(player.name)
+            if not data.checkEmailAddress(eml):
+                print("ERROR: Invalid email address.")
+                return
+
+            domain = eml.split("@")[1]
+            if domain not in private:
+                print("ERROR: Your email address provider is not in the whitelist.")
+                return
+            elif eml not in player.saved_accounts.keys():
+                print("ERROR: You have not saved that email account in your OS keyring.")
+                print("To do this, log into that account with your email client and run `save`.")
+                return
         if not node:
             print("404 Not Found")
             return
@@ -2307,6 +2354,8 @@ class SignupService(Node):
             if username in [x.name for x in node.users]:
                 print("ERROR: That user already exists.")
                 username = ""
+                if self.usePlayerName:
+                    return
 
         password = ""
         while not password:
@@ -2895,7 +2944,12 @@ def tormail_base(args, player):
         if not isinstance(node, MailServer):
             print("ERROR: Invalid mail server.")
             return
-
+    elif len(args) == 1:
+        eml = args[0]
+        if eml in player.saved_accounts.keys():
+            tormail_base([eml, player.saved_accounts[eml]])
+        else:
+            print("ERROR: Email account is not saved.")
     else:
         div()
         print("tormail <email address> [password]")
@@ -2907,8 +2961,6 @@ class TorMailServer(MailServer):
     pass
 
 class TorSignupService(SignupService):
-    def get_node(self, address):
-        return data.getTorNode(address)
     def send_mail(self, username):
         address = data.getTorNode(self.agent_id).address
         emails = [copy.deepcopy(x) for x in self.junkMail]
@@ -3149,13 +3201,48 @@ class NewsServer(Node):
 class Shodan(Node):
     def __init__(self):
         super().__init__("SHODAN", "shodan", data.generateIP(), minPorts = 65536)
+        self.enwiredEvent = False
+        self.mhtForum = False
     def main(self):
         print("SHODAN breaks the fourth wall.")
     def tick(self):
         player = data.getNode("localhost")
-        if player.timeSinceNextDay > 1000:
+        if time.time() - player.timeSinceNextDay > 600:
             player.timeSinceNextDay = time.time()
-            player.date = GameDate()
+            player.date.next_day()
+
+        if player.date == GameDate(2010, 7, 11) and not self.enwiredEvent:
+            self.enwiredEvent = True
+            jmail = data.getNode("jmail")
+            jmail.create_user("renwired", "renderware")
+            renwired = NewsServer("RenWired: Re-EnWired", "renwired", "re.enwired.com", "jacon@enwired.mail")
+            returnStory = renwired.add_story("EnWired Is Back: RenWired", "Jacob Marksman", player.date.clone(), """Yes, it's true.
+No, the stories are not hyperbole.
+After my father retired and shut down the service, I decided to bring together the old EnWired writers, plus some new talent,
+and create RenWired. The name is temporary, and we'll establish a new identity soon.
+To clarify, my father has nothing to do with this, but he gave the project the green light.
+Expect more soon.""")
+            returnStory.reply("cop-out", "You're a terrible writer")
+            data.NODES.append(renwired)
+            mht = data.getNode("mht")
+            renwired_story = mht.add_story("Is EnWired back, or is it a ruse?", "Admin", player.date.clone(), """Recently, the domain re.enwired.com was created.
+The owner of the domain, Jacob Marksman, Elliot Marksman's son, started sending emails to journalists (including myself), telling of the rebirth of EnWired.
+This interested me, so I waited about ten minutes before writing this article. Yes, MHT is becoming a parody of itself at this point. No, I don't care.
+Is this a true rebirth of EnWired just one month after its sudden and unexpected death? Or is it a tacky way for Jacob to get some publicity off his father's name?
+I think the jury's still out on this one; I'll let you decide.""")
+            renwired_story.reply("replit", "I think I believe Jacob; he seems like a nice guy and he shares the passion his father possesses")
+            renwired_story.reply("code", "Nonesense; this is 100% a cop-out")
+            renwired_story.reply("sizzle", "'he seems like a nice guy' = red flag")
+            renwired_story.reply("replit", "let's not start a flame war")
+            renwired_story.reply("admin", "While we're here, who's open to the idea of opening up a forum?")
+            renwired_story.reply("code", "Sure, if you have a powerful enough server to handle the demand xd")
+            renwired_story.reply("sizzle", "yes yes yes")
+            renwired_story.reply("replit", "Make a post about it once you've set it up!")
+
+        if player.date == GameDate(2010, 7, 15) and not self.mhtForum:
+            self.mhtForum = True
+            data.NODES.append(nodes.forum.mht)
+
 
 def ssh(args):
     if len(args) == 1:
@@ -3467,7 +3554,7 @@ class FileCheckMission(Mission):
             raise TypeError("Target must be an instance of FileCheck")
 
 def date(args, player):
-    print(player.date)
+    print("{} {}".format(player.date, data.extrapolateTime(time.time() - player.timeSinceNextDay)))
 
 class HostKillMission(Mission):
     def check(self):

@@ -1,0 +1,26 @@
+div()
+reHack Signup Meta-Service
+div()
+This is a service for reHack agents only. It is located on reHack's Intranet for a reason.
+div()
+Levels Explained
+div()
+0: Public signup
+1: Requires Euclid (Public signup: euclid.onion)
+2: Requires reHack OnionMail (Agent-only signup: om.rehack.org)
+3: Requires SCSI group email address
+4: Requires VC-Forum email address
+5: Invite-only (details specified)
+div()
+Service List
+div()
+- 5chan
+    - 5chan.sign.up
+    - LVL: 0
+- VC-Forum
+    - vc.sign.up
+    - LVL: 4
+- Dark.Store
+    - ds.sign.up
+    - LVL: 2
+div()

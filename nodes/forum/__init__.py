@@ -263,3 +263,10 @@ vc_rule_discuss.reply("halt", "what did I do?")
 vc_rule_discuss.reply("system", "admin locked this topic")
 
 
+mht = programs.Forum("MHT Forums", "mhtforum", "forum.mht.com")
+mht_general = mht.boards[0]
+
+darkstore = programs.Forum("Dark.Store", "darkstore", data.generateTorURL("dstore"))
+ds_general = darkstore.boards[0]
+ds_store = darkstore.add_board("Store")
+

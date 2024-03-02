@@ -19,17 +19,23 @@ from game.programs import (
     BlankMission,
     Mission,
     NodeTracker,
+    SignupService,
+    TorSignupService,
 )
+
 import data
 import sys
 import missions
 import time
 import os
 import pickle
+import hashlib
+
 import nodes
 import nodes.lan
 import nodes.forum
 import nodes.test
+
 
 
 def getProgram(name):
@@ -71,34 +77,46 @@ class PlayerNode(Node):
         self.bankAccounts = []
         self.notes = []
         self.date = GameDate()
-        self.timeSinceNextDay = time.time()
-    # def save(self):
-    #     ## ensure directory
-    #     if not os.path.isdir("savegames"):
-    #         os.mkdir("savegames")
-    #     ## get file name
-    #     fn = input("Save file name $")
-    #     ## pickle data
-    #     with open("savegames/{}.pkl".format(fn),"wb") as f:
-    #         pickle.dump(self,f)
-    #     print("Successfully saved game.")
-    # def load(self):
-    #     if os.path.isdir("savegames"):
-    #         fn = input("Save file name $")
-    #         if os.path.isfile("savegames/{}.pkl".format(fn)):
-    #             with open("savegames/{}.pkl".format(fn),"rb") as f:
-    #                 self = pickle.load(f)
-    #                 print("Loaded game successfully.")
-    #         else:
-    #             print("ERROR: Invalid save file name")
-    #     else:
-    #         print("ERROR: No saved files.")
+        self.timeSinceNextDay = time.time() + 300 ## Starts 50% through = midday
+        self.saveName = hashlib.sha256(str(random.randint(1, 2^64)).encode()).hexdigest()
+    def saveBase(self):
+        return {
+                "date": str(self.date),
+                "time": data.extrapolateTime(self.timeSinceNextDay),
+                "name": self.name,
+                "password": self.password,
+                "creditCount": self.creditCount,
+                "notes": [x.text for x in self.notes],
+                "bankAccounts": self.bankAccounts,
+                "programs": [x.name for x in data.PROGRAMS if x.unlocked]
+        }
+    def save(self):
+        ## ensure directory
+        if not os.path.isdir("savegames"):
+            os.mkdir("savegames")
+        ## get file name
+        fn = input("Save file name $")
+        ## pickle data
+        with open("savegames/{}.pkl".format(fn),"wb") as f:
+            pickle.dump(self,f)
+        print("Successfully saved game.")
+    def load(self):
+        if os.path.isdir("savegames"):
+            fn = input("Save file name $")
+            if os.path.isfile("savegames/{}.pkl".format(fn)):
+                with open("savegames/{}.pkl".format(fn),"rb") as f:
+                    self = pickle.load(f)
+                    print("Loaded game successfully.")
+            else:
+                print("ERROR: Invalid save file name")
+        else:
+            print("ERROR: No saved files.")
     def main(self):
         while True:
             ch = input("{}@{} $".format(self.name, self.address))
             if ch in ["exit", "quit"]:
                 if input("Retype command to confirm $") == ch:
-                    exit()
+                    return
                 else:
                     print("Action cancelled.")
             elif ch == "":
@@ -208,7 +226,7 @@ class PlayerNode(Node):
                 ],
                 hideLookup=True,
             ),
-            MailServer("EnWired Mail", "enwired-mail", "enwired.mail", self, [User("elliot"), User("sales")]),
+            MailServer("EnWired Mail", "enwired-mail", "enwired.mail", self, [User("elliot"), User("jacob"), User("sales")]),
             nodes.lan.cialan,
             nodes.test.lan,
             nodes.test.forum,
@@ -432,4 +450,10 @@ class PlayerNode(Node):
         data.NODES = [x for x in data.NODES if x]
         data.NODES = [self] + data.NODES
 
-        data.addFirewall("firewalltest", Firewall("smartheap11", 0.5))
+        data.addFirewall("firewalltest", Firewall("smartheap11", 0.125))
+
+class PlayerShodan(Node):
+    def __init__(self):
+        super().__init__("SHODAN #2", "shodan2", data.generateIP(), minPorts=65536)
+    def tick(self):
+        player = data.getNode("localhost")

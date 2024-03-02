@@ -10,6 +10,20 @@ import string
 
 global PORTS, NODES, TOR_NODES, PROGRAMS, GENERATED
 
+def extrapolateTime(realTimeSinceDay):
+    # Define in-game constants
+    inGameDayDuration = 600  # seconds
+    inGameHourDuration = inGameDayDuration / 24  # seconds
+
+    # Calculate the in-game hour
+    inGameHour = (realTimeSinceDay % inGameDayDuration) / inGameHourDuration
+
+    # Convert in-game hour to "HH:MM" format
+    inGameHour_str = "{:02d}:{:02d}".format(int(inGameHour), int((inGameHour % 1) * 60))
+
+    return inGameHour_str
+
+
 def createFolder(node):
     folder = Folder("/", node.files)
     folder.origin = node.uid
@@ -45,6 +59,7 @@ def checkPort(node: Node, num: int) -> bool:
 def getNodeList():
     return [x.uid for x in NODES if x.check_health()]
 
+
 def getMission(mission_id: string, player):
     for mission in player.MISSIONS:
         if mission_id == mission.mission_id:
@@ -67,12 +82,12 @@ def checkEmailAddress(address: str, checkDomain=None) -> bool:
         ## Email domain does not match, don't bother to check if that domain is valid
         return False
 
-    node = getNode(domain)
+    node = getAnyNode(domain)
     if not node:
         ## Invalid mailserver
         return False
     
-    users = [x.username for x in node.users]
+    users = [x.name for x in node.users]
 
     if username in users:
         return True
@@ -90,10 +105,16 @@ def getNode(uid: str, strict:bool=False):
             if (uid == item.uid and not strict) or uid == item.address and item.check_health():
                 return item
 
-def getTorNode(uid: str):
+def getTorNode(uid: str, strict:bool=False):
     for item in TOR_NODES:
-        if uid == item.uid or uid == item.address and item.check_health():
-            return item
+            if (uid == item.uid and not strict) or uid == item.address and item.check_health():
+                return item
+
+def getAnyNode(uid, strict=False):
+    node = getNode(uid, strict)
+    if not node:
+        node = getTorNode(uid, strict)
+    return node
 
 def addFirewall(node: Node, firewall: Firewall):
     if not isinstance(node, Node):
@@ -507,7 +528,9 @@ N = [
     programs.PublicFTPServer("Test FTP", "ftptest", "ftp.test", users=[User("admin", "admin")]),
     programs.PublicFTPServer("reHack Drop Server", "rhdrop", "drop.rehack.org", minPorts=65536),
     programs.Forwarder("mvps", "mvps.me", "mastervps_central"),
-    programs.TorForwarder("vcsu", "vc.su", "vc-signup"),
+    programs.WebServer("reHack Signup Meta-Service", "sign.up", "sign.up", "sign.up"),
+    programs.TorForwarder("vc-su", "vc.sign.up", "vc-signup"),
+    programs.TorForwarder("5chan-su", "5chan.sign.up", "5chan-signup"),
     programs.WebServer("Debian: By the world, for the world", "debianweb", "debian.org", "debian.org"),
     programs.VersionControl("Debian", "debiangit", "git.debian.org", [Commit("Release 5.0.0", "admin@mail.debian.org"), Commit("Release 5.0.1", "admin@mail.debian.org"), Commit("Release 5.0.2", "admin@mail.debian.org"), Commit("Release 5.0.3", "admin@mail.debian.org"), Commit("Release 5.0.4", "admin@mail.debian.org"),Commit("Release 5.0.5", "admin@mail.debian.org")], True),
     programs.MailDotComTracker(),
@@ -515,9 +538,9 @@ N = [
 for item in N:
     NODES.append(item)
 PROGRAMS = [
-        Program("help", programs.help, 1.0, "", True),
-        Program("nmap", programs.nmap, 1.0, "", True),
-        Program("porthack", programs.porthack, 1.0, "", True),
+        Program("help", 1.0, "", programs.help, True),
+        Program("nmap", 1.0, "", programs.nmap, True),
+        Program("porthack", 1.0, "", programs.porthack, True),
 
         programs.PortBreakingTool("ftpkill", 21, unlocked=True).program,
         programs.PortBreakingTool("sshkill", 22, unlocked=True).program,
@@ -533,14 +556,14 @@ PROGRAMS = [
         Program("ssh",  1.0, "", programs.ssh, True),
         Program("ftp", 1.0, "", programs.ftp, True),
         Program("debug", 1.0, "", programs.debuginfo, True, price=0, classPlease=True),
-        Program("mxlookup", 1.0, "", programs.mxlookup, price=0),
+        Program("mxlookup", 1.0, "Gets a list of email addresss associated with a mail server", programs.mxlookup, price=1500),
         Program("jmail",1.0, "", programs.jmail, True, classPlease=True),
         Program("store", 1.0, "", programs.store, True, classPlease=True),
         # Program("anonmail", programs.anonclient, price=250, classPlease=True),
         Program("login", 1.0, "", programs.login, True),
         Program("mission", 1.0, "", programs.mission_program, True, classPlease=True),
         Program("logview", 1.0, "View logs for a (hacked) node", programs.logview, price=0),
-        Program("nodecheck", 1.0, "", programs.nodecheck, price=0),
+        Program("nodecheck", 1.0, "Tool for checking what type of node a node is", programs.nodecheck, price=0),
         Program("mailman", 1.0, "", programs.mailman_base, True, classPlease=True),
         Program("bruter", 1.0, "", programs.bruter, True, classPlease=True),
         Program("emailbruter", 1.0, "", programs.emailbruter, True, classPlease=True),
@@ -678,7 +701,8 @@ TN = [
         programs.TorSignupService("euclid-signup", "signup.euclid.onion", "euclid", False, EUCLID_EMAILS),
         programs.TorSignupService("5chan-signup", generateTorURL("5chansu"), "5chan", usePlayerName=True),
         programs.TorSignupService("rhomail-signup", generateTorURL(), "rhomail", usePlayerName=True),
-        programs.TorSignupService("vc-signup", generateTorURL("vcsu"), "vcforum", usePlayerName=True),
+        programs.TorSignupService("vc-signup", generateTorURL("vcsu"), "vcforum", usePlayerName=True, private=["anonmail", "euclid"]),
+
         
 ]
 
