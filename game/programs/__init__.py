@@ -2322,14 +2322,12 @@ class SignupService(Node):
         node = self.get_node(self.agent_id)
         if self.private:
             private = [data.getAnyNode(x).address for x in self.private]
+            print(private)
             print("This signup service is configured to only accept allowed members.")
             print("This is enforced using an email address check.")
             eml = input("Email address $")
             if not eml:
                 eml = "{}@jmail.com".format(player.name)
-            if not data.checkEmailAddress(eml):
-                print("ERROR: Invalid email address.")
-                return
 
             domain = eml.split("@")[1]
             if domain not in private:

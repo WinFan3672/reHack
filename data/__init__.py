@@ -78,7 +78,7 @@ def checkEmailAddress(address: str, checkDomain=None) -> bool:
     username = parts[0]
     domain = parts[1]
 
-    if checkDomain and domain != checkDomain:
+    if checkDomain and (domain != checkDomain):
         ## Email domain does not match, don't bother to check if that domain is valid
         return False
 
