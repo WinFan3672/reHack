@@ -30,6 +30,7 @@ import time
 import os
 import pickle
 import hashlib
+import traceback
 
 import nodes
 import nodes.lan
@@ -132,10 +133,13 @@ class PlayerNode(Node):
                 name = parts[0]
                 program = getProgram(name)
                 if program and program.unlocked:
-                    if program.classPlease:
-                        program.execute(args, self)
-                    else:
-                        program.execute(args)
+                    try:
+                        if program.classPlease:
+                                program.execute(args, self)
+                        else:
+                                program.execute(args)
+                    except:
+                        print(traceback.format_exc())
                 else:
                     print("FATAL ERROR: The program was not found.")
             for node in data.NODES + data.TOR_NODES:

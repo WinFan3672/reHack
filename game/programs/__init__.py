@@ -168,7 +168,7 @@ def help(args):
     div()
     for item in sorted(data.PROGRAMS):
         if item.unlocked:
-            print(item.name)
+            print("{}: {}".format(item.name, item.desc))
     div()
 
 
@@ -2997,8 +2997,10 @@ class Topic(Base):
         br()
 
 class Board(Base):
-    def __init__(self, name):
+    def __init__(self, name, private=False, boardPassword="password"):
         self.name = name
+        self.private = private
+        self.boardPassword = boardPassword
         self.topics = []
     def add_topic(self, username, title, text, sticky=False):
         topic = Topic(username, title, text)
@@ -3094,6 +3096,14 @@ class Forum(Node):
                 board.topics.remove(mission)
                 return
     def board_view(self, board, player):
+        if board.private:
+            cls()
+            div()
+            passwd = input("Enter Board Password $")
+            if passwd != boar.boardPassword:
+                print("ERROR: Invalid password.")
+                br()
+                return
         while True:
             cls()
             div()
