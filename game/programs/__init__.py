@@ -169,7 +169,7 @@ def objToDict(obj, addItemType=True):
     return obj_dict
 
 
-def Help(args):
+def help(args):
     div()
     for item in sorted(data.PROGRAMS):
         if item.unlocked:
@@ -220,11 +220,11 @@ def nmap(args):
 
 
 class PortBreakingTool(Base):
-    def __init__(self, name, port, unlocked=False, price=0):
+    def __init__(self, name, port, version=1.0, unlocked=False, price=0):
         super().__init__()
         self.name = name
         self.port = port
-        self.program = Program(self.name, self.function, unlocked=unlocked, price=price)
+        self.program = Program(self.name, version, "Tool for breaking port {}".format(port),self.function, unlocked=unlocked, price=price)
 
     def function(self, args):
         if len(args) == 1:
@@ -984,8 +984,12 @@ def store(args, player):
 
     if args == ["list"]:
         div()
+        if not getPrograms(player):
+            print("ERROR: Nothing to buy.")
         for item in getPrograms(player):
-            print("{} ({} Cr.)".format(item.name, item.price))
+            print(item.name)
+            print("    v{}\n    {}\n    {} Cr.".format(item.version, item.desc, item.price))
+            div()
         div()
     elif "buy" in args and len(args) == 2:
         try:
@@ -3148,9 +3152,10 @@ class Shodan(Node):
     def main(self):
         print("SHODAN breaks the fourth wall.")
     def tick(self):
-        ## This node is used for controlling the game;
-        ## As such, this node is unhackable
-        pass
+        player = data.getNode("localhost")
+        if player.timeSinceNextDay > 1000:
+            player.timeSinceNextDay = time.time()
+            player.date = GameDate()
 
 def ssh(args):
     if len(args) == 1:

@@ -70,7 +70,8 @@ class PlayerNode(Node):
         self.startActions()
         self.bankAccounts = []
         self.notes = []
-        self.date = "2010-06-01"
+        self.date = GameDate()
+        self.timeSinceNextDay = time.time()
     # def save(self):
     #     ## ensure directory
     #     if not os.path.isdir("savegames"):
@@ -216,6 +217,7 @@ class PlayerNode(Node):
             nodes.openstat,
             nodes.test.git,
             MailDotCom("Deployment Test Cinnamon", "cinnamon.mail.com", self, [User("cinnamon")]),
+            MailServer("Debian Mail", "debianmail", "mail.debian.org", self, [User("admin")]),
         ]
         onionsites = [
             TorMailServer(

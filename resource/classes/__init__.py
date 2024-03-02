@@ -34,9 +34,11 @@ class Base:
 
 
 class Program(Base):
-    def __init__(self, name, function, unlocked=False, price=0, classPlease=False):
+    def __init__(self, name, version, desc, function, unlocked=False, price=0, classPlease=False):
         super().__init__()
         self.name = name
+        self.version = version
+        self.desc = desc
         self.function = function
         self.unlocked = unlocked
         self.price = price
@@ -202,12 +204,15 @@ class Node(Base):
                                   # to main() or main_hacked()
         self.motd = "\n".join([
             "$ Welcome to Bash on Debian GNU/Linux 5.0.5",
-            "$ To open a remote shell, run ssh <address of this node>.",
-            "$ To browse its files, run ssh <address of this node>.",
+            "$ To open a remote shell, run ssh <address of this node>",
+            "$ To browse this terminal's files, run ssh <address of this node>",
         ])
+        self.trace = None
     def tick(self):
         ## This is called after every command
         pass
+    def add_trace(self, time=60):
+        self.trace = Trace(self, time)
     def flatten(self):
         files = []
         for file in self.files:
@@ -287,3 +292,35 @@ class Note(Base):
 
 class NodeError(Exception):
     pass
+
+class GameDate(Base):
+    def __init__(self, year=2010, month=6, day=1):
+        self.year = year
+        self.month = month
+        self.day = day
+        #                    JAN FEB MAR APR MAY JUN JUL AUG SEP OCT NOV DEC
+        self.daysPerMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+    def __str__(self):
+        return "{}-{}-{}".format(self.year, "0{}".format(self.month) if self.month < 10 else self.month, "0{}".format(self.day) if self.day < 10 else self.day)
+    def next_day(self):
+        self.daysPerMonth[1] = 29 if self.is_leap() else 28
+        self.day += 1
+        if self.day > self.daysPerMonth[self.month-1]:
+            self.day = 1
+            self.month += 1
+        if self.month > 12:
+            self.month = 1
+            self.year += 1
+    def is_leap(self):
+        return (self.year % 400 == 0) or ((self.year % 100 != 0) and (self.year % 4 == 0))
+
+class Trace(Base):
+    def __init__(self, node, time=60):
+        self.node = node
+        self.time = time
+        self.startedTime = None
+    def start(self):
+        if not self.startedTime:
+            self.startedTime = time.time()
+    def copy(self):
+        return Trace(self.node, self.time)

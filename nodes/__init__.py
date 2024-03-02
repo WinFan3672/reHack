@@ -32,7 +32,7 @@ openstat_os.add_page("Desktop OS Marketshare")
 
 mht = programs.NewsServer("MHT", "mht", "mht.com", "admin@mht.mail.com")
 with open("msgboard/mht.com/Confirming The Rumours") as f:
-    mht_rumours = mht.add_story("Confirming The Rumours", "Admin", "2010-06-01", f.read())
+    mht_rumours = mht.add_story("Confirming The Rumours", "Admin", GameDate(), f.read())
     mht_rumours.reply("rehack", "Hopefully this encourages xDevices to update their admin password")
     mht_rumours.reply("admin", "rehack: Probably not, they've ignored it since the OG xPhone")
     mht_rumours.reply("duplexity", "what a madman; publishing an article months ahead of time under nda while saying literally nothing")
