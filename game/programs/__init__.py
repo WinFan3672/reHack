@@ -2309,6 +2309,11 @@ class SignupService(Node):
         self.usePlayerName = usePlayerName
         self.private = private
         self.signup_function = signup_function
+        self.enabled = True
+    def disable(self):
+        self.enabled = False
+    def enable(self):
+        self.enabled = True
     def get_node(self, address):
         return data.getAnyNode(address)
 
@@ -2318,11 +2323,12 @@ class SignupService(Node):
             email.receiver = "{}@{}".format(username, address)
             sendEmail(email)
     def main(self, player):
-        player = data.getNode("localhost")
         node = self.get_node(self.agent_id)
+        if not self.enabled:
+            print("ERROR: This signup service has been disabled by the admin.")
+            return
         if self.private:
             private = [data.getAnyNode(x).address for x in self.private]
-            print(private)
             print("This signup service is configured to only accept allowed members.")
             print("This is enforced using an email address check.")
             eml = input("Email address $")
@@ -2374,6 +2380,21 @@ class SignupService(Node):
         print("Your password is: [HIDDEN]")
         if callable(self.signup_function):
             self.signup_function()
+    def main_hacked(self, player):
+        cls()
+        print("Apache Forwarder v1.0: Console")
+        while True:
+            args = input("$").split(" ")
+            if args == ["help"]:
+                print("Command help:")
+                print("node: display URL of the node connected")
+                print("wl: list all whitelisted email domains")
+                print("wl <email domain>: add/remove an email domain to the whitelist")
+            elif args == []:
+                pass
+            else:
+                print("ERROR: Run `help` for a command list.")
+
 
 class LocalAreaNetwork(Node):
     def __init__(self, name, uid, address, minPorts=1):
