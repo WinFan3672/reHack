@@ -79,7 +79,7 @@ class PlayerNode(Node):
         self.notes = []
         self.date = GameDate()
         self.timeSinceNextDay = time.time() + 300 ## Starts 50% through = midday
-        self.saveName = hashlib.sha256(str(random.randint(1, 2^64)).encode()).hexdigest()
+        self.saveName = hashlib.sha256(str(random.randint(1, 2^64) * time.time()).encode()).hexdigest()
     def saveBase(self):
         default = {
                 "name": self.name,
