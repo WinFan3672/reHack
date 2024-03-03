@@ -13,6 +13,8 @@ from game.programs import (
         BuyMission,
         pickSelection,
         MailAccount,
+        FileCheck,
+        FileCheckMission,
         )
 import nodes
 import nodes.forum
@@ -500,6 +502,10 @@ def main_story_missions(self):
                 "Thanks for the quick work. As promised, we have wire 10,000 big ones over to your account.",
                 "The Cinnamon server has been reset and security updates have been released.",
                 ],
+        [
+                "Hack into ftp.debian.org and delete core.sys from the sys folder.",
+                "The disruption caused by this will be significant.",
+                ],
     ]
     bodies = ["\n".join(x) for x in bodies]
     end_email = Email(
@@ -575,8 +581,15 @@ def main_story_missions(self):
                 "Thanks",
                 bodies[10],
                 ),
+            Email(
+                    "contracts@rehack.mail",
+                    "{}@jmail.com".format(self.name),
+                    "TEST MISSION #1",
+                    bodies[11],
+                ),
 
             ]
+    test1_fc = FileCheck("debianftp")
     return [
             Mission(
                 self,
@@ -653,7 +666,8 @@ def main_story_missions(self):
                 emails[9],
                 emails[10],
                 reward=10000,
-                )
+                ),
+            FileCheckMission(),
 
 
     ]

@@ -3602,11 +3602,7 @@ class FileCopiedCheck(Base):
 class FileCheck(Base):
     def __init__(self, node: str):
         super().__init__()
-        self.node = data.getNode(node)
-        if not self.node:
-            self.node = data.getTorNode(node)
-            if not self.node:
-                raise NodeError("Invalid Node ID")
+        self.node = node
         self.checks = []
     def add(self, check):
         self.checks.append(check)
@@ -3615,8 +3611,11 @@ class FileCheckMission(Mission):
     def check(self):
         if not isinstance(self.target, FileCheck):
             raise TypeError("Target must be an instance of FileCheck")
+        node = data.getAnyNode(self.target.node)
+        if not node:
+            return False
         for check in self.target:
-            if not check.check():
+            if not check.check(self.target.node):
                 return False
         return True
 
