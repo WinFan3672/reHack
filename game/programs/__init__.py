@@ -3710,3 +3710,36 @@ class FunctionMission(Mission):
     def check_end(self):
         if callable(self.target):
             return self.target()
+
+class SearchEngine(Node):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.searchArea = []
+    def add(self, node):
+        self.searchArea.append(node)
+    def test(self):
+        for node in self.searchArea:
+            if not data.getAnyNode(node):
+                print("FAIL: {}".format(node))
+    def get_nodes(self):
+        nodes = [data.getAnyNode(x) for x in self.searchArea if x is not None]
+        return nodes
+    def main(self):
+        self.test()
+        while True:
+            ch = input("Type search term or 'exit' >").lower()
+            if ch in ["quit", "exit"]:
+                return
+            else:
+                div()
+                print("Search Results for {}:".format(ch))
+                div()
+                self.search(ch)
+                div()
+    def search(self, ch):
+        for node in self.get_nodes():
+            if ch in node.name.lower() or ch in node.address.lower():
+                print("{}: {}".format(node.name, node.address))
+
+
+

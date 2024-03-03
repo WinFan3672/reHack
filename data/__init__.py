@@ -539,8 +539,9 @@ N = [
     programs.TorForwarder("vc-su", "vc.sign.up", "vc-signup"),
     programs.TorForwarder("5chan-su", "5chan.sign.up", "5chan-signup"),
     programs.WebServer("Debian: By the world, for the world", "debianweb", "debian.org", "debian.org"),
-    programs.VersionControl("Debian", "debiangit", "git.debian.org", [Commit("Release 5.0.0", "admin@mail.debian.org"), Commit("Release 5.0.1", "admin@mail.debian.org"), Commit("Release 5.0.2", "admin@mail.debian.org"), Commit("Release 5.0.3", "admin@mail.debian.org"), Commit("Release 5.0.4", "admin@mail.debian.org"),Commit("Release 5.0.5", "admin@mail.debian.org")], True),
+    programs.VersionControl("Debian: Official Git Server", "debiangit", "git.debian.org", [Commit("Release 5.0.0", "admin@mail.debian.org"), Commit("Release 5.0.1", "admin@mail.debian.org"), Commit("Release 5.0.2", "admin@mail.debian.org"), Commit("Release 5.0.3", "admin@mail.debian.org"), Commit("Release 5.0.4", "admin@mail.debian.org"),Commit("Release 5.0.5", "admin@mail.debian.org")], True),
     programs.MailDotComTracker(),
+    programs.SignupService("crimdb_signup", "signup.crimdb.gov", "uscrimdb", private=["usagovmail"]),
 ]
 for item in N:
     NODES.append(item)
@@ -719,3 +720,14 @@ TN = [
 
 for node in TN:
     TOR_NODES.append(node)
+
+CRIMES = [
+        "Petty theft",
+        "Theft",
+        "Murder",
+        "Arson",
+        "Tax evasion",
+        "Unauthorised computer access",
+        "Drug Trafficking",
+        "Other",
+        ]    

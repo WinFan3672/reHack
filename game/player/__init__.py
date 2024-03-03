@@ -24,6 +24,7 @@ from game.programs import (
 )
 
 import data
+
 import sys
 import missions
 import time
@@ -32,11 +33,13 @@ import pickle
 import configparser
 import hashlib
 import traceback
+import getpass
 
 import nodes
 import nodes.lan
 import nodes.forum
 import nodes.test
+import nodes.university
 
 
 
@@ -250,8 +253,12 @@ class PlayerNode(Node):
             nodes.test.git,
             nodes.forum.darkstore,
             nodes.debian_ftp,
+            nodes.search,
+            nodes.rhsearch,
+            nodes.university.main(),
             MailDotCom("Deployment Test Cinnamon", "cinnamon.mail.com", self, [User("cinnamon")]),
             MailServer("Debian Mail", "debianmail", "mail.debian.org", self, [User("admin")]),
+            CriminalDatabase(),
         ]
         onionsites = [
             TorMailServer(
@@ -473,3 +480,32 @@ class PlayerShodan(Node):
         super().__init__("SHODAN #2", "shodan2", data.generateIP(), minPorts=65536)
     def tick(self):
         player = data.getNode("localhost")
+
+class Criminal(Base):
+    def __init__(self, name, age, crime):
+        self.name = name
+        self.age = age
+        self.crime = crime
+class CriminalDatabase(Node):
+    def __init__(self, **kwargs):
+        super().__init__("United States Federal Government Criminal Database", "uscrimdb", "crimdb.gov", ports=[data.getPort(21), data.getPort(22), data.getPort(80), data.getPort(1433)], minPorts=4)
+        self.people = []
+        i = 0
+        while i < 40:
+            person = random.choice(data.PEOPLE)
+            name = "{} {}".format(person.forename, person.surname)
+            if name not in [x.name for x in self.people]:
+                self.add(name, random.randint(18, 45))
+                i += 1
+    def add(self, name, age):
+        c = Criminal(name, age, random.choice(data.CRIMES))
+        self.people.append(c)
+        return c
+    
+    def main(self):
+        username = input("Username $")
+        passwd = getpass.getpass("Password $")
+        for user in self.users:
+            if user.name == username and user.password == passwd:
+                self.hacked = True
+                self.main_hacked()
