@@ -3616,7 +3616,7 @@ def openftp(args):
         div()
         print("Starts an FTP server in a node that doesn't have one, allowing you to wreak true havoc.")
         div()
-def chown(args):
+def chmod(args):
     player = data.getNode("localhost")
     if len(args) == 3:
         node = data.getNode(args[0], True)
@@ -3644,14 +3644,14 @@ def chown(args):
 
     else:
         div()
-        print("chown <address> <r|rw> <folder>")
+        print("chmod <address> <r|rw> <folder>")
         div()
         print("Set the permissions for a folder and its contents on a remote node.")
         div()
         print("Examples:")
-        print("- chown example.com rw /")
+        print("- chmod example.com rw /")
         print("    - Sets read/write permissions for all files inside of /")
-        print("- chown example.com r /")
+        print("- chmod example.com r /")
         print("    - Makes every file in the node read-only")
         div()
 

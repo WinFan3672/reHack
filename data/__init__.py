@@ -583,7 +583,7 @@ PROGRAMS = [
         Program("tormail", 1.0, "Email client for the Tor network", programs.tormail, True, classPlease=True),
         Program("date", 1.0, "Check the date and time", programs.date, True, classPlease=True),
         Program("openftp", 1.0, "Install an FTP server to a remote node", programs.openftp, price=10000),
-        Program("chown", 1.0, "Set permissions for a folder and its contents on a remote node", programs.chown, True),
+        Program("chmod", 1.0, "Set permissions for a folder and its contents on a remote node", programs.chmod, True),
         ]
 
 DARKSTORE = []
