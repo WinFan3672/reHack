@@ -3440,10 +3440,16 @@ def folderView(self, writeAccess=False):
             # br()
             return
 
+def get_origin(origin):
+    try:
+        return data.getAnyNode(origin).address
+    except:
+        return "Unknown"
+
 def fileView(self, folder, writeAccess=False):
     cls()
     div()
-    print("{}\nOrigin: {}".format(self.name, self.origin))
+    print("{}\nOrigin: {}".format(self.name, get_origin(self.origin)))
     div()
     print("[1] View File")
     print("[2] Upload File")

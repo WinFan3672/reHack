@@ -161,8 +161,8 @@ class Folder(Base):
             file.origin = self.origin
             self.files.append(file.clone())
     
-    def create_file(self, name, data):
-        file = File(name, data, self.origin)
+    def create_file(self, name, data, origin=None):
+        file = File(name, data, origin if origin else self.origin)
         self.files.append(file)
         return file
 
@@ -265,35 +265,19 @@ class Node(Base):
     def create_log(self, ip_address, text):
         self.logs.append(Log(ip_address, text))
     
-    def create_file(self, name, data, folder="/"):
+    def create_file(self, name, data, folder="/", origin=None):
         if folder == "/":
             folder = Folder("", self.files)
         else:
             folder = self.get_file(folder)
 
-        folder.files.append(File(name, data, self.uid))
+        folder.files.append(File(name, data, origin if origin else self.uid))
 
     def create_folder(self, name, writeAccess=False):
         folder = Folder(name, [], writeAccess, self.uid)
         self.files.append(folder)
         return folder
 
-    def clone(self, new_address):
-        cloned_node = type(self)(
-            name=self.name,
-            uid=self.uid,
-            address=new_address,
-            files=self.files,  # Here, files will be shared between the original and the clone
-            users=self.users.copy(),  # Other attributes that should be copied
-            ports=self.ports.copy(),
-            minPorts=self.minPorts,
-            linked=self.linked.copy(),
-            hacked=self.hacked,
-            player=self.player,
-        )
-
-        return cloned_node
-    
     def check_health(self):
         return "core.sys" in [x.name for x in self.flatten()]
 
