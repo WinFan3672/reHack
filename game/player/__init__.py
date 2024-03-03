@@ -29,6 +29,7 @@ import missions
 import time
 import os
 import pickle
+import configparser
 import hashlib
 import traceback
 
@@ -72,7 +73,6 @@ class PlayerNode(Node):
         self.saved_accounts = {
             f"{self.name}@jmail.com": self.password,
         }
-        self.saved_tor_accounts = {}
         self.currentMission = None
         self.startActions()
         self.bankAccounts = []
@@ -81,26 +81,36 @@ class PlayerNode(Node):
         self.timeSinceNextDay = time.time() + 300 ## Starts 50% through = midday
         self.saveName = hashlib.sha256(str(random.randint(1, 2^64)).encode()).hexdigest()
     def saveBase(self):
-        return {
-                "date": str(self.date),
-                "time": data.extrapolateTime(self.timeSinceNextDay),
+        default = {
                 "name": self.name,
                 "password": self.password,
-                "creditCount": self.creditCount,
-                "notes": [x.text for x in self.notes],
-                "bankAccounts": self.bankAccounts,
-                "programs": [x.name for x in data.PROGRAMS if x.unlocked]
+                "date": str(self.date),
+                "time": data.extrapolateTime(self.timeSinceNextDay),
+                "credits": self.creditCount,
+                "firewall": self.firewall.solution,
+                "savefile": self.saveName,
+                "saved": time.strftime("%Y-%m-%d %H:%M:%S")
         }
+        save = configparser.ConfigParser()
+        save["Player"] = default
+        save["Programs"] = {x.name: x.unlocked for x in sorted(data.PROGRAMS)}
+        save["Notes"] = {index: item.text for index, item in enumerate(self.notes)}
+        save["Accounts"] = self.saved_accounts
+        save["Node Addresses"] = {x.uid:x.address for x in data.NODES}
+        save["Tor Node Addresses"] = {x.uid:x.address for x in data.TOR_NODES}
+        save["Bank Accounts"] = {index: {"ip": item.ip, "number": item.number, "pin": item.pin, "balance": item.balance} for index, item in enumerate(self.bankAccounts)}
+
+        return save
     def save(self):
-        ## ensure directory
         if not os.path.isdir("savegames"):
             os.mkdir("savegames")
-        ## get file name
-        fn = input("Save file name $")
-        ## pickle data
-        with open("savegames/{}.pkl".format(fn),"wb") as f:
-            pickle.dump(self,f)
+        
+        save = self.saveBase()
+
+        with open("savegames/{}.rh_save".format(self.saveName),"w") as f:
+            save.write(f)
         print("Successfully saved game.")
+
     def load(self):
         if os.path.isdir("savegames"):
             fn = input("Save file name $")

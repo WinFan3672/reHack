@@ -14,6 +14,8 @@ from game.programs import (
         pickSelection,
         MailAccount,
         FileCheck,
+        FileCopiedCheck,
+        FileDeletedCheck,
         FileCheckMission,
         )
 import nodes
@@ -590,6 +592,9 @@ def main_story_missions(self):
 
             ]
     test1_fc = FileCheck("debianftp")
+    test1_fc.add(FileDeletedCheck("core.sys", "sys"))
+    test2_fc = FileCheck("rhdrop")
+    test2_fc.add(FileCopiedCheck("core.sys", origin="debianftp"))
     return [
             Mission(
                 self,
@@ -667,7 +672,22 @@ def main_story_missions(self):
                 emails[10],
                 reward=10000,
                 ),
-            FileCheckMission(),
+            FileCheckMission(
+                    self,
+                    "test1",
+                    "TEST MISSION #1",
+                    test1_fc,
+                    emails[11],
+                    end_email,
+                ),
+            FileCheckMission(
+                    self,
+                    "test2",
+                    "TEST MISSION #2",
+                    test2_fc,
+                    end_email,
+                    end_email,
+                    ),
 
 
     ]

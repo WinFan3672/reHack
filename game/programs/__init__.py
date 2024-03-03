@@ -458,7 +458,7 @@ def debuginfo(args, player):
         tree(data.createFolder(node))
 
     elif args == ["save"]:
-        print(player.saveBase())
+        print("savegames/{}.rh_save".format(player.saveName))
     elif args == ["date"]:
         div()
         print("debug date <function> [args]")
@@ -589,6 +589,7 @@ def debuginfo(args, player):
         print("    date: control the date and time")
         print("    pc: display how many programs are installed")
         print("    tree: display a node's file tree")
+        print("    save: prints the player's save file")
         div()
         print("WARNING: This program is not intended for use by anyone other than the developers.")
         print("It is meant to be used when debugging the game, not when playing it.")
@@ -3457,7 +3458,8 @@ def fileView(self, folder, writeAccess=False):
         if node and data.checkPort(node, 21):
             inc = data.getFile(node, "incoming", "Folder")
             if inc and inc.writeAccess:
-                inc.add_file(self.clone())
+                file = File(self.name, self.data, folder.origin)
+                inc.files.append(file)
                 print("Successfully uploaded file.")
             else:
                 print("ERROR: Cannot upload to server")
@@ -3573,11 +3575,12 @@ class FileDeletedCheck(Base):
         self.filename = filename
         self.folder = folder
     def check(self, node):
+        node = data.getAnyNode(node)
         if self.folder == "/":
             files = data.createFolder(node)
         else:
-            files = data.getFile(node, self.folder, "Folder")
-        for file in self.files:
+            files = data.getFile(node, node.folder, "Folder")
+        for file in node.files:
             if file.name == self.filename:
                 return False
         return True
@@ -3589,6 +3592,7 @@ class FileCopiedCheck(Base):
         self.origin = origin
         self.folder = folder
     def check(self, node):
+        node = data.getAnyNode(node)
         if self.folder == "/":
             folder = data.createFolder(node)
         else:
@@ -3608,13 +3612,13 @@ class FileCheck(Base):
         self.checks.append(check)
 
 class FileCheckMission(Mission):
-    def check(self):
+    def check_end(self):
         if not isinstance(self.target, FileCheck):
             raise TypeError("Target must be an instance of FileCheck")
         node = data.getAnyNode(self.target.node)
         if not node:
             return False
-        for check in self.target:
+        for check in self.target.checks:
             if not check.check(self.target.node):
                 return False
         return True
