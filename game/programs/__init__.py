@@ -172,7 +172,6 @@ def help(args):
         if item.unlocked:
             print("{}: {}".format(item.name, item.desc))
     div()
-    print("Installed programs: {}".format(len([x for x in data.PROGRAMS if x.unlocked])))
 
 
 def Exit(args):
@@ -416,6 +415,8 @@ def debuginfo(args, player):
         while player.currentMission:
             print("Completed: {}".format(player.currentMission.name))
             player.currentMission.end()
+    elif args == ["pc"]:
+        print(len([x for x in data.PROGRAMS if x.unlocked]))
     elif args == ["ip"]:
         div()
         print("debug ip [arguments]")
@@ -554,6 +555,7 @@ def debuginfo(args, player):
         print("    sm: start a mission")
         print("    health: list all dead nodes")
         print("    date: control the date and time")
+        print("    pc: display how many programs are installed")
         div()
         print("WARNING: This program is not intended for use by anyone other than the developers.")
         print("It is meant to be used when debugging the game, not when playing it.")

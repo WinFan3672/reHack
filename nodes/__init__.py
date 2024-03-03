@@ -37,3 +37,7 @@ with open("msgboard/mht.com/Confirming The Rumours") as f:
     mht_rumours.reply("rehack", "Hopefully this encourages xDevices to update their admin password")
     mht_rumours.reply("admin", "rehack: Probably not, they've ignored it since the OG xPhone")
     mht_rumours.reply("duplexity", "what a madman; publishing an article months ahead of time under nda while saying literally nothing")
+
+debian_ftp = programs.PublicFTPServer("Debian FTP", "debianftp", "ftp.debian.org")
+debian_pub = data.getFile(debian_ftp, "pub", "Folder")
+debian_pub.add_file(File("debian.5.0.5.iso.tar.gz", data.genBinaryFileData()))

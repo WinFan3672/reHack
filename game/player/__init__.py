@@ -239,6 +239,7 @@ class PlayerNode(Node):
             nodes.openstat,
             nodes.test.git,
             nodes.forum.darkstore,
+            nodes.debian_ftp,
             MailDotCom("Deployment Test Cinnamon", "cinnamon.mail.com", self, [User("cinnamon")]),
             MailServer("Debian Mail", "debianmail", "mail.debian.org", self, [User("admin")]),
         ]

@@ -166,6 +166,14 @@ class Folder(Base):
         for file in [x for x in self.files if isinstance(x, Folder)]:
             file.setWriteAccess(writeAccess)
 
+    def set_origin(self, origin):
+        self.origin = origin
+        for file in self.files:
+            if isinstance(file, Folder):
+                file.set_origin(origin)
+            else:
+                file.origin = origin
+
 class Log(Base):
     def __init__(self, text, address=None):
         super().__init__()
@@ -195,7 +203,7 @@ class Node(Base):
         self.uid = uid
         self.player = player
         self.address = address
-        self.files = files + [Folder("home"), Folder("bin"), Folder("sys", [File("core.sys"), File("x-server.sys"), File("warning", WARN_TEXT)])] 
+        self.files = files + [Folder("home"), Folder("bin"), Folder("sys", [File("core.sys"), File("x-server.sys"), File("warning", WARN_TEXT)], origin=uid)] 
         self.ports = ports
         self.minPorts = minPorts
         self.users = users
@@ -214,6 +222,8 @@ class Node(Base):
             "$ To browse this terminal's files, run ssh <address of this node>",
         ])
         self.trace = None
+        ## Recursively set origin of all folders to the current UID
+        Folder("", self.files).set_origin(self.uid) 
     def tick(self):
         ## This is called after every command
         pass
