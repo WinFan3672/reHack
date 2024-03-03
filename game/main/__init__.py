@@ -23,8 +23,10 @@ def credits():
     div()
     print("LEGAL NOTICES")
     div()
-    print("Any companies referenced are intended solely for parody. ")
-    print("Any resemblance to real companies is entirely coincidental.")
+    print("""reHack's gameplay is not intended as a suggestion of (or tutorial for) real hacking.
+Any companies referenced are intended solely for parody.
+Any resemblance to real companies is entirely coincidental.
+The creators of reHack do not endorse any illegal activity of any kind. Please look into your country's jurdistiction if you're unsure.""")
     br()
 
 

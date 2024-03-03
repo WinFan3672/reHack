@@ -41,11 +41,12 @@ div()
 * MailTor (www.mail-tor.onion)
     * Paid (150 Cr. per account)
     * Owners unknown; suspected to be owned by mail.com, which suggests bad security.
+    * Has a clearnet proxy: mail.tor
     * Do not use.
 div()
 3.2.2 Private services
 div()
-* reHack OnionMail (onionmail.intranet.rehack.org)
+* reHack OnionMail (om.rehack.org)
     * Most agents can get invited with relative ease.
         * This includes beginner-level agents!
 * 5mail
@@ -57,63 +58,13 @@ div()
     * Dished out to users of VC-Forum.
 div()
 4 Private Services
+Private services are not available to most people. More information on the various groups can be found on our private signup resource: sign.up
 div()
-Private services are invite-only. They require certain email services to be invited.
-Key:
-[x] Service allows access
-[ ] Service does not allow access
+4.1 Joining
 div()
-4.1 Dark.Store
+To join a private group, you need the right email address. 
 div()
-Purchase black-market programs not even we sell.
-
-[x] Euclid
-[x] reHack
-[x] 5mail
-[x] SCSI
-
-div()
-4.2 5chan
-div()
-A hacker forum for the ages.
-
-[ ] Euclid
-[x] reHack
-[x] 5mail
-[x] SCSI
-
-div()
-4.3 VC-Forum
-div()
-Makes 5chan look like a bunch of script kiddies. Forums, stores, contracts, insider secrets, free deets of victims, corporate espionage. This is where the real criminals live.
-
-[ ] reHack
-[ ] 5mail
-[x] SCSI
-
-div()
-4.4 VC-Politburo
-div()
-Associate of VC-Forum with access to more advanced missions.
-
-[ ] SCSI
-[x] VC-Mail
-div()
-5 Getting Into Each Service
-div()
-5.1 Dark.Store && 5.2 5chan
-div()
-It is one of the ads that arrives in your inbox when you create a reHack OnionMail account.
-div()
-5.3 VC-Forum
-div()
-You need to get into SCSI group first. For that, we have no tutorial. 
-div()
-5.4 VC-Politburo
-div()
-Complete enough jobs and you're let in. Simple as.
-div()
-6 Hacking
+5 Hacking
 div()
 Main article: Hacking Tor
 div()

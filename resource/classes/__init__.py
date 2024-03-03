@@ -161,6 +161,11 @@ class Folder(Base):
             file.origin = self.origin
             self.files.append(file)
 
+    def setWriteAccess(self, writeAccess=False):
+        self.writeAccess = writeAccess
+        for file in [x for x in self.files if isinstance(x, Folder)]:
+            file.setWriteAccess(writeAccess)
+
 class Log(Base):
     def __init__(self, text, address=None):
         super().__init__()

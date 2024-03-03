@@ -23,9 +23,14 @@ def extrapolateTime(realTimeSinceDay):
 
     return inGameHour_str
 
+def genBinaryFileData(length=1024, prefix=""):
+    s = "{}".format(prefix) ## Creates a new copy of prefix
+    while len(s) < length:
+        s += random.choice(string.printable)
+    return s
 
 def createFolder(node):
-    folder = Folder("/", node.files)
+    folder = Folder("", node.files)
     folder.origin = node.uid
     return folder
 
@@ -180,6 +185,7 @@ PORTS = [
         Port(123, "NTP Time Server"),
         Port(1194, "OpenVPN Server"),
         Port(1433, "SQL Database"),
+        Port(6667, "Internet Relay Chat"),
         Port(6881, "BitTorrent Tracker"),
         Port(7777, "reHackOS Node"),
         Port(9200, "Tor Node"),
@@ -576,6 +582,8 @@ PROGRAMS = [
         Program("bankhack", 1.0, "Tool for brute-forcing a bank PIN", programs.bankhack, price=1000, classPlease=True),
         Program("tormail", 1.0, "Email client for the Tor network", programs.tormail, True, classPlease=True),
         Program("date", 1.0, "Check the date and time", programs.date, True, classPlease=True),
+        Program("openftp", 1.0, "Install an FTP server to a remote node", programs.openftp, price=10000),
+        Program("chown", 1.0, "Set permissions for a folder and its contents on a remote node", programs.chown, True),
         ]
 
 DARKSTORE = []
@@ -631,25 +639,25 @@ SPICES = [
         "Asafoetida",
         "Bay leaves",
         "Sumac",
-"Curry leaves",
-    "Star anise",
-    "Smoked paprika",
-    "Himalayan Salt",
-    "Herbes de Provence",
-    "Italian seasoning",
-    "Garam masala",
-    "Chinese five spice",
-    "Ras el hanout",
-    "Cajun seasoning",
-    "Old Bay seasoning",
-    "Poultry seasoning",
-    "Adobo seasoning",
-    "Pumpkin spice",
-    "Curry powder",
-    "Za'atar",
-    "Jerk seasoning",
-    "Baharat",
-    "Mexican chili powder",
+        "Curry leaves",
+        "Star anise",
+        "Smoked paprika",
+        "Himalayan Salt",
+        "Herbes de Provence",
+        "Italian seasoning",
+        "Garam masala",
+        "Chinese five spice",
+        "Ras el hanout",
+        "Cajun seasoning",
+        "Old Bay seasoning",
+        "Poultry seasoning",
+        "Adobo seasoning",
+        "Pumpkin spice",
+        "Curry powder",
+        "Za'atar",
+        "Jerk seasoning",
+        "Baharat",
+        "Mexican chili powder",
 ]
 WHOIS = {}
 with open("data/passwords.txt") as f:
@@ -702,6 +710,8 @@ TN = [
         programs.TorSignupService("5chan-signup", generateTorURL("5chansu"), "5chan", usePlayerName=True),
         programs.TorSignupService("rhomail-signup", generateTorURL(), "rhomail", usePlayerName=True),
         programs.TorSignupService("vc-signup", generateTorURL("vcsu"), "vcforum", usePlayerName=True, private=["anonmail", "euclid"]),
+        programs.TorSignupService("ds-signup", generateTorURL("darkstoresu"), "darkstore", usePlayerName=True, private=["rhmail"]),
+
 
         
 ]

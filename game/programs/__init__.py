@@ -3373,7 +3373,7 @@ def folderView(self, writeAccess=False):
     while True:
         cls()
         div()
-        print("Index of {} (Permissions: {})".format(self.name, "rw" if writeAccess else "r"))
+        print("Index of /{} (Permissions: {})".format(self.name, "rw" if writeAccess else "r"))
         div()
         i = 1
         for file in self.files:
@@ -3391,7 +3391,7 @@ def folderView(self, writeAccess=False):
                 else:
                     folderView(file, file.writeAccess)
             elif isinstance(file, File):
-                fileView(file, True if writeAccess else self.writeAccess)
+                fileView(file, self, True if writeAccess else self.writeAccess)
         except:
             # print(traceback.format_exc())
             # br()
@@ -3519,7 +3519,7 @@ class IRChannel(Base):
 
 class IRCServer(Node):
     def __init__(self, name, uid, address, motd, *args, **kwargs):
-        super().__init__(name, uid, address, *args, **kwargs)
+        super().__init__(name, uid, address, ports=[data.getPort(6667), data.getPort(22)] *args, **kwargs)
         self.motd = motd
         self.channels = []
     def add_channel(self, name):
@@ -3560,13 +3560,9 @@ class FileCopiedCheck(Base):
             folder = data.getFile(node, self.folder, "Folder")
 
         for file in folder.flatten():
-            if file.name != self.filename:
-                continue
-            if self.origin and file.origin != self.origin:
-                continue
-            if self.text and file.text != self.text:
-                continue
-            return True
+            if file.name == self.filename and (not self.origin or file.origin == self.origin) and (not self.text or file.text == self.text):
+                return True
+
 
 class FileCheck(Base):
     def __init__(self, node: str):
@@ -3584,6 +3580,10 @@ class FileCheckMission(Mission):
     def check(self):
         if not isinstance(self.target, FileCheck):
             raise TypeError("Target must be an instance of FileCheck")
+        for check in self.target:
+            if not check.check():
+                return False
+        return True
 
 def date(args, player):
     print("{} {}".format(player.date, data.extrapolateTime(time.time() - player.timeSinceNextDay)))
@@ -3596,3 +3596,66 @@ class HostKillMission(Mission):
             if not node:
                 return False
         return node.check_health()
+
+def openftp(args):
+    if len(args) == 1:
+        node = data.getNode(args[0], True)
+        if not node:
+            print("ERROR: Node not found (404)")
+            return
+        if not node.hacked:
+            print("ERROR: Access denied (403)")
+            return
+        if data.checkPort(node, 21):
+            print("ERROR: FTP server already exists (500)")
+            return
+        node.ports.append(data.getPort(21))
+    else:
+        div()
+        print("openftp <address>")
+        div()
+        print("Starts an FTP server in a node that doesn't have one, allowing you to wreak true havoc.")
+        div()
+def chown(args):
+    player = data.getNode("localhost")
+    if len(args) == 3:
+        node = data.getNode(args[0], True)
+        if not node:
+            print("ERROR: Invalid address")
+            return
+        if not node.hacked:
+            print("ERROR: Access denied")
+            return
+        mode = args[1]
+        if mode not in ["r", "rw"]:
+            print("ERROR: Mode must be either `r` or `rw`")
+            return
+
+        if args[2] == "/":
+            folder = data.createFolder(node)
+        else:
+            folder = data.getFile(node, args[2], "Folder")
+
+        if not folder:
+            print("ERROR: Folder does not exist.")
+            return
+
+        folder.setWriteAccess(True if mode == "rw" else False)
+
+    else:
+        div()
+        print("chown <address> <r|rw> <folder>")
+        div()
+        print("Set the permissions for a folder and its contents on a remote node.")
+        div()
+        print("Examples:")
+        print("- chown example.com rw /")
+        print("    - Sets read/write permissions for all files inside of /")
+        print("- chown example.com r /")
+        print("    - Makes every file in the node read-only")
+        div()
+
+class FunctionMission(Mission):
+    def check_end(self):
+        if callable(self.target):
+            return self.target()

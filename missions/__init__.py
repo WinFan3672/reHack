@@ -21,44 +21,6 @@ import nodes.test
 
 
 
-def pentest1_ctf_end(self):
-    jmail = data.getNode("jmail")
-
-    jmail.hacked = False
-
-    for user in jmail.users:
-        if user.name == "admin":
-            user.password = data.genString(32)
-
-    jmail.accounts = [x for x in jmail.accounts if x.name != "darkgroup1337"]
-
-    for account in jmail.accounts:
-        if account.name == "admin":
-            account.password = data.genString(32)
-    
-    body = "\n".join([
-        "Hello.",
-        "I have noticed that you recently fell for my honeypot.",
-        "I'm not mad. I'm impressed; you managed to get my password, as well as the burner I created.",
-        "I've changed the passwords for both my admin account and the console to be safe.",
-        "The reason I'm not mad is simple; I was aware of these stupid CTF things, and I wanted proof they exist.",
-        "So I added holes in the security and waited.",
-        "You got your 7500. I got confirmation.",
-        "I imagine reHack don't know that I know. I'd like you to keep it that way.",
-        "If they find out that the CTF is publicly known, it destroys the credibility of their pentesting business.",
-        "It also means they need to discontinue it, which makes the networks weaker because nobody is incentivised to test their new security.",
-        "",
-        "Anyway, I wish you all the best in your quest."
-        ])
-    email = Email(
-            "admin@jmail.com",
-            "{}@jmail.com".format(self.name),
-            "You Fell For It",
-            body
-        )
-
-    sendEmail(email)
-
 def pentest2_end():
     node = data.getNode("cinnamon")
     data.addFirewall("cinnamon", Firewall("cinnamon", 5))
@@ -380,7 +342,6 @@ def base_missions(self):
             emails[0],
             emails[1],
             reward=7500,
-            end_function = lambda: pentest1_ctf_end(self),
         ),
     ]
 
