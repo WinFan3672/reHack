@@ -160,6 +160,16 @@ class Folder(Base):
         if type(file) in [File, Folder]:
             file.origin = self.origin
             self.files.append(file.clone())
+    
+    def create_file(self, name, data):
+        file = File(name, data, self.origin)
+        self.files.append(file)
+        return file
+
+    def create_folder(self, name, writeAccess=False):
+        file = Folder(name, [], writeAccess, self.origin)
+        self.files.append(file)
+        return file
 
     def setWriteAccess(self, writeAccess=False):
         self.writeAccess = writeAccess

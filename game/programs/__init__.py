@@ -3403,11 +3403,13 @@ class FTPServer(Node):
         super().__init__(node, uid, address, ports=[data.getPort(21)], *args, **kwargs)
         self.pub = self.create_folder("pub")
         self.inc = self.create_folder("incoming", True)
+        self.inc.create_file("ReadMe.txt", data.INCOMING_README)
 class PublicFTPServer(Node):
-    def __init__(self, node, uid, address, *args, **kwargs):
+    def __init__(self, node, uid, address, acceptUpload=True, *args, **kwargs):
         super().__init__(node, uid, address, ports=[data.getPort(21)], *args, **kwargs)
         self.pub = self.create_folder("pub")
-        self.inc = self.create_folder("incoming", True)
+        self.inc = self.create_folder("incoming", acceptUpload)
+        self.inc.create_file("ReadMe.txt", data.INCOMING_README)
         self.readAccess = True
 
 def folderView(self, writeAccess=False):

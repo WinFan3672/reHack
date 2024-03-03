@@ -10,6 +10,17 @@ import string
 
 global PORTS, NODES, TOR_NODES, PROGRAMS, GENERATED
 
+INCOMING_README = """This is the incoming folder.
+If you have write access, this is where uploaded files should go.
+Please respect the wishes of the maintainers of this FTP server and don't:
+
+1. Upload files they wouldn't want on the server;
+2. Waste bandwidth and/or storage space;
+3. Delete other people's files;
+4. Attempt to gain write access maliciously;
+
+This message was brought to you by the Apache Foundation."""
+
 def extrapolateTime(realTimeSinceDay):
     # Define in-game constants
     inGameDayDuration = 600  # seconds
