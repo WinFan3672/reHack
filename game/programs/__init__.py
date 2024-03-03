@@ -407,10 +407,29 @@ class TorWebServer(Node):
         print("Contact the webmaster: {}".format(self.webmaster))
         div()
 
+def tree(folder, indent=0):
+    print("{}{}".format("  " * indent, folder))
+    for file in folder.files:
+        if isinstance(file, Folder):
+            tree(file, indent + 1)
+        else:
+            print("{}{}".format("  " * (indent + 1), file))            
+
 def debuginfo(args, player):
     if args == ["passwd"]:
         with open("data/passwords.txt") as f:
             print(random.choice(f.read().split("\n")))
+    elif args == ["test"]:
+        ## I just wanted to check if Python's 'assignment == reference' thing applies to new instances
+        folder = Folder("", [File("a"), File("b")])
+        fc = folder.clone()
+        fdc = folder.clone(True)
+        folder.name = "g"
+        folder.files = []
+        print(folder.name == fc.name)
+        print(folder.name == fdc.name)
+        print(folder.files == fc.files)
+        print(folder.files == fdc.files)
     elif args == ["mission"]:
         while player.currentMission:
             print("Completed: {}".format(player.currentMission.name))
@@ -425,6 +444,19 @@ def debuginfo(args, player):
         print("    list: lists all nodes and their info")
         print("    info: get info about a node")
         div()
+    elif args == ["tree"]:
+        div()
+        print("debug tree <address>")
+        div()
+        print("Prints a file tree of all files and folders on a system")
+        div()
+    elif "tree" in args and len(args) == 2:
+        node = data.getNode(args[1])
+        if not node:
+            print("ERROR: Invalid node")
+            return
+        tree(data.createFolder(node))
+
     elif args == ["save"]:
         print(player.saveBase())
     elif args == ["date"]:
@@ -556,6 +588,7 @@ def debuginfo(args, player):
         print("    health: list all dead nodes")
         print("    date: control the date and time")
         print("    pc: display how many programs are installed")
+        print("    tree: display a node's file tree")
         div()
         print("WARNING: This program is not intended for use by anyone other than the developers.")
         print("It is meant to be used when debugging the game, not when playing it.")

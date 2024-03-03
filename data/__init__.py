@@ -35,14 +35,14 @@ def createFolder(node):
     return folder
 
 def getFile(node, name, kind="Any"):
-    for file in createFolder(node):
-        if file.name == name:
-            if kind == "Any":
-                return file
-            elif kind == "File" and isinstance(file, File):
-                return file
-            elif kind == "Folder" and isinstance(file, Folder):
-                return file
+    folder = Folder("", node.files)
+    file = folder.get_file(name)
+    if kind == "Folder" and isinstance(file, Folder):
+        return file
+    elif kind == "File" and isinstance(file, File):
+        return file
+    elif kind == "Any" and type(file) in [File, Folder]:
+        return file
 
 def div():
     print("--------------------")
@@ -436,7 +436,7 @@ N = [
             "Coca Mainframe",
             "cocamain",
             generateIP(),
-            [getPort(21), getPort(22), getPort(7777)],
+            ports=[getPort(21), getPort(22), getPort(7777)],
             minPorts=65536,
             users=[User("admin", "anticyclogenesis")],
             ),

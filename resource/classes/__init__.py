@@ -99,7 +99,7 @@ class File(Base):
             self.data = BinaryFile().data()
         self.origin = origin
     def __str__(self):
-        return "File('{}')".format(self.name)
+        return "File(name='{}')".format(self.name)
 
     def clone(self):
         return File(self.name, self.data)
@@ -127,7 +127,7 @@ class Folder(Base):
         else:
             raise StopIteration
     def __str__(self):
-        return "Folder('{}', {})".format(self.name, len(self.files))
+        return "Folder(name='{}', fileCount={}, access='{}', origin='{}')".format(self.name, len(self.files), "rw" if self.writeAccess else "r", self.origin)
     def flatten(self):
         all_files = []
         for file_or_folder in self.files:
@@ -159,7 +159,7 @@ class Folder(Base):
     def add_file(self, file):
         if type(file) in [File, Folder]:
             file.origin = self.origin
-            self.files.append(file)
+            self.files.append(file.clone())
 
     def setWriteAccess(self, writeAccess=False):
         self.writeAccess = writeAccess
@@ -173,6 +173,12 @@ class Folder(Base):
                 file.set_origin(origin)
             else:
                 file.origin = origin
+    
+    def clone(self, deep=False):
+        if deep:
+            return Folder(self.name, [x.clone() for x in self.files], self.writeAccess, self.origin)
+        else:
+            return Folder(self.name, self.files, self.writeAccess, self.origin)
 
 class Log(Base):
     def __init__(self, text, address=None):
@@ -223,7 +229,8 @@ class Node(Base):
         ])
         self.trace = None
         ## Recursively set origin of all folders to the current UID
-        Folder("", self.files).set_origin(self.uid) 
+        Folder("", self.files).set_origin(self.uid)
+        self.files = [x.clone() for x in self.files] ## Ensures all are unique
     def tick(self):
         ## This is called after every command
         pass
