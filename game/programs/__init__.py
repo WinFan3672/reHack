@@ -360,7 +360,6 @@ class WebServer(Node):
             name,
             uid,
             address,
-            files=[Folder("WebServer", [File("index.html")])],
             linked=linked,
             hacked=hacked,
         )
@@ -384,7 +383,6 @@ class TorWebServer(Node):
             name,
             uid,
             address,
-            files=[Folder("Tor",[File("torserver.elf")]), Folder("WebBrowser", [File("index.html")])],
             linked=linked,
             hacked=hacked,
         )
@@ -419,17 +417,20 @@ def debuginfo(args, player):
     if args == ["passwd"]:
         with open("data/passwords.txt") as f:
             print(random.choice(f.read().split("\n")))
+    # elif args == ["test"]:
+    #     ## I just wanted to check if Python's 'assignment == reference' thing applies to new instances
+    #     folder = Folder("", [File("a"), File("b")])
+    #     fc = folder.clone()
+    #     fdc = folder.clone(True)
+    #     folder.name = "g"
+    #     folder.files = []
+    #     print(folder.name == fc.name)
+    #     print(folder.name == fdc.name)
+    #     print(folder.files == fc.files)
+    #     print(folder.files == fdc.files)
     elif args == ["test"]:
-        ## I just wanted to check if Python's 'assignment == reference' thing applies to new instances
-        folder = Folder("", [File("a"), File("b")])
-        fc = folder.clone()
-        fdc = folder.clone(True)
-        folder.name = "g"
-        folder.files = []
-        print(folder.name == fc.name)
-        print(folder.name == fdc.name)
-        print(folder.files == fc.files)
-        print(folder.files == fdc.files)
+        for node in data.NODES:
+            nmap([node.address])
     elif args == ["mission"]:
         while player.currentMission:
             print("Completed: {}".format(player.currentMission.name))
@@ -3399,10 +3400,14 @@ class TorRelay(Node):
 
 class FTPServer(Node):
     def __init__(self, node, uid, address, *args, **kwargs):
-        super().__init__(node, uid, address, ports=[data.getPort(21)], files=[Folder("pub"), Folder("icnoming",writeAccess=True)], *args, **kwargs)
+        super().__init__(node, uid, address, ports=[data.getPort(21)], *args, **kwargs)
+        self.pub = self.create_folder("pub")
+        self.inc = self.create_folder("incoming", True)
 class PublicFTPServer(Node):
     def __init__(self, node, uid, address, *args, **kwargs):
-        super().__init__(node, uid, address, ports=[data.getPort(21)], files=[Folder("pub"), Folder("incoming",writeAccess=True)], *args, **kwargs)
+        super().__init__(node, uid, address, ports=[data.getPort(21)], *args, **kwargs)
+        self.pub = self.create_folder("pub")
+        self.inc = self.create_folder("incoming", True)
         self.readAccess = True
 
 def folderView(self, writeAccess=False):

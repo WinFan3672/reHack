@@ -39,3 +39,7 @@ with open("msgboard/mht.com/Confirming The Rumours") as f:
     mht_rumours.reply("duplexity", "what a madman; publishing an article months ahead of time under nda while saying literally nothing")
 
 debian_ftp = programs.PublicFTPServer("Debian FTP", "debianftp", "ftp.debian.org")
+dftp_pub = debian_ftp.get_file("pub")
+dftp_pub.files.append(File("debian-5.0.5.iso"))
+dftp_pub.files.append(File("debian-5.0.5.iso.gz"))
+dftp_pub.files.append(File("debian-5.0.5.iso.zip"))

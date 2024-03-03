@@ -196,7 +196,6 @@ class Node(Base):
         name,
         uid,
         address,
-        files=[],
         users=[],
         ports=[],
         minPorts=0,
@@ -209,7 +208,14 @@ class Node(Base):
         self.uid = uid
         self.player = player
         self.address = address
-        self.files = files + [Folder("home"), Folder("bin"), Folder("sys", [File("core.sys"), File("x-server.sys"), File("warning", WARN_TEXT)], origin=uid)] 
+        self.files = []
+
+        self.create_folder("home")
+        self.create_folder("sys")
+        self.create_file("core.sys", self.genRand(), "sys")
+        self.create_file("x-server.sys", self.genRand(), "sys")
+        self.create_file("warning", WARN_TEXT, "sys")
+
         self.ports = ports
         self.minPorts = minPorts
         self.users = users
@@ -228,9 +234,10 @@ class Node(Base):
             "$ To browse this terminal's files, run ssh <address of this node>",
         ])
         self.trace = None
-        ## Recursively set origin of all folders to the current UID
-        Folder("", self.files).set_origin(self.uid)
-        self.files = [x.clone() for x in self.files] ## Ensures all are unique
+    def genRand(self, length=1024):
+        s = ""
+        for i in range(length):
+            s += random.choice(string.printable)
     def tick(self):
         ## This is called after every command
         pass
@@ -247,6 +254,19 @@ class Node(Base):
 
     def create_log(self, ip_address, text):
         self.logs.append(Log(ip_address, text))
+    
+    def create_file(self, name, data, folder="/"):
+        if folder == "/":
+            folder = Folder("", self.files)
+        else:
+            folder = self.get_file(folder)
+
+        folder.files.append(File(name, data, self.uid))
+
+    def create_folder(self, name, writeAccess=False):
+        folder = Folder(name, [], writeAccess, self.uid)
+        self.files.append(folder)
+        return folder
 
     def clone(self, new_address):
         cloned_node = type(self)(
@@ -272,6 +292,11 @@ class Node(Base):
 
     def create_user(self, username, password):
         self.users.append(User(username, password))
+
+    def get_file(self, name):
+        for file in self.files:
+            if name == file.name:
+                return file
 
 
 class Person(Base):

@@ -320,14 +320,6 @@ XOS_DEVICES = {
             },
         }
 NODES = []
-jgreyfiles = [
-        Folder(
-            "Notes",
-            [
-                File("mail login is admin:platform"),
-                ],
-            )
-        ]
 
 NODES.append(programs.BankBackEnd("Bank of reHack :: Back-End Server", "rehackbankbe", generateIP()))
 
@@ -340,7 +332,6 @@ N = [
             "rehacktest",
             "test.rehack.org",
             ports=[getPort(21), getPort(22)],
-            files=testSrvFiles,
             ),
         programs.MessageBoard(
             "reHack News", "rehack.news", "rehacknews", "rehack.news", minPorts=4
@@ -445,7 +436,6 @@ N = [
             "johngrey",
             generateIP(),
             ports=[getPort(21), getPort(22), getPort(6881)],
-            files=jgreyfiles,
             linked=["cocamail"],
             ),
     programs.WebServer(
