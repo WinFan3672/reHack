@@ -10,6 +10,27 @@ import string
 
 global PORTS, NODES, TOR_NODES, PROGRAMS, GENERATED
 
+CRIMDB_LETTER = """NOTE TO INTERN
+
+The computer system you are interacting with is CRITICAL GOVERNMENT INFRASTRUCTURE.
+It is constantly monitored, and all changes are double- and triple- and quadruple-checked 
+to be correct. If you make a mistake, you'll get thrown off the network. 
+
+DO:
+    1. Make sure all changes you make are correct.
+    2. Format all those changes properly.
+    3. Respect other people and their time.
+DON'T:
+    1. Change data without permission.
+    2. Be disrespectful of others' time.
+    3. Attempt to disrupt the operation of the USFCD.
+
+Failure to comply with these DOs and DON'Ts can lead to:
+    1. Prison time;
+    2. Severe fines;
+    3. Deportation back to your country of origin, in the case of immigrant/foreign workers
+
+REMEMBER THIS OR ELSE."""
 INCOMING_README = """This is the incoming folder.
 If you have write access, this is where uploaded files should go.
 Please respect the wishes of the maintainers of this FTP server and don't:

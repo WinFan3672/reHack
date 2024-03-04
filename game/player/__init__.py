@@ -488,7 +488,7 @@ class Criminal(Base):
         self.crime = crime
 class CriminalDatabase(Node):
     def __init__(self, **kwargs):
-        super().__init__("United States Federal Government Criminal Database", "uscrimdb", "crimdb.gov", ports=[data.getPort(21), data.getPort(22), data.getPort(80), data.getPort(1433)], minPorts=4)
+        super().__init__("United States Federal Government Criminal Database", "uscrimdb", "crimdb.gov", ports=[data.getPort(21), data.getPort(22), data.getPort(80), data.getPort(1433)], minPorts=4, users=[User("admin", "admin")])
         self.people = []
         i = 0
         while i < 40:
@@ -497,15 +497,64 @@ class CriminalDatabase(Node):
             if name not in [x.name for x in self.people]:
                 self.add(name, random.randint(18, 45))
                 i += 1
+        self.create_file("New Intern Letter.txt", data.CRIMDB_LETTER, "home")
     def add(self, name, age):
         c = Criminal(name, age, random.choice(data.CRIMES))
         self.people.append(c)
         return c
     
-    def main(self):
+    def main(self, attemptCount=1):
         username = input("Username $")
         passwd = getpass.getpass("Password $")
         for user in self.users:
             if user.name == username and user.password == passwd:
-                self.hacked = True
                 self.main_hacked()
+                return
+        print("ERROR: Invalid credentials.")
+        if attemptCount < 3:
+            self.main(attemptCount + 1)
+        else:
+            print("Too many bad password attempts. You have been disconnected from the server.")
+    def main_hacked(self):
+        while True:
+            cls()
+            div()
+            print(self.name)
+            div()
+            print("[1] Add New Criminal")
+            print("[2] Change Sentence")
+            print("[3] Pardon Criminal")
+            if self.hacked:
+                print("[4] Administration")
+            print("[0] Exit")
+            div()
+            ch = input("$")
+            if ch == "0":
+                return
+            elif ch == "1":
+                self.add_user()
+    def add_user(self):
+        try:
+            name = input("Full Name $")
+            age = int(input("Age (Years) $"))
+        except:
+            print("ERROR: Invalid input.")
+            return
+        cls()
+        div()
+        print("Select Crime")
+        div()
+        i = 1
+        for crime in data.CRIMES:
+            print("[{}] {}".format(i, crime))
+            i += 1
+        print("[0] Exit")
+        div()
+        try:
+            ch = int(input("$"))
+            if ch == 0:
+                return
+        except:
+            return
+        crime = data.CRIMES[ch]
+

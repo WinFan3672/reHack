@@ -1,0 +1,22 @@
+MasterVPS is an interesting service. It allows you to spin up a 'bucket', which is essentially a server 'in the cloud' (a dumb buzzword for a datacenter). 
+This has a useful purpose in hacking, as it allows you to spin up test nodes with real configs made for you, which you can hack as a test of skill.
+div()
+Accessing
+div()
+Their website (mastervps.me) shows all you need to know; their outdated price list, their overpriced nodes (we could easily outcompete them and make them go bankrupt with a competing service; we do run a LOT of services that aren't associated with our name as a cover for our activities), their poor security and design choices (XWebDesign?), and more.
+div()
+Purchasing Nodes
+div()
+To purchase a node, connect to mastervps.service and select the "New Bucket" option. From there, you can spin up a basic server or a "secure" offering, and (bizarrely enough) an xPhone. How they managed that without getting sued amazes me to this day. Buckets are easy enough to spin up; you set an admin password and you're given an IP address to connect to.
+div()
+Domain.Expert Integration
+div()
+Yes, MasterVPS integrates perfectly with domain.expert, allowing you to purchase a bucket on MasterVPS and give it a domain with Domain.Expert; a professional and easy package. At least DE offers reasonable prices for domains, in a business notorious for selling 'premium' domains at insane markups.
+div()
+Security
+div()
+From what we tested, there's nothing to see. MasterVPS's central server has no admin console, and it's bottled tight. Makes me suspicious.
+div()
+Overall
+div()
+It's a fine service. Like, it works. What more do you need?

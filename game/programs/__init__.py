@@ -522,6 +522,7 @@ def debuginfo(args, player):
             raise Exception("Invalid node given.")
         div()
         print("Name: {}".format(node.name))
+        print("Unique ID: {}".format(node.uid))
         print("IP Address: {}".format(node.address))
         print("Linked Nodes: {}".format("; ".join(node.linked) if node.linked else "None"))
         print("Ports: {}".format("; ".join([x.name for x in node.ports]) if node.ports else "None"))
@@ -1929,126 +1930,172 @@ class MasterVPS(Node):
         self.main_hacked = self.main
         self.currentId = 2 ** 14
         self.currentId -= (2**random.randint(1,11))
-        self.offerings = {
-            "base":
+        self.offerings = [
                 {
-                    "node":Node("","","",ports=[data.getPort(22),data.getPort(6881)]),
+                    "name": "Basic",
+                    "node": Node("","","",ports=[data.getPort(22),data.getPort(6881)]),
+                    "description":"A basic node with no security.",
                     "price":500,
-                    "description":"A basic node with no security."
-                 },
-            "base_plus":{
-                "node":Node("","","",ports=[data.getPort(22),data.getPort(6881)], minPorts=2**16),
-                "price":750,
-                "description":"A basic node with full security, including a firewall.",
+                    "secure": False,
                 },
-            "ftp":{
-                "node": FTPServer("", "", ""),
-                "price": 1000,
-                "description":"A server to drop your files"
+                {
+                    "name": "Basic+",
+                    "node": Node("","","",ports=[data.getPort(22),data.getPort(6881)], minPorts=2**16),
+                    "description":"A basic node with full security, including a firewall.",
+                    "price":750,
+                    "secure": True,
                 },
-            "ftp_plus": {
-                "node": FTPServer("", "", "", minPorts=65536),
-                "price": 1500,
-                "description": "A more secure FTP server",
+                {
+                    "name": "FTP Server",
+                    "node": FTPServer("", "", ""),
+                    "description":"A server to drop your files",
+                    "price": 1000,
+                    "secure": False,
                 },
-            "xphone":{
-                "node":XOSDevice("","",""),
-                "price":300,
-                "description":"A standard xPhone 3.",
+                {
+                    "name": "FTP Server+",
+                    "node": FTPServer("", "", ""),
+                    "description": "A more secure FTP server",
+                    "price": 1500,
+                    "secure": True,
                 },
-            "mail":{
-                "node":MailServer("","","",player),
-                "description":"A fully-fledged mail server.",
-                "price":1500,
+                {
+                    "name": "xPhone",
+                    "node":XOSDevice("","",""),
+                    "description":"A standard xPhone 3.",
+                    "price":300,
+                    "secure": False,
                 },
-            "mailplus":{
-                "node":MailServer("","","",player, hideLookup=True, minPorts=2**16),
-                "description":"A fully-fledged mail server with full security.",
-                "price":2500,
+                {
+                    "name": "Mail Server",
+                    "node":MailServer("","","",player),
+                    "description":"A fully-fledged mail server.",
+                    "price":1500,
+                    "secure": False,
                 },
-            }
-        self.offerings["base_plus"]["node"].firewall = Firewall(makeRandomString(64),15)
-        self.offerings["mailplus"]["node"].firewall = Firewall(makeRandomString(64),15)
+                {
+                    "name": "Mail Server+",
+                    "node":MailServer("","","",player, hideLookup=True, minPorts=2**16),
+                    "description":"A fully-fledged mail server with full security.",
+                    "price":2500,
+                    "secure": True,
+                },
+            ]
         self.buckets = []
-    def main(self, player):
+    # def main(self, player):
+    #     cls()
+    #     print("Welcome to MasterVPS.")
+    #     print("For a command list, type HELP.")
+    #     while True:
+    #         ch = input("mastervps #")
+    #         if ch == "help":
+    #             div()
+    #             print("help: command list")
+    #             print("cls: clear terminal")
+    #             print("list: list all purchase options")
+    #             print("bucket list: lists all running buckets")
+    #             print("bucket spinup: spin up a bucket")
+    #             print("balance: display balance")
+    #             print("exit: disconnect from host")
+    #             div()
+    #         elif ch == "list":
+    #             for bucket in self.offerings.keys():
+    #                 b = self.offerings[bucket]
+    #                 div()
+    #                 print(bucket)
+    #                 div()
+    #                 print(b["description"])
+    #                 print("Price: {}".format(b["price"]))
+    #             div()
+    #         elif ch == "bucket spinup":
+    #             div()
+    #             print("bucket spinup <id>")
+    #             div()
+    #             print("Spin up a bucket of type <id>.")
+    #             print("For a list of ID's, run 'list'.")
+    #             div()
+    #         elif ch.startswith("bucket spinup "):
+    #             ch = ch[14:]
+    #             if ch in self.offerings.keys():
+    #                 if player.creditCount >= self.offerings[ch]["price"]:
+    #                     if ch in ["xphone"]:
+    #                         passwd = "alpine"
+    #                     else:
+    #                         passwd = getpass.getpass("Admin Password $")
+    #                     node = copy.deepcopy(self.offerings[ch]["node"])
+    #                     node.name = "MasterVPS: {}".format(ch)
+    #                     node.uid = "mastervps_{}".format(random.randint(2**16,2**32))
+    #                     node.address = data.generateIP()
+    #                     node.offeringType = ch
+    #                     node.linked = ["mastervps_central"]
+    #                     node.users = [User("admin",passwd if passwd else "password")]
+    #                     self.buckets.append(node)
+    #                     data.NODES.append(node)
+    #                     print("Successfully spun up bucket.")
+    #                     print("The IP address is: {}".format(node.address))
+    #                     print("For a list, run 'bucket list'.")
+    #                     if not passwd:
+    #                         print("WARNING: You did not specify a password. A default password ('password') has been used instead.")
+    #                     elif ch in ["xphone"]:
+    #                         print("WARNING: The password for an xOS device is 'alpine'.")
+    #                     player.creditCount -= self.offerings[ch]["price"]
+    #                 else:
+    #                     print("ERROR: Cannot afford bucket.")
+    #             else:
+    #                 print("ERROR: Invalid bucket ID.")
+    #         elif ch == "bucket list":
+    #             if self.buckets:
+    #                 i = 0
+    #                 for node in self.buckets:
+    #                     print("{}: {} ({})".format(i,node.address,node.offeringType))
+    #             else:
+    #                 print("You have not spun up any buckets.")
+    #         elif ch == "":
+    #             continue
+    #         elif ch in ["balance", "bal"]:
+    #             print(player.creditCount)
+    #         elif ch in ["clear", "cls"]:
+    #             cls()
+    #         elif ch in ["quit", "exit"]:
+    #             return
+    #         else:
+    #             print("ERROR: Invalid command.")
+    def spinup(self, player):
         cls()
-        print("Welcome to MasterVPS.")
-        print("For a command list, type HELP.")
-        while True:
-            ch = input("mastervps #")
-            if ch == "help":
-                div()
-                print("help: command list")
-                print("cls: clear terminal")
-                print("list: list all purchase options")
-                print("bucket list: lists all running buckets")
-                print("bucket spinup: spin up a bucket")
-                print("balance: display balance")
-                print("exit: disconnect from host")
-                div()
-            elif ch == "list":
-                for bucket in self.offerings.keys():
-                    b = self.offerings[bucket]
-                    div()
-                    print(bucket)
-                    div()
-                    print(b["description"])
-                    print("Price: {}".format(b["price"]))
-                div()
-            elif ch == "bucket spinup":
-                div()
-                print("bucket spinup <id>")
-                div()
-                print("Spin up a bucket of type <id>.")
-                print("For a list of ID's, run 'list'.")
-                div()
-            elif ch.startswith("bucket spinup "):
-                ch = ch[14:]
-                if ch in self.offerings.keys():
-                    if player.creditCount >= self.offerings[ch]["price"]:
-                        if ch in ["xphone"]:
-                            passwd = "alpine"
-                        else:
-                            passwd = getpass.getpass("Admin Password $")
-                        node = copy.deepcopy(self.offerings[ch]["node"])
-                        node.name = "MasterVPS: {}".format(ch)
-                        node.uid = "mastervps_{}".format(random.randint(2**16,2**32))
-                        node.address = data.generateIP()
-                        node.offeringType = ch
-                        node.linked = ["mastervps_central"]
-                        node.users = [User("admin",passwd if passwd else "password")]
-                        self.buckets.append(node)
-                        data.NODES.append(node)
-                        print("Successfully spun up bucket.")
-                        print("The IP address is: {}".format(node.address))
-                        print("For a list, run 'bucket list'.")
-                        if not passwd:
-                            print("WARNING: You did not specify a password. A default password ('password') has been used instead.")
-                        elif ch in ["xphone"]:
-                            print("WARNING: The password for an xOS device is 'alpine'.")
-                        player.creditCount -= self.offerings[ch]["price"]
-                    else:
-                        print("ERROR: Cannot afford bucket.")
-                else:
-                    print("ERROR: Invalid bucket ID.")
-            elif ch == "bucket list":
-                if self.buckets:
-                    i = 0
-                    for node in self.buckets:
-                        print("{}: {} ({})".format(i,node.address,node.offeringType))
-                else:
-                    print("You have not spun up any buckets.")
-            elif ch == "":
-                continue
-            elif ch in ["balance", "bal"]:
-                print(player.creditCount)
-            elif ch in ["clear", "cls"]:
-                cls()
-            elif ch in ["quit", "exit"]:
+        div()
+        i = 1
+        for o in self.offerings:
+            print("[{}] {} ({} Cr.)".format(i, o["name"], o["price"]))
+            print("  {}".format(o["description"]))
+            i += 1
+        div()
+        try:
+            ch = int(input("$"))
+            if ch == 0:
                 return
-            else:
-                print("ERROR: Invalid command.")
-
+            node = self.offerings[ch-1]
+            cls()
+            div()
+            print(node["name"])
+            br()
+        except ValueError:
+            return
+    def main(self, player):
+        while True:
+            cls()
+            div()
+            print("Balance: {} Cr.".format(player.creditCount))
+            div()
+            print("[1] New Bucket...")
+            if self.buckets:
+                print("[2] Manage Buckets")
+            print("[0] Exit")
+            div()
+            ch = input("$")
+            if ch == "0":
+                return
+            elif ch == "1":
+                self.spinup(player)
 
 def firewall(args):
     if "test" in args and len(args) == 2:
@@ -3730,9 +3777,11 @@ class SearchEngine(Node):
             ch = input("Type search term or 'exit' >").lower()
             if ch in ["quit", "exit"]:
                 return
+            elif ch == "":
+                print("ERROR: Must enter a search query.")
             else:
                 div()
-                print("Search Results for {}:".format(ch))
+                print("Search results for '{}':".format(ch))
                 div()
                 self.search(ch)
                 div()
