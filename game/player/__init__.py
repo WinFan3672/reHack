@@ -92,7 +92,8 @@ class PlayerNode(Node):
                 "credits": self.creditCount,
                 "firewall": self.firewall.solution,
                 "savefile": self.saveName,
-                "saved": time.strftime("%Y-%m-%d %H:%M:%S")
+                "saved": time.strftime("%Y-%m-%d %H:%M:%S"),
+                "mission": self.currentMission.mission_id if self.currentMission else "None",
         }
         save = configparser.ConfigParser()
         save["Player"] = default
@@ -102,6 +103,7 @@ class PlayerNode(Node):
         save["Node Addresses"] = {x.uid:x.address for x in data.NODES}
         save["Tor Node Addresses"] = {x.uid:x.address for x in data.TOR_NODES}
         save["Bank Accounts"] = {index: {"ip": item.ip, "number": item.number, "pin": item.pin, "balance": item.balance} for index, item in enumerate(self.bankAccounts)}
+        save["Missions"] = {item.mission_id: item.complete for item in self.MISSIONS}
 
         return save
     def save(self):

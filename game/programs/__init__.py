@@ -1493,6 +1493,7 @@ class Mission(Base):
         self.player = player
         self.start_function = start_function
         self.end_function = end_function
+        self.complete = False
 
     def start(self):
         sendEmail(self.start_email)
@@ -1513,6 +1514,7 @@ class Mission(Base):
         else:
             self.player.currentMission = None
         self.player.creditCount += self.reward
+        self.complete = True
         if callable(self.end_function):
             self.end_function()
 
@@ -2225,8 +2227,8 @@ class VersionControl(Node):
 def save(args, player):
     try:
         player.save()
-    except Exception as e:
-        print(e)
+    except:
+        print(traceback.format_exc())
 
 def filterDomainSafeCharacters(inputString):
     return ''.join(re.findall(r'[a-z0-9\-_]', inputString.lower()))
