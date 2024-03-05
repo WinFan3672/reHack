@@ -1,4 +1,7 @@
 # reHack
+
+**Note for Windows users**: Because I run Linux, I haven't extensively tested this game under Windows. As such, I strongly recommend running reHack under WSL2 for the time being. I will ensure Windows compatibility in future updates, but that is a secondary concern as the game has a LOT of missing content that needs adding.
+
 You are invited into reHack, a secretive organisation who promised lucrative work in the form of penetration testing for clients. 
 
 You quickly realise that they're not offering penetration testing, and that they're really an underground hacking ring. You are tasked with completing contracts for clients and soon get tied up in more than you bargained for.
