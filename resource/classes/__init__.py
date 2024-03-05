@@ -35,7 +35,7 @@ class Base:
 
 
 class Program(Base):
-    def __init__(self, name, version, desc, function, unlocked=False, price=0, classPlease=False):
+    def __init__(self, name, version, desc, function, unlocked=False, price=0, classPlease=False, inStore=True):
         super().__init__()
         self.name = name
         self.version = version
@@ -44,6 +44,7 @@ class Program(Base):
         self.unlocked = unlocked
         self.price = price
         self.classPlease = classPlease
+        self.inStore = inStore
 
     def execute(self, args, player=None):
         if player:

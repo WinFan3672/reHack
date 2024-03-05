@@ -1048,7 +1048,7 @@ def mailoverflow(args, player):
 
 def store(args, player):
     def getPrograms(player):
-        return [x for x in data.PROGRAMS if not x.unlocked]
+        return [x for x in data.PROGRAMS if not x.unlocked and x.inStore]
 
     if args == ["list"]:
         div()
@@ -3319,6 +3319,7 @@ class Shodan(Node):
         super().__init__("SHODAN", "shodan", data.generateIP(), minPorts = 65536)
         self.enwiredEvent = False
         self.mhtForum = False
+        self.xdgNet = False
     def main(self):
         print("SHODAN breaks the fourth wall.")
     def tick(self):
@@ -3358,6 +3359,23 @@ I think the jury's still out on this one; I'll let you decide.""")
         if player.date == GameDate(2010, 7, 15) and not self.mhtForum:
             self.mhtForum = True
             data.NODES.append(nodes.forum.mht)
+
+        if player.date == GameDate(2010, 7, 12) and not self.xdgNet:
+            self.xdgNet = True
+            renwired = data.getNode("renwired")
+            renwired.name = "XDG.Net: Better news network"
+            renwired.address = "xdg.net"
+            mht = data.getNode("mht")
+            xdgn = mht.add_story("RenWired Has Become xdg.net", "Admin", """Yesterday, RenWired launched, and I wrote my article about it.
+ That article was well-received, and I managed to create a media storm accross the entire news spectrum.
+ Everyone on both sides of the polticial spectrum, as well as both technical and non-technical orgs were talking about it.
+ In fact, I ended up getting contacted by all manner of big 'journalists' like Fox News and whatnot telling me that they
+ were running my story and requested my permission. I did a big 'yes to all' and a LOT of money came in. 
+ I'm not a shill, in fact, I do this in my spare time in protest of journalism as a business,
+ but I really did need the money, what with my personal issues.
+
+ Anyway, I noticed this morning that RenWired have rebranded to xdg.net, and have deleted their original announcement, which is a good sign.
+ I'll be sure to keep you all posted on updates on xdg.net, to see if my theory is true or not.""")
 
 
 def ssh(args):
