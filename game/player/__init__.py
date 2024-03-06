@@ -132,7 +132,7 @@ class PlayerNode(Node):
             ch = input("{}@{} $".format(self.name, self.address))
             if ch in ["exit", "quit"]:
                 if input("Retype command to confirm $") == ch:
-                    return
+                    exit()
                 else:
                     print("Action cancelled.")
             elif ch == "":

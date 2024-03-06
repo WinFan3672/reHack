@@ -11,6 +11,12 @@ import traceback
 
 
 def loadGame():
+    def load(config):
+        player = Player()
+        player.startActions()
+        player.name = config.get("Player", "name", fallback="unknownuser")
+        player.password = config.get("Player", "password", fallback="root")
+        player.firewall.solution = config.get("Player", "firewall", fallback="a")
     def getSaveFiles():
         files = {}
         for f in os.listdir("savegames"):

@@ -12,7 +12,7 @@ You wish you could just leave, but several other reHack agents are actively
 searching for you, hoping to make you disappear without a trace. 
 
 ## Playing
-Download [a release](https://codeberg.org/WinFan3672/reHack/releases) and run rehack.py. You'll need a modern python installation (3.8+).
+Download [a release](https://codeberg.org/WinFan3672/reHack/releases) and run rehack.py. You'll need a modern python installation (3.9+).
 
 reHack has no dependencies you need to install.
 ## Contributing

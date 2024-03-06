@@ -16,6 +16,7 @@ import copy
 import concurrent.futures
 import re
 import getpass
+import code
 
 def pickSelection(a_list, amount=1):
     l = copy.copy(a_list)
@@ -431,6 +432,8 @@ def debuginfo(args, player):
     elif args == ["test"]:
         for node in data.NODES:
             nmap([node.address])
+    elif args == ["ide"]:
+        code.interact(local=locals() | globals(), banner="Python Interpreter: press Ctrl+D to exit",exitmsg="Exit Python interpreter.")
     elif args == ["mission"]:
         while player.currentMission:
             print("Completed: {}".format(player.currentMission.name))
@@ -592,6 +595,7 @@ def debuginfo(args, player):
         print("    pc: display how many programs are installed")
         print("    tree: display a node's file tree")
         print("    save: prints the player's save file")
+        print("    ide: open a Python console with reHack's locals and globals")
         div()
         print("WARNING: This program is not intended for use by anyone other than the developers.")
         print("It is meant to be used when debugging the game, not when playing it.")
@@ -1701,7 +1705,10 @@ class MissionServer(Node):
 
 class BuyMission(Mission):
     def check_end(self):
-        return self.target in [x for x in data.PROGRAMS if x.unlocked]
+        def is_sublist(sublist, main_list):
+            n = len(sublist)
+            return any(main_list[i:i+n] == sublist for i in range(len(main_list) - n + 1))
+        return is_sublist(self.target, [x.name for x in data.PROGRAMS if x.unlocked])
 
 
 def nodecheck(args):
