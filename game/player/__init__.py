@@ -258,6 +258,7 @@ class PlayerNode(Node):
             nodes.search,
             nodes.rhsearch,
             nodes.university.main(),
+            nodes.eff,
             MailDotCom("Deployment Test Cinnamon", "cinnamon.mail.com", self, [User("cinnamon")]),
             MailServer("Debian Mail", "debianmail", "mail.debian.org", self, [User("admin")]),
             CriminalDatabase(),

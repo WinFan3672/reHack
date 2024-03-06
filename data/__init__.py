@@ -563,6 +563,7 @@ N = [
     programs.VersionControl("Debian: Official Git Server", "debiangit", "git.debian.org", [Commit("Release 5.0.0", "admin@mail.debian.org"), Commit("Release 5.0.1", "admin@mail.debian.org"), Commit("Release 5.0.2", "admin@mail.debian.org"), Commit("Release 5.0.3", "admin@mail.debian.org"), Commit("Release 5.0.4", "admin@mail.debian.org"),Commit("Release 5.0.5", "admin@mail.debian.org")], True),
     programs.MailDotComTracker(),
     programs.SignupService("crimdb_signup", "signup.crimdb.gov", "uscrimdb", private=["usagovmail"]),
+    programs.WebServer("Donate to the EFF", "effdonate", "donate.eff.org", "effdonate"),
 ]
 for item in N:
     NODES.append(item)

@@ -2897,15 +2897,10 @@ class BankServer(Node):
         print("PIN: {}".format(acc.pin))
         print("Balance: {:,} Cr.".format(acc.balance))
         div()
-        print("WARNING: This information will not be shown to you again.")
-        print("Note down this information, as it is used to access your online banking.")
-        br()
-        player.bankAccounts.append(acc)
-        cls()
-        div()
         print("Your OS has saved your details to storage.")
         print("The `account` command lists all saved accounts in all banks.")
         br()
+        player.bankAccounts.append(acc)
     def transaction_history(self, acc):
         cls()
         div()
@@ -3811,4 +3806,19 @@ class SearchEngine(Node):
                 print("{}: {}".format(node.name, node.address))
 
 
-
+class LinkTree(Node):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.ports = [data.getPort(21), data.getPort(22), data.getPort(80)]
+        self.minPorts = 3
+    def add_link(self, uid):
+        self.linked.append(uid)
+    def main(self):
+        div()
+        print(self.motd)
+        div()
+        for link in self.linked:
+            node = data.getAnyNode(link)
+            if node:
+                print("* {}: {}".format(node.name, node.address))
+        div()

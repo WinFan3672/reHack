@@ -17,7 +17,7 @@ def br():
 def makeRandomString(length=8):
     s = ""
     for i in range(length):
-        c = string.ascii_letters
+        c = string.printable
         s += random.choice(list(c))
     return s
 
@@ -60,8 +60,7 @@ class User(Base):
     def __init__(self, name, password=None, isAdmin=False):
         super().__init__()
         self.name = name
-        self.password = password if password else makeRandomString()
-
+        self.password = password
 
 class Port(Base):
     def __init__(self, num, name, open=False):

@@ -1004,7 +1004,7 @@ def start_missions(self):
                 reward=500,
                 next_id="start6",
                 ),
-            BuyMission(
+            BlankMission(
                 self,
                 "start6",
                 "Start (Pt. 6)",

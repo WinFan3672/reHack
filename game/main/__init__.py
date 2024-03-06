@@ -3,8 +3,36 @@ import resource.information as resourceInfo
 from resource.libs import *
 from game.player import *
 import data
+
 import getpass
 import time
+import configparser
+import traceback
+
+
+def loadGame():
+    def getSaveFiles():
+        files = {}
+        for f in os.listdir("savegames"):
+            try:
+                with open("savegames/{}".format(f)) as file:
+                    config = configparser.ConfigParser()
+                    config.read("savegames/{}".format(f))
+                    files[f] = config
+            except:
+                print(traceback.format_exc())
+        return files
+    i = 1
+    cls()
+    div()
+    configs = getSaveFiles()
+    for file in configs:
+        config = configs[file]
+        print("[{}] {} ({} Cr)".format(i, config.get("Player", "name", fallback="Unknown"), config.getint("Player", "credits", fallback=0)))
+        print("    Date: {} {}".format(config.get("Player", "date", fallback="2010-06-01"), config.get("Player", "time", fallback="12:00")))
+        print("    Last Saved: {}".format(config["Player"]["saved"]))
+        i += 1
+    br()
 
 
 def credits():
@@ -75,33 +103,36 @@ def main():
 
 
 def start():
-    cls()
-    div()
-    with open("logo.txt") as f:
-        print(f.read())
-    div()
-    print("[1] New Game")
-    print("[x] Load Game")
-    print("[3] Credits")
-    print("[6] Exit")
-    div()
-    print(
-        "Version: {}".format(
-            resourceInfo.friendlyVersion
-        )
-    )
-    div()
-    try:
-        ch = int(input("$"))
-    except:
-        start()
-    if ch == 1:
-        main()
-    elif ch == 3:
-        credits()
-    elif ch == 6:
-        return
-    elif ch == 10:
-        cls()
-        PlayerNode("winfan3672", "root").main()
-    start()
+    while True:
+        try:
+            cls()
+            div()
+            with open("logo.txt") as f:
+                print(f.read())
+            div()
+            print("[1] New Game")
+            print("[2] Load Game")
+            print("[3] Credits")
+            print("[6] Exit")
+            div()
+            print(
+                "Version: {}".format(
+                    resourceInfo.friendlyVersion
+                )
+            )
+            div()
+            ch = int(input("$"))
+            if ch == 1:
+                main()
+            elif ch == 2:
+                loadGame()
+            elif ch == 3:
+                credits()
+            elif ch == 6:
+                return
+            elif ch == 10:
+                cls()
+                PlayerNode("gordinator", "root").main()
+        except:
+            print(traceback.format_exc())
+            br()

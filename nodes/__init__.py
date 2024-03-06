@@ -76,3 +76,7 @@ for area in search.searchArea:
 rhsearch.add("maildotcomtracker")
 rhsearch.add("uscrimdb")
 rhsearch.add("crimdb_signup")
+
+eff = programs.LinkTree("Electronic Frontier Foundation", "effmain", "eff.org")
+eff.motd = """EFF: Because privacy is a basic human right"""
+eff.add_link("effdonate")
