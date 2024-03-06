@@ -98,8 +98,8 @@ def connect(item):
 def connectStart(address, player):
     resolved = False
     for item in data.NODES:
-        if item.address == address:
-            resolved = item.check_health()
+        if item.address == address and item.check_health():
+            resolved = True
             item.visited = True
             if item.hacked and "main_hacked" in dir(item):
                 if item.playerPlease:
