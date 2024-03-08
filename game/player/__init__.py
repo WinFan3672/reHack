@@ -468,22 +468,25 @@ class PlayerShodan(Node):
         player = data.getNode("localhost")
 
 class Criminal(Base):
-    def __init__(self, name, age, crime):
-        self.name = name
+    def __init__(self, forename, surname, age, prison=None, crimes=None):
+        self.forename = forename
+        self.surname = surname
         self.age = age
-        self.crime = crime
+        self.prison = prison
+        self.crimes = crimes if crimes else []
 class CriminalDatabase(Node):
     def __init__(self, **kwargs):
-        super().__init__("United States Federal Government Criminal Database", "uscrimdb", "crimdb.gov", ports=[data.getPort(21), data.getPort(22), data.getPort(80), data.getPort(1433)], minPorts=4, users=[User("admin", "admin")])
-        self.people = []
-        i = 0
-        while i < 40:
-            person = random.choice(data.PEOPLE)
-            name = "{} {}".format(person.forename, person.surname)
-            if name not in [x.name for x in self.people]:
-                self.add(name, random.randint(18, 45))
-                i += 1
+        super().__init__("United States Federal Government Criminal Database", "uscrimdb", "db.crim.gov", ports=[data.getPort(21), data.getPort(22), data.getPort(80), data.getPort(1433)], minPorts=4, users=[User("admin", "admin")])
+        self.criminals = [Criminal("John", "Smith", 44, "Alcatraz", ["Murder", "Arson", "Theft"])]
+        # i = 0
+        # while i < 40:
+        #     person = random.choice(data.PEOPLE)
+        #     name = "{} {}".format(person.forename, person.surname)
+        #     if forename not in [x.forename for x in self.people]:
+        #         self.add(name, random.randint(18, 45))
+        #         i += 1
         self.create_file("New Intern Letter.txt", data.CRIMDB_LETTER, "home")
+        self.create_user("root", "root")
     def add(self, name, age):
         c = Criminal(name, age, random.choice(data.CRIMES))
         self.people.append(c)
@@ -507,40 +510,104 @@ class CriminalDatabase(Node):
             div()
             print(self.name)
             div()
-            print("[1] Add New Criminal")
-            print("[2] Change Sentence")
-            print("[3] Pardon Criminal")
-            if self.hacked:
-                print("[4] Administration")
+            print("[1] New Criminal")
+            print("[2] Manage Criminal")
+            print("[3] Delete Criminal")
+            # if self.hacked:
+            #     print("[4] Administration")
             print("[0] Exit")
             div()
             ch = input("$")
             if ch == "0":
                 return
             elif ch == "1":
-                self.add_user()
-    def add_user(self):
+                self.add_criminal()
+            elif ch == "2":
+                self.manage_criminal()
+            elif ch == "3":
+                self.remove_criminal()
+    def choose_criminal(self):
+        while True:
+            cls()
+            div()
+            i = 1
+            for person in self.criminals:
+                print("[{}] {}, {} ({} Y.O)".format(i, person.surname, person.forename, person.age))
+                i += 1
+            div()
+            try:
+                ch = int(input("$"))
+                if ch == 0:
+                    return
+            except:
+                return
+            return self.criminals[ch-1]
+    def add_criminal(self):
         try:
-            name = input("Full Name $")
+            forename, surname = input("Forename $"), input("Surname $")
             age = int(input("Age (Years) $"))
         except:
             print("ERROR: Invalid input.")
             return
+        prison = input("Prison Name $")
+        self.criminals.append(Criminal(forename, surname, age, prison if prison else None))
+        self.message("Successfully added criminal.")
+    def manage_criminal(self):
+        crim = self.choose_criminal()
+        if crim:
+            self.manage(crim)
+    def message(self, message):
         cls()
         div()
-        print("Select Crime")
+        print(message)
+        br()
+    def confirm(self, message="Confirm Action"):
+        cls()
         div()
-        i = 1
-        for crime in data.CRIMES:
-            print("[{}] {}".format(i, crime))
-            i += 1
-        print("[0] Exit")
+        print(message)
         div()
-        try:
-            ch = int(input("$"))
-            if ch == 0:
+        print("[1] Yes")
+        print("[0] No")
+        div()
+        ch = input("$")
+        return ch == "1"
+    def manage(self, crim):
+        while True:
+            cls()
+            div()
+            print("Name: {}, {}".format(crim.surname, crim.forename))
+            print("Age: {}".format(crim.age))
+            print("Prison: {}".format(crim.prison))
+            print("Crimes: {}".format("; ".join(crim.crimes) if crim.crimes else "None"))
+            div()
+            print("[1] Add Crime")
+            print("[2] Remove Crime")
+            print("[3] Transfer/Remove Prison")
+            print("[0] Exit")
+            div()
+            ch = input("$")
+            if ch == "0":
                 return
-        except:
-            return
-        crime = data.CRIMES[ch]
+            elif ch == "1":
+                cls()
+                crime = input("Crime $")
+                if crime:
+                    crim.crimes.append(crime)
+                    self.message("Successfully added crime '{}'.".format(crime))
+                else:
+                    self.message("Canceled action.")
+            elif ch == "2":
+                self.message("This functionality is disabled for maintenance.")
+            elif ch == "3":
+                cls()
+                prison = input("Prison name (leave blank for no prison) $")
+                crim.prison = prison if prison else None
+    def remove_criminal(self):
+        crim = self.choose_criminal()
+        if crim:
+            if self.confirm():
+                self.criminals.remove(crim)
+                self.message("Successfully removed criminal.")
+            else:
+                self.message("Canceled action.")
 
