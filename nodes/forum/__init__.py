@@ -270,3 +270,8 @@ darkstore = programs.Forum("Dark.Store", "darkstore", data.generateTorURL("dstor
 ds_general = darkstore.boards[0]
 ds_store = darkstore.add_board("Store")
 
+def main():
+    return []
+
+def tor():
+    return [vcforum, chan]

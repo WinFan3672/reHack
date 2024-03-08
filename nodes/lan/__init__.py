@@ -36,3 +36,6 @@ ciaservers.add_router()
 cialan.add_device(Node("Network Monitor v2.22", "netmonitor", cialan.generateIP()))
 cialan.add_router()
 
+def main():
+    return [cialan]
+

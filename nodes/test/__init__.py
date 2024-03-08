@@ -40,3 +40,6 @@ forum_rules.reply("SecondUser", "+1")
 forum_rules.reply("ThirdUser", "+1")
 
 git = programs.GitServer("Test Server VC", "testgit", "git.rehack.test")
+
+def main():
+    return [git, forum, lan]

@@ -7,6 +7,22 @@ import random
 import json
 import copy
 import string
+import getpass
+
+
+def getPassword():
+    passwd = getpass.getpass("Password $")
+    if passwd == "":
+        passwd = genString(12345)
+    confirm = getpass.getpass("Confirm Password $")
+    if passwd == confirm:
+        return passwd
+    else:
+        print("ERROR: Password was incorrect.")
+        return getPassword()
+
+class BankAccount(programs.BankAccount):
+    pass
 
 global PORTS, NODES, TOR_NODES, PROGRAMS, GENERATED
 

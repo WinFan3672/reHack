@@ -34,12 +34,9 @@ import configparser
 import hashlib
 import traceback
 import getpass
+import json
 
 import nodes
-import nodes.lan
-import nodes.forum
-import nodes.test
-import nodes.university
 
 
 
@@ -102,7 +99,7 @@ class PlayerNode(Node):
         save["Accounts"] = self.saved_accounts
         save["Node Addresses"] = {x.uid:x.address for x in data.NODES}
         save["Tor Node Addresses"] = {x.uid:x.address for x in data.TOR_NODES}
-        save["Bank Accounts"] = {index: {"ip": item.ip, "number": item.number, "pin": item.pin, "balance": item.balance} for index, item in enumerate(self.bankAccounts)}
+        save["Bank Accounts"] = {index: json.dumps({"ip": item.ip, "number": item.number, "pin": item.pin, "balance": item.balance}) for index, item in enumerate(self.bankAccounts)}
         save["Missions"] = {item.mission_id: item.complete for item in self.MISSIONS}
 
         return save
@@ -246,23 +243,9 @@ class PlayerNode(Node):
                 hideLookup=True,
             ),
             MailServer("EnWired Mail", "enwired-mail", "enwired.mail", self, [User("elliot"), User("jacob"), User("sales")]),
-            nodes.lan.cialan,
-            nodes.test.lan,
-            nodes.test.forum,
-            nodes.mht,
-            nodes.rhwiki,
-            nodes.openstat,
-            nodes.test.git,
-            nodes.forum.darkstore,
-            nodes.debian_ftp,
-            nodes.search,
-            nodes.rhsearch,
-            nodes.university.main(),
-            nodes.eff,
-            MailDotCom("Deployment Test Cinnamon", "cinnamon.mail.com", self, [User("cinnamon")]),
             MailServer("Debian Mail", "debianmail", "mail.debian.org", self, [User("admin")]),
             CriminalDatabase(),
-        ]
+        ] + nodes.main()
         onionsites = [
             TorMailServer(
                 "Euclid",

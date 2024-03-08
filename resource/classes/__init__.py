@@ -294,11 +294,11 @@ class Node(Base):
 
 
 class Person(Base):
-    def __init__(self, forename, surname, address):
+    def __init__(self, forename, surname, address=None, age=None):
         self.forename = forename
         self.surname = surname
         self.address = address
-        self.age = random.randint(18, 60)
+        self.age = age if age else random.randint(18, 60)
 
 
 class Firewall(Base):

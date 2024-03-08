@@ -9,6 +9,12 @@ import copy
 import string
 import data
 
+import nodes.lan
+import nodes.forum
+import nodes.test
+import nodes.university
+
+
 rhwiki = programs.WikiServer("rehack Wiki", "rehack_wiki", "wiki.rehack.org", "wiki.rehack.org", "reHack Wiki")
 
 wiki_hacking = rhwiki.homepage.add_category("Hacking")
@@ -80,3 +86,20 @@ rhsearch.add("crimdb_signup")
 eff = programs.LinkTree("Electronic Frontier Foundation", "effmain", "eff.org")
 eff.motd = """EFF: Because privacy is a basic human right"""
 eff.add_link("effdonate")
+
+meddb = programs.MedicalDatabase()
+meddb.create_user("root", "root")
+
+def main():
+    return [
+            mht,
+            eff,
+            search,
+            debian_ftp,
+            openstat,
+            rhwiki,
+            meddb,
+        ] + nodes.forum.main() + nodes.test.main() + nodes.lan.main()
+
+def tor():
+    return [] + nodes.forum.tor()

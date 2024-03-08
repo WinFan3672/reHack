@@ -178,11 +178,6 @@ def help(args):
 def Exit(args):
     sys.exit()
 
-
-def Argtest(args):
-    print(args)
-
-
 def nmap(args):
     if args:
         args = args[0]
@@ -470,6 +465,7 @@ def debuginfo(args, player):
         print("Positional arguments:")
         print("    set <year> <month> <day>: set the date to a specific date")
         print("    fwd <days>: Move forward in time <days> times")
+        div
     elif args == ["date", "set"]:
         div()
         print("debug date set <year> <month> <day>")
@@ -491,7 +487,9 @@ def debuginfo(args, player):
         div()
     elif "date" in args and "fwd" in args and len(args) == 3:
         count = int(args[2])
-        player.date += count
+        for i in range(count):
+            player.date += 1
+            player.tick()
     elif args == ["ls"]:
         div()
         print("debug ls <uid>")
@@ -861,6 +859,7 @@ class JmailServer(MailServer):
                 User(player.name, player.password),
                 User("xwebdesign"),
                 User("monicaf332","letmein"),
+                User("mastervps-logs", "sunshine"),
             ],
             hideLookup=True,
         )
@@ -978,9 +977,14 @@ class MailDotCom(MailServer):
         self.accounts = [MailAccount("admin")]
         for item in users:
             self.accounts.append(MailAccount(item.name, item.password))
-
+        self.alive = True
     def lookup(self):
         return [MailAccount("admin")]
+    def tick(self):
+        self.alive = data.getNode("mailcommain").check_health()
+
+    def check_health(self):
+        return self.alive
 
 
 def mailoverflow(args, player):
@@ -1625,6 +1629,7 @@ class MissionServer(Node):
         self.missions = missions
 
     def main(self):
+        self.missions = [x for x in self.missions if not mission.complete]
         print("Welcome.")
         print("There are {} contracts available.".format(len(self.missions)))
         print("For a command list, type HELP.")
@@ -1991,84 +1996,6 @@ class MasterVPS(Node):
                 },
             ]
         self.buckets = []
-    # def main(self, player):
-    #     cls()
-    #     print("Welcome to MasterVPS.")
-    #     print("For a command list, type HELP.")
-    #     while True:
-    #         ch = input("mastervps #")
-    #         if ch == "help":
-    #             div()
-    #             print("help: command list")
-    #             print("cls: clear terminal")
-    #             print("list: list all purchase options")
-    #             print("bucket list: lists all running buckets")
-    #             print("bucket spinup: spin up a bucket")
-    #             print("balance: display balance")
-    #             print("exit: disconnect from host")
-    #             div()
-    #         elif ch == "list":
-    #             for bucket in self.offerings.keys():
-    #                 b = self.offerings[bucket]
-    #                 div()
-    #                 print(bucket)
-    #                 div()
-    #                 print(b["description"])
-    #                 print("Price: {}".format(b["price"]))
-    #             div()
-    #         elif ch == "bucket spinup":
-    #             div()
-    #             print("bucket spinup <id>")
-    #             div()
-    #             print("Spin up a bucket of type <id>.")
-    #             print("For a list of ID's, run 'list'.")
-    #             div()
-    #         elif ch.startswith("bucket spinup "):
-    #             ch = ch[14:]
-    #             if ch in self.offerings.keys():
-    #                 if player.creditCount >= self.offerings[ch]["price"]:
-    #                     if ch in ["xphone"]:
-    #                         passwd = "alpine"
-    #                     else:
-    #                         passwd = getpass.getpass("Admin Password $")
-    #                     node = copy.deepcopy(self.offerings[ch]["node"])
-    #                     node.name = "MasterVPS: {}".format(ch)
-    #                     node.uid = "mastervps_{}".format(random.randint(2**16,2**32))
-    #                     node.address = data.generateIP()
-    #                     node.offeringType = ch
-    #                     node.linked = ["mastervps_central"]
-    #                     node.users = [User("admin",passwd if passwd else "password")]
-    #                     self.buckets.append(node)
-    #                     data.NODES.append(node)
-    #                     print("Successfully spun up bucket.")
-    #                     print("The IP address is: {}".format(node.address))
-    #                     print("For a list, run 'bucket list'.")
-    #                     if not passwd:
-    #                         print("WARNING: You did not specify a password. A default password ('password') has been used instead.")
-    #                     elif ch in ["xphone"]:
-    #                         print("WARNING: The password for an xOS device is 'alpine'.")
-    #                     player.creditCount -= self.offerings[ch]["price"]
-    #                 else:
-    #                     print("ERROR: Cannot afford bucket.")
-    #             else:
-    #                 print("ERROR: Invalid bucket ID.")
-    #         elif ch == "bucket list":
-    #             if self.buckets:
-    #                 i = 0
-    #                 for node in self.buckets:
-    #                     print("{}: {} ({})".format(i,node.address,node.offeringType))
-    #             else:
-    #                 print("You have not spun up any buckets.")
-    #         elif ch == "":
-    #             continue
-    #         elif ch in ["balance", "bal"]:
-    #             print(player.creditCount)
-    #         elif ch in ["clear", "cls"]:
-    #             cls()
-    #         elif ch in ["quit", "exit"]:
-    #             return
-    #         else:
-    #             print("ERROR: Invalid command.")
     def spinup(self, player):
         cls()
         div()
@@ -2083,12 +2010,64 @@ class MasterVPS(Node):
             if ch == 0:
                 return
             node = self.offerings[ch-1]
-            cls()
-            div()
-            print(node["name"])
-            br()
+            if player.creditCount >= node["price"]:
+                passwd = data.getPassword()
+                player.creditCount -= node["price"]
+                bucket = copy.deepcopy(node["node"])
+                bucket.uid = "mastervps_{}".format(random.randint(1, 2**64))
+                bucket.address = data.generateIP()
+                bucket.users = [User("admin", passwd)]
+                bucket.offering = node["name"]
+                if node["secure"]:
+                    bucket.firewall = Firewall(data.genString(16), 16)
+                    bucket.minPorts = 65536
+                data.NODES.append(bucket)
+                self.buckets.append(bucket)
+                sendEmail(Email("null@null.null", "mastervps-logs@jmail.com", node["name"], bucket.address))
+                div()
+                print("Success!")
+                div()
+                print("IP Address: {}".format(bucket.address))
+                br()
+            else:
+                cls()
+                div()
+                print("ERROR: Not enough credits.")
+                br()
         except ValueError:
             return
+    def manage(self, player, node):
+        cls()
+        div()
+        print("{} @ {}".format(node.offering, node.address))
+        div()
+        print("[1] Change Admin Password")
+        print("[2] Spin-Down ({} Refund)".format("Full" if node.visited else "No"))
+        div()
+        ch = input("$")
+        if ch == 1:
+            for user in node.users:
+                if user.name == "admin":
+                    user.password = data.getPassword()
+        elif ch == "2":
+            data.NODES.remove(node)
+            self.buckets.remove(node)
+            if not node.visited:
+                player.creditCount += self.offerings[node.offering]["price"]
+            cls()
+            div()
+            print("Node spun down.")
+            if not node.visited:
+                print("Because the node was never used, a full refund has been credited to your account.")
+            br()
+    def manageBase(self, player):
+        cls()
+        div()
+        print("My Buckets")
+        div()
+        for node in self.buckets:
+            print("{} @ {}".format(node.offering, node.address))
+        br()
     def main(self, player):
         while True:
             cls()
@@ -2097,7 +2076,7 @@ class MasterVPS(Node):
             div()
             print("[1] New Bucket...")
             if self.buckets:
-                print("[2] Manage Buckets")
+                print("[2] My Buckets")
             print("[0] Exit")
             div()
             ch = input("$")
@@ -2105,6 +2084,8 @@ class MasterVPS(Node):
                 return
             elif ch == "1":
                 self.spinup(player)
+            elif ch == "2" and self.buckets:
+                self.manageBase(player)
 
 def firewall(args):
     if "test" in args and len(args) == 2:
@@ -2838,6 +2819,10 @@ class BankBackEnd(Node):
                     return "BADPASSWORD"
         return "INVALID"
     def add_account(self, address, number=0, pin='', balance=0):
+        for account in self.accounts:
+            if account.number == number:
+                account = BankAccount(address, number, pin, balance)
+                return account
         acc = BankAccount(address, number if number else self.get_next_num(), pin if pin else self.gen_pin(), balance)
         self.accounts.append(acc)
         return acc
@@ -3730,6 +3715,7 @@ def openftp(args):
             print("ERROR: FTP server already exists (500)")
             return
         node.ports.append(data.getPort(21))
+        print("Successfully opened FTP server.")
     else:
         div()
         print("openftp <address>")
@@ -3818,6 +3804,7 @@ class LinkTree(Node):
         super().__init__(*args, **kwargs)
         self.ports = [data.getPort(21), data.getPort(22), data.getPort(80)]
         self.minPorts = 3
+        self.linked = []
     def add_link(self, uid):
         self.linked.append(uid)
     def main(self):
@@ -3829,3 +3816,154 @@ class LinkTree(Node):
             if node:
                 print("* {}: {}".format(node.name, node.address))
         div()
+
+class Patient(Base):
+    def __init__(self, forename, surname, age=None, address=None, conditions=None):
+        self.forename = forename
+        self.surname = surname
+        self.age = age if age else random.randint(18, 65)
+        self.address = address
+        self.conditions = conditions if conditions else []
+
+class MedicalDatabase(Node):
+    def __init__(self, **kwargs):
+        super().__init__("United States Federal Medical Database", "meddb", "db.medic.gov", **kwargs)
+        self.people = [
+                Patient("John", "Smith", 55, "123 Random Road, New York, NY", ["Erectile dysfunction"])
+                ]
+        self.emails = []
+    def main(self):
+        username, password = input("Username $"), getpass.getpass("Password $")
+        for user in self.users:
+            if username == user.name and password == user.password:
+                self.main_hacked()
+                return
+        print("ERROR: Incorrect credentials. Please try again.")
+    def main_hacked(self):
+        while True:
+            cls()
+            div()
+            print(self.name)
+            div()
+            print("[1] New Patient")
+            print("[2] Manage Patient")
+            print("[3] Delete Patient")
+            print("[0] Exit")
+            div()
+            ch = input("$")
+            if ch == "1":
+                self.new_patient()
+            elif ch == "2":
+                self.manage_patient()
+            elif ch == "3":
+                self.delete_patient()
+            elif ch == "0":
+                return
+
+    def choose_patient(self):
+        while True:
+            cls()
+            div()
+            i = 1
+            for person in self.people:
+                print("[{}] {}, {} ({} Y.O)".format(i, person.surname, person.forename, person.age))
+                i += 1
+            div()
+            try:
+                ch = int(input("$"))
+                if ch == 0:
+                    return
+            except:
+                return
+            return self.people[ch-1]
+    def new_patient(self):
+        cls()
+        forename, surname = input("Forename $"), input("Surname $")
+        if not forename or not surname:
+            print("ERROR: Some data was incomplete.")
+            br()
+            self.new_patient()
+        try:
+            age = int(input("Age $"))
+        except:
+            print("ERROR: Age formatted incorrectly.")
+            self.new_patient()
+        address = input("Address (Optional) $")
+
+        patient = Patient(forename, surname, age, address if address else None)
+
+        self.people.append(patient)
+
+        print("Successfully added new record.")
+        br()
+    
+    def confirm(self, message="Confirm Action"):
+        cls()
+        div()
+        print(message)
+        div()
+        print("[1] Yes")
+        print("[0] No")
+        div()
+        ch = input("$")
+        return ch == "1"
+    
+    def message(self, message):
+        cls()
+        div()
+        print(message)
+        br()
+    def delete_patient(self):
+        patient = self.choose_patient()
+        if patient:
+            if self.confirm("Confirm deletion of {}, {}".format(patient.surname, patient.forename)):
+                self.people.remove(patient)
+                self.message("Successfully deleted patient.")
+            else:
+                self.message("Action canceled.")
+
+    def manage(self, patient):
+        while True:
+            cls()
+            div()
+            print("Name: {}, {}".format(patient.surname, patient.forename))
+            print("Age: {}".format(patient.age))
+            print("Address: {}".format(patient.address))
+            print("Condition(s): {}".format("; ".join(patient.conditions) if patient.conditions else "None"))
+            div()
+            print("[1] Add Condition")
+            print("[ ] Remove Condition")
+            print("[3] Share Records (Email)")
+            if self.hacked:
+                print("[4] View Logged Email Addresses")
+            print("[0] Exit")
+            div()
+            ch = input("$")
+            if ch == "1":
+                cls()
+                condition = input("Enter Condition Name $")
+                if condition:
+                    patient.conditions.append(condition)
+                    self.message("Action completed.")
+                else:
+                    self.message("Action canceled.")
+            elif ch == "2":
+                self.message("This feature has been disabled by the admin for the following reason: Maintenance")
+            elif ch == "3":
+                email = input("Email Address $")
+                if data.checkEmailAddress(email):
+                    eml = Email("records-daemon@db.medic.gov", email, "Medical Records For {}, {}".format(patient.surname, patient.forename), """Name: {}, {}\nAge: {}\nAddress: {}\nConditions: {}""".format(patient.surname, patient.forename, patient.age, patient.address, "; ".join(patient.conditions) if patient.conditions else "None"))
+                    sendEmail(eml)
+                    self.emails.append(email)
+                    self.message("Email Sent!\nNOTE: The email address in question has been logged for security purposes and cannot be removed.")
+                else:
+                    self.message("ERROR: Invalid email account.")
+            elif ch == "4" and self.hacked:
+                self.message("\n".join(patient.emails))
+            elif ch == "0":
+                return
+
+    def manage_patient(self):
+        patient = self.choose_patient()
+        if patient:
+            self.manage(patient)

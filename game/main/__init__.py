@@ -8,37 +8,92 @@ import getpass
 import time
 import configparser
 import traceback
+import hashlib
+import random
+import json
 
 
 def loadGame():
     def load(config):
-        player = Player()
+        def mkSaveName():
+            return hashlib.sha256(str(random.randint(1, 2^64) * time.time()).encode()).hexdigest()
+
+        player = PlayerNode(config.get("Player", "name", fallback="UNKNOWN"), config.get("Player", "password", fallback="root"))
         player.startActions()
-        player.name = config.get("Player", "name", fallback="unknownuser")
-        player.password = config.get("Player", "password", fallback="root")
         player.firewall.solution = config.get("Player", "firewall", fallback="a")
+        player.creditCount = config.getint("Player", "credits", fallback=0)
+        player.saveName = config.get("Player", "savefile", fallback=mkSaveName())
+
+        mission = config.get("Player", "mission", fallback="None")
+        player.currentMission = data.getMission(mission, player) if mission != "None" else None
+
+        programs = {x[0]: config.getboolean("Programs", x[0], fallback="False") for x in config.items("Programs")}
+        missions = {x[0]: config.getboolean("Missions", x[0], fallback="False") for x in config.items("Missions")}
+
+        addrs = {x[0]: x[1] for x in config.items("Node Addresses")}
+        toraddrs = {x[0]: x[1] for x in config.items("Tor Node Addresses")}
+
+        for program in data.PROGRAMS:
+            if program.name in programs.keys():
+                program.unlocked = programs[program.name]
+
+        for note in config.items("Notes"):
+            player.notes.append(Note(note[1]))
+
+        player.saved_accounts = {x[0]:x[1] for x in config.items("Accounts")}
+        
+        for node in data.NODES:
+            if node.uid in addrs.keys():
+                node.address = addrs[node.uid]
+
+        for node in data.TOR_NODES:
+            if node.uid in toraddrs.keys():
+                node.address = toraddrs[node.uid]
+
+        for mission in data.MISSIONS:
+            if mission.mission_id in missions.keys():
+                mission.complete = missions[mission.mission_id]
+
+        # for account in config.items("Bank Accounts"):
+        #     acct = json.loads(account[1])
+        #     a = data.BankAccount(acct["ip"], acct["number"], acct["pin"], acct["balance"])
+        #     data.getNode(acct["ip"]).backend.add_account(a)
+        #     player.bankAccounts.append(a)
+
+
+
+        # br()
+        return player
     def getSaveFiles():
-        files = {}
+        files = []
         for f in os.listdir("savegames"):
             try:
-                with open("savegames/{}".format(f)) as file:
-                    config = configparser.ConfigParser()
-                    config.read("savegames/{}".format(f))
-                    files[f] = config
+                config = configparser.ConfigParser()
+                config.read("savegames/{}".format(f))
+                files.append(config)
             except:
-                print(traceback.format_exc())
+                pass
         return files
     i = 1
     cls()
     div()
     configs = getSaveFiles()
-    for file in configs:
-        config = configs[file]
+    for config in configs:
         print("[{}] {} ({} Cr)".format(i, config.get("Player", "name", fallback="Unknown"), config.getint("Player", "credits", fallback=0)))
         print("    Date: {} {}".format(config.get("Player", "date", fallback="2010-06-01"), config.get("Player", "time", fallback="12:00")))
         print("    Last Saved: {}".format(config["Player"]["saved"]))
         i += 1
-    br()
+    div()
+    try:
+        ch = int(input("$"))
+    except:
+        return
+    if ch == 0:
+        return
+    config = configs[ch-1]
+    player = load(config)
+    cls()
+    player.main()
 
 
 def credits():
