@@ -3824,10 +3824,11 @@ class Patient(Base):
         self.age = age if age else random.randint(18, 65)
         self.address = address
         self.conditions = conditions if conditions else []
+        self.emails = []
 
 class MedicalDatabase(Node):
     def __init__(self, **kwargs):
-        super().__init__("United States Federal Medical Database", "meddb", "db.medic.gov", **kwargs)
+        super().__init__("United States Federal Medical Database", "meddb", "db.medic.gov", users=[User("admin", "admin")], **kwargs)
         self.people = [
                 Patient("John", "Smith", 55, "123 Random Road, New York, NY", ["Erectile dysfunction"])
                 ]
@@ -3934,7 +3935,7 @@ class MedicalDatabase(Node):
             print("[1] Add Condition")
             print("[ ] Remove Condition")
             print("[3] Share Records (Email)")
-            if self.hacked:
+            if self.hacked and patient.emails:
                 print("[4] View Logged Email Addresses")
             print("[0] Exit")
             div()
@@ -3958,7 +3959,7 @@ class MedicalDatabase(Node):
                     self.message("Email Sent!\nNOTE: The email address in question has been logged for security purposes and cannot be removed.")
                 else:
                     self.message("ERROR: Invalid email account.")
-            elif ch == "4" and self.hacked:
+            elif ch == "4" and self.hacked and patient.emails:
                 self.message("\n".join(patient.emails))
             elif ch == "0":
                 return
