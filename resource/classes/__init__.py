@@ -280,7 +280,9 @@ class Node(Base):
 
     def check_health(self):
         return "core.sys" in [x.name for x in self.flatten()]
-
+    
+    def main(self, player=None):
+        print("ERROR: Access denied.")
     def main_hacked(self, player=None):
         print(self.motd)
 

@@ -177,6 +177,7 @@ class PlayerNode(Node):
             ),
             AnonMail(self),
             MailDotCom("XWebDesign Mail", "xwebdesign.mail.com", self, [User("sales")]),
+            MailDotCom("MHT Mail", "mht.mail.com", self),
             MailDotCom(
                 "Mail Dot Com",
                 "root.mail.com",

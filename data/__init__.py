@@ -557,10 +557,9 @@ N = [
     programs.VersionControl("Version Control Test","vctest","vc.rehack.test",users=[User("admin","alpine")]),
     programs.DomainExpert(),
     programs.WebServer("Central Intelligence Agency", "ciaweb", "cia.gov", "cia.gov",linked = ["ciamail", "ciaftp"]),
-    Node("CIA File Transfer Protocol Server", "ciaftp", "ftp.cia.gov", ports=[getPort(21)], minPorts=1, linked=["cialan"]),
+    Node("CIA File Transfer Protocol Server", "ciaftp", "ftp.cia.gov", ports=[getPort(21), getPort(22)], minPorts=1, linked=["cialan"]),
     programs.WebServer("The Onion Router :: Official Site", "torweb", "tor.org", "tor.org"),
     programs.MessageBoard("EnWired: Home", "enwired.com", "enwired-web", "enwired"),
-    Node("Project Autocrat :: Mainframe", "autocratmain", generateIP(), ports=[], minPorts=65536, users=[User("admin", "roses.are.red.violets.are.blue")]),
     programs.WebServer("reHack Test Suite Home", "rehacktestmain", "rehack.test", "rehack.test"),
     Node("Blank Node Test", "blanktest", "blank.rehack.test"),
     programs.BankServer("Bank of reHack", "rhbank", "6.5.4.4", getNode("rehackbankbe").address, "socialism"),
@@ -580,6 +579,7 @@ N = [
     programs.MailDotComTracker(),
     programs.SignupService("crimdb_signup", "signup.crimdb.gov", "uscrimdb", private=["usagovmail"]),
     programs.WebServer("Donate to the EFF", "effdonate", "donate.eff.org", "effdonate"),
+    programs.PublicFTPServer("MHT FTP", "mhtftp", "ftp.mht.com", False),
 ]
 for item in N:
     NODES.append(item)
@@ -769,3 +769,6 @@ CRIMES = [
         "Drug Trafficking",
         "Other",
         ]    
+
+with open("data/autocrat.docx.txt") as f:
+    AUTOCRAT = f.read()

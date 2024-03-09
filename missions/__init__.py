@@ -448,15 +448,18 @@ def main_story_missions(self):
                 "I'm gonna hold onto the formula for a couple years before selling it on some kinda marketplace.",
                 "",
                 "Anyway, I wish you luck on your quest.",
-                "Oh, and Mountain View contains flourine, so I don't think I'll be drinking it anytime soon.",
+                "Oh, and by the way, Mountain View contains flourine, so I don't think I'll be drinking it anytime soon.",
                 ],
         [
                 "Hello, fellow hacker.",
-                "I think I just uncovered a conspiracy.",
-                "I recently uncovered a secret CIA project called 'Project Autocrat'.",
-                "It's really suspicious, and I need you to break into the CIA website (cia.gov).",
-                "Then, I'll use the resources at my disposal to try and work out what Project Aurocrat is.",
-                "Get going.",
+                "I need you to do the following:",
+                "* Hack into the CIA's website: cia.gov",
+                "* Find and hack into the CIA's LAN (I believe there's an Advanced Tutorial for that).",
+                "* Find the server relating to Project Autocrat",
+                "* Break into that and connect to it over FTP",
+                "* There's a file in the `home` folder. Upload it to the drop server: drop.rehack.org",
+                "",
+                "Get back to me once you're done and I'll be sure to pay you VERY well.",
                 ],
         [
                 "Welcome to the Advanced Tutorial for LAN's.",
@@ -469,7 +472,7 @@ def main_story_missions(self):
                 "* lancrack",
                 "This costs 2500 credits.",
                 "",
-                "If you have the IP of a LAN's router, you can use lancrack to opern port 1, and lanconnect to connect to it.",
+                "If you have the IP of a LAN's router, you can use lancrack to open port 1, and lanconnect to connect to it.",
                 "Once you're in, you can connect to different devices on the network.",
                 "However, you need a list of local IP's. Thankfully, the router you just connected to is located at `192.168.0.0`, and you can connect to it and see a list of devices.",
                 "From there, you can hack whatever you need to hack.",
@@ -550,7 +553,7 @@ def main_story_missions(self):
             Email(
                 "contracts@rehack.mail",
                 "{}@jmail.com".format(self.name),
-                "Hidden In The Depths",
+                "Project Autocrat",
                 bodies[5],
                 ),
             Email(
@@ -583,18 +586,13 @@ def main_story_missions(self):
                 "Thanks",
                 bodies[10],
                 ),
-            Email(
-                    "contracts@rehack.mail",
-                    "{}@jmail.com".format(self.name),
-                    "TEST MISSION #1",
-                    bodies[11],
-                ),
-
             ]
     test1_fc = FileCheck("debianftp")
     test1_fc.add(FileDeletedCheck("core.sys", "sys"))
     test2_fc = FileCheck("rhdrop")
     test2_fc.add(FileCopiedCheck("core.sys", origin="debianftp"))
+    autocrat_fc = FileCheck("rhdrop")
+    autocrat_fc.add(FileCopiedCheck("autocrat.docx", data.AUTOCRAT, origin="cialan"))
     return [
             Mission(
                 self,
@@ -642,15 +640,15 @@ def main_story_missions(self):
                 emails[4],
                 reward=500,
                 ),
-            Mission(
+            FileCheckMission(
                 self,
-                "mission2",
-                "Government Intervention",
-                "ciaweb",
+                "autocrat",
+                "Project Autocrat",
+                autocrat_fc,
                 emails[5],
                 end_email,
-                reward=2500,
-                next_id = "autocrat1",
+                reward=10000,
+                end_function = data.getNode("shodan").autocrat,
                 ),
             Mission(
                 self,
@@ -672,24 +670,6 @@ def main_story_missions(self):
                 emails[10],
                 reward=10000,
                 ),
-            FileCheckMission(
-                    self,
-                    "test1",
-                    "TEST MISSION #1",
-                    test1_fc,
-                    emails[11],
-                    end_email,
-                ),
-            FileCheckMission(
-                    self,
-                    "test2",
-                    "TEST MISSION #2",
-                    test2_fc,
-                    end_email,
-                    end_email,
-                    ),
-
-
     ]
 
 

@@ -1629,7 +1629,7 @@ class MissionServer(Node):
         self.missions = missions
 
     def main(self):
-        self.missions = [x for x in self.missions if not mission.complete]
+        self.missions = [x for x in self.missions if not x.complete]
         print("Welcome.")
         print("There are {} contracts available.".format(len(self.missions)))
         print("For a command list, type HELP.")
@@ -2471,8 +2471,8 @@ class SignupService(Node):
 
 
 class LocalAreaNetwork(Node):
-    def __init__(self, name, uid, address, minPorts=1):
-        super().__init__(name, uid, address, ports = [data.getPort(1)], minPorts=minPorts)
+    def __init__(self, name, uid, address, minPorts=1, **kwargs):
+        super().__init__(name, uid, address, ports = [data.getPort(1)], minPorts=minPorts, **kwargs)
         self.devices = []
         self.alive = True
         self.locked = False
@@ -2519,6 +2519,13 @@ class Router(Node):
         div()
 def LANConnect(args, player):
     def main(node, player):
+        def ftp(node):
+            if node.hacked and data.checkPort(node, 21):
+                folderView(data.createFolder(node), True)
+            elif data.checkPort(node, 21) and node.readAccess:
+                folderView(data.createFolder(node))
+            else:
+                print("ERROR: Access denied.")
         def hack(node):
             if not node:
                 print("ERROR: Invalid address.")
@@ -2576,7 +2583,7 @@ def LANConnect(args, player):
 
         programs = sorted([x.name for x in data.PROGRAMS if x.unlocked])
         unlocked = {}
-        for x in ["porthack", "sshkill", "ftpkill", "webworm", "nmap", "lancrack"]:
+        for x in ["porthack", "sshkill", "ftpkill", "webworm", "nmap", "lancrack", "ftp"]:
             unlocked[x] = x in programs
         cls()
         print("Welcome to {}.".format(node.name))
@@ -2681,6 +2688,18 @@ def LANConnect(args, player):
                     LANConnect(n, player)
                 else:
                     print("ERROR: Invalid hostname.")
+            elif ch == "ftp" and unlocked["ftp"]:
+                div()
+                print("ftp <address>")
+                div()
+                print("Browses files over FTP.")
+                div()
+            elif ch.startswith("ftp ") and unlocked["ftp"]:
+                n = getNode(node, ch[4:])
+                if n:
+                    ftp(n)
+                else:
+                    print("ERROR: Invalid address.")
             elif ch in ["quit","exit"]:
                 return
             else:
@@ -3311,6 +3330,83 @@ class Shodan(Node):
         self.xdgNet = False
     def main(self):
         print("SHODAN breaks the fourth wall.")
+    def autocrat(self):
+        ## This function is called at the end of the Project Autocrat mission.
+        player = data.getNode("localhost")
+        email = Email(
+                "admin@mht.mail.com",
+                "{}@jmail.com".format(player.name),
+                "Important!",
+                """Hello.
+An anonymous tip has told me that YOU recently hacked into the CIA
+and are the perpetrator of the Project Autocrat leak. Let's just say 
+that the CIA will NOT be happy. Lucky for you, I'm a journalist.
+I run MHT, a popular news website that reports on this kinda stuff.
+I'm also anonymous, just like you are, so it'd be really shitty 
+of me to reveal who you are. I've just let you know that there
+will be a MASSIVE media storm over the next 3 months. I've been
+in the game long enough to know what these people are like, constantly
+fishing for new stories, and recycling when they can't catch any.
+
+Anyway, I wish you luck, and I an very happy to take the attention
+away from you. You can live in peace without being stormed by idiots
+wanting to know more. 
+
+The Project Autocrat leaks are insane, though. A ten-year conspiracy 
+that basically predicted the modern ad-driven surveillance business 
+model before it happened? A lot of people have a lot to answer for,
+that's for sure. 
+
+Have a lovely day, and check out my story on mht.com for the full story.""")
+        sendEmail(email)
+        mht = data.getNode("mht")
+        mhtftp = data.getNode("mhtftp")
+        story = mht.add_story(
+                "Project Autocrat: A 10-Year Conspiracy To Spy On The American Population", 
+                "Admin", 
+                player.date.clone(),
+                """The US government's goin to have a bad year, that's for sure.
+Recently, an anonymous hacker broke into the CIA and stole the documents relating
+to 'Project Autocrat', a CIA mission that started in 2000 and ended earlier this year.
+An anonymous tip to me gave me access to the document in question, simply titled
+'autocrat.docx'. I've read through 10 years of CIA reports (most of which is unredacted),
+and I am ready to present the world with the entire story, as I read it.
+
+In 2000, President William Clifford was concerned that the Internet would be a home
+for free speech and would not be controllable by the government, so he proposed
+Project Autocrat. His plan was to establish control of Internet companies and the
+services they run, by backdooring software and setting up the SGDRS (Simple Govt. 
+Data Request System), which allows the government to contact connected companies
+and request ALL data for that user, without a warrant, from just one data point,
+be it a name, email/IP address, or phone number. 
+
+Their initial targets were the Apache Web Server (a popular web server), the
+Linux Kernel, xOS devices, and even NanoSoft Workspaces devices. Over the years,
+this expanded to dozens of products and companies participiating in the
+entire SGDRS and backdooring ensemble, with old partners giving the government
+more power as they released more intrusive services. A few services declined, 
+of course, including AnonMail, Debian and Linux, but 90% agreed to it without
+qeuestion, with another 50% of the rejections having their minds changed.
+
+The scope of this Project is hard to explain or comprehend, as it spans 10
+years and essentially predicted the modern Internet's service- and data-based economy.
+It is unknown how many SGDRS requests have been made, or how many people the CIA and
+its offshoots have hacked with their backdoors, including the infamous default password
+on xPhone devices. 
+
+With regards to the Apache Web Server, the vulnerability existed between versions
+2.0 and 2.2 of the server, before it was found as a security vulnerability and patched.
+
+To round all of this off, I've left all of this on my public FTP server, ftp.mht.com,
+so you can read the whole document for yourself. Get it as quick as you can!""")
+
+        story.reply("rehack", "First to report on an important issue, as always!")
+        story.reply("bit", "I'm buying BTC while it's still cheap")
+        story.reply("e.snowden", "bad day at the office indeed (fyi im an nsa agent)")
+        story.reply("chrisdelay", "When I made Uplink I didn't anticipate THIS to happen just 9y later")
+        story.reply("5chan", "My forum boutta get DOSed from the amount of discussion about this")
+        story.reply("5chan", "It's been 3 minutes and 5chan is down already, wtf")
+        mhtftp.create_file("autocrat.docx", data.AUTOCRAT, "pub")
     def tick(self):
         player = data.getNode("localhost")
         if time.time() - player.timeSinceNextDay > 600:
@@ -3495,6 +3591,7 @@ def folderView(self, writeAccess=False):
             return
 
 def get_origin(origin):
+    # return origin
     try:
         return data.getAnyNode(origin).address
     except:
@@ -3525,8 +3622,7 @@ def fileView(self, folder, writeAccess=False):
         if node and data.checkPort(node, 21):
             inc = data.getFile(node, "incoming", "Folder")
             if inc and inc.writeAccess:
-                file = File(self.name, self.data, folder.origin)
-                inc.files.append(file)
+                inc.files.append(File(self.name, self.data, self.origin))
                 print("Successfully uploaded file.")
             else:
                 print("ERROR: Cannot upload to server")
@@ -3666,7 +3762,7 @@ class FileCopiedCheck(Base):
             folder = data.getFile(node, self.folder, "Folder")
 
         for file in folder.flatten():
-            if file.name == self.filename and (not self.origin or file.origin == self.origin) and (not self.text or file.text == self.text):
+            if file.name == self.filename and (not self.origin or file.origin == self.origin) and (not self.text or file.data == self.text):
                 return True
 
 

@@ -9,7 +9,7 @@ import copy
 import string
 import data
 
-cialan = programs.LocalAreaNetwork("CIA Office Langley :: Local Area Network :: 1 of 1", "cialan", data.generateIP())
+cialan = programs.LocalAreaNetwork("CIA Local Area Network: Home Base", "cialan", data.generateIP(), users=[User("admin", "admin")])
 
 breakroom = programs.LocalAreaNetwork("Breakroom Wi-Fi", "breakroom", cialan.generateIP())
 breakroom.add_device(programs.XOSDevice("Jack Skelly's xPhone", "jack_skelly", breakroom.generateIP(), notes=[programs.Note("Test")]))
@@ -17,25 +17,30 @@ breakroom.add_router()
 cialan.add_device(breakroom)
 
 ciaservers = programs.LocalAreaNetwork("Server Room Net Switch", "servers", cialan.generateIP())
+# target_watch = programs.NodeTracker("Target Companies and Orgs", "targets", ciaservers.generateIP())
+# target_watch.add_node("autocratmain")
+# target_watch.add_node("rehack")
+# target_watch.add_node("rehack_intranet")
+# target_watch.add_node("test2")
+# target_watch.add_node("torweb")
+# target_watch.add_node("shodan")
 
-target_watch = programs.NodeTracker("Target Companies and Orgs", "targets", ciaservers.generateIP())
-target_watch.add_node("autocratmain")
-target_watch.add_node("rehack")
-target_watch.add_node("rehack_intranet")
-target_watch.add_node("test2")
-target_watch.add_node("torweb")
-target_watch.add_node("shodan")
-
-ciaservers = programs.LocalAreaNetwork("Server Room Net Switch", "servers", cialan.generateIP())
-ciaservers.add_device(target_watch)
+# ciaservers.add_device(target_watch)
+ciaservers.add_router()
 cialan.add_device(ciaservers)
 
-ciaservers.add_router()
+netmonitor = Node("Network Monitor v2.22", "netmonitor", cialan.generateIP(), ports=[data.getPort(21)])
+netmonitor.create_file("ReadMe.txt", "This is a hacker honeypot. It has logged all CIA LAN traffic since 1/1/2007. Looks like the CIA's security isn't all it's cracked up to be.", folder="home")
 
+cialan.add_device(netmonitor)
+autocratmain = Node("Project Autocrat Mainframe", "autocratmain", cialan.generateIP(), ports=[data.getPort(21)])
+autocratmain.create_file("autocrat.docx", data.AUTOCRAT, "home", cialan.uid)
+cialan.add_device(autocratmain)
 
-cialan.add_device(Node("Network Monitor v2.22", "netmonitor", cialan.generateIP()))
 cialan.add_router()
 
 def main():
-    return [cialan]
+    return [
+            cialan,
+        ]
 
