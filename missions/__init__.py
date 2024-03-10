@@ -831,4 +831,4 @@ def start_missions(self):
 
 def main(self):
     nodes.forum.chan_jobs.topics += chan_missions(self)
-    return start_missions(self) + base_missions(self) + main_story_missions(self) + autocrat_missions(self) + investigate_missions(self)
+    return start_missions(self) + base_missions(self) + main_story_missions(self) + investigate_missions(self)
