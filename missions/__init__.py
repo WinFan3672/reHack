@@ -711,9 +711,6 @@ def start_missions(self):
                 "This will shut down their message board, although probably not permanently.",
                 ],
         [
-                "This is a final test of your skill.",
-        ],
-        [
                 "Good job. You completed the tutorial.",
                 "If you want to complete more contracts, our contract server (contracts.rehack.org) is full of them.",
                 "Alternatively, you could always look for companies to break into in your free time. A good list is the W3D (w3d.org).",
@@ -816,15 +813,7 @@ def start_missions(self):
                 missionEmails[4],
                 reward=500,
                 next_id="start6",
-                ),
-        Mission(
-                self,
-                "start6",
-                "Start (Pt. 6)",
-                "test.hub",
-                missionEmails[5],
-                reward=2500,
-                end_email=missionEmails[6],
+                end_email=missionEmails[5],
                 ),
     ]
     return MISSIONS
