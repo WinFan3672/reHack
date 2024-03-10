@@ -1,4 +1,4 @@
-/from resource.classes import *
+from resource.classes import *
 import resource.information as resourceInfo
 from resource.libs import *
 from game.player import *
