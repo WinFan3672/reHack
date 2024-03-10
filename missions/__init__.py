@@ -820,7 +820,7 @@ def start_missions(self):
         Mission(
                 self,
                 "start6",
-                "Start (Pt. 7)",
+                "Start (Pt. 6)",
                 "test.hub",
                 missionEmails[5],
                 reward=2500,

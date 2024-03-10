@@ -3790,8 +3790,8 @@ def date(args, player):
     print("{} {}".format(player.date, data.extrapolateTime(time.time() - player.timeSinceNextDay)))
 
 class HostKillMission(Mission):
-    def check(self):
-        node = data.getAnyNode(target)
+    def check_end(self):
+        node = data.getAnyNode(self.target)
         if not node:
             return False
         return node.check_health()

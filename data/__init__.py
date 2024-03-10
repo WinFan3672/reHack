@@ -153,9 +153,9 @@ def checkEmailDomains(address: str, domains=[]) -> bool:
             return True
     return False
 
-def getNode(uid: str, strict:bool=False):
+def getNode(uid: str, strict:bool=False, force:bool=False):
     for item in NODES:
-            if (uid == item.uid and not strict) or uid == item.address and item.check_health():
+            if (uid == item.uid and not strict) or uid == item.address and (item.check_health() or force):
                 return item
 
 def getTorNode(uid: str, strict:bool=False):
