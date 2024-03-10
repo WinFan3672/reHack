@@ -1,4 +1,4 @@
-from resource.classes import *
+/from resource.classes import *
 import resource.information as resourceInfo
 from resource.libs import *
 from game.player import *
@@ -755,14 +755,8 @@ def start_missions(self):
             Email(
                 "contracts@rehack.mail",
                 f"{self.name}@jmail.com",
-                "Tutorial Mission Pt. 6",
-                mission_bodies[5],
-                ),
-            Email(
-                "contracts@rehack.mail",
-                f"{self.name}@jmail.com",
                 "You Finished The Tutorial",
-                mission_bodies[6],
+                mission_bodies[5],
                 ),
             ]
     for item in emails:
@@ -812,7 +806,6 @@ def start_missions(self):
                 "colonsla.sh",
                 missionEmails[4],
                 reward=500,
-                next_id="start6",
                 end_email=missionEmails[5],
                 ),
     ]
