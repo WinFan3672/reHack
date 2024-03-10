@@ -3791,11 +3791,9 @@ def date(args, player):
 
 class HostKillMission(Mission):
     def check(self):
-        node = data.getNode(target)
+        node = data.getAnyNode(target)
         if not node:
-            node = data.getTorNode(target)
-            if not node:
-                return False
+            return False
         return node.check_health()
 
 def openftp(args):
@@ -3924,10 +3922,8 @@ class Patient(Base):
 
 class MedicalDatabase(Node):
     def __init__(self, **kwargs):
-        super().__init__("United States Federal Medical Database", "meddb", "db.medic.gov", users=[User("admin", "admin")], **kwargs)
-        self.people = [
-                Patient("John", "Smith", 55, "123 Random Road, New York, NY", ["Erectile dysfunction"])
-                ]
+        super().__init__("United States Federal Medical Database", "meddb", "db.medic.gov", **kwargs)
+        self.people = []
         self.emails = []
     def main(self):
         username, password = input("Username $"), getpass.getpass("Password $")

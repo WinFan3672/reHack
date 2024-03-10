@@ -17,6 +17,7 @@ from game.programs import (
         FileCopiedCheck,
         FileDeletedCheck,
         FileCheckMission,
+        HostKillMission,
         )
 import nodes
 import nodes.forum
@@ -37,11 +38,6 @@ def chan_missions(self):
     Missions located in the "Jobs" board in 5chan.
     """
     bodies = [
-        [
-            "Welcome to 5chan.",
-            "To fund your future escapades, this mission doesn't require you to do anything.",
-            "Simply complete it and get your reward.",
-        ]
     ]
     end_email = Email(
             "null", 
@@ -51,23 +47,8 @@ def chan_missions(self):
             )
     bodies = ["\n".join(x) for x in bodies]
     emails = [
-        Email(
-            "null",
-            "{}@jmail.com".format(self.name),
-            "Welcome To 5chan",
-            bodies[0],
-        ),
     ]
     return [
-        BlankMission(
-            self,
-            "5chan0",
-            "Welcome To 5chan",
-            None,
-            emails[0],
-            end_email,
-            reward=2500,
-        ),
     ]
 
 
@@ -164,148 +145,6 @@ def investigate_missions(self):
             ),
             ]
 
-def autocrat_missions(self):
-    end_email = Email(
-            "contracts@rehack.mail",
-            "{}@jmail.com".format(self.name),
-            "Contract Complete",
-            "Congratulations on completing the contract.\nIf you want to complete more contracts, visit contracts.rehack.org",
-            )
-    bodies = [
-            [
-                "This is weird. Very weird. Much weirder than anticipated.",
-                "Using the servers linked to the website, I'm gonna need you to find the LAN for the CIA's Langley office.",
-                "Once you've done that, hack it.",
-                "You'll need a special tool (lancrack) to do it, but the previous mission's rewards should cover for that.",
-                "Make this quick.",
-                "Also, I saw that the CIA's mail server is linked to the website. Ignore it. It's useless to us.",
-                ],
-            [
-                "Not bad.",
-                "This really is a collaborative approach.",
-                "I looked at the LAN and noticed it has some LAN's inside of LAN's, which is rather uncommon.",
-                "However, it does have a 'Network Monitor', which I assume monitors traffic on the LAN and its sub-LANs.",
-                "I need you to just hack that 'Network Monitor'. Should be easy.",
-                ],
-            [
-                "I looked at the monitor you hacked, and it's strange.",
-                "It definitely isn't made by the CIA, so I think this is some script kiddie packet sniffing or whatever.",
-                "Looks like the CIA isn't all it's cracked up to be.",
-                "How about that Server Room Net Switch? Can you break into that?",
-                ],
-            [
-                "We're nearly done, I can feel it.",
-                "I need you to hack into the `Target Companies and Orgs` node on that network we just hacked.",
-                "Once you're done, get back to me."
-            ],
-            [
-                "No way, you did it! Okay, this is crazy. We now have the Project Autocrat mainframe's IP address, courtesy of a LAN Tracker.",
-                "All right. Hack into the mainframe.",
-                "I think I know where the admin password is located: the CIA mail server (cia.mail.gov).",
-                "The password should be easy to brute-force.",
-            ],
-            [
-                "We did it. The information contained here is insane.",
-                "I'll be making reports to various journalists, and hopefully, a massive story about it will break out.",
-                "I've emailed the leader of VC-Forum to consider inviting you into the group. He'll get in touch soon, if he agrees.",
-                "In the meantime, I think your (current) employer has something to say about all this, so you might not want to ignore that mission."
-            ],
-            ]
-    bodies = ["\n".join(x) for x in bodies]
-    emails = [
-            Email(
-                "contracts@rehack.mail",
-                "{}@jmail.com".format(self.name),
-                "Autocrat (Part 1)",
-                bodies[0],
-                ),
-            Email(
-                "contracts@rehack.mail",
-                "{}@jmail.com".format(self.name),
-                "Autocrat (Part 2)",
-                bodies[1],
-                ),
-            Email(
-                "contracts@rehack.mail",
-                "{}@jmail.com".format(self.name),
-                "Autocrat (Part 3)",
-                bodies[2],
-                ),
-            Email(
-                "contracts@rehack.mail",
-                "{}@jmail.com".format(self.name),
-                "Autocrat (Part 4)",
-                bodies[3],
-                ),
-            Email(
-                "contracts@rehack.mail",
-                "{}@jmail.com".format(self.name),
-                "Autocrat (Part 5)",
-                bodies[4],
-                ),
-            Email(
-                "contracts@rehack.mail",
-                "{}@jmail.com".format(self.name),
-                "Thanks for the work",
-                bodies[5],
-                ),
-            ]
-    return [
-            Mission(
-                self,
-                "autocrat1",
-                "Autocrat (Part 1)",
-                "cialan",
-                emails[0], 
-                end_email,
-                reward=2500,
-                next_id="autocrat2"
-                ),
-            LANMission(
-                self,
-                "autocrat2",
-                "Autocrat (Part 2)",
-                "netmonitor",
-                "cialan",
-                emails[1],
-                end_email,
-                reward=2500,
-                next_id="autocrat3",
-                ),
-            LANMission(
-                self,
-                "autocrat3",
-                "Autocrat (Part 3)",
-                "servers",
-                "cialan",
-                emails[2],
-                end_email,
-                reward=2500,
-                next_id = "autocrat4",
-                ),
-            NestedLANMission(
-                self,
-                "autocrat4",
-                "Autocrat (Part 4)",
-                "targets",
-                "cialan",
-                "servers",
-                emails[3],
-                reward=15000,
-                next_id = "autocrat5",
-                ),
-            Mission(
-                self,
-                "autocrat5",
-                "Autocrat (Part 5)",
-                "autocratmain",
-                emails[4],
-                emails[5],
-                reward=15000,
-                next_id = "investigate1",
-                ),
-            ]
-
 def base_missions(self):
     bodies = [
             [
@@ -346,6 +185,15 @@ def base_missions(self):
             emails[0],
             emails[1],
             reward=7500,
+        ),
+        Mission(
+            self,
+            "pentest2_ctf",
+            "CTF: Mail.com",
+            "cinnamon",
+            emails[0],
+            emails[1],
+            reward=5500,
         ),
     ]
 
@@ -668,7 +516,9 @@ def main_story_missions(self):
                 "cinnamon",
                 emails[9],
                 emails[10],
-                reward=10000,
+                reward=2500,
+                end_function = pentest2_end,
+                next_id = "pentest2_ctf",
                 ),
     ]
 
@@ -692,7 +542,6 @@ def start_missions(self):
                 "AnonMail is neither. We have over a million accounts, 99% of which are privacy-savvy users.",
                 "As such, your email blends right in.",
                 "You get a randomly generated username and get to receive up to 100,000 emails before your mailbox shuts down.",
-                "We also use port masking and hide our MX records, meaning script kiddies can't break in easily.",
                 "",
                 "To register, visit www.anon.mail and follow the instructions.",
                 ],
@@ -854,26 +703,16 @@ def start_missions(self):
                 "To expose port 21, you use ftpkill.",
                 "To expose port 22, you use sshkill.",
                 "",
-                "Break into colonsla.sh and run 'mission' once you are done.",
+                "You need to do the following:",
+                "* Hack colonsla.sh;",
+                "* Run `ftp colonsla.sh`;",
+                "* Navigate to `sys` and delete `core.sys`",
+                "",
+                "This will shut down their message board, although probably not permanently.",
                 ],
         [
-                "Great job. I'll be sure to poke around and get my revenge later.",
-                "For now, you'll need to pick up some tools, if you will.",
-                "The built-in software is great, but hackers often need new tools.",
-                "That is where the software store comes in.",
-                "The software store is accessible using the 'store' command.",
-                "Using this software store, purchase the following software:",
-                "",
-                "* webworm",
-                "* mxlookup",
-                "",
-                "The total cost is 500 credits. You should have more than enough.",
-                "If not, you've softlocked yourself.",
-                ],
-        [
-                "This is the final part of the tutorial.",
-                "Hack into the following IP: test.hub",
-                ],
+                "This is a final test of your skill.",
+        ],
         [
                 "Good job. You completed the tutorial.",
                 "If you want to complete more contracts, our contract server (contracts.rehack.org) is full of them.",
@@ -925,14 +764,8 @@ def start_missions(self):
             Email(
                 "contracts@rehack.mail",
                 f"{self.name}@jmail.com",
-                "Tutorial Mission Pt. 7",
-                mission_bodies[6],
-                ),
-            Email(
-                "contracts@rehack.mail",
-                f"{self.name}@jmail.com",
                 "You Finished The Tutorial",
-                mission_bodies[7],
+                mission_bodies[6],
                 ),
             ]
     for item in emails:
@@ -975,7 +808,7 @@ def start_missions(self):
                 reward=500,
                 next_id="start5",
                 ),
-            Mission(
+            HostKillMission(
                 self,
                 "start5",
                 "Start (Pt. 5)",
@@ -984,27 +817,18 @@ def start_missions(self):
                 reward=500,
                 next_id="start6",
                 ),
-            BlankMission(
-                self,
-                "start6",
-                "Start (Pt. 6)",
-                ["webworm", "mxlookup"],
-                missionEmails[5],
-                reward=500,
-                next_id="start7",
-                ),
         Mission(
                 self,
-                "start7",
+                "start6",
                 "Start (Pt. 7)",
                 "test.hub",
-                missionEmails[6],
+                missionEmails[5],
                 reward=2500,
-                end_email=missionEmails[7],
+                end_email=missionEmails[6],
                 ),
     ]
     return MISSIONS
 
 def main(self):
-    nodes.forum.chan_jobs.topics += (chan_missions(self))
+    nodes.forum.chan_jobs.topics += chan_missions(self)
     return start_missions(self) + base_missions(self) + main_story_missions(self) + autocrat_missions(self) + investigate_missions(self)

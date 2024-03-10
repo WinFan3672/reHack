@@ -577,7 +577,6 @@ N = [
     programs.WebServer("Debian: By the world, for the world", "debianweb", "debian.org", "debian.org"),
     programs.VersionControl("Debian: Official Git Server", "debiangit", "git.debian.org", [Commit("Release 5.0.0", "admin@mail.debian.org"), Commit("Release 5.0.1", "admin@mail.debian.org"), Commit("Release 5.0.2", "admin@mail.debian.org"), Commit("Release 5.0.3", "admin@mail.debian.org"), Commit("Release 5.0.4", "admin@mail.debian.org"),Commit("Release 5.0.5", "admin@mail.debian.org")], True),
     programs.MailDotComTracker(),
-    programs.SignupService("crimdb_signup", "signup.crimdb.gov", "uscrimdb", private=["usagovmail"]),
     programs.WebServer("Donate to the EFF", "effdonate", "donate.eff.org", "effdonate"),
     programs.PublicFTPServer("MHT FTP", "mhtftp", "ftp.mht.com", False),
 ]
@@ -588,13 +587,13 @@ PROGRAMS = [
         Program("nmap", 1.0, "Scan a node for open ports", programs.nmap, True),
         Program("porthack", 1.0, "Hijack open ports to install root access", programs.porthack, True),
 
+        programs.PortBreakingTool("lancrack", 1, price=3500).program,
         programs.PortBreakingTool("ftpkill", 21, unlocked=True).program,
         programs.PortBreakingTool("sshkill", 22, unlocked=True).program,
         programs.PortBreakingTool("mailoverflow", 25, price=1500).program,
         programs.PortBreakingTool("webworm", 80, price=500).program,
         programs.PortBreakingTool("torrentpwn", 6881, price=750).program,
         programs.PortBreakingTool("sqldump", 1433, price=2500).program,
-        programs.PortBreakingTool("lancrack", 1, price=3500).program,
 
         Program("connect", 1.0, "Connect to a node", game.programs.connect.main, True, classPlease=True),
         Program("history", 1.0, "View a list of all connected nodes", game.programs.history,True, classPlease = True),

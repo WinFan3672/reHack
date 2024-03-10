@@ -91,9 +91,6 @@ chan_userlist.reply("vc", "And where would I place your leaked identity document
 chan_userlist.reply("halt", "ah, the vc forum ring-leader in person!")
 chan_userlist.reply("vc", "I don't deal with anons, least of all the admin of the anons")
 chan_userlist.reply("vc", "anons are far too inexperienced")
-chan_userlist.reply("vc", "Who the hell leaves a BLANK MISSION in the jobs section?")
-chan_userlist.reply("vc", "proper onboarding is a proper mission, not free money")
-chan_userlist.reply("vc", "How does that teach anyone anything?")
 chan_userlist.reply("admin", "leaked deets go in /b/, and 5chan is so profitable we need to give away SOME of our cash")
 chan_userlist.reply("vc", "are you sure, [DATA EXPUNGED BY admin]? With your [DATA EXPUNGED BY admin] credits in debt?")
 chan_userlist.reply("system", "admin expunged a message")
@@ -145,7 +142,7 @@ CHAN_LEAKED_DEETS = "\n".join([
     "",
     "Physical",
     "",
-    "Address: [DATA EXPUNGED], Los Angeles, CA 90017", ## 29 Fincham Road
+    "Address: [DATA EXPUNGED], Los Angeles, CA 90017", 
     "Phone NO: 760-XXX-XXXX",
     "SSN: 550-85-XXXX",
     "",
@@ -265,6 +262,13 @@ vc_rule_discuss.reply("system", "admin locked this topic")
 
 mht = programs.Forum("MHT Forums", "mhtforum", "forum.mht.com")
 mht_general = mht.boards[0]
+
+mht_anonmail = mht_general.add_topic("unknown_number", "AnonMail: Why the 100k message limit?", """I was reading an ad for AnonMail,
+and it said something about a 100,000 message limit before my inbox is shut down.
+Looking online, I've NEVER heard anyone have their inboxes shut down, unless law enforcemnt requested it.""")
+mht_anonmail.reply("anon.mail", "!whoami")
+mht_anonmail.reply("system", "anon.mail: admin@anon.mail")
+mht_anonmail.reply("anon.mail", "The 'limit' allows me to MANUALLY delete accounts with excessive traffic, but I almost never do this because we have like 500% the capacity we need.")
 
 darkstore = programs.Forum("Dark.Store", "darkstore", data.generateTorURL("dstore"))
 ds_general = darkstore.boards[0]
