@@ -1,5 +1,5 @@
 # Contributor License Agreement (CLA)
-This is the CLA for reHack ([https://codeberg.org/WinFan3672/reHack])
+This is the CLA for reHack (https://codeberg.org/WinFan3672/reHack)
 ## Definitions
 * **Project**: The open-source project maintained by the Contributors.
 * **Contributor**: An individual or legal entity making a Contribution to the Project.
