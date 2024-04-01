@@ -286,7 +286,7 @@ class Node(Base):
     def main_hacked(self, player=None):
         print(self.motd)
 
-    def create_user(self, username, password):
+    def create_user(self, username, password=None):
         self.users.append(User(username, password))
 
     def get_file(self, name):

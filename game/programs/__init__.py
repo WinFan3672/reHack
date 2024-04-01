@@ -3710,20 +3710,38 @@ class IRCMessage(Base):
         return "{}: {}".format(self.sender, self.text)
 
 class IRChannel(Base):
-    def __init__(self, name):
+    def __init__(self, name, description, private=False, readOnly=False):
         self.name = name
+        self.description = description
         self.messages = []
-    def add_messegs(self, sender, text):
-        self.messages.append(IRCMessage(sender, text))
+        self.private = private
+        self.allowlist = ["server"]
+        self.readOnly = readOnly
+    def allow(self, user):
+        self.allowlist.append(user)
+        self.add_message("server", "Gave voice to {}".format(user))
+    def add_message(self, sender, text):
+        if not self.readOnly or sender in self.allowlist:
+            self.messages.append(IRCMessage(sender, text))
 
 
 class IRCServer(Node):
-    def __init__(self, name, uid, address, motd, *args, **kwargs):
-        super().__init__(name, uid, address, ports=[data.getPort(6667), data.getPort(22)] *args, **kwargs)
-        self.motd = motd
+    def __init__(self, name, uid, address, motd=None, private=False, *args, **kwargs):
+        super().__init__(name, uid, address, ports=[data.getPort(6667), data.getPort(22)], *args, **kwargs)
+        self.motd = motd if motd else data.IRC_MOTD
         self.channels = []
-    def add_channel(self, name):
-        self.channels.append(IRChannel(name))
+        self.private = private
+    def add_channel(self, *args, **kwargs):
+        channel = IRChannel(*args, **kwargs)
+        self.channels.append(channel)
+        return channel
+    def add_direct_message(self, senders, channel_name=None):
+        channel = IRChannel(channel_name if channel_name else "@{}".format(senders[0]), "Direct Message", True)
+        channel.allowlist = senders
+        self.channels.append(channel)
+        return channel
+    def main(self):
+        print("ERROR: An IRC client is needed to access this server.")
 
 class MailDotComTracker(NodeTracker):
     def __init__(self):
@@ -4060,3 +4078,71 @@ class MedicalDatabase(Node):
         patient = self.choose_patient()
         if patient:
             self.manage(patient)
+
+
+def ircmain(server, username):
+    def view(channel):
+        cls()
+        div()
+        print("{}: {}".format(channel.name, channel.description))
+        div()
+        for message in channel.messages:
+            print("{}: {}".format(message.sender, message.text))
+        msg = input("{} > ".format(username))
+        if msg in ["/quit", "/exit"]:
+            return
+        else:
+            channel.add_message(username, msg)
+            view(channel)
+    cls()
+    div()
+    print(server.motd)
+    div()
+    while True:
+        ch = input("{}@{} >".format(username, server.address))
+        if ch in ["/quit", "/exit", "quit", "exit"]:
+            return
+        elif ch in ["/list"]:
+            channels = [x for x in server.channels if not x.private or username in x.allowlist]
+            for channel in channels:
+                print("{}: {}".format(channel.name, channel.description))
+        elif ch.startswith("/join "):
+            name = ch[6:]
+            joined = None
+            for channel in server.channels:
+                if channel.name == name:
+                    joined = channel
+            if joined:
+                view(joined)
+            else:
+                print("ERROR: Invalid channel name.")
+        elif ch in ["/clear", "/cls"]:
+            cls()
+        else:
+            print("ERROR: Invalid command.")
+def irc(args):
+    if len(args) == 1:
+        server = args[0]
+        node = data.getNode(server, True)
+        if not isinstance(node, IRCServer):
+            print("ERROR: Invalid server.")
+            return
+        loginUser = None
+        if node.private and not node.hacked:
+            username, password = input("Username $"), getpass.getpass("Password $")
+            for user in node.users:
+                if user.name == username and user.password == password:
+                    loginUser = user
+            if not loginUser:
+                print("ERROR: Invalid credentials.")
+                return
+        if loginUser:
+            ircmain(node, loginUser.username)
+        else:
+            ircmain(node, "anonymous")
+    else:
+        div()
+        print("irc <server address>")
+        div()
+        print("IRC Client.")
+        div()

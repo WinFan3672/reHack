@@ -26,6 +26,13 @@ class BankAccount(programs.BankAccount):
 
 global PORTS, NODES, TOR_NODES, PROGRAMS, GENERATED
 
+IRC_MOTD = """Welcome to the server!
+For a list of commands: /help
+For a list of channels: /list
+To join a channel: /join <channel>
+To leave a channel: /leave
+To exit: /quit or /exit"""
+
 CRIMDB_LETTER = """NOTE TO INTERN
 
 The computer system you are interacting with is CRITICAL GOVERNMENT INFRASTRUCTURE.
@@ -623,6 +630,7 @@ PROGRAMS = [
         Program("date", 1.0, "Check the date and time", programs.date, True, classPlease=True),
         Program("openftp", 1.0, "Install an FTP server to a remote node", programs.openftp, price=10000),
         Program("chmod", 1.0, "Set permissions for a folder and its contents on a remote node", programs.chmod, True),
+        Program("irc", 1.0, "IRC client", programs.irc, True),
         ]
 
 DARKSTORE = []

@@ -90,16 +90,33 @@ eff.add_link("effdonate")
 meddb = programs.MedicalDatabase()
 meddb.create_user("root", "root")
 
+irc = programs.IRCServer("reHack IRC", "rhirc", "irc.rehack.org")
+irc.create_user("admin", "constant")
+irc_general = irc.add_channel("#general", "General reHack discussion")
+irc_news = irc.add_channel("#news", "Server Announcements", readOnly=True)
+irc_news.allow("admin")
+irc_news.allow("newsbot")
+irc_news.add_message("newsbot", "Welcome to the News channel!")
+irc_rules = irc.add_channel("#rules", "Read these!", readOnly=True)
+irc_rules.allow("admin")
+irc_rules.add_message("admin", "1. Only reHack agents")
+irc_rules.add_message("admin", "2. No account sharing")
+irc_rules.add_message("admin", "3. We are not 5chan")
+irc_rules.add_message("admin", "4. Be nice to others")
+irc_rules.add_message("admin", "5. Don't share your/other people's personal info")
+irc_rules.add_message("admin", "6. Report suspected undercover agents to me ASAP")
+
 def main():
     return [
-            mht,
-            eff,
-            search,
-            debian_ftp,
-            openstat,
-            rhwiki,
-            meddb,
-        ] + nodes.forum.main() + nodes.test.main() + nodes.lan.main()
+        mht,
+        eff,
+        search,
+        debian_ftp,
+        openstat,
+        rhwiki,
+        meddb,
+        irc,
+    ] + nodes.forum.main() + nodes.test.main() + nodes.lan.main()
 
 def tor():
     return [] + nodes.forum.tor()
