@@ -1,0 +1,29 @@
+Encrypted files (those with a .dec extension) can be a challenge; they may need a password to unlock. However, thanks to flaws in DEC Solutions' encryption algorithm and container format, you can extract sufficient data from an encrypted archive to (maybe) get the password. 
+div()
+The Header
+div()
+The header of a DEC file contains the following info:
+
+* The name of the encrypted file
+* The IP address of the person encrypting the file
+* The software used to encrypt the DEC file.
+* How many characters long the password is.
+
+The second piece of info is the most useful, as it gives you somewhere to take a look and fish for a plaintext password. After all, people love the digital equivalent of placing a sticky note with their password on it on a monitor. What fools. 
+div()
+Viewing The Header
+div()
+The header of an encrypted file can be viewed using reHackOS's FTP client.
+div()
+Decrypting A File
+div()
+Note that this only works with the reHackOS FTP client.
+First, to decrypt a file, you need write access to the directory it's in. Next, you need the password, if there even is one. You need to use the "Decrypt File" option in the file viewer, which will prompt for a password if necessary, and will extract the file from the DEC archive and place it in the same folder. 
+div()
+Note for sysadmins
+div()
+You may be wondering if it is a good idea to use DEC to encrypt sensitive data. The short answer is "not without some serious precautions". The long answer is this:
+
+1. Use a strong password for the DEC archive. We recommend 32 characters or more.
+2. Don't use an easy-to-guess password. 
+3. Using nested DEC archives (putting an archive in an archive) doesn't increase security in any meaninful way, so don't do it. Instead, have a single archive, with a single, strong password.

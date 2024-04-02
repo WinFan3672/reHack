@@ -42,8 +42,12 @@ cialan.add_router()
 scsi = programs.RemoteLAN("SCSI-Net :: Connect to 192.168.0.0 for an IP list", "scsi", "net.scsi.group")
 
 scsi_irc = programs.IRCServer("SCSI Group IRC", "irc", "irc")
+# scsi_irc.minPorts = 0
 scsirc_general = scsi_irc.add_channel("#general", "The main mission discussion")
 scsi.add_device(scsi_irc)
+
+scsi_test = Node("Test Node", "test", "test", ports=[data.getPort(21), data.getPort(22)])
+scsi.add_device(scsi_test)
 
 scsi.add_router()
 

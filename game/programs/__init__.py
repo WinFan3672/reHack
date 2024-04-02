@@ -8,6 +8,7 @@ import types
 import inspect
 import traceback
 import game.programs.connect as connect
+import game.programs.connect as CONNECT
 import uuid
 import random
 import copy
@@ -2477,6 +2478,7 @@ class LocalAreaNetwork(Node):
     def __init__(self, name, uid, address, minPorts=1, **kwargs):
         super().__init__(name, uid, address, ports = [data.getPort(1)], minPorts=minPorts, **kwargs)
         self.devices = []
+        self.devices += [Router(self.devices)]
         self.alive = True
         self.locked = False
     def check_health(self):
@@ -2485,6 +2487,7 @@ class LocalAreaNetwork(Node):
         if not self.locked:
             self.devices.append(device)
     def add_router(self):
+        return
         self.devices.insert(0, Router(self.devices))
         self.locked = True
     def main(self):
@@ -2531,14 +2534,14 @@ class Router(Node):
         div()
         print("ADDR\t\tHOSTNAME")
         div()
-        for x in self.devices:
+        for x in [x for x in self.devices if x.check_health()]:
             print("{}\t\t{}".format(x.address, x.name))
         div()
 def LANConnect(args, player, returnMode=False):
     def main(node, player):
         def ssh(node):
             if node.hacked and data.checkPort(node, 22):
-                connect.connect(node)
+                CONNECT.connect(node)
             else:
                 print("ERROR: Access denied.")
         def ftp(node):
@@ -3666,20 +3669,28 @@ def folderView(self, writeAccess=False):
         div()
         i = 1
         for file in self.files:
-            print("[{}] {} ({})".format(i, file.name, "Folder: ({} files)".format(len(file.files)) if isinstance(file, Folder) else "File"))
+            if isinstance(file, Folder):
+                typ = "Folder"
+            elif isinstance(file, File):
+                typ = "File"
+            elif isinstance(file, EncryptedFile):
+                typ = "Encrypted File"
+            else:
+                typ = "Corrupt"
+            print("[{}] {} ({})".format(i, file.name, "Folder: ({} files)".format(len(file.files)) if isinstance(file, Folder) else typ))
             i += 1
         div()
         try:
             ch = int(input("$"))
             if ch == 0:
                 return
-            file = self.files [ch-1]
+            file = self.files[ch-1]
             if isinstance(file, Folder):
                 if writeAccess:
                     folderView(file, True)
                 else:
                     folderView(file, file.writeAccess)
-            elif isinstance(file, File):
+            elif type(file) in [File, EncryptedFile]:
                 fileView(file, self, True if writeAccess else self.writeAccess)
         except:
             # print(traceback.format_exc())
@@ -3704,6 +3715,9 @@ def fileView(self, folder, writeAccess=False):
         print("[3] Delete File")
     else:
         print("[ ] Delete File")
+    if isinstance(self, EncryptedFile):
+        print("[4] Decrypt")
+        print("[5] View Header")
     div()
     ch = input("$")
     if ch == "1":
@@ -3727,6 +3741,33 @@ def fileView(self, folder, writeAccess=False):
         br()            
     elif ch == "3" and writeAccess:
         folder.files = [x for x in folder.files if x.name != self.name]
+    elif ch == "4" and isinstance(self, EncryptedFile):
+        if self.password:
+            passwd = getpass.getpass("Password $")
+        else:
+            passwd = None
+        if self.check(passwd):
+            if folder.writeAccess:
+                folder.files.append(self.file)
+                div()
+                print("Successfully decrypted file.")
+                br()
+            else:
+                div()
+                print("ERROR: No write access.")
+                br()
+        else:
+            print("ERROR: Invalid password.")
+            br()
+    elif ch == "5" and isinstance(self, EncryptedFile):
+        node = data.getNode(self.header["origin"])
+        origin = node.address if node else "Unknown"
+        cls()
+        div()
+        print("File name: {}".format(self.header["name"]))
+        print("Origin: {}".format(origin))
+        print("Software: {}".format(self.header["software"]))
+        br()
 
 def history(args, player):
     div()

@@ -548,7 +548,7 @@ N = [
     programs.WebServer(
             "MasterVPS Homepage", "mastervps_web", "mastervps.me", "mastervps.me"
             ),
-    programs.WebServer("Mountain View", "mountainweb", "mountain.view", "mountain.view",linked=["mountainmain","mountainmail","moutainremote"]),
+    programs.WebServer("Mountain View", "mountainweb", "mountain.view", "mountain.view",linked=["mountainmain", "mview.mail.com", "moutainremote"]),
     programs.WebServer("DomainExpert Home", "dexpertweb", "domain.expert", "domain.expert"),
     Node("Mountain View Mainframe","mountainmain", generateIP(), ports=[],minPorts=2**16,users=[User("admin","backdrop2252")]),
     Node("Mountain View Remote Work Hub","moutainremote",generateIP(),ports=[getPort(22),getPort(21)],minPorts=2, linked =["jrallypc","nbaileypc","mflange"]),

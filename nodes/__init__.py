@@ -49,6 +49,7 @@ debian_ftp = programs.PublicFTPServer("Debian FTP", "debianftp", "ftp.debian.org
 debian_ftp.pub.create_file("debian-5.0.5.iso", debian_ftp.genRand())
 debian_ftp.pub.create_file("debian-5.0.5.iso.gz", debian_ftp.genRand())
 debian_ftp.pub.create_file("debian-5.0.5.iso.zip", debian_ftp.genRand())
+debian_ftp.pub.create_encrypted_file(File("debian-5.0.6.iso", debian_ftp.genRand(), "debianftp"), "debianftp", "debian")
 
 search = programs.SearchEngine("Search: Find It All", "search", "search.com")
 search.add("search")

@@ -105,7 +105,19 @@ class File(Base):
         return File(self.name, self.data)
 
 
-
+class EncryptedFile(Base):
+    def __init__(self, file, origin, password=None):
+        self.file = file
+        self.name = file.name + ".dec"
+        self.origin = file.origin
+        self.header = {"name": file.name, "origin": origin, "software": "DEC Solutions Encrypter v1.0a"}
+        self.password = password
+        self.data = "This file is encrypted.\nTo decrypt it, select DECRYPT FILE and enter the password, if one was set."
+    def check(self, password):
+        if self.password:
+            return password == self.password
+        else:
+            return True
 
 
 class Folder(Base):
@@ -157,12 +169,16 @@ class Folder(Base):
                 elif filetype == "File" and isinstance(file, File):
                     return file
     def add_file(self, file):
-        if type(file) in [File, Folder]:
+        if type(file) in [File, EncryptedFile, Folder]:
             file.origin = self.origin
             self.files.append(file.clone())
     
     def create_file(self, name, data, origin=None):
         file = File(name, data, origin if origin else self.origin)
+        self.files.append(file)
+        return file
+    def create_encrypted_file(self, file, origin, password=None):
+        file = EncryptedFile(file, origin, password)
         self.files.append(file)
         return file
 
