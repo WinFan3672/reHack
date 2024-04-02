@@ -758,11 +758,7 @@ TN = [
         programs.TorSignupService("rhomail-signup", generateTorURL(), "rhomail", usePlayerName=True),
         programs.TorSignupService("vc-signup", generateTorURL("vcsu"), "vcforum", usePlayerName=True, private=["anonmail", "euclid"]),
         programs.TorSignupService("ds-signup", generateTorURL("darkstoresu"), "darkstore", usePlayerName=True, private=["rhmail"]),
-
-
-        
 ]
-
 for node in TN:
     TOR_NODES.append(node)
 

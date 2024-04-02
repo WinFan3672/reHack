@@ -435,6 +435,9 @@ def debuginfo(args, player):
             player.currentMission.end()
     elif args == ["pc"]:
         print(len([x for x in data.PROGRAMS if x.unlocked]))
+    elif args == ["tor"]:
+        for node in data.TOR_NODES:
+            print("{} = {}".format(node.uid, node.address))
     elif args == ["ip"]:
         div()
         print("debug ip [arguments]")
@@ -3147,17 +3150,14 @@ class Forum(Node):
             div()
             ch = input("$")
             if ch == "1":
-                username = input("Username: ")
-                passwd = getpass.getpass("Password: ")
+                username, passwd = input("Username: "), getpass.getpass("Password: ")
                 for user in self.users:
-                    print(user.name, user.password)
                     if user.name == username and user.password == passwd:
                         return True
-                    else:
-                        div()
-                        print("ERROR: Invalid credentials.")
-                        br()
-                        return False
+                div()
+                print("ERROR: Invalid credentials.")
+                br()
+                return False
             elif ch == "0":
                 return False
     def main(self, player):
@@ -3209,6 +3209,10 @@ class Forum(Node):
                 player.currentMission = mission
                 board.topics.remove(mission)
                 return
+    def get_board(self, title):
+        for board in self.boards:
+            if board.name == title:
+                return board
     def board_view(self, board, player):
         if board.private:
             cls()
@@ -3365,12 +3369,12 @@ Have a lovely day, and check out my story on mht.com for the full story.""")
                 "Project Autocrat: A 10-Year Conspiracy To Spy On The American Population", 
                 "Admin", 
                 player.date.clone(),
-                """The US government's goin to have a bad year, that's for sure.
+                """The US government's going to have a bad year, that's for sure.
 Recently, an anonymous hacker broke into the CIA and stole the documents relating
 to 'Project Autocrat', a CIA mission that started in 2000 and ended earlier this year.
-An anonymous tip to me gave me access to the document in question, simply titled
-'autocrat.docx'. I've read through 10 years of CIA reports (most of which is unredacted),
-and I am ready to present the world with the entire story, as I read it.
+An anonymous tip gave me access to the document in question, simply titled
+'autocrat.docx'. I've read through 10 years of mostly unredacted CIA reports,
+and I am ready to present the world with the entire story.
 
 In 2000, President William Clifford was concerned that the Internet would be a home
 for free speech and would not be controllable by the government, so he proposed
@@ -3386,7 +3390,8 @@ this expanded to dozens of products and companies participiating in the
 entire SGDRS and backdooring ensemble, with old partners giving the government
 more power as they released more intrusive services. A few services declined, 
 of course, including AnonMail, Debian and Linux, but 90% agreed to it without
-qeuestion, with another 50% of the rejections having their minds changed.
+qeuestion, and 50% of the remaining 10% changed their mind and complied later
+down the line.
 
 The scope of this Project is hard to explain or comprehend, as it spans 10
 years and essentially predicted the modern Internet's service- and data-based economy.
@@ -3407,6 +3412,62 @@ so you can read the whole document for yourself. Get it as quick as you can!""")
         story.reply("5chan", "My forum boutta get DOSed from the amount of discussion about this")
         story.reply("5chan", "It's been 3 minutes and 5chan is down already, wtf")
         mhtftp.create_file("autocrat.docx", data.AUTOCRAT, "pub")
+
+        irc = data.getNode("rhirc")
+        irc_general = irc.get_channel("#general")
+        irc_news = irc.get_channel("#news")
+
+        irc_news.add_message("admin", "Project Autocrat has leaked! See it on mht.com and download autocrat.docx BEFORE it gets taken down!")
+        irc_news.add_message("admin", "That being said, it is on our drop server for all to grab, in /incoming, courtesy of {}".format(player.name))
+        irc_general.add_message("datastream", "So it was {} who did it?".format(player.name))
+        irc_general.add_message("insolvent", "this agent is brand-new, yet they did what no-one could")
+        irc_general.add_message("datastream", "they got away for now")
+        irc_general.add_message("datastream", "there'lll be CIA agents in this channel taking notes")
+        irc_general.add_message("admin", "hey {}, don't worry, reHack doesn't have any of your personal info, not even a name".format(player.name))
+        irc_general.add_message("bit", "there's a media storm a-brewin', i can feel it")
+        irc_general.add_message("admin", "we all can")
+        irc_general.add_message("datastream", "admin, are you the owner of reHack or just a maintainer of the irc?")
+        irc_general.add_message("admin", "just an admin, not the owner")
+        irc_general.add_message("data_expunged", "that would be me :)")
+        irc_general.add_message("bit", "the man the myth the legend, [DATA EXPUNGED]")
+        irc_general.add_message("data_expunged", "just a bit of advice for you bit, try to stay anonymous ok?")
+        irc_general.add_message("data_expunged", "the amount of scary emails I get from the NSA is scary")
+        irc_general.add_message("admin", "scary email is scary")
+        irc_general.add_message("data_expunged", "as a reminder to ALL agents, if the CIA offer you work, DECLINE IMMEDIATELY")
+        irc_general.add_message("data_expunged", "If they offer money, STILL DECLINE, we are ALTRUISTS not hackers for hire")
+        irc_general.add_message("admin", "what about the credits thing?")
+        irc_general.add_message("data_expunged", "what I mean to say is that we have morals, unlike the CIA/FBI/NSA/MI6/etc.")
+        irc_general.add_message("bit", "today's leaks show that haha")
+        irc_general.add_message("data_expunged", "y'all should get back to work")
+        irc_general.add_message("admin", "aye aye captain")
+        irc_general.add_message("data_expunged", "you say that again and you get canned")
+        irc_general.add_message("admin", "aye aye captain")
+        irc_general.add_message("server", "removed admin rights from admin for 1d")
+        irc_general.add_message("server", "gave admin rights to data_expunged for 1d")
+        irc_news.allow("data_expunged")
+        irc_news.add_message("data_expunged", "strike 1/3 for admin")
+        irc_general.add_message("newsbot", "new #news item: 'strike 1/3 for admin'")
+        irc_general.add_message("server", "admin is now known as aye_aye_captain")
+        irc_general.add_message("data_expunged", "I give up. Change it back and I revert my changes")
+        irc_general.add_message("server", "bit is now known as admin")
+        irc_general.add_message("server", "data_expunged renamed admin to bit")
+        irc_general.add_message("server", "data_expunged renamed aye_aye_captain to admin")
+        irc_general.add_message("server", "data_expunged removed admin ban from admin")
+        irc_general.add_message("data_expunged", "now get back to work, y'all drained my patience")
+
+        dm = irc.add_direct_message(["insolvent", player.name])
+        dm.add_message("insolvent", "Hello, we have noticed your talent, and would like to invite you to SCSI group")
+        dm.add_message("insolvent", "Courtesy of reHack, we've invited you into the forum. The login details are the same as your reHack ones.")
+        dm.add_message("insolvent", "Get to us here: {}".format(data.getTorNode("scsi").address))
+        scsi = data.getTorNode("scsi")
+        scsi.create_user(player.name, player.password)
+        scsi_welcome = scsi.get_board("Introductions")
+        introd = scsi_welcome.add_topic("admin", "INTRODUCTION: {}".format(player.name), """Hello all.
+{} is the one behind the Project Autocrat leaks.""".format(player.name))
+        introd.reply("bit", "no waay! he's in SCSI! Good for you {}!".format(player.name))
+        introd.reply("data_expunged", "good to see more agents 'getting in'")
+        introd.reply("mht", "i knew this would happen")
+        introd.reply("mht", "i did contact {} before all this went down".format(player.name))
     def tick(self):
         player = data.getNode("localhost")
         if time.time() - player.timeSinceNextDay > 600:
@@ -3440,7 +3501,6 @@ I think the jury's still out on this one; I'll let you decide.""")
             renwired_story.reply("code", "Sure, if you have a powerful enough server to handle the demand xd")
             renwired_story.reply("sizzle", "yes yes yes")
             renwired_story.reply("replit", "Make a post about it once you've set it up!")
-
         if player.date == GameDate(2010, 7, 15) and not self.mhtForum:
             self.mhtForum = True
             data.NODES.append(nodes.forum.mht)
@@ -3452,15 +3512,15 @@ I think the jury's still out on this one; I'll let you decide.""")
             renwired.address = "xdg.net"
             mht = data.getNode("mht")
             xdgn = mht.add_story("RenWired Has Become xdg.net", "Admin", """Yesterday, RenWired launched, and I wrote my article about it.
- That article was well-received, and I managed to create a media storm accross the entire news spectrum.
- Everyone on both sides of the polticial spectrum, as well as both technical and non-technical orgs were talking about it.
- In fact, I ended up getting contacted by all manner of big 'journalists' like Fox News and whatnot telling me that they
- were running my story and requested my permission. I did a big 'yes to all' and a LOT of money came in. 
- I'm not a shill, in fact, I do this in my spare time in protest of journalism as a business,
- but I really did need the money, what with my personal issues.
+That article was well-received, and I managed to create a media storm accross the entire news spectrum.
+Everyone on both sides of the polticial spectrum, as well as both technical and non-technical orgs were talking about it.
+In fact, I ended up getting contacted by all manner of big 'journalists' like Fox News and whatnot telling me that they
+were running my story and requested my permission. I did a big 'yes to all' and a LOT of money came in. 
+I'm not a shill, in fact, I do this in my spare time in protest of journalism as a business, but I really did need the money, what with my 
+personal issues.
 
- Anyway, I noticed this morning that RenWired have rebranded to xdg.net, and have deleted their original announcement, which is a good sign.
- I'll be sure to keep you all posted on updates on xdg.net, to see if my theory is true or not.""")
+Anyway, I noticed this morning that RenWired have rebranded to xdg.net, and have deleted their original announcement, which is a good sign.
+I'll be sure to keep you all posted on updates on xdg.net, to see if my theory is true or not.""")
 
 
 def ssh(args):
@@ -3727,7 +3787,7 @@ class IRChannel(Base):
 
 class IRCServer(Node):
     def __init__(self, name, uid, address, motd=None, private=False, *args, **kwargs):
-        super().__init__(name, uid, address, ports=[data.getPort(6667), data.getPort(22)], *args, **kwargs)
+        super().__init__(name, uid, address, ports=[data.getPort(6667), data.getPort(22), data.getPort(80), data.getPort(21)],minPorts=4, *args, **kwargs)
         self.motd = motd if motd else data.IRC_MOTD
         self.channels = []
         self.private = private
@@ -3740,6 +3800,10 @@ class IRCServer(Node):
         channel.allowlist = senders
         self.channels.append(channel)
         return channel
+    def get_channel(self, name):
+        for channel in self.channels:
+            if channel.name == name:
+                return channel
     def main(self):
         print("ERROR: An IRC client is needed to access this server.")
 
@@ -4137,7 +4201,7 @@ def irc(args):
                 print("ERROR: Invalid credentials.")
                 return
         if loginUser:
-            ircmain(node, loginUser.username)
+            ircmain(node, loginUser.name)
         else:
             ircmain(node, "anonymous")
     else:

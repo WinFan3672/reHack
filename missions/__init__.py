@@ -52,98 +52,98 @@ def chan_missions(self):
     ]
 
 
-def investigate_missions(self):
-
-    bodies = [
-            [
-                "Hello. This is [DATA EXPUNGED], Administrator of reHack.",
-                "We have noticed that you recently assisted with the exposé of Project Autocrat.",
-                "I know that the news hasn't started recycling the stories yet, but I'm not an idiot.",
-                "You have proven yourself to be VERY skilled, especially since you joined so recently.",
-                "It is obvious you have a lot of talent that needs nurtuting.",
-                "Hopefully, you can take hints as well.",
-                "I have some things that need investigating. If you agree to this, simply complete the mission to proceed.",
-            ],
-            [
-                "Hack into this server: {}",
-            ],
-            [
-                "Thanks for the help. You probably want an explanation, right?",
-                "Well, I don't trust you enough to divulge that. As in, I don't trust anyone.",
-                "So you can take your questions and thake them where the sun don't shine.",
-                "",
-                "[DATA EXPUNGED]",
-                "reHack Administrator"
-            ],
-            ]
-    bodies = ["\n".join(x) for x in bodies]
-    emails = [
-            Email(
-                "admin@rehack.mail",
-                "{}@jmail.com".format(self.name),
-                "Investigations",
-                bodies[0],
-            ),
-            Email(
-                "admin@rehack.mail",
-                "{}@jmail.com".format(self.name),
-                "Investigations (Part 2)",
-                bodies[1].format(data.getNode("shodan").address),
-            ),
-            Email(
-                "admin@rehack.mail",
-                "{}@jmail.com".format(self.name),
-                "Investigations (Part 3)",
-                bodies[1].format(data.getNode("testhub").address),
-            ),
-            Email(
-                "admin@rehack.mail",
-                "{}@jmail.com".format(self.name),
-                "Investigations (Part 4)",
-                bodies[1].format(data.getNode("dexpertweb").address),
-            ),
-            Email(
-                "admin@rehack.mail",
-                "{}@jmail.com".format(self.name),
-                "Great Job",
-                bodies[2],
-            ),
-            ]
-    return [
-            BlankMission(
-                self,
-                "investigate1",
-                "Investigate",
-                None,
-                emails[0],
-                next_id = "investigate2"
-            ),
-            Mission(
-                self,
-                "investigate2",
-                "Investigate (Part 2)",
-                "shodan",
-                emails[1],
-                next_id = "investigate3",
-            ),
-            Mission(
-                self,
-                "investigate3",
-                "Investigate (Part 3)",
-                "testhub",
-                emails[2],
-                next_id = "investigate4",
-            ),
-            Mission(
-                self,
-                "investigate4",
-                "Investigate (Part 4)",
-                "dexpertweb",
-                emails[3],
-                emails[4],
-                reward=2500,
-            ),
-            ]
+# def investigate_missions(self):
+#
+#     bodies = [
+#             [
+#                 "Hello. This is [DATA EXPUNGED], Administrator of reHack.",
+#                 "We have noticed that you recently assisted with the exposé of Project Autocrat.",
+#                 "I know that the news hasn't started recycling the stories yet, but I'm not an idiot.",
+#                 "You have proven yourself to be VERY skilled, especially since you joined so recently.",
+#                 "It is obvious you have a lot of talent that needs nurtuting.",
+#                 "Hopefully, you can take hints as well.",
+#                 "I have some things that need investigating. If you agree to this, simply complete the mission to proceed.",
+#             ],
+#             [
+#                 "Hack into this server: {}",
+#             ],
+#             [
+#                 "Thanks for the help. You probably want an explanation, right?",
+#                 "Well, I don't trust you enough to divulge that. As in, I don't trust anyone.",
+#                 "So you can take your questions and thake them where the sun don't shine.",
+#                 "",
+#                 "[DATA EXPUNGED]",
+#                 "reHack Administrator"
+#             ],
+#             ]
+#     bodies = ["\n".join(x) for x in bodies]
+#     emails = [
+#             Email(
+#                 "admin@rehack.mail",
+#                 "{}@jmail.com".format(self.name),
+#                 "Investigations",
+#                 bodies[0],
+#             ),
+#             Email(
+#                 "admin@rehack.mail",
+#                 "{}@jmail.com".format(self.name),
+#                 "Investigations (Part 2)",
+#                 bodies[1].format(data.getNode("shodan").address),
+#             ),
+#             Email(
+#                 "admin@rehack.mail",
+#                 "{}@jmail.com".format(self.name),
+#                 "Investigations (Part 3)",
+#                 bodies[1].format(data.getNode("testhub").address),
+#             ),
+#             Email(
+#                 "admin@rehack.mail",
+#                 "{}@jmail.com".format(self.name),
+#                 "Investigations (Part 4)",
+#                 bodies[1].format(data.getNode("dexpertweb").address),
+#             ),
+#             Email(
+#                 "admin@rehack.mail",
+#                 "{}@jmail.com".format(self.name),
+#                 "Great Job",
+#                 bodies[2],
+#             ),
+#             ]
+#     return [
+#             BlankMission(
+#                 self,
+#                 "investigate1",
+#                 "Investigate",
+#                 None,
+#                 emails[0],
+#                 next_id = "investigate2"
+#             ),
+#             Mission(
+#                 self,
+#                 "investigate2",
+#                 "Investigate (Part 2)",
+#                 "shodan",
+#                 emails[1],
+#                 next_id = "investigate3",
+#             ),
+#             Mission(
+#                 self,
+#                 "investigate3",
+#                 "Investigate (Part 3)",
+#                 "testhub",
+#                 emails[2],
+#                 next_id = "investigate4",
+#             ),
+#             Mission(
+#                 self,
+#                 "investigate4",
+#                 "Investigate (Part 4)",
+#                 "dexpertweb",
+#                 emails[3],
+#                 emails[4],
+#                 reward=2500,
+#             ),
+#             ]
 
 def base_missions(self):
     bodies = [
@@ -813,4 +813,4 @@ def start_missions(self):
 
 def main(self):
     nodes.forum.chan_jobs.topics += chan_missions(self)
-    return start_missions(self) + base_missions(self) + main_story_missions(self) + investigate_missions(self)
+    return start_missions(self) + base_missions(self) + main_story_missions(self)

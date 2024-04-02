@@ -145,7 +145,10 @@ will have a backdoor in them. Here is how it works:
 
 [REDACTED]
 
-Version 2.0 will release on 3/1/2001. 
+Version 2.0 will release on 3/1/2001. We expect
+80% of our customers to migrate by 3/1/2002,
+because 2.0 introduces new features as well as
+security and stability improvements. Oh, the irony.
 ************************************************
 REPLY: BACKDOOR REQUEST
 FROM: NanoSoft Corporation
@@ -291,7 +294,6 @@ DOB (Or age):
 Address: 
 IP Address:
 Email Address:
-Social Media Handle (If applicable):
 
 HANDLER SECTION
 
@@ -467,6 +469,8 @@ TO: Team Autocrat
 DATE: 1/1/2010
 ************************************************
 Immediately afterwards, Agent #3457 was dismissed.
+After this, the majority of (internal) opposition
+to the Project disappeared.
 ************************************************
 ANNUAL REPORT
 FROM: Team Autocrat
@@ -618,5 +622,15 @@ peak year. All servers relating to Autocrat
 have been shut down, except for the Mainframe 
 archiving this data.
 
-Peace.
+As President Oboma predicted, SGDRS has had a 
+smaller and smaller role in the CIA, and 
+the SGDRS team is continually skrinking.
+
+The President has ordered continual staff number
+reductions, which has made the time for a request
+skyrocket; gone are the days of getting results
+within just 2 days of a Request; the wait 
+has expanded to an average of 90 days, and urgent
+requests have been discontinued entirely due to
+abuse. Safe to say, the days of SGDRS are numbered.
 ***********************************************

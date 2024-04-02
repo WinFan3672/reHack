@@ -215,7 +215,7 @@ vc_leaks_chan2.reply("[expunged]", "Worth it to me")
 vc_leaks_chan2.reply("singleton", "+1")
 vc_leaks_chan2.reply("5chan", "I'll be leaving the country soon; I know people")
 vc_leaks_chan2.reply("admin", "Sincerely, from a hacker to another, I hope you stay safe")
-vc_leaks_chan2.reply("5chan", "huh?")
+vc_leaks_chan2.reply("chan", "huh?")
 vc_leaks_chan2.reply("admin", "As much as you might deserve it, the criminal code of honour remains upheld")
 vc_leaks_chan2.reply("admin", "plus I hate the glowies")
 vc_leaks_chan2.reply("5chan", "Anyway I gotta lay low for the next while")
@@ -274,8 +274,13 @@ darkstore = programs.Forum("Dark.Store", "darkstore", data.generateTorURL("dstor
 ds_general = darkstore.boards[0]
 ds_store = darkstore.add_board("Store")
 
+scsiforum = programs.Forum("SCSI Group", "scsi", data.generateTorURL("scsi"), private=True)
+scsi_general = scsiforum.boards[0]
+scsi_welcome = scsiforum.add_board("Introductions")
+scsi_news = scsiforum.add_board("News")
+
 def main():
     return []
 
 def tor():
-    return [vcforum, chan]
+    return [vcforum, chan, darkstore, scsiforum]

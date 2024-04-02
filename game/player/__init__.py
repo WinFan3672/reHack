@@ -262,9 +262,7 @@ class PlayerNode(Node):
                 self,
                 []
             ),
-            nodes.forum.chan,
-            nodes.forum.vcforum,
-        ]
+        ] + nodes.tor()
         bodies = [
             [
                 "Dear NOAH BAILEY,",
@@ -461,6 +459,8 @@ class PlayerNode(Node):
         data.NODES = [self] + data.NODES
 
         data.addFirewall("firewalltest", Firewall("smartheap11", 0.125))
+        irc = data.getNode("rhirc")
+        irc.create_user(self.name, self.password)
 
 class PlayerShodan(Node):
     def __init__(self):
