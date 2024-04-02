@@ -2506,6 +2506,20 @@ class LocalAreaNetwork(Node):
 
         return "192.168.{}.{}".format(nums[0], nums[1])
 
+class RemoteLAN(LocalAreaNetwork):
+    """
+    A subclass of LocalAreaNetwork that allows users to log in and connect to the LAN.
+    Note that each user gets the same LAN connection (for now, probably).
+    """
+    def main(self):
+        username, passwd = input("Username $"), getpass.getpass("Password $")
+        for user in self.users:
+            if user.name == username and user.password == passwd:
+                LANConnect([], data.getNode("player"), True)(self, data.getNode("player"))
+                return
+        print("ERROR: Invalid credentials.")
+
+
 class Router(Node):
     def __init__(self, devices):
         super().__init__("Router", "router", "192.168.0.0", ports=[data.getPort(80), data.getPort(22)])
@@ -2520,8 +2534,13 @@ class Router(Node):
         for x in self.devices:
             print("{}\t\t{}".format(x.address, x.name))
         div()
-def LANConnect(args, player):
+def LANConnect(args, player, returnMode=False):
     def main(node, player):
+        def ssh(node):
+            if node.hacked and data.checkPort(node, 22):
+                connect.connect(node)
+            else:
+                print("ERROR: Access denied.")
         def ftp(node):
             if node.hacked and data.checkPort(node, 21):
                 folderView(data.createFolder(node), True)
@@ -2586,7 +2605,7 @@ def LANConnect(args, player):
 
         programs = sorted([x.name for x in data.PROGRAMS if x.unlocked])
         unlocked = {}
-        for x in ["porthack", "sshkill", "ftpkill", "webworm", "nmap", "lancrack", "ftp"]:
+        for x in ["porthack", "sshkill", "ftpkill", "webworm", "nmap", "lancrack", "ftp", "ssh", "irc"]:
             unlocked[x] = x in programs
         cls()
         print("Welcome to {}.".format(node.name))
@@ -2703,6 +2722,18 @@ def LANConnect(args, player):
                     ftp(n)
                 else:
                     print("ERROR: Invalid address.")
+            elif ch == "ssh" and unlocked["ssh"]:
+                div()
+                print("ssh <address>")
+                div()
+                print("Run commands over SSH.")
+                div()
+            elif ch.startswith("ssh ") and unlocked["ssh"]:
+                n = getNode(node, ch[4:])
+                if n:
+                    ssh(n)
+                else:
+                    print("ERROR: Invalid address.")
             elif ch in ["quit","exit"]:
                 return
             else:
@@ -2713,6 +2744,8 @@ def LANConnect(args, player):
         for n in data.NODES:
             if n.address == address:
                 return n
+    if returnMode:
+        return main
     if isinstance(args, LocalAreaNetwork):
         if not args.hacked:
             print("ERROR: Access denied.")
@@ -3459,8 +3492,11 @@ so you can read the whole document for yourself. Get it as quick as you can!""")
         dm.add_message("insolvent", "Hello, we have noticed your talent, and would like to invite you to SCSI group")
         dm.add_message("insolvent", "Courtesy of reHack, we've invited you into the forum. The login details are the same as your reHack ones.")
         dm.add_message("insolvent", "Get to us here: {}".format(data.getTorNode("scsi").address))
+
         scsi = data.getTorNode("scsi")
+        scsinet = data.getNode("scsi")
         scsi.create_user(player.name, player.password)
+        scsinet.create_user(player.name, player.password)
         scsi_welcome = scsi.get_board("Introductions")
         introd = scsi_welcome.add_topic("admin", "INTRODUCTION: {}".format(player.name), """Hello all.
 {} is the one behind the Project Autocrat leaks.""".format(player.name))

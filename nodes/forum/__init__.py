@@ -276,8 +276,13 @@ ds_store = darkstore.add_board("Store")
 
 scsiforum = programs.Forum("SCSI Group", "scsi", data.generateTorURL("scsi"), private=True)
 scsi_general = scsiforum.boards[0]
+scsinet = scsi_general.add_topic("admin", "How to access SCSI-Net", """Now that you've joined SCSI, you'll quickly realise that this forum is a front.
+A honeypot for hackers who want to go in and learn out 1337 h4x0r 5k1llz. 
+
+SCSI group conducts its work on SCSI-Net, a LAN located in our headquarters (AKA some VPS somewhere).
+All SCSI members get access to it through net.scsi.group, and you can log in using your credentials.
+Just run `connect net.scsi.group` and you'll be let in!""")
 scsi_welcome = scsiforum.add_board("Introductions")
-scsi_news = scsiforum.add_board("News")
 
 def main():
     return []

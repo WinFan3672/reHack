@@ -39,8 +39,17 @@ cialan.add_device(autocratmain)
 
 cialan.add_router()
 
+scsi = programs.RemoteLAN("SCSI-Net :: Connect to 192.168.0.0 for an IP list", "scsi", "net.scsi.group")
+
+scsi_irc = programs.IRCServer("SCSI Group IRC", "irc", "irc")
+scsirc_general = scsi_irc.add_channel("#general", "The main mission discussion")
+scsi.add_device(scsi_irc)
+
+scsi.add_router()
+
 def main():
     return [
-            cialan,
-        ]
+        cialan,
+        scsi,
+    ]
 
