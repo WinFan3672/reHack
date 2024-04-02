@@ -2737,6 +2737,18 @@ def LANConnect(args, player, returnMode=False):
                     ssh(n)
                 else:
                     print("ERROR: Invalid address.")
+            elif ch == "irc":
+                div()
+                print("irc <server>")
+                div()
+                print("IRC Client.")
+                div()
+            elif ch.startswith("irc "):
+                n = getNode(node, ch[4:])
+                if n:
+                    irclogin(n)
+                else:
+                    print("ERROR: Invalid address.")
             elif ch in ["quit","exit"]:
                 return
             else:
@@ -4261,26 +4273,31 @@ def ircmain(server, username):
             cls()
         else:
             print("ERROR: Invalid command.")
+
+def irclogin(node):
+    loginUser = None
+    if node.private and not node.hacked:
+        username, password = input("Username $"), getpass.getpass("Password $")
+        for user in node.users:
+            if user.name == username and user.password == password:
+                loginUser = user
+        if not loginUser:
+            print("ERROR: Invalid credentials.")
+            return
+    if loginUser:
+        ircmain(node, loginUser.name)
+    else:
+        ircmain(node, "anonymous")
 def irc(args):
     if len(args) == 1:
         server = args[0]
         node = data.getNode(server, True)
-        if not isinstance(node, IRCServer):
-            print("ERROR: Invalid server.")
-            return
-        loginUser = None
-        if node.private and not node.hacked:
-            username, password = input("Username $"), getpass.getpass("Password $")
-            for user in node.users:
-                if user.name == username and user.password == password:
-                    loginUser = user
-            if not loginUser:
-                print("ERROR: Invalid credentials.")
-                return
-        if loginUser:
-            ircmain(node, loginUser.name)
+        if isinstance(node, IRCServer):
+            irclogin(node)
         else:
-            ircmain(node, "anonymous")
+            print("ERROR: Invalid server.")
+
+
     else:
         div()
         print("irc <server address>")

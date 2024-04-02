@@ -277,12 +277,19 @@ ds_store = darkstore.add_board("Store")
 scsiforum = programs.Forum("SCSI Group", "scsi", data.generateTorURL("scsi"), private=True)
 scsi_general = scsiforum.boards[0]
 scsinet = scsi_general.add_topic("admin", "How to access SCSI-Net", """Now that you've joined SCSI, you'll quickly realise that this forum is a front.
-A honeypot for hackers who want to go in and learn out 1337 h4x0r 5k1llz. 
+A honeypot for hackers who want to go in and learn our 1337 h4x0r 5k1llz. 
 
 SCSI group conducts its work on SCSI-Net, a LAN located in our headquarters (AKA some VPS somewhere).
 All SCSI members get access to it through net.scsi.group, and you can log in using your credentials.
 Just run `connect net.scsi.group` and you'll be let in!""")
 scsi_welcome = scsiforum.add_board("Introductions")
+
+isp_hub = scsi_general.add_topic("bit", "ISP Node?", """Hey all.
+The reHack Wiki has a page on the ISP Hub, whatever that is.
+It claims that it refuses to hand over its IP address.
+What is it? Can I have some pointers?""")
+isp_hub.reply("rehack", "Careful @bit, or you'll find your user account mysteriously gone.")
+isp_hub.reply("server", "rehack locked this topic")
 
 def main():
     return []
