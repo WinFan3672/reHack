@@ -181,37 +181,35 @@ def Exit(args):
 
 def nmap(args):
     if args:
-        args = args[0]
-        s = False
-        for item in data.NODES:
-            if item.address == args:
-                item.nmap = True
+        node = data.getNode(args[0], True)
+        if node:
+            node.nmap = True
+            div()
+            print("Hostname: {}".format(node.name))
+            print("Exposed Ports: {}".format(len(node.ports)))
+            print("Min. Ports: {}".format(node.minPorts))
+            if node.hacked:
+                print("ROOT ACCESS ACQUIRED")
+            if node.firewall:
+                print("WARNING: FIREWALL ACTIVE")
+            if node.ports:
                 div()
-                print("Hostname: {}".format(item.name))
-                print("Exposed Ports: {}".format(len(item.ports)))
-                print("Min. Ports To Crack: {}".format(item.minPorts))
-                if item.hacked:
-                    print("HOST VULNERABILITY ACTIVE.")
-                if item.firewall:
-                    print("WARNING: FIREWALL ACTIVE.")
-                if item.ports:
-                    div()
-                    print("PORT\tSTATE\tNAME")
-                    div()
-                for i in sorted(item.ports, key=lambda x:x.num):
-                    print("{}\t{}\t{}".format(i.num, "OPEN" if i.open else "CLOSED", i.name))
+                print("PORT\tSTATE\tSERVICE")
                 div()
-                s = True
-        if not s:
-            print("Failed to resolve address.")
+                for port in node.ports:
+                    print("{}\t{}\t{}".format(port.num, "Open" if port.open else "Closed", port.name))
+            div()
+        else:
+            div()
+            print("ERROR: Failed to resolve address.")
+            div()
     else:
         div()
-        print("nmap <ip address>")
+        print("nmap <address")
         div()
-        print("Connects to an IP address and lists all open ports on it.")
-        print("This is fully safe and will not raise any alarms.")
+        print("Discover open ports on a node.")
+        print("NOTE: This tool does not start active traces.")
         div()
-
 
 class PortBreakingTool(Base):
     def __init__(self, name, port, version=1.0, unlocked=False, price=0):
@@ -2486,10 +2484,6 @@ class LocalAreaNetwork(Node):
     def add_device(self, device):
         if not self.locked:
             self.devices.append(device)
-    def add_router(self):
-        return
-        self.devices.insert(0, Router(self.devices))
-        self.locked = True
     def main(self):
         print("ERROR: Access denied.")
     def main_hacked(self):
@@ -2571,7 +2565,7 @@ def LANConnect(args, player, returnMode=False):
             print("Exposed Ports: {}".format(len(node.ports)))
             print("Min. Ports To Crack: {}".format(node.minPorts))
             if node.hacked:
-                print("HOST VULNERABILITY ACTIVE")
+                print("ROOT ACCESS ACQUIRED")
             if node.ports:
                 div()
                 print("PORT\tSTATE\tNAME")

@@ -108,6 +108,8 @@ irc_rules.add_message("admin", "4. Be nice to others")
 irc_rules.add_message("admin", "5. Don't share your/other people's personal info")
 irc_rules.add_message("admin", "6. Report suspected undercover agents to me ASAP")
 
+blank = Node("Blank Node", "blanktest", "blank.rehack.test")
+
 def main():
     return [
         mht,
@@ -118,6 +120,7 @@ def main():
         rhwiki,
         meddb,
         irc,
+        blank,
     ] + nodes.forum.main() + nodes.test.main() + nodes.lan.main()
 
 def tor():

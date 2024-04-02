@@ -13,7 +13,6 @@ cialan = programs.LocalAreaNetwork("CIA Local Area Network: Home Base", "cialan"
 
 breakroom = programs.LocalAreaNetwork("Breakroom Wi-Fi", "breakroom", cialan.generateIP())
 breakroom.add_device(programs.XOSDevice("Jack Skelly's xPhone", "jack_skelly", breakroom.generateIP(), notes=[programs.Note("Test")]))
-breakroom.add_router()
 cialan.add_device(breakroom)
 
 ciaservers = programs.LocalAreaNetwork("Server Room Net Switch", "servers", cialan.generateIP())
@@ -26,7 +25,6 @@ ciaservers = programs.LocalAreaNetwork("Server Room Net Switch", "servers", cial
 # target_watch.add_node("shodan")
 
 # ciaservers.add_device(target_watch)
-ciaservers.add_router()
 cialan.add_device(ciaservers)
 
 netmonitor = Node("Network Monitor v2.22", "netmonitor", cialan.generateIP(), ports=[data.getPort(21)])
@@ -37,8 +35,6 @@ autocratmain = Node("Project Autocrat Mainframe", "autocratmain", cialan.generat
 autocratmain.create_file("autocrat.docx", data.AUTOCRAT, "home", cialan.uid)
 cialan.add_device(autocratmain)
 
-cialan.add_router()
-
 scsi = programs.RemoteLAN("SCSI-Net :: Connect to 192.168.0.0 for an IP list", "scsi", "net.scsi.group")
 
 scsi_irc = programs.IRCServer("SCSI Group IRC", "irc", "irc")
@@ -48,8 +44,6 @@ scsi.add_device(scsi_irc)
 
 scsi_test = Node("Test Node", "test", "test", ports=[data.getPort(21), data.getPort(22)])
 scsi.add_device(scsi_test)
-
-scsi.add_router()
 
 def main():
     return [

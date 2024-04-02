@@ -16,11 +16,9 @@ for x in range(256):
 
 lan_nest = programs.LocalAreaNetwork("Nested LAN Test", "nestedlan", lan.generateIP())
 lan_nest.add_device(Node("Node inside LAN inside LAN", "nesting", lan_nest.generateIP()))
-lan_nest.add_router()
 
 lan.add_device(lan_nest)
 lan.add_device(Node("Hack me", "hackme", lan.generateIP()))
-lan.add_router()
 
 forum = programs.Forum("Test Forum", "forum", "forum.rehack.test", admin_password="root")
 
