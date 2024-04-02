@@ -426,6 +426,8 @@ def debuginfo(args, player):
     elif args == ["test"]:
         for node in data.NODES:
             nmap([node.address])
+    elif args == ["trace"]:
+        player.trace = Trace("debianftp", "Corporate", 0)
     elif args == ["ide"]:
         code.interact(local=locals() | globals(), banner="Python Interpreter: press Ctrl+D to exit",exitmsg="Exit Python interpreter.")
     elif args == ["mission"]:
@@ -1189,96 +1191,30 @@ class ISPNode(Node):
         print("This is the International ISP Hub.")
         print("It is important to the function of the Internet.")
         div()
-
     def main_hacked(self):
-        print("Welcome to the IIH Console.")
-        print("Run 'help' for a command list.")
-        while True:
-            ch = input("admin@{} $".format(self.address))
-            if ch in ["quit", "exit"]:
-                return
-            elif ch == "help":
-                div()
-                print("help: Command list")
-                print("cls: clear terminal")
-                print("list: list all nodes you have connected to.")
-                print("reassign: reassign an existing IP to a new one.")
-                print("delete: Delete an IP from DNS records, making it unreachable.")
-                print("mklink: Creates a node link")
-                print("exit: Disconnect from host")
-                div()
-            elif ch in ["clear", "cls"]:
+        player = data.getNode("localhost")
+        cls()
+        div()
+        print("IIH Console")
+        div()
+        print("[1] Reassign IP Address")
+        print("[ ] Delete Note")
+        print("[0] Exit")
+        div()
+        try:
+            ch = int(input(">"))
+        except:
+            return
+        if ch == "1":
+            clear()
+            address = input("Address $")
+            node = data.getNode(address, True)
+            if not node:
                 cls()
-            elif ch == "list":
                 div()
-                for node in [x for x in data.NODES if x.visited]:
-                    print("{}: {}".format(node.name, node.address))
-                div()
-            elif ch == "delete":
-                div()
-                print("delete <IP Address>")
-                div()
-                print("Removes an IP from all DNS records.")
-                print("This is permanent.")
-            elif ch.startswith("delete "):
-                ip = ch[7:]
-                node = data.getNode(ip)
-                if node:
-                    print("WARNING! This is irreversible!")
-                    print(
-                        "By doing this, the server you are targeting ({}) will be inaccessible FOREVER.".format(
-                            ip
-                        )
-                    )
-                    print("If you understand this, type 'I KNOW WHAT I AM DOING'.")
-                    if input(">>>") == "I KNOW WHAT I AM DOING":
-                        if node.address in [
-                            data.getNode(x).address for x in self.blocklist
-                        ]:
-                            print("ERROR: This node is not removable.")
-                        else:
-                            data.NODES.remove(node)
-                            print("Removed node successfully.")
-                    else:
-                        print("Operation canceled.")
-                else:
-                    print("ERROR: Invalid IP address.")
-            elif ch == "reassign":
-                div()
-                print("reassign <IP>")
-                div()
-                print("Reassigns an existing server to a new IP.")
-                div()
-            elif ch.startswith("reassign "):
-                ip = ch[9:]
-                node = data.getNode(ip)
-                if node:
-                    node.address = data.generateIP()
-                    print("Reassigned {} to {}.".format(node.name, node.address))
-                else:
-                    print("ERROR: Invalid IP.")
-            # elif ch == "mklink":
-            #     div()
-            #     print("mklink <original ip> <link ip>")
-            #     div()
-            #     print("Creates a DNS link to an IP address.")
-            #     div()
-            # elif ch.startswith("mklink "):
-            #     args = ch[7:].split(" ")
-            #     if len(args) == 2:
-            #         node = data.getNode(args[0])
-            #         if node:
-            #             lnk = LinkNode(args[0],args[1])
-            #             data.NODES.append(lnk)
-            #             print("Created DNS link.")
-            #             print("NOTE: DNS links are not standardised and not all programs work well with them.")
-            #         else:
-            #             print("ERROR: Invalid IP address.")
-            #     else:
-            #         print("ERROR: Invalid syntax.")
-            #         print(args)
-            else:
-                print("ERROR: Invalid command.")
+                print("ERROR: Invalid node.")
+                br()
+                return
 
 
 class Note(Base):
@@ -3515,9 +3451,17 @@ so you can read the whole document for yourself. Get it as quick as you can!""")
         introd.reply("mht", "i did contact {} before all this went down".format(player.name))
     def tick(self):
         player = data.getNode("localhost")
+        if player.trace:
+            print("({}) Active trace for {}".format(int(player.trace.endTime - time.time() + 1), data.getAnyNode(player.trace.node).address))
+            if time.time() > player.trace.endTime:
+                player.catchTrace()
         if time.time() - player.timeSinceNextDay > 600:
             player.timeSinceNextDay = time.time()
             player.date.next_day()
+
+        for action in player.actions:
+            action.run(player.date)
+            player.actions = [x for x in player.actions if x.time != player.date]
 
         if player.date == GameDate(2010, 7, 11) and not self.enwiredEvent:
             self.enwiredEvent = True

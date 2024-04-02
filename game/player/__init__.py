@@ -55,7 +55,7 @@ def getPort(num):
 class PlayerNode(Node):
     def __init__(self, name, password):
         super().__init__(
-            "Local Host", "localhost", "127.0.0.1", users=[User(name, password, True)]
+            "Local Host", "localhost", "127.0.0.1", users=[User(name, password, True), User("admin")]
         )
         self.address = "127.0.0.1"
         self.name = name
@@ -80,17 +80,19 @@ class PlayerNode(Node):
         self.date = GameDate()
         self.timeSinceNextDay = time.time() + 300 ## Starts 50% through = midday
         self.saveName = hashlib.sha256(str(random.randint(1, 2^64) * time.time()).encode()).hexdigest()
+        self.trace = None
+        self.actions = []
     def saveBase(self):
         default = {
-                "name": self.name,
-                "password": self.password,
-                "date": str(self.date),
-                "time": data.extrapolateTime(self.timeSinceNextDay),
-                "credits": self.creditCount,
-                "firewall": self.firewall.solution,
-                "savefile": self.saveName,
-                "saved": time.strftime("%Y-%m-%d %H:%M:%S"),
-                "mission": self.currentMission.mission_id if self.currentMission else "None",
+            "name": self.name,
+            "password": self.password,
+            "date": str(self.date),
+            "time": data.extrapolateTime(self.timeSinceNextDay),
+            "credits": self.creditCount,
+            "firewall": self.firewall.solution,
+            "savefile": self.saveName,
+            "saved": time.strftime("%Y-%m-%d %H:%M:%S"),
+            "mission": self.currentMission.mission_id if self.currentMission else "None",
         }
         save = configparser.ConfigParser()
         save["Player"] = default
@@ -106,7 +108,7 @@ class PlayerNode(Node):
     def save(self):
         if not os.path.isdir("savegames"):
             os.mkdir("savegames")
-        
+
         save = self.saveBase()
 
         with open("savegames/{}.rh_save".format(self.saveName),"w") as f:
@@ -147,9 +149,9 @@ class PlayerNode(Node):
                 if program and program.unlocked:
                     try:
                         if program.classPlease:
-                                program.execute(args, self)
+                            program.execute(args, self)
                         else:
-                                program.execute(args)
+                            program.execute(args)
                     except:
                         print(traceback.format_exc())
                 else:
@@ -314,9 +316,9 @@ class PlayerNode(Node):
                 "Administrator of Mountain View Private Mail.",
             ],
             [
-                    "Dear Administrator,",
-                    "We have complied with your request. All user data has been purged. In fact, because we take user data seriously, our servers run on arrays of small, 256mb hard drives which contain the user data for one user at a time. As such, we simply removed the hard-drive for the user 'monicaf332@jmail.com' and placed it into an ISO/IEC 27001 compliant de-gaussing and shredding process.",
-                    "We thank you for being a JMail customer.",
+                "Dear Administrator,",
+                "We have complied with your request. All user data has been purged. In fact, because we take user data seriously, our servers run on arrays of small, 256mb hard drives which contain the user data for one user at a time. As such, we simply removed the hard-drive for the user 'monicaf332@jmail.com' and placed it into an ISO/IEC 27001 compliant de-gaussing and shredding process.",
+                "We thank you for being a JMail customer.",
             ],
             [
                 "Note to self: the password is roses.are.red.violets.are.blue",
@@ -354,7 +356,7 @@ class PlayerNode(Node):
                 "[DATA EXPUNGED],",
                 "reHack Corporation Administrator.",
             ],
-            ]
+        ]
         bodies = ["\n".join(x) for x in bodies]
         emails = [
             Email("admin@rehack.mail", "{}@jmail.com".format(self.name), "reHack Code of Conduct (COC)", bodies[7]),
@@ -399,49 +401,49 @@ class PlayerNode(Node):
                 "admin@mview.mail.com",
                 "Password Request",
                 "Please reply to this email with the admin password for the mainframe or you lose your fucking job.",
-                ),
+            ),
             Email(
                 "admin@mview.mail.com",
                 "james.rally@mview.mail.com",
                 "RE: Password Request",
                 "For security reasons, I cannot comply with this request.",
-                ),
+            ),
             Email(
                 "james.rally@mview.mail.com",
                 "hr@mview.mail.com",
                 "Request For Dismissal",
                 "EMPLOYEE: Noah Bailey\nEMAIL ADDR: admin@mview.mail.com\nREASON: Inability to comply with instructions and a refusal to be flexible",
-                ),
+            ),
             Email(
                 "hr@mview.mail.com",
                 "admin@mview.mail.com",
                 "Notice of Dismissal",
                 bodies[0],
-                ),
+            ),
             Email(
                 "james.rally@mview.mail.com",
                 "james.rally@mview.mail.com",
                 "Note To Self",
                 bodies[2].format(data.getNode("mountainnotes").address),
-                ),
+            ),
             Email(
                 "monicaf332@jmail.com",
                 "amdin@mview.mail.com",
                 "Mainframe Password",
                 "It's backdrop2252 by the way",
-                ),
+            ),
             Email(
                 "hr@mview.mail.com",
                 "monica.flange@mview.mail.com",
                 "Notice of Dismissal",
                 bodies[1],
-                ),
+            ),
             Email(
                 "back.oboma@mail.gov",
                 "admin@cia.mail.gov",
                 "IMPORTANT: *****************",
                 bodies[3],
-                ),
+            ),
             Email("admin@mview.mail.com", "admin@jmail.com", "IMPORTANT: Data Destruction Request", bodies[4]),
             Email("admin@jmail.com", "admin@mview.mail.com", "RE: IMPORTANT: Data Destruction Request", bodies[5]),
             Email("admin@cia.mail.gov", "admin@cia.mail.gov", "Autocrat Mainframe Password (DO NOT LOSE!)", bodies[6]),
@@ -461,7 +463,51 @@ class PlayerNode(Node):
         data.addFirewall("firewalltest", Firewall("smartheap11", 0.125))
         irc = data.getNode("rhirc")
         irc.create_user(self.name, self.password)
-
+    def checkCorporateTrace(self):
+        uid, address = self.corporateTrace
+        node = data.getAnyNode(uid)
+        for log in node.logs:
+            if log.address == address:
+                self.gameOver()
+        email = Email("admin@rehack.mail", "{}@jmail.com".format(self.name), "Good job!", "Looks like you made it. Be more careful next time.")
+        print("WARNING: An email from reHack's admin reaches your inbox.")
+        br()
+    def gameOver(self):
+        cls()
+        time.sleep(5)
+        div()
+        print("Notice of Termination")
+        div()
+        print("We have been informed by your local government that they have caught you hacking into their systems.")
+        print("As such, we have been forced to strike you off the active agents list and destroy your node.")
+        print("You can create a new account, but you'll need to start from scratch.")
+        print("Let this be a lesson to be more careful next time.")
+        br()
+        exit()
+    def catchTrace(self):
+        """
+        Function called when an active trace reaches 0 seconds.
+        """
+        if self.trace.traceType == "Government":
+            self.gameOver()
+        elif self.trace.traceType == "Corporate":
+            cls()
+            div()
+            print("You've been caught hacking into {}. Just tomorrow, the police will ask us to shut down your account.".format(data.getNode(self.trace.node).address))
+            print("To prevent that from happening, you need to do one of the following:")
+            div()
+            print("* Delete the logs of the computer in question.")
+            print("* Change your IP address. Check the reHack wiki for instructions on how to do that.")
+            div()
+            print("Once this is done, the passive trace will die anod you can live another day. If this happens, I'll email you.")
+            div()
+            print("NOTE FROM THE DEVS: One day in reHack is 10 minutes real world time.")
+            br()
+            cls()
+            action = Action(self.date + 1, self.checkCorporateTrace)
+            self.corporateTrace = (self.trace.node, str(self.address))
+            self.actions.append(action)
+            self.trace = None
 class PlayerShodan(Node):
     def __init__(self):
         super().__init__("SHODAN #2", "shodan2", data.generateIP(), minPorts=65536)
@@ -492,7 +538,7 @@ class CriminalDatabase(Node):
         c = Criminal(name, age, random.choice(data.CRIMES))
         self.people.append(c)
         return c
-    
+
     def main(self, attemptCount=1):
         username = input("Username $")
         passwd = getpass.getpass("Password $")

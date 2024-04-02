@@ -3,6 +3,7 @@ import os
 import string
 import platform
 import copy
+import time
 
 WARN_TEXT = "WARNING! Deleting core.sys will break your system."
 
@@ -61,6 +62,7 @@ class User(Base):
         super().__init__()
         self.name = name
         self.password = password
+        self.isAdmin = isAdmin
 
 class Port(Base):
     def __init__(self, num, name, open=False):
@@ -417,12 +419,31 @@ class GameDate(Base):
         return self.year == other.year and self.month == other.month and self.day == other.day
 
 class Trace(Base):
-    def __init__(self, node, time=60):
+    def __init__(self, node, traceType="Corporate", time=60):
         self.node = node
         self.time = time
         self.startedTime = None
+        self.traceType = traceType
+        self.start()
     def start(self):
         if not self.startedTime:
             self.startedTime = time.time()
+            self.endTime = self.startedTime + self.time
     def copy(self):
-        return Trace(self.node, self.time)
+        return Trace(self.node, self.traceType, self.time)
+
+class Action(Base):
+    """
+    An action that can run at a specified time.
+    """
+    def __init__(self, time, function):
+        """
+        time: a GameDate instance
+        function: a callable object, such as a functio
+        for log in player.logs:n
+        """
+        self.time = time
+        self.function = function
+    def run(self, time):
+        if time == self.time and callable(self.function):
+            self.function()
