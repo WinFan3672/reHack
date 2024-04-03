@@ -419,9 +419,6 @@ N = [
         "directory.rehack.org",
         minPorts=4,
     ),
-    programs.WebServer(
-        "reHack pwnlist", "pwned.reha.ck", "pwned.reha.ck", "pwned.reha.ck", minPorts=4
-    ),
     programs.WebServer("UK Government", "gov.uk", "gov.uk", "gov.uk"),
     programs.WebServer("FFC Corporate Home", "ffc.com", "ffc.com", "ffc.com"),
     programs.WebServer(
@@ -552,7 +549,7 @@ N = [
     programs.WebServer("DomainExpert Home", "dexpertweb", "domain.expert", "domain.expert"),
     Node("Mountain View Mainframe","mountainmain", generateIP(), ports=[],minPorts=2**16,users=[User("admin","backdrop2252")]),
     # Node("Mountain View Remote Work Hub","moutainremote",generateIP(),ports=[getPort(22),getPort(21)],minPorts=2, linked =["jrallypc","nbaileypc","mflange"]),
-    programs.XOSDevice("James Rally's xPhone","jrallyphone",generateIP(),accounts=[programs.XOSMailAccount("james.rally@mview.mail.com","monica")]),
+    programs.XOSDevice("James Rally's xPhone","jrallyphone",generateIP()),
     programs.XOSDevice("Noah Bailey's xPhone","nbaileyphone",generateIP(),notes=[programs.Note("Get back at James Rally, I know he fired me.")],accounts=[programs.XOSMailAccount("admin@mview.mail.com","redhat")]),
     programs.XOSDevice("Monica Flange's xPhone","mflangephone",generateIP(),notes=[programs.Note("I know James Rally likes me. Fucking creep.")],accounts=[programs.XOSMailAccount("monicaf332@jmail.com","monica.flange")]),
     Node("James Rally's PC","jrallypc",generateIP(),ports=[getPort(21),getPort(22)],minPorts=2,linked=["jrallyphone"]),
@@ -574,7 +571,6 @@ N = [
     programs.WebServer("Dark.Store Landing Page", "darkstore", "dark.store", "dark.store"),
     programs.SignupService("jmailsu", "signup.jmail.com", "jmail", junkMail=JMAIL_STARTING_EMAILS),
     programs.TorForwarder("rhomail-signup", "om.rehack.org", "rhomail-signup"),
-    programs.Forwarder("pwnedlist", "pwned.rehack.org", "pwned.reha.ck"),
     programs.PublicFTPServer("Test FTP", "ftptest", "ftp.test", users=[User("admin", "admin")]),
     programs.PublicFTPServer("reHack Drop Server", "rhdrop", "drop.rehack.org", minPorts=65536),
     programs.Forwarder("mvps", "mvps.me", "mastervps_central"),
@@ -776,3 +772,8 @@ CRIMES = [
 
 with open("data/autocrat.docx.txt") as f:
     AUTOCRAT = f.read()
+
+jrallypc = getNode("jrallypc")
+jrallypc_home = jrallypc.get_file("home")
+jrally_file = jrallypc_home.create_file("Password.txt", "mountainous", "jrallypc")
+jrallypc_home.create_encrypted_file(jrally_file, "jrally_file", genString(32))

@@ -49,6 +49,9 @@ mview = programs.RemoteLAN("Mountain View Intranet", "mountainremote", "intranet
 mview_ftp = programs.FTPServer("Resources", "ftp", "ftp.local")
 with open("data/mview_recipe.txt") as f:
     mview_ftp.pub.create_encrypted_file(File("Recipe.docx", f.read(), "mountainremote"), "mountainremote", "mountainous")
+mview_ftp.pub.create_encrypted_file(File("Password.txt", "mountainous", "jrallypc"), "jrallypc", data.genString(32))
+mview_ftp.inc.create_file("DearJames.txt", "Hello James. Please stop leaving passwords in the INCOMING folder. Just leave them in your PC's home folder. -Noah", "nbaileypc")
+mview.add_device(mview_ftp)
 
 def main():
     return [cialan, mview]

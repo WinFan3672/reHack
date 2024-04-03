@@ -244,7 +244,7 @@ class Node(Base):
         self.create_file("x-server.sys", self.genRand(), "sys")
         self.create_file("warning", WARN_TEXT, "sys")
 
-        self.ports = ports
+        self.ports = ports if ports else []
         self.minPorts = minPorts
         self.users = users if users else []
         self.hacked = hacked
@@ -289,7 +289,9 @@ class Node(Base):
         else:
             folder = self.get_file(folder)
 
-        folder.files.append(File(name, data, origin if origin else self.uid))
+        file = File(name, data, origin if origin else self.uid)
+        folder.files.append(file)
+        return file
 
     def create_folder(self, name, writeAccess=False):
         folder = Folder(name, [], writeAccess, self.uid)
