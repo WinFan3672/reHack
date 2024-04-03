@@ -1,0 +1,28 @@
+The store is a great place to buy software.
+div()
+1 The `store` command
+div()
+The `store` command allows you to access the reHack store.
+div()
+1.1 Programs
+div()
+NAME            VERSION PRICE       DESCRIPTION
+lancrack        1.0     3500        Breaks open port 1
+mailoverflow    1.0     1500        Breaks open port 25
+webworm         1.0     500         Breaks open port 80
+torrentpwn      1.0     750         Breaks open port 6881
+sqldump         1.0     2500        Breaks open port 1433
+mxlookup        1.0     1500        Lists email addresses in a domain
+logview         1.0     0           Views logs in a (hacked) node
+nodecheck       1.0     0           Checks what type a node is
+firewall        1.0     0           Cracks and solves firewalls
+bankhack        1.0     1000        Brute-forces bank PIN's
+openftp         1.0     10000       Creates an FTP server
+div()
+2 DarkStore
+div()
+The DarkStore is not affiliated with us, but it is a great store to find more advanced software.
+div()
+2.1 Listings
+div()
+TODO: Fill this section in

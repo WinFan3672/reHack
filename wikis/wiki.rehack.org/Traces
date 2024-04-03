@@ -1,0 +1,33 @@
+When you hack into someone, they might not like it very much. In fact, they may try and find you and have you prosecuted. Thankfully, we anonymise all our agents, so no-one can bust down your door (unless you do something supremely idiotic). However, those pesky traces are a massive pain to deal with.
+div()
+Active Traces
+div()
+The `nmap` utility can detect if an Active Trace is present. If it is, as soon as you open a port or use porthack/bruter/emailbruter/bankhack/etc., an Active Trace forms. The length of time it takes for the admin to get to you varies greatly; it could be instant, or it could take 10 minutes. 
+div()
+Breaking Active Traces: Clearing Logs
+div()
+Clearing a trace is simple: just delete all the logs with your IP address in them. Systems don't log connections because they're far too common, so a simple find-and-delete utility could clear your traces very well. Thankfully, such a solution exists in the form of `logclear`. This 500 Cr. utility is the first thing you should buy, full stop. 
+div()
+Breaking Active Traces: Replacement
+div()
+If all else fails, getting another active trace replaces the old one, which can be advantageous. This is known as the replace-the-trace strategy and ONLY works for active traces.
+div()
+Passive Traces
+div()
+When you hack into a company and the timer runs out, you'll get a big message telling you that you have one day to clear the passive trace. This can seem scary, but this message is the best one you'll have ever heard.
+div()
+Breaking Passive Traces: Clearing Logs
+div()
+If you clear the logs of the affected node, the problem goes away.
+div()
+Breaking Passive Traces: Changing IP
+div()
+If clearing logs is not an option (for example, the node in question isn't hackable within the timeframe), you can change your IP address. You can do this through the ISP Hub (1.1.1.1), but this requires that you hack into *that* and clear *its* logs before the time is up.
+div()
+ISP Hub: How To Change Your IP
+div()
+1. Find your IP. This can be done by looking at your shell prompt, which displays your IP after the '@'.
+2. Hack into the ISP Hub (1.1.1.1). This is easier said than done as it has 4 open ports, all of which you need to open (SSH, FTP, Web Server, SQL Server). The total cost for webworm and sqldump is 3000 Cr.
+3. Connect to the ISP Hub, select "Change IP", and type your IP address in.
+4. There is no step 4.
+div()

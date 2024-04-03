@@ -420,10 +420,15 @@ class GameDate(Base):
 
 class Trace(Base):
     def __init__(self, node, traceType="Corporate", time=60):
+        """
+        node: a uid of a node (passed into data.getAnyNode())
+        traceType: one of the following values: 'Corporate', 'Government', 'Personal'
+        time: how long it takes for the trace to resolve
+        """
         self.node = node
         self.time = time
         self.startedTime = None
-        self.traceType = traceType
+        self.traceType = traceType #if traceType in ["Personal", "Corporate", "Government"] else "Corporate"
         self.start()
     def start(self):
         if not self.startedTime:

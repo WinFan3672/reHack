@@ -27,13 +27,14 @@ wiki_hacking.add_page("Encrypted Files")
 
 wiki_nodes = rhwiki.homepage.add_category("Nodes")
 wiki_nodes.add_page("Tor")
-wiki_nodes.add_page("ISP Hub")
+# wiki_nodes.add_page("ISP Hub")
 wiki_nodes.add_page("MasterVPS")
 
 wiki_rh = rhwiki.homepage.add_category("reHack")
 wiki_rh.add_page("Who we are")
 wiki_rh.add_page("Services")
 wiki_rh.add_page("Test Services")
+wiki_rh.add_page("Store")
 
 openstat = programs.WikiServer("OpenStat", "openstat", "openstat.org", "openstat", "OpenStat")
 openstat_os = openstat.homepage.add_category("Operating System Marketshare")
@@ -124,4 +125,4 @@ def main():
     ] + nodes.forum.main() + nodes.test.main() + nodes.lan.main()
 
 def tor():
-    return [] + nodes.forum.tor()
+    return [] + nodes.forum.tor() + nodes.lan.tor()

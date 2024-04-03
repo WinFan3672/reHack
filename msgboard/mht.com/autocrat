@@ -1,0 +1,35 @@
+The US government's going to have a bad year, that's for sure.
+Recently, an anonymous hacker broke into the CIA and stole the documents relating
+to 'Project Autocrat', a CIA mission that started in 2000 and ended earlier this year.
+An anonymous tip gave me access to the document in question, simply titled
+'autocrat.docx'. I've read through 10 years of mostly unredacted CIA reports,
+and I am ready to present the world with the entire story.
+
+In 2000, President William Clifford was concerned that the Internet would be a home
+for free speech and would not be controllable by the government, so he proposed
+Project Autocrat. His plan was to establish control of Internet companies and the
+services they run, by backdooring software and setting up the SGDRS (Simple Govt. 
+Data Request System), which allows the government to contact connected companies
+and request ALL data for that user, without a warrant, from just one data point,
+be it a name, email/IP address, or phone number. 
+
+Their initial targets were the Apache Web Server (a popular web server), the
+Linux Kernel, xOS devices, and even NanoSoft Workspaces devices. Over the years,
+this expanded to dozens of products and companies participiating in the
+entire SGDRS and backdooring ensemble, with old partners giving the government
+more power as they released more intrusive services. A few services declined, 
+of course, including AnonMail, Debian and Linux, but 90% agreed to it without
+qeuestion, and 50% of the remaining 10% changed their mind and complied later
+down the line.
+
+The scope of this Project is hard to explain or comprehend, as it spans 10
+years and essentially predicted the modern Internet's service- and data-based economy.
+It is unknown how many SGDRS requests have been made, or how many people the CIA and
+its offshoots have hacked with their backdoors, including the infamous default password
+on xPhone devices. 
+
+With regards to the Apache Web Server, the vulnerability existed between versions
+2.0 and 2.2 of the server, before it was found as a security vulnerability and patched.
+
+To round all of this off, I've left all of this on my public FTP server, ftp.mht.com,
+so you can read the whole document for yourself. Get it as quick as you can!

@@ -248,6 +248,7 @@ class PlayerNode(Node):
             MailServer("EnWired Mail", "enwired-mail", "enwired.mail", self, [User("elliot"), User("jacob"), User("sales")]),
             MailServer("Debian Mail", "debianmail", "mail.debian.org", self, [User("admin")]),
             CriminalDatabase(),
+            PlayerShodan(),
         ] + nodes.main()
         onionsites = [
             TorMailServer(
@@ -511,8 +512,25 @@ class PlayerNode(Node):
 class PlayerShodan(Node):
     def __init__(self):
         super().__init__("SHODAN #2", "shodan2", data.generateIP(), minPorts=65536)
+        self.mhtForum = False
+    def check_trace(self, player):
+        node = data.getNode(player.trace.node)
+        for log in node.logs:
+            if node.address == player.address:
+                return True
     def tick(self):
         player = data.getNode("localhost")
+        mht = data.getNode("mht")
+        ## Check if the trace is valid
+        if player.trace:
+            print(self.check_trace())
+        if player.date == GameDate(2010, 7, 15) and not self.mhtForum:
+            # print("MHT FORUM EVENT")
+            self.mhtForum = True
+            data.NODES.append(nodes.forum.mht)
+            with open("msgboard/mht.com/forum") as f:
+                forum = mht.add_story("MHT Is Opening A New Forum", "Admin", player.date.clone(), f.read())
+                forum.reply("admin", "The forum is here: forum.mht.com, almost forgot!")
 
 class Criminal(Base):
     def __init__(self, forename, surname, age, prison=None, crimes=None):
@@ -534,6 +552,7 @@ class CriminalDatabase(Node):
         #         i += 1
         self.create_file("New Intern Letter.txt", data.CRIMDB_LETTER, "home")
         self.create_user("root", "root")
+        self.trace = Trace(self.uid, "Government", 35)
     def add(self, name, age):
         c = Criminal(name, age, random.choice(data.CRIMES))
         self.people.append(c)

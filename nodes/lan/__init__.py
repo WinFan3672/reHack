@@ -35,19 +35,17 @@ autocratmain = Node("Project Autocrat Mainframe", "autocratmain", cialan.generat
 autocratmain.create_file("autocrat.docx", data.AUTOCRAT, "home", cialan.uid)
 cialan.add_device(autocratmain)
 
-scsi = programs.RemoteLAN("SCSI-Net :: Connect to 192.168.0.0 for an IP list", "scsi", "net.scsi.group")
+scsi = programs.RemoteLAN("SCSI-Net :: Connect to 192.168.0.0 for an IP list", "scsi", data.generateTorURL())
 
-scsi_irc = programs.IRCServer("SCSI Group IRC", "irc", "irc")
+scsi_irc = programs.IRCServer("SCSI Group IRC", "irc", "irc.local")
 # scsi_irc.minPorts = 0
-scsirc_general = scsi_irc.add_channel("#general", "The main mission discussion")
+scsirc_general = scsi_irc.add_channel("#general", "The main discussion")
 scsi.add_device(scsi_irc)
 
-scsi_test = Node("Test Node", "test", "test", ports=[data.getPort(21), data.getPort(22)])
+scsi_test = Node("Test Node", "test", "test.local", ports=[data.getPort(21), data.getPort(22)])
 scsi.add_device(scsi_test)
 
 def main():
-    return [
-        cialan,
-        scsi,
-    ]
-
+    return [cialan]
+def tor():
+    return [scsi]

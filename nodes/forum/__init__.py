@@ -270,29 +270,21 @@ mht_anonmail.reply("anon.mail", "!whoami")
 mht_anonmail.reply("system", "anon.mail: admin@anon.mail")
 mht_anonmail.reply("anon.mail", "The 'limit' allows me to MANUALLY delete accounts with excessive traffic, but I almost never do this because we have like 500% the capacity we need.")
 
+mht_irc = mht_general.add_topic("admin", "Should MHT have an IRC, or is a forum enough?", "See title.")
+mht_irc.reply("anon.mail", "an irc would allow for more real-time communication, but a forum is very scalable")
+mht_irc.reply("anon.mail", "forums can easily accomodate tens of thousands of members, whereas irc might not due to the possibility of cross-talk increasing with the member count")
+mht_irc.reply("bit", "as someone who's administered both, irc is a PITA to moderate, since users can change IP very easily, plus IRC does this thing with fallback nicknames thats kinda annoying")
+mht_irc.reply("admin", "yeah, already have an FTP server and this forum")
+mht_irc.reply("admin", "so an IRC would add to the expense and also responsibility for myself")
+mht_irc.reply("admin", "If you want to become a forum admin, contact me here: admin@mht.mail.com")
+mht_irc.reply("server", "admin locked this topic")
+
 darkstore = programs.Forum("Dark.Store", "darkstore", data.generateTorURL("dstore"))
 ds_general = darkstore.boards[0]
 ds_store = darkstore.add_board("Store")
-
-scsiforum = programs.Forum("SCSI Group", "scsi", data.generateTorURL("scsi"), private=True)
-scsi_general = scsiforum.boards[0]
-scsinet = scsi_general.add_topic("admin", "How to access SCSI-Net", """Now that you've joined SCSI, you'll quickly realise that this forum is a front.
-A honeypot for hackers who want to go in and learn our 1337 h4x0r 5k1llz. 
-
-SCSI group conducts its work on SCSI-Net, a LAN located in our headquarters (AKA some VPS somewhere).
-All SCSI members get access to it through net.scsi.group, and you can log in using your credentials.
-Just run `connect net.scsi.group` and you'll be let in!""")
-scsi_welcome = scsiforum.add_board("Introductions")
-
-isp_hub = scsi_general.add_topic("bit", "ISP Node?", """Hey all.
-The reHack Wiki has a page on the ISP Hub, whatever that is.
-It claims that it refuses to hand over its IP address.
-What is it? Can I have some pointers?""")
-isp_hub.reply("rehack", "Careful @bit, or you'll find your user account mysteriously gone.")
-isp_hub.reply("server", "rehack locked this topic")
 
 def main():
     return []
 
 def tor():
-    return [vcforum, chan, darkstore, scsiforum]
+    return [vcforum, chan, darkstore]

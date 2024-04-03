@@ -205,7 +205,7 @@ def nmap(args):
             div()
     else:
         div()
-        print("nmap <address")
+        print("nmap <address>")
         div()
         print("Discover open ports on a node.")
         print("NOTE: This tool does not start active traces.")
@@ -301,7 +301,7 @@ class MessageBoardMessage(Base):
 class MessageBoard(Node):
     def __init__(
         self, name, address, uid, path, ports=[], minPorts=3, linked=[], users=[]
-    ):
+        ):
         ports = (
             ports
             if ports
@@ -350,7 +350,7 @@ class MessageBoard(Node):
 class WebServer(Node):
     def __init__(
         self, name, uid, address, path, linked=[], hacked=False, minPorts=2, users=[]
-    ):
+        ):
         super().__init__(
             name,
             uid,
@@ -372,8 +372,8 @@ class WebServer(Node):
                     print(line)
 class TorWebServer(Node):
     def __init__(
-            self, name, uid, address, path, linked=[], hacked=False, minPorts=2, users=[], webmaster="null@null.null"
-    ):
+        self, name, uid, address, path, linked=[], hacked=False, minPorts=2, users=[], webmaster="null@null.null"
+        ):
         super().__init__(
             name,
             uid,
@@ -412,22 +412,22 @@ def debuginfo(args, player):
     if args == ["passwd"]:
         with open("data/passwords.txt") as f:
             print(random.choice(f.read().split("\n")))
-    # elif args == ["test"]:
-    #     ## I just wanted to check if Python's 'assignment == reference' thing applies to new instances
-    #     folder = Folder("", [File("a"), File("b")])
-    #     fc = folder.clone()
-    #     fdc = folder.clone(True)
-    #     folder.name = "g"
-    #     folder.files = []
-    #     print(folder.name == fc.name)
-    #     print(folder.name == fdc.name)
-    #     print(folder.files == fc.files)
-    #     print(folder.files == fdc.files)
+        # elif args == ["test"]:
+        #     ## I just wanted to check if Python's 'assignment == reference' thing applies to new instances
+        #     folder = Folder("", [File("a"), File("b")])
+        #     fc = folder.clone()
+        #     fdc = folder.clone(True)
+        #     folder.name = "g"
+        #     folder.files = []
+        #     print(folder.name == fc.name)
+        #     print(folder.name == fdc.name)
+        #     print(folder.files == fc.files)
+        #     print(folder.files == fdc.files)
     elif args == ["test"]:
         for node in data.NODES:
             nmap([node.address])
     elif args == ["trace"]:
-        player.trace = Trace("debianftp", "Corporate", 0)
+        player.trace = Trace("debianftp", "Corporate", 5)
     elif args == ["ide"]:
         code.interact(local=locals() | globals(), banner="Python Interpreter: press Ctrl+D to exit",exitmsg="Exit Python interpreter.")
     elif args == ["mission"]:
@@ -439,6 +439,19 @@ def debuginfo(args, player):
     elif args == ["tor"]:
         for node in data.TOR_NODES:
             print("{} = {}".format(node.uid, node.address))
+    elif "tor" in args and len(args) == 2:
+        args.remove("tor")
+        node = data.getTorNode(args[0])
+        div()
+        print("Name: {}".format(node.name))
+        print("Unique ID: {}".format(node.uid))
+        print("IP Address: {}".format(node.address))
+        print("Linked Nodes: {}".format("; ".join(node.linked) if node.linked else "None"))
+        print("Ports: {}".format("; ".join([x.name for x in node.ports]) if node.ports else "None"))
+        print("Min. Ports To Hack: {}".format(node.minPorts))
+        for user in node.users:
+            print("User {}:{}".format(user.name, user.password))
+        div()
     elif args == ["ip"]:
         div()
         print("debug ip [arguments]")
@@ -651,7 +664,7 @@ class MailServer(Node):
         accounts=[],
         hideLookup=False,
         minPorts=4,
-    ):
+        ):
         super().__init__(
             name,
             uid,
@@ -676,7 +689,7 @@ class MailServer(Node):
 
     def main(self, args=None, player=None):
         print("To access this mail server, log in with a mail client.")
-   
+
     def clientMain(self, account, player):
         cls()
         print("Welcome to {}. For a command list, type HELP.".format(self.name))
@@ -712,8 +725,8 @@ class MailServer(Node):
                             item.sender,
                             item.receiver,
                             "[!]" if not item.read else "",
-                            )
                         )
+                              )
                         i += 1
 
                     div()
@@ -762,7 +775,7 @@ class MailServer(Node):
 
     def lookup(self):
         return self.accounts if not self.hideLookup else []
-    
+
     def create_user(self, username, password):
         self.accounts.append(MailAccount(username, password))
 
@@ -1241,7 +1254,7 @@ class XOSDevice(Node):
         accounts=[],
         password="alpine",
         model="xphone",
-    ):
+        ):
         super().__init__(name, uid, address)
         self.users = [User("admin", password)]
         self.ports = [
@@ -1427,7 +1440,7 @@ class Mission(Base):
         next_id=None,
         start_function=None,
         end_function=None,
-    ):
+        ):
         super().__init__()
         self.mission_id = mission_id
         self.name = name
@@ -1883,56 +1896,56 @@ class MasterVPS(Node):
         self.currentId = 2 ** 14
         self.currentId -= (2**random.randint(1,11))
         self.offerings = [
-                {
-                    "name": "Basic",
-                    "node": Node("","","",ports=[data.getPort(22),data.getPort(6881)]),
-                    "description":"A basic node with no security.",
-                    "price":500,
-                    "secure": False,
-                },
-                {
-                    "name": "Basic+",
-                    "node": Node("","","",ports=[data.getPort(22),data.getPort(6881)], minPorts=2**16),
-                    "description":"A basic node with full security, including a firewall.",
-                    "price":750,
-                    "secure": True,
-                },
-                {
-                    "name": "FTP Server",
-                    "node": FTPServer("", "", ""),
-                    "description":"A server to drop your files",
-                    "price": 1000,
-                    "secure": False,
-                },
-                {
-                    "name": "FTP Server+",
-                    "node": FTPServer("", "", ""),
-                    "description": "A more secure FTP server",
-                    "price": 1500,
-                    "secure": True,
-                },
-                {
-                    "name": "xPhone",
-                    "node":XOSDevice("","",""),
-                    "description":"A standard xPhone 3.",
-                    "price":300,
-                    "secure": False,
-                },
-                {
-                    "name": "Mail Server",
-                    "node":MailServer("","","",player),
-                    "description":"A fully-fledged mail server.",
-                    "price":1500,
-                    "secure": False,
-                },
-                {
-                    "name": "Mail Server+",
-                    "node":MailServer("","","",player, hideLookup=True, minPorts=2**16),
-                    "description":"A fully-fledged mail server with full security.",
-                    "price":2500,
-                    "secure": True,
-                },
-            ]
+            {
+                "name": "Basic",
+                "node": Node("","","",ports=[data.getPort(22),data.getPort(6881)]),
+                "description":"A basic node with no security.",
+                "price":500,
+                "secure": False,
+            },
+            {
+                "name": "Basic+",
+                "node": Node("","","",ports=[data.getPort(22),data.getPort(6881)], minPorts=2**16),
+                "description":"A basic node with full security, including a firewall.",
+                "price":750,
+                "secure": True,
+            },
+            {
+                "name": "FTP Server",
+                "node": FTPServer("", "", ""),
+                "description":"A server to drop your files",
+                "price": 1000,
+                "secure": False,
+            },
+            {
+                "name": "FTP Server+",
+                "node": FTPServer("", "", ""),
+                "description": "A more secure FTP server",
+                "price": 1500,
+                "secure": True,
+            },
+            {
+                "name": "xPhone",
+                "node":XOSDevice("","",""),
+                "description":"A standard xPhone 3.",
+                "price":300,
+                "secure": False,
+            },
+            {
+                "name": "Mail Server",
+                "node":MailServer("","","",player),
+                "description":"A fully-fledged mail server.",
+                "price":1500,
+                "secure": False,
+            },
+            {
+                "name": "Mail Server+",
+                "node":MailServer("","","",player, hideLookup=True, minPorts=2**16),
+                "description":"A fully-fledged mail server with full security.",
+                "price":2500,
+                "secure": True,
+            },
+        ]
         self.buckets = []
     def spinup(self, player):
         cls()
@@ -2176,7 +2189,7 @@ class DomainExpert(Node):
             "uk":150,
             "us":165,
             "fail":75,
-            }
+        }
     def main(self, player):
         print("Welcome. Type 'help' for a command list.")
         while True:
@@ -2359,7 +2372,7 @@ class SignupService(Node):
             print("404 Not Found")
             return
         print("Welcome to the signup server for {}.".format(node.name))
-        
+
         if self.usePlayerName:
             username = player.name
         elif not self.usernames:
@@ -3009,9 +3022,9 @@ def bankhack(args, player):
                     print("Found PIN: {}".format(pin))
                     break
         elif isinstance(bank, BankBackEnd):
-                print("ERROR: Provided a backend server.")
-                print("Bank backends have low security, and can easily be hacked.")
-                print("From there, the `list` command can get the PIN of any user.")
+            print("ERROR: Provided a backend server.")
+            print("Bank backends have low security, and can easily be hacked.")
+            print("From there, the `list` command can get the PIN of any user.")
         else:
             print("ERROR: Invalid bank server.")
     else:
@@ -3233,7 +3246,7 @@ class Forum(Node):
                     elif isinstance(topic, Mission):
                         self.mission_view(board, topic, player)
                     elif isinstance(topic, Board):
-                          self.board_view(topic, player)
+                        self.board_view(topic, player)
                     else:
                         print("ERROR: Invalid topic.")
                         br()
@@ -3312,14 +3325,19 @@ class Shodan(Node):
         self.xdgNet = False
     def main(self):
         print("SHODAN breaks the fourth wall.")
+    def check_logs(self, node):
+        player = data.getNode("localhost")
+        for log in node.logs:
+            if log.address == player.address:
+                return True
     def autocrat(self):
         ## This function is called at the end of the Project Autocrat mission.
         player = data.getNode("localhost")
         email = Email(
-                "admin@mht.mail.com",
-                "{}@jmail.com".format(player.name),
-                "Important!",
-                """Hello.
+            "admin@mht.mail.com",
+            "{}@jmail.com".format(player.name),
+            "Important!",
+            """Hello.
 An anonymous tip has told me that YOU recently hacked into the CIA
 and are the perpetrator of the Project Autocrat leak. Let's just say 
 that the CIA will NOT be happy. Lucky for you, I'm a journalist.
@@ -3343,53 +3361,14 @@ Have a lovely day, and check out my story on mht.com for the full story.""")
         sendEmail(email)
         mht = data.getNode("mht")
         mhtftp = data.getNode("mhtftp")
-        story = mht.add_story(
-                "Project Autocrat: A 10-Year Conspiracy To Spy On The American Population", 
-                "Admin", 
-                player.date.clone(),
-                """The US government's going to have a bad year, that's for sure.
-Recently, an anonymous hacker broke into the CIA and stole the documents relating
-to 'Project Autocrat', a CIA mission that started in 2000 and ended earlier this year.
-An anonymous tip gave me access to the document in question, simply titled
-'autocrat.docx'. I've read through 10 years of mostly unredacted CIA reports,
-and I am ready to present the world with the entire story.
-
-In 2000, President William Clifford was concerned that the Internet would be a home
-for free speech and would not be controllable by the government, so he proposed
-Project Autocrat. His plan was to establish control of Internet companies and the
-services they run, by backdooring software and setting up the SGDRS (Simple Govt. 
-Data Request System), which allows the government to contact connected companies
-and request ALL data for that user, without a warrant, from just one data point,
-be it a name, email/IP address, or phone number. 
-
-Their initial targets were the Apache Web Server (a popular web server), the
-Linux Kernel, xOS devices, and even NanoSoft Workspaces devices. Over the years,
-this expanded to dozens of products and companies participiating in the
-entire SGDRS and backdooring ensemble, with old partners giving the government
-more power as they released more intrusive services. A few services declined, 
-of course, including AnonMail, Debian and Linux, but 90% agreed to it without
-qeuestion, and 50% of the remaining 10% changed their mind and complied later
-down the line.
-
-The scope of this Project is hard to explain or comprehend, as it spans 10
-years and essentially predicted the modern Internet's service- and data-based economy.
-It is unknown how many SGDRS requests have been made, or how many people the CIA and
-its offshoots have hacked with their backdoors, including the infamous default password
-on xPhone devices. 
-
-With regards to the Apache Web Server, the vulnerability existed between versions
-2.0 and 2.2 of the server, before it was found as a security vulnerability and patched.
-
-To round all of this off, I've left all of this on my public FTP server, ftp.mht.com,
-so you can read the whole document for yourself. Get it as quick as you can!""")
-
-        story.reply("rehack", "First to report on an important issue, as always!")
-        story.reply("bit", "I'm buying BTC while it's still cheap")
-        story.reply("e.snowden", "bad day at the office indeed (fyi im an nsa agent)")
-        story.reply("chrisdelay", "When I made Uplink I didn't anticipate THIS to happen just 9y later")
-        story.reply("5chan", "My forum boutta get DOSed from the amount of discussion about this")
-        story.reply("5chan", "It's been 3 minutes and 5chan is down already, wtf")
-        mhtftp.create_file("autocrat.docx", data.AUTOCRAT, "pub")
+        with open("msgboard/mht.com/autocrat") as f:
+            story = mht.add_story("Project Autocrat: A 10-Year Conspiracy To Spy On The American Population", "Admin",  player.date.clone(), f.read())
+            story.reply("rehack", "First to report on an important issue, as always!")
+            story.reply("bit", "I'm buying BTC while it's still cheap")
+            story.reply("e.snowden", "bad day at the office indeed (fyi im an nsa agent)")
+            story.reply("5chan", "My forum boutta get DOSed from the amount of discussion about this")
+            story.reply("5chan", "It's been 3 minutes and 5chan is down already, wtf")
+            mhtftp.create_file("autocrat.docx", data.AUTOCRAT, "pub")
 
         irc = data.getNode("rhirc")
         irc_general = irc.get_channel("#general")
@@ -3435,22 +3414,17 @@ so you can read the whole document for yourself. Get it as quick as you can!""")
 
         dm = irc.add_direct_message(["insolvent", player.name])
         dm.add_message("insolvent", "Hello, we have noticed your talent, and would like to invite you to SCSI group")
-        dm.add_message("insolvent", "Courtesy of reHack, we've invited you into the forum. The login details are the same as your reHack ones.")
+        dm.add_message("insolvent", "We've already added your username and password to SCSI-net, our LAN that you can connect to from anywhere.")
+        dm.add_message("insolvent", "If you're unfamiliar with LAN's, the router is located at 192.168.0.0, and you can connect to our various services from it.")
         dm.add_message("insolvent", "Get to us here: {}".format(data.getTorNode("scsi").address))
 
         scsi = data.getTorNode("scsi")
-        scsinet = data.getNode("scsi")
         scsi.create_user(player.name, player.password)
-        scsinet.create_user(player.name, player.password)
-        scsi_welcome = scsi.get_board("Introductions")
-        introd = scsi_welcome.add_topic("admin", "INTRODUCTION: {}".format(player.name), """Hello all.
-{} is the one behind the Project Autocrat leaks.""".format(player.name))
-        introd.reply("bit", "no waay! he's in SCSI! Good for you {}!".format(player.name))
-        introd.reply("data_expunged", "good to see more agents 'getting in'")
-        introd.reply("mht", "i knew this would happen")
-        introd.reply("mht", "i did contact {} before all this went down".format(player.name))
+
+
     def tick(self):
         player = data.getNode("localhost")
+        mht = data.getNode("mht")
         if player.trace:
             print("({}) Active trace for {}".format(int(player.trace.endTime - time.time() + 1), data.getAnyNode(player.trace.node).address))
             if time.time() > player.trace.endTime:
@@ -3468,48 +3442,44 @@ so you can read the whole document for yourself. Get it as quick as you can!""")
             jmail = data.getNode("jmail")
             jmail.create_user("renwired", "renderware")
             renwired = NewsServer("RenWired: Re-EnWired", "renwired", "re.enwired.com", "jacon@enwired.mail")
-            returnStory = renwired.add_story("EnWired Is Back: RenWired", "Jacob Marksman", player.date.clone(), """Yes, it's true.
-No, the stories are not hyperbole.
-After my father retired and shut down the service, I decided to bring together the old EnWired writers, plus some new talent,
-and create RenWired. The name is temporary, and we'll establish a new identity soon.
-To clarify, my father has nothing to do with this, but he gave the project the green light.
-Expect more soon.""")
+            with open("msgboard/xdg.net/return") as f:
+                returnStory = renwired.add_story("EnWired Is Back: RenWired", "Jacob Marksman", player.date.clone(), f.read())
             returnStory.reply("cop-out", "You're a terrible writer")
             data.NODES.append(renwired)
-            mht = data.getNode("mht")
-            renwired_story = mht.add_story("Is EnWired back, or is it a ruse?", "Admin", player.date.clone(), """Recently, the domain re.enwired.com was created.
-The owner of the domain, Jacob Marksman, Elliot Marksman's son, started sending emails to journalists (including myself), telling of the rebirth of EnWired.
-This interested me, so I waited about ten minutes before writing this article. Yes, MHT is becoming a parody of itself at this point. No, I don't care.
-Is this a true rebirth of EnWired just one month after its sudden and unexpected death? Or is it a tacky way for Jacob to get some publicity off his father's name?
-I think the jury's still out on this one; I'll let you decide.""")
-            renwired_story.reply("replit", "I think I believe Jacob; he seems like a nice guy and he shares the passion his father possesses")
-            renwired_story.reply("code", "Nonesense; this is 100% a cop-out")
-            renwired_story.reply("sizzle", "'he seems like a nice guy' = red flag")
-            renwired_story.reply("replit", "let's not start a flame war")
-            renwired_story.reply("admin", "While we're here, who's open to the idea of opening up a forum?")
-            renwired_story.reply("code", "Sure, if you have a powerful enough server to handle the demand xd")
-            renwired_story.reply("sizzle", "yes yes yes")
-            renwired_story.reply("replit", "Make a post about it once you've set it up!")
-        if player.date == GameDate(2010, 7, 15) and not self.mhtForum:
-            self.mhtForum = True
-            data.NODES.append(nodes.forum.mht)
+            with open("msgboard/mht.com/renwired") as f:
+                renwired_story = mht.add_story("Is EnWired back, or is it a ruse?", "Admin", player.date.clone(), f.read())
+                renwired_story.reply("replit", "I think I believe Jacob; he seems like a nice guy and he shares the passion his father possesses")
+                renwired_story.reply("code", "Nonesense; this is 100% a cop-out")
+                renwired_story.reply("sizzle", "'he seems like a nice guy' = red flag")
+                renwired_story.reply("replit", "let's not start a flame war")
+                renwired_story.reply("admin", "While we're here, who's open to the idea of opening up a forum?")
+                renwired_story.reply("code", "Sure, if you have a powerful enough server to handle the demand xd")
+                renwired_story.reply("sizzle", "yes yes yes")
+                renwired_story.reply("replit", "Make a post about it once you've set it up!")
 
         if player.date == GameDate(2010, 7, 12) and not self.xdgNet:
             self.xdgNet = True
             renwired = data.getNode("renwired")
-            renwired.name = "XDG.Net: Better news network"
+            renwired.name = "XDG.Net: A better kind of news"
             renwired.address = "xdg.net"
-            mht = data.getNode("mht")
-            xdgn = mht.add_story("RenWired Has Become xdg.net", "Admin", """Yesterday, RenWired launched, and I wrote my article about it.
-That article was well-received, and I managed to create a media storm accross the entire news spectrum.
-Everyone on both sides of the polticial spectrum, as well as both technical and non-technical orgs were talking about it.
-In fact, I ended up getting contacted by all manner of big 'journalists' like Fox News and whatnot telling me that they
-were running my story and requested my permission. I did a big 'yes to all' and a LOT of money came in. 
-I'm not a shill, in fact, I do this in my spare time in protest of journalism as a business, but I really did need the money, what with my 
-personal issues.
-
-Anyway, I noticed this morning that RenWired have rebranded to xdg.net, and have deleted their original announcement, which is a good sign.
-I'll be sure to keep you all posted on updates on xdg.net, to see if my theory is true or not.""")
+            with open("msgboard/mht.com/xdgn") as f:
+                xdgn = mht.add_story("RenWired Has Become xdg.net", "Admin", f.read())
+                xdgn.reply("code", "that was fast")
+                xdgn.reply("admin", "code: my thoughts exactly")
+                xdgn.reply("sizzle", "mht is such a shill, 2/3 of the article is about the previous one!")
+                xdgn.reply("replit", "sizzle: +1")
+                xdgn.reply("bit", "sizzle: +1")
+                xdgn.reply("rehack", "sizzle: that's ridiculous, your claim is baseless")
+                xdgn.reply("admin", "rehack, sizzle: what makes you think I am/am not a shill?")
+                xdgn.reply("sizzle", "admin: 100% you got financial compensation for being on Fox News")
+                xdgn.reply("rehack", "sizzle: fox easily could have aired their story and claimed they made the discovery")
+                xdgn.reply("admin", "rehack: thanks for the clarification; im going through some stuff rn so the money was well-appreciated")
+                xdgn.reply("admin", "besides, making the Murdochs slightly less rich is always a good thing")
+                xdgn.reply("sizzle", "admin: what stuff? i feel bad now")
+                xdgn.reply("admin", "don't worry, it's nothing too serious, just some run-of-the-mill hardships")
+                xdgn.reply("bit", "is there anything we can do to help?")
+                xdgn.reply("admin", "I make my money through licensing MHT articles, so not really")
+                xdgn.reply("admin", "that being said, i am launching a forum soon, so i'll keep you posted :)")
 
 
 def ssh(args):
@@ -3556,7 +3526,7 @@ class Forwarder(Node):
         self.playerPlease = True
         self.show_origin = show_origin
         self.users = [User("admin", "admin")]
-        
+
     def get_node(self, address):
         return data.getNode(self.forwarding_url)
     def connect(self, node, player):
@@ -3581,7 +3551,7 @@ class Forwarder(Node):
             "$ - Clearnet --> Clearnet",
             "$ * Using this option de-anonymises users of the proxy. Users connecting over Tor proper are fine.",
             "$ This node points to: {}".format(self.get_node(self.forwarding_url).address if self.show_origin else "[DATA HIDDEN BY ADMIN]"),
-            ]))
+        ]))
 
 class TorForwarder(Forwarder):
     def get_node(self, address):
@@ -3744,7 +3714,7 @@ def note(args, player):
         div()
     elif "del" in args and len(args) == 2:
         try:
-           player.notes.pop(int(args[1]))
+            player.notes.pop(int(args[1]))
         except IndexError:
             print("ERROR: Invalid note.")
     elif args == ["add"]:
@@ -4098,7 +4068,7 @@ class MedicalDatabase(Node):
 
         print("Successfully added new record.")
         br()
-    
+
     def confirm(self, message="Confirm Action"):
         cls()
         div()
@@ -4109,7 +4079,7 @@ class MedicalDatabase(Node):
         div()
         ch = input("$")
         return ch == "1"
-    
+
     def message(self, message):
         cls()
         div()
@@ -4241,4 +4211,24 @@ def irc(args):
         print("irc <server address>")
         div()
         print("IRC Client.")
+        div()
+
+def logclear(args):
+    player = data.getNode("localhost")
+    if args:
+        node = data.getNode(args[0], True)
+        if not node:
+            print("ERROR: Invalid address.")
+            return
+        if not node.hacked:
+            print("ERROR: Access denied.")
+            return
+        for log in node.logs:
+            if log.address == player.address:
+                node.logs.remove(log)
+    else:
+        div()
+        print("logclear <address>")
+        div()
+        print("Deletes all logs mentioning your IP address.")
         div()
