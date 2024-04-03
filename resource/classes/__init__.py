@@ -246,7 +246,7 @@ class Node(Base):
 
         self.ports = ports
         self.minPorts = minPorts
-        self.users = users
+        self.users = users if users else []
         self.hacked = hacked
         self.linked = linked
         self.visited = False

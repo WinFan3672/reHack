@@ -94,7 +94,7 @@ meddb = programs.MedicalDatabase()
 meddb.create_user("root", "root")
 
 irc = programs.IRCServer("reHack IRC", "rhirc", "irc.rehack.org", private=True)
-irc.create_user("admin", "constant")
+# irc.create_user("admin", "constant")
 irc_general = irc.add_channel("#general", "General reHack discussion")
 irc_news = irc.add_channel("#news", "Server Announcements", readOnly=True)
 irc_news.allow("admin")
