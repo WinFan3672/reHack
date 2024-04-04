@@ -199,6 +199,51 @@ def base_missions(self):
 
 
 def main_story_missions(self):
+    def mission1_end():
+        def action1():
+            player = data.getNode("localhost")
+            mht = data.getNode("mht")
+            with open("msgboard/mht.com/mountain2") as f:
+                story = mht.add_story("Mountain View Leaker Arrested", "Admin", player.date.clone() + 2, f.read())
+                story.reply("bit", "did not expect so much to happen so quickly")
+                story.reply("admin", "I had a hunch something like this would happen; just think how many billions of $'s IsDedCo makes from soft drink sales.")
+                story.reply("mindman", "IDCO is down 76%, whereas COCA is up 366% on the DCSE (DC Stock Exchange), isn't it crazy?")
+        player = data.getNode("localhost")
+        mht = data.getNode("mht")
+        chan = data.getTorNode("5chan").get_board("News")
+        dcsebets = data.getNode("nerdnet").get_board("n/dcsebets")
+        ftp = data.getNode("mhtftp")
+        with open("msgboard/mht.com/mountain") as f:
+            story = mht.add_story("Mountain View Recipe Leaked", "Admin", player.date.clone() + 1, f.read())
+            story.reply("bit", "This is WILD, must be a reHack agent at work")
+            story.reply("admin", "bit: wouldn't surprise me, reHack's been in the (non-mainstream) news all year (e.g ColonSlash's garbage 'exposé')")
+            story.reply("bit", "that article really WAS garbage")
+            story.reply("rehack", "admin: funnily enough, i tried to send a cease-and-desist but it appears as if the owner ran off without a trace")
+            story.reply("rehack", "old articles gone, no response to ANY emails, nobody knows what happened")
+            story.reply("admin", "rehack: sounds like a story in the making")
+            story.reply("newt", "who do you think it is?")
+            story.reply("rehack", "i have my suspicions, must be an ex-agent of mine, which narrows it down a LOT (not many agents leave on bad terms)")
+            story.reply("bit", "rehack: can you even cease-and-desist for that?")
+            story.reply("rehack", "100%, it's defamation of the highest order")
+
+            post = chan.add_topic("mht", "Mountain View Recipe Leaked", f.read())
+            post.reply("admin", "NOTE: This was Syndicated from mht.com")
+            post.reply("byte", "what. the. hell.")
+            post.reply("isdedman", "isded really is dead :(")
+            post.reply("byte", "good one, but yeah you're right")
+            post.reply("stocknerd", "guys, COCA's gonna be on the up-and-up because of this, better buy, buy, buy")
+            post.reply("stocknerd", "and IDCO is gonna be down like crazy, so better short, short, short")
+            post.reply("byte", "isn't time in the market > timing the market?")
+            post.reply("stocknerd", "not if it's a short squeeze, and this is gonna be one hell of a short squeeze")
+
+        short = dcsebets.add_topic("u/stocknerd", "SHORT SQUEEZE: COCA UP, IDCO DOWN", "I anticipate that IDCO will go down a LOT, and COCA will go up: mht.com")
+        short.reply("u/admin", "The hedge funds are already doing it, breaks the point of n/dcsebets")
+        short.reply("u/stocknerd", "Shorting IDCO? Don't think so.")
+        short.reply("u/spill", "i've spent 10k on COCA stock, it's been down for a while, so I expect it to peak at its previous peak in ~6 months' time")
+        with open("data/mview_recipe.txt") as f:
+            ftp.pub.create_file("MountainViewRecipe.docx", f.read(), "mhtftp")
+        player.actions.append(Action(player.date.clone() + 1, action1))
+
     def pentest1_end():
         jmail = data.getNode("jmail")
         jmail.hacked = False
@@ -279,24 +324,27 @@ def main_story_missions(self):
             "Once you've broken in, finish the mission.",
         ],
         [
-            "Hello. I need to be discreet about this as I am asking you to hack my employer.",
-            "I want to access the secret recipe for Mountain View, and I know that it's on the mainframe.",
-            "If you can get into their mainframe for me, I would be willing to pay you nicely for it.",
-            "As a warning, their security is top notch and I doubt you'll be able to break in directly.",
-            "You might need to fish around for the admin password or something.",
-            "Get back to me if you find anything.",
+            "Hello. I am the sysadmin for the Mountain View Intranet.",
+            "I have become increasingly disenchanted with my work here, as I feel that I will be replaced any second now.",
+            "As such, I'd like to acquire a small payday for myself, with your help of course.",
+            "A fellow employee of mine keeps uploading encrypted copies of the Mountain View Recipe File password on our FTP server.",
+            "I have to keep deleting them for security purposes, but this time, I haven't noticed that he's done it again, wink wink.",
+            "I need you to do the following:",
             "",
-            "Oh, yeah, their website is 'mountain.view'.",
+            "1. Hack into our intranet (intranet.mountain.view). I won't give you the password because that's too obvious.",
+            "2. Connect to the Intranet. You can use `lanconnect` or similar software.",
+            "3. Hack into our ftp server (located at ftp.local).",
+            "4. Using the header data from that Password file, find my colleague's computer and hack into that. I think it's in his home folder.",
+            "5. Find the password for the archive.",
+            "6. Jump back into our FTP server and decrypt the archive with the password in the password file.",
+            "7. Upload the decrypted file to the reHack drop server (drop.rehack.org)."
+            "",
+            "Once this happens, who knows. Maybe I'll sell the recipe on the black market, or to the Coca Corporation, although they have a history of not accepting those offers.",
         ],
         [
-            "Hey, thanks a lot.",
-            "The administration team is very small, so I guess you know who I am now.",
-            "I found the recipe, so there's that.",
-            "I'm gonna have to clear your tracks as well as mine, but I'm a sysadmin, I designed that mainframe, I can do it.",
-            "I'm gonna hold onto the formula for a couple years before selling it on some kinda marketplace.",
-            "",
-            "Anyway, I wish you luck on your quest.",
-            "Oh, and by the way, Mountain View contains flourine, so I don't think I'll be drinking it anytime soon.",
+            "No way, you did it! Was it too hard? I hope not.",
+            "I'm gonna stash the recipe for later, and encrypt it with my *own* DEC archive. The password for that one is 'mountainous', in case you're curious.",
+            "Feel free to read the recipe for yourself, although from what I've just read, it might be worse for your health than ACTUAL mountain dirt.",
         ],
         [
             "Hello, fellow hacker.",
@@ -490,6 +538,7 @@ def main_story_missions(self):
             emails[3],
             emails[4],
             reward=500,
+            end_function=mission1_end,
         ),
         FileCheckMission(
             self,

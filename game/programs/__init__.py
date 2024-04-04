@@ -430,7 +430,7 @@ def debuginfo(args, player):
         player.trace = Trace("debianftp", "Corporate", 5)
     elif args == ["ide"]:
         code.interact(local=locals() | globals(), banner="Python Interpreter: press Ctrl+D to exit",exitmsg="Exit Python interpreter.")
-    elif args == ["mission"]:
+    elif args == ["cm"]:
         while player.currentMission:
             print("Completed: {}".format(player.currentMission.name))
             player.currentMission.end()
@@ -600,11 +600,11 @@ def debuginfo(args, player):
         print("Positional arguments:")
         print("    passwd: print a random password that can be brute-forced")
         print("    ip: lists information about nodes")
-        print("    mission: complete an entire mission series.")
+        print("    sm: start a mission")
+        print("    cm: complete an entire mission series.")
         print("    gen: lists all IP addresses generated randomly.")
         print("    buy: purchases all programs for free")
         print("    lan: displays info about a LAN")
-        print("    sm: start a mission")
         print("    health: list all dead nodes")
         print("    date: control the date and time")
         print("    pc: display how many programs are installed")
@@ -1092,16 +1092,7 @@ def store(args, player):
             for program in programs:
                 if program.name == pid:
                     valid = True
-                    if player.creditCount >= program.price:
-                        player.creditCount -= program.price
-                        program.unlocked = True
-                        print(
-                            "Successfully purchased {} for {} Cr.".format(
-                                program.name, program.price
-                            )
-                        )
-                    else:
-                        print("ERROR: Cannot afford program.")
+                    print(installProgram(program))
             if not valid:
                 print("ERROR: Invalid program.")
         except Exception as e:
@@ -2423,7 +2414,7 @@ class SignupService(Node):
 
 class LocalAreaNetwork(Node):
     def __init__(self, name, uid, address, minPorts=1, **kwargs):
-        super().__init__(name, uid, address, ports = [data.getPort(1)], minPorts=minPorts, **kwargs)
+        super().__init__(name, uid, address, ports = [data.getPort(1), data.getPort(22)], minPorts=minPorts, **kwargs)
         self.devices = []
         self.devices += [Router(self.devices)]
         self.alive = True
@@ -3420,7 +3411,8 @@ Have a lovely day, and check out my story on mht.com for the full story.""")
         dm.add_message("insolvent", "Hello, we have noticed your talent, and would like to invite you to SCSI group")
         dm.add_message("insolvent", "We've already added your username and password to SCSI-net, our LAN that you can connect to from anywhere.")
         dm.add_message("insolvent", "If you're unfamiliar with LAN's, the router is located at 192.168.0.0, and you can connect to our various services from it.")
-        dm.add_message("insolvent", "Get to us here: {}".format(data.getTorNode("scsi").address))
+        dm.add_message("insolvent", "In order to hide our true location on the Internet, we require you to connect through a client instead of connecting to an address.")
+        dm.add_message("insolvent", "Download SCSI-NET client: {}".format(data.getTorNode("scsiclient").address))
 
         scsi = data.getTorNode("scsi")
         scsi.create_user(player.name, player.password)
@@ -3787,9 +3779,8 @@ class IRChannel(Base):
 
 
 class IRCServer(Node):
-    def __init__(self, name, uid, address, motd=None, private=False, *args, **kwargs):
+    def __init__(self, name, uid, address, private=False, *args, **kwargs):
         super().__init__(name, uid, address, ports=[data.getPort(6667), data.getPort(22), data.getPort(80), data.getPort(21)],minPorts=4, *args, **kwargs)
-        self.motd = motd if motd else data.IRC_MOTD
         self.channels = []
         self.private = private
     def add_channel(self, *args, **kwargs):
@@ -4146,7 +4137,7 @@ class MedicalDatabase(Node):
 
 
 def ircmain(server, username):
-    def view(channel):
+    def view(channel, username):
         cls()
         div()
         print("{}: {}".format(channel.name, channel.description))
@@ -4157,34 +4148,27 @@ def ircmain(server, username):
         if msg in ["/quit", "/exit"]:
             return
         else:
-            channel.add_message(username, msg)
-            view(channel)
-    cls()
-    div()
-    print(server.motd)
-    div()
+            if message:
+                channel.add_message(username, msg)
+            view(channel, username)
+    channels = [x for x in server.channels if not x.private or username in x.allowlist]
     while True:
-        ch = input("{}@{} >".format(username, server.address))
-        if ch in ["/quit", "/exit", "quit", "exit"]:
+        cls()
+        div()
+        print(server.name)
+        div()
+        i = 1
+        for channel in channels:
+            print("[{}] {}: {}".format(i, channel.name, channel.description))
+            i += 1
+        # print("[0] Exit")
+        div()
+        try:
+            ch = int(input("$"))
+        except:
             return
-        elif ch in ["/list"]:
-            channels = [x for x in server.channels if not x.private or username in x.allowlist]
-            for channel in channels:
-                print("{}: {}".format(channel.name, channel.description))
-        elif ch.startswith("/join "):
-            name = ch[6:]
-            joined = None
-            for channel in server.channels:
-                if channel.name == name:
-                    joined = channel
-            if joined:
-                view(joined)
-            else:
-                print("ERROR: Invalid channel name.")
-        elif ch in ["/clear", "/cls"]:
-            cls()
-        else:
-            print("ERROR: Invalid command.")
+        if 0 < ch <= len(channels):
+            view(channels[ch-1], username)
 
 def irclogin(node):
     loginUser = None
@@ -4237,6 +4221,24 @@ def logclear(args):
         print("Deletes all logs mentioning your IP address.")
         div()
 
+def installProgram(program):
+    player = data.getNode("localhost")
+    program = data.getObject(data.PROGRAMS, program)
+    if not program:
+        return "There was a problem parsing this package."
+    if program.unlocked:
+        return "Program already purchased."
+    if player.creditCount < program.price:
+        return "Insufficient funds to purchase program."
+    for prog in data.PROGRAMS:
+        if prog.name == program.name and prog.version < program.version:
+            prog.unlocked = False
+    program.unlocked=True
+    player.creditCount -= program.price
+    return "Successfully installed {} {}".format(program.name, program.version)
+
+    
+
 class ProgramInstaller(Node):
     """
     This node allows you to install a program when you connect to it.
@@ -4259,15 +4261,7 @@ class ProgramInstaller(Node):
         div()
         ch = input("[Y/n] $").lower()
         if ch == "y":
-            if program.unlocked:
-                print("ERROR: This program is already installed.")
-                return
-            if player.creditCount < program.price:
-                print("ERROR: Insufficient funds to purchase program.")
-                return
-            program.unlocked = True
-            player.creditCount -= program.price
-            print("Successfully purchased {} v{}".format(self.program.name, self.program.version))
+            print(installProgram(program))
 def darkstore(args):
     player = data.getNode("localhost")
     programs = [x for x in [data.getProgram(x[0], x[1]) for x in data.DARKSTORE] if not x.unlocked]
@@ -4278,38 +4272,8 @@ def darkstore(args):
     for program in programs:
         print("{} {}".format(program.name, program.version))
 
-# def scsi(args):
-#     player = data.getNode("localhost")
-#     if not "scsi" in player.secrets.keys():
-#         player.secrets["scsi"] = {
-#             "username": None,
-#         }
-#     scsi = data.getTorNode("scsi")
-#     if args == ["connect"]:
-#         if not player.secrets["scsi"]["username"]:
-#             print("ERROR: Not authenticated.")
-#             print("Run `scsi auth` to fix this.")
-#             return
-#         tor([scsi.address], player)
-#     elif args == ["auth"]:
-#         if player.secrets["scsi"]["username"]:
-#             print("ERROR: Already authenticated.")
-#         else:
-#             username, password = input("Username $"), getpass.getpass("Password $")
-#             for user in scsi.users:
-#                 if user.name == username and user.password == password:
-#                     player.secrets["scsi"]["username"] = username
-#                     print("Successfully authenticated.")
-#     else:
-#         div()
-#         print("scsi [args]")
-#         div()
-#         print("scsi connect: Connect to SCSI-NET")
-#         print("scsi auth: Log into SCSI-NET")
-#         print("scsi list: list all services available to SCSI-NET")
-#         div()
-
 def scsi(args):
     player = data.getNode("localhost")
     scsi = data.getTorNode("scsi")
     tor([scsi.address], player)
+    scsi.address = data.generateTorURL("scsi")

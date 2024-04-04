@@ -33,13 +33,6 @@ class BankAccount(programs.BankAccount):
 
 global PORTS, NODES, TOR_NODES, PROGRAMS, GENERATED
 
-IRC_MOTD = """Welcome to the server!
-For a list of commands: /help
-For a list of channels: /list
-To join a channel: /join <channel>
-To leave a channel: /leave
-To exit: /quit or /exit"""
-
 CRIMDB_LETTER = """NOTE TO INTERN
 
 The computer system you are interacting with is CRITICAL GOVERNMENT INFRASTRUCTURE.

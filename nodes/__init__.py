@@ -11,6 +11,7 @@ import data
 
 import nodes.lan
 import nodes.forum
+import nodes.forum.nerdnet
 import nodes.test
 import nodes.university
 
@@ -93,7 +94,7 @@ eff.add_link("effdonate")
 meddb = programs.MedicalDatabase()
 meddb.create_user("root", "root")
 
-irc = programs.IRCServer("reHack IRC", "rhirc", "irc.rehack.org", private=True)
+irc = programs.IRCServer("reHack IRC", "rhirc", "irc.rehack.org", True)
 # irc.create_user("admin", "constant")
 irc_general = irc.add_channel("#general", "General reHack discussion")
 irc_news = irc.add_channel("#news", "Server Announcements", readOnly=True)
@@ -122,7 +123,7 @@ def main():
         meddb,
         irc,
         blank,
-    ] + nodes.forum.main() + nodes.test.main() + nodes.lan.main()
+    ] + nodes.forum.main() + nodes.forum.nerdnet.main() + nodes.test.main() + nodes.lan.main()
 
 def tor():
     return [] + nodes.forum.tor() + nodes.lan.tor()

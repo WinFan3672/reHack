@@ -524,7 +524,9 @@ class PlayerShodan(Node):
         mht = data.getNode("mht")
         ## Check if the trace is valid
         if player.trace:
-            print(self.check_trace())
+            if not self.check_trace(player):
+                player.trace = None
+                print("SUCCESS: Active trace cleared.")
         if player.date == GameDate(2010, 7, 15) and not self.mhtForum:
             # print("MHT FORUM EVENT")
             self.mhtForum = True

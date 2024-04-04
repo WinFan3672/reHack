@@ -1,3 +1,9 @@
+"""
+This file contains classes accessible to ALL other files.
+As such, no other code is imported, and it is free-standing.
+Because of this, only core classes are included here.
+"""
+
 import random
 import os
 import string
