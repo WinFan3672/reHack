@@ -35,7 +35,7 @@ autocratmain = Node("Project Autocrat Mainframe", "autocratmain", cialan.generat
 autocratmain.create_file("autocrat.docx", data.AUTOCRAT, "home", cialan.uid)
 cialan.add_device(autocratmain)
 
-scsi = programs.RemoteLAN("SCSI-Net :: Connect to 192.168.0.0 for an IP list", "scsi", data.generateTorURL())
+scsi = programs.RemoteLAN("SCSI-Net", "scsi", data.generateTorURL())
 
 scsi_irc = programs.IRCServer("SCSI Group IRC", "irc", "irc.local")
 # scsi_irc.minPorts = 0
@@ -47,6 +47,8 @@ scsi.add_device(scsi_test)
 
 mview = programs.RemoteLAN("Mountain View Intranet", "mountainremote", "intranet.mountain.view")
 mview_ftp = programs.FTPServer("Resources", "ftp", "ftp.local")
+mview.create_user("admin", "admin")
+mview_ftp.create_user("admin", "admin")
 with open("data/mview_recipe.txt") as f:
     mview_ftp.pub.create_encrypted_file(File("Recipe.docx", f.read(), "mountainremote"), "mountainremote", "mountainous")
 mview_ftp.pub.create_encrypted_file(File("Password.txt", "mountainous", "jrallypc"), "jrallypc", data.genString(32))

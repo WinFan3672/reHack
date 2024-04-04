@@ -9,6 +9,13 @@ import copy
 import string
 import getpass
 
+def getObject(iterable, obj):
+    """
+    Iterates through an iterable, and returns the first instance where it is equal to obj
+    """
+    for i in iterable:
+        if i == obj:
+            return i
 
 def getPassword():
     passwd = getpass.getpass("Password $")
@@ -64,6 +71,11 @@ Please respect the wishes of the maintainers of this FTP server and don't:
 4. Attempt to gain write access maliciously;
 
 This message was brought to you by the Apache Foundation."""
+
+def getProgram(name, version):
+    for program in PROGRAMS:
+        if name == program.name and version == program.version:
+            return program
 
 def extrapolateTime(realTimeSinceDay):
     # Define in-game constants
@@ -545,7 +557,7 @@ N = [
     programs.WebServer(
         "MasterVPS Homepage", "mastervps_web", "mastervps.me", "mastervps.me"
     ),
-    programs.WebServer("Mountain View", "mountainweb", "mountain.view", "mountain.view",linked=["mountainmain", "mview.mail.com", "moutainremote"]),
+    programs.WebServer("Mountain View", "mountainweb", "mountain.view", "mountain.view",linked=["mountainmain", "mview.mail.com", "mountainremote"]),
     programs.WebServer("DomainExpert Home", "dexpertweb", "domain.expert", "domain.expert"),
     Node("Mountain View Mainframe","mountainmain", generateIP(), ports=[],minPorts=2**16,users=[User("admin","backdrop2252")]),
     # Node("Mountain View Remote Work Hub","moutainremote",generateIP(),ports=[getPort(22),getPort(21)],minPorts=2, linked =["jrallypc","nbaileypc","mflange"]),
@@ -624,10 +636,12 @@ PROGRAMS = [
     Program("bankhack", 1.0, "Tool for brute-forcing a bank PIN", programs.bankhack, price=1000, classPlease=True),
     Program("tormail", 1.0, "Email client for the Tor network", programs.tormail, True, classPlease=True),
     Program("date", 1.0, "Check the date and time", programs.date, True, classPlease=True),
-    Program("openftp", 1.0, "Install an FTP server to a remote node", programs.openftp, price=10000),
+    Program("openftp", 1.0, "Install an FTP server to a remote node", programs.openftp, price=10000, inStore=False),
     Program("chmod", 1.0, "Set permissions for a folder and its contents on a remote node", programs.chmod, True),
     Program("irc", 1.0, "IRC client", programs.irc, True),
     Program("logclear", 1.0, "Clears logs on a remote node", programs.logclear, price=1000),
+    Program("darkstore", 1.0, "The one-stop shop for ALL your Tor needs", programs.darkstore, inStore=False),
+    Program("scsi", 1.0, "Official SCSI-NET client", programs.scsi, inStore=False),
 ]
 
 DARKSTORE = []
@@ -755,6 +769,8 @@ TN = [
     programs.TorSignupService("rhomail-signup", generateTorURL(), "rhomail", usePlayerName=True),
     programs.TorSignupService("vc-signup", generateTorURL("vcsu"), "vcforum", usePlayerName=True, private=["anonmail", "euclid"]),
     programs.TorSignupService("ds-signup", generateTorURL("darkstoresu"), "darkstore", usePlayerName=True, private=["rhmail"]),
+    programs.ProgramInstaller("DarkStore", "darkstore", "darkstore.onion", getProgram("darkstore", 1.0)),
+    programs.ProgramInstaller("SCSI Client", "scsiclient", generateTorURL("scsiclient"), getProgram("scsi", 1.0)),
 ]
 for node in TN:
     TOR_NODES.append(node)
@@ -777,3 +793,7 @@ jrallypc = getNode("jrallypc")
 jrallypc_home = jrallypc.get_file("home")
 jrally_file = jrallypc_home.create_file("Password.txt", "mountainous", "jrallypc")
 jrallypc_home.create_encrypted_file(jrally_file, "jrally_file", genString(32))
+
+DARKSTORE = [
+    ("openftp", 1.0),
+]

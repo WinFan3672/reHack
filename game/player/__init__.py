@@ -82,6 +82,7 @@ class PlayerNode(Node):
         self.saveName = hashlib.sha256(str(random.randint(1, 2^64) * time.time()).encode()).hexdigest()
         self.trace = None
         self.actions = []
+        self.secrets = {}
     def saveBase(self):
         default = {
             "name": self.name,

@@ -279,12 +279,12 @@ mht_irc.reply("admin", "so an IRC would add to the expense and also responsibili
 mht_irc.reply("admin", "If you want to become a forum admin, contact me here: admin@mht.mail.com")
 mht_irc.reply("server", "admin locked this topic")
 
-darkstore = programs.Forum("Dark.Store", "darkstore", data.generateTorURL("dstore"))
-ds_general = darkstore.boards[0]
-ds_store = darkstore.add_board("Store")
+# darkstore = programs.Forum("Dark.Store", "darkstore", data.generateTorURL("dstore"))
+# ds_general = darkstore.boards[0]
+# ds_store = darkstore.add_board("Store")
 
 def main():
     return []
 
 def tor():
-    return [vcforum, chan, darkstore]
+    return [vcforum, chan]

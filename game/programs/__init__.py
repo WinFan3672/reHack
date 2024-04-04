@@ -1073,7 +1073,7 @@ def mailoverflow(args, player):
 
 def store(args, player):
     def getPrograms(player):
-        return [x for x in data.PROGRAMS if not x.unlocked and x.inStore]
+        return sorted([x for x in data.PROGRAMS if not x.unlocked and x.inStore], key=lambda x: x.name)
 
     if args == ["list"]:
         div()
@@ -2458,6 +2458,10 @@ class RemoteLAN(LocalAreaNetwork):
     Note that each user gets the same LAN connection (for now, probably).
     """
     def main(self):
+        cls()
+        div()
+        print("Sign Into {}".format(self.name))
+        div()
         username, passwd = input("Username $"), getpass.getpass("Password $")
         for user in self.users:
             if user.name == username and user.password == passwd:
@@ -3506,7 +3510,7 @@ def ftp(args):
             if node.hacked and data.checkPort(node, 21):
                 folderView(data.createFolder(node), True)
             elif data.checkPort(node, 21) and node.readAccess:
-                folderView(data.createFolder(node))
+                folderView(data.createFolder(node), node.hacked)
             else:
                 print("ERROR: Access denied.")
         else:
@@ -3613,8 +3617,8 @@ def folderView(self, writeAccess=False):
             elif type(file) in [File, EncryptedFile]:
                 fileView(file, self, True if writeAccess else self.writeAccess)
         except:
-            # print(traceback.format_exc())
-            # br()
+            print(traceback.format_exc())
+            br()
             return
 
 def get_origin(origin):
@@ -4232,3 +4236,80 @@ def logclear(args):
         div()
         print("Deletes all logs mentioning your IP address.")
         div()
+
+class ProgramInstaller(Node):
+    """
+    This node allows you to install a program when you connect to it.
+    """
+    def __init__(self, name, uid, address, program, **kwargs):
+        super().__init__(name, uid, address, **kwargs)
+        self.program = program
+    def main(self):
+        player = data.getNode("localhost")
+        program = data.getObject(data.PROGRAMS, self.program)
+        if not program:
+            print("There was a problem parsing this package.")
+            return
+        cls()
+        div()
+        print("Install {} v{}?".format(program.name, program.version))
+        div()
+        print("Price: {} Cr.".format(program.price))
+        print("Description: {}".format(program.desc))
+        div()
+        ch = input("[Y/n] $").lower()
+        if ch == "y":
+            if program.unlocked:
+                print("ERROR: This program is already installed.")
+                return
+            if player.creditCount < program.price:
+                print("ERROR: Insufficient funds to purchase program.")
+                return
+            program.unlocked = True
+            player.creditCount -= program.price
+            print("Successfully purchased {} v{}".format(self.program.name, self.program.version))
+def darkstore(args):
+    player = data.getNode("localhost")
+    programs = [x for x in [data.getProgram(x[0], x[1]) for x in data.DARKSTORE] if not x.unlocked]
+    cls()
+    div()
+    print("Dark Store")
+    div()
+    for program in programs:
+        print("{} {}".format(program.name, program.version))
+
+# def scsi(args):
+#     player = data.getNode("localhost")
+#     if not "scsi" in player.secrets.keys():
+#         player.secrets["scsi"] = {
+#             "username": None,
+#         }
+#     scsi = data.getTorNode("scsi")
+#     if args == ["connect"]:
+#         if not player.secrets["scsi"]["username"]:
+#             print("ERROR: Not authenticated.")
+#             print("Run `scsi auth` to fix this.")
+#             return
+#         tor([scsi.address], player)
+#     elif args == ["auth"]:
+#         if player.secrets["scsi"]["username"]:
+#             print("ERROR: Already authenticated.")
+#         else:
+#             username, password = input("Username $"), getpass.getpass("Password $")
+#             for user in scsi.users:
+#                 if user.name == username and user.password == password:
+#                     player.secrets["scsi"]["username"] = username
+#                     print("Successfully authenticated.")
+#     else:
+#         div()
+#         print("scsi [args]")
+#         div()
+#         print("scsi connect: Connect to SCSI-NET")
+#         print("scsi auth: Log into SCSI-NET")
+#         print("scsi list: list all services available to SCSI-NET")
+#         div()
+
+def scsi(args):
+    player = data.getNode("localhost")
+    scsi = data.getTorNode("scsi")
+    tor([scsi.address], player)
