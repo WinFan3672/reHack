@@ -65,8 +65,8 @@ Please respect the wishes of the maintainers of this FTP server and don't:
 
 This message was brought to you by the Apache Foundation."""
 
-def getProgram(name, version):
-    for program in PROGRAMS:
+def getProgram(name, version, force=True):
+    for program in PROGRAMS if force else [x for x in PROGRAMS if x.unlocked]:
         if name == program.name and version == program.version:
             return program
 
@@ -248,7 +248,7 @@ PORTS = [
     Port(6667, "Internet Relay Chat"),
     Port(6881, "BitTorrent Tracker"),
     Port(7777, "reHackOS Node"),
-    Port(9200, "Tor Node"),
+    Port(9200, "Tor Relay"),
     Port(24525, "Message Board"),
     Port(65536, "DNS Server"),
 ]
@@ -587,6 +587,7 @@ N = [
     programs.MailDotComTracker(),
     programs.WebServer("Donate to the EFF", "effdonate", "donate.eff.org", "effdonate"),
     programs.PublicFTPServer("MHT FTP", "mhtftp", "ftp.mht.com", False),
+    programs.WebServer("WarpMedia Broadband", "warpmediaweb", "warp.media", "warpmedia")
 ]
 for item in N:
     NODES.append(item)
@@ -632,13 +633,17 @@ PROGRAMS = [
     Program("openftp", 1.0, "Install an FTP server to a remote node", programs.openftp, price=10000, inStore=False),
     Program("chmod", 1.0, "Set permissions for a folder and its contents on a remote node", programs.chmod, True),
     Program("irc", 1.0, "IRC client", programs.irc, True),
-    Program("logclear", 1.0, "Clears logs on a remote node", programs.logclear, price=1000),
+    Program("logclear", 1.0, "Clears logs on a remote node", programs.logclear, price=500),
     Program("darkstore", 1.0, "The one-stop shop for ALL your Tor needs", programs.darkstore, inStore=False),
     Program("scsi", 1.0, "Official SCSI-NET client", programs.scsi, inStore=False),
+    Program("unhack", 1.0, "Removes root access from a node", programs.unhack, True),
+    Program("autohack", 1.0, "Semi-automatically hacks a node", programs.autohack, price=1500, inStore=False),
 ]
 
-DARKSTORE = []
-
+DARKSTORE = [
+    ("openftp", 1.0),
+    ("autohack", 1.0),
+]
 SPICES = [
     "Basil",
     "Thyme",
@@ -787,6 +792,15 @@ jrallypc_home = jrallypc.get_file("home")
 jrally_file = jrallypc_home.create_file("Password.txt", "mountainous", "jrallypc")
 jrallypc_home.create_encrypted_file(jrally_file, "jrally_file", genString(32))
 
-DARKSTORE = [
-    ("openftp", 1.0),
+
+
+PRISON_STATUS = [
+    "Incarcerated",
+    "Free",
+    "Awaiting Parole",
+    "Awaiting Release",
+    "Deceased",
+    "Supervised Leave",
+    "Transferring",
+    "Missing",
 ]

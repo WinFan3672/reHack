@@ -47,7 +47,6 @@ def sendEmail(email):
         else:
             m = [
                 "Your message to {} could not be delivered.".format(recipient),
-                "The email address is invalid.",
                 "Please check that the email address is valid and try again.",
                 "You can use the `mxlookup` utility for a list of email accounts on our server.",
                 "",
@@ -528,6 +527,8 @@ def debuginfo(args, player):
         for x in data.NODES:
             print("{}\t\t{}".format(x.uid, x.name))
         div()
+    elif args == ["ip", "count"]:
+        print(len(data.NODES))
     elif args == ["ip", "info"]:
         div()
         print("debug ip info <uid>")
@@ -2413,12 +2414,15 @@ class SignupService(Node):
 
 
 class LocalAreaNetwork(Node):
-    def __init__(self, name, uid, address, minPorts=1, **kwargs):
+    def __init__(self, name, uid, address, minPorts=2, **kwargs):
         super().__init__(name, uid, address, ports = [data.getPort(1), data.getPort(22)], minPorts=minPorts, **kwargs)
         self.devices = []
         self.devices += [Router(self.devices)]
         self.alive = True
         self.locked = False
+    def tick(self):
+        for node in self.devices:
+            node.tick()
     def check_health(self):
         return self.alive
     def add_device(self, device):
@@ -3119,8 +3123,8 @@ class Board(Base):
 
 
 class Forum(Node):
-    def __init__(self, name, uid, address, webmaster="null", admin_password=None, private=False):
-        super().__init__(name, uid, address, minPorts=65536, ports=[data.getPort(21), data.getPort(22), data.getPort(25), data.getPort(24525)])
+    def __init__(self, name, uid, address, webmaster="null", admin_password=None, private=False, **kwargs):
+        super().__init__(name, uid, address, minPorts=3, ports=[data.getPort(21), data.getPort(22), data.getPort(25), data.getPort(24525)], **kwargs)
         self.playerPlease = True
         self.webmaster = webmaster ## Email address of webmaster
         self.boards = [Board("General Discussion")]
@@ -3999,6 +4003,8 @@ class MedicalDatabase(Node):
         super().__init__("United States Federal Medical Database", "meddb", "db.medic.gov", **kwargs)
         self.people = []
         self.emails = []
+        self.trace = Trace(self.uid, "Government", 35)
+
     def main(self):
         username, password = input("Username $"), getpass.getpass("Password $")
         for user in self.users:
@@ -4237,7 +4243,7 @@ def installProgram(program):
     player.creditCount -= program.price
     return "Successfully installed {} {}".format(program.name, program.version)
 
-    
+
 
 class ProgramInstaller(Node):
     """
@@ -4265,15 +4271,97 @@ class ProgramInstaller(Node):
 def darkstore(args):
     player = data.getNode("localhost")
     programs = [x for x in [data.getProgram(x[0], x[1]) for x in data.DARKSTORE] if not x.unlocked]
-    cls()
-    div()
-    print("Dark Store")
-    div()
-    for program in programs:
-        print("{} {}".format(program.name, program.version))
-
+    
+    if args == ["list"]:
+        for program in programs:
+            div()
+            print("{} v{}".format(program.name, program.version))
+            print("\t{}".format(program.desc))
+            print("\t{} Cr.".format(program.price))
+        div()
+        if not programs:
+            print("The store is empty.")
+            div()
+    elif len(args) == 1:
+        prog = args[0]
+        for program in programs:
+            if program.name == prog:
+                print(installProgram(program))
+    else:
+        div()
+        print("darkstore <program>")
+        div()
+        print("Purchase a program from DarkStore, the ONLY trustworthy Darknet software store.")
+        div()
+        print("darkstore list: list all available programs.")
+        div()
 def scsi(args):
     player = data.getNode("localhost")
     scsi = data.getTorNode("scsi")
     tor([scsi.address], player)
     scsi.address = data.generateTorURL("scsi")
+
+
+def unhack(args):
+    if len(args) == 1:
+        node = data.getNode(args[0], True)
+        if not node:
+            print("ERROR: Invalid address.")
+            return
+        if node.hacked:
+            node.hacked = False
+            print("Successfully removed root access.")
+        else:
+            print("ERROR: Access denied.")
+    else:
+        div()
+        print("unhack <ip address>")
+        div()
+        print("Removes root access (acquired from porthack/login/etc.) from a node.")
+
+def bal(args):
+    player = data.getNode("localhost")
+    store(["balance"], player)
+
+def autohack(args):
+    sshkill = data.getProgram("sshkill", 1.0, False)
+    ftpkill = data.getProgram("ftpkill", 1.0, False)
+    webworm = data.getProgram("webworm", 1.0, False)
+    if args == ["check"]:
+        good = True
+        if not sshkill:
+            good = False
+            print("ERROR: `sshkill` is not installed. Cannot open port 22.")
+        if not ftpkill:
+            good = False
+            print("ERROR: `ftpkill` is not installed. Cannot open port 21.")
+        if not webworm:
+            good = False
+            print("ERROR: `webworm` is not installed, cannot open port 80.")
+        if good:
+            print("All programs installed.")
+    elif len(args) == 1:
+        node = data.getNode(args[0], True)
+        if node:
+            ports = [x.num for x in node.ports]
+            if 21 in ports and ftpkill:
+                ftpkill.function([node.address])
+            if 22 in ports and sshkill:
+                sshkill.function([node.address])
+            if 80 in ports and webworm:
+                webworm.function([node.address])
+            porthack([node.address])
+        else:
+            print("ERROR: Invalid address.")
+    else:
+        div()
+        print("autohack <address>")
+        div()
+        print("Semi-automatically hacks into nodes.")
+        div()
+        print("Version: 1.0")
+        print("Supports ports: 21, 22, 80")
+        print("Fully Automatic: No")
+        div()
+        print("autohack check: check if all needed programs are installed")
+        div()

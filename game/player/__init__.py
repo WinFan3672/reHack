@@ -536,12 +536,13 @@ class PlayerShodan(Node):
                 forum.reply("admin", "The forum is here: forum.mht.com, almost forgot!")
 
 class Criminal(Base):
-    def __init__(self, forename, surname, age, prison=None, crimes=None):
+    def __init__(self, forename, surname, age, prison=None, crimes=None, status=None):
         self.forename = forename
         self.surname = surname
         self.age = age
         self.prison = prison
         self.crimes = crimes if crimes else []
+        self.status = status
 class CriminalDatabase(Node):
     def __init__(self, **kwargs):
         super().__init__("United States Federal Government Criminal Database", "uscrimdb", "db.crim.gov", ports=[data.getPort(21), data.getPort(22), data.getPort(80), data.getPort(1433)], minPorts=4, users=[User("admin", "admin")])
@@ -556,11 +557,6 @@ class CriminalDatabase(Node):
         self.create_file("New Intern Letter.txt", data.CRIMDB_LETTER, "home")
         self.create_user("root", "root")
         self.trace = Trace(self.uid, "Government", 35)
-    def add(self, name, age):
-        c = Criminal(name, age, random.choice(data.CRIMES))
-        self.people.append(c)
-        return c
-
     def main(self, attemptCount=1):
         username = input("Username $")
         passwd = getpass.getpass("Password $")
@@ -618,13 +614,31 @@ class CriminalDatabase(Node):
         except:
             print("ERROR: Invalid input.")
             return
-        prison = input("Prison Name $")
-        self.criminals.append(Criminal(forename, surname, age, prison if prison else None))
+        prison = input("Prison Name (Optional) $")
+        status = self.select_status()
+        self.criminals.append(Criminal(forename, surname, age, prison if prison else None, status=status))
         self.message("Successfully added criminal.")
     def manage_criminal(self):
         crim = self.choose_criminal()
         if crim:
             self.manage(crim)
+    def select_status(self):
+        while True:
+            cls()
+            div()
+            print("Select Prisoner Status")
+            div()
+            i = 1
+            for status in data.PRISON_STATUS:
+                print("[{}] {}".format(i, status))
+                i += 1
+            div()
+            try:
+                ch = int(input("$"))
+            except:
+                ch = 0
+            if 0 <= ch -1 < len(data.PRISON_STATUS):
+                return data.PRISON_STATUS[ch-1]
     def message(self, message):
         cls()
         div()
@@ -646,6 +660,7 @@ class CriminalDatabase(Node):
             div()
             print("Name: {}, {}".format(crim.surname, crim.forename))
             print("Age: {}".format(crim.age))
+            print("Status: {}".format(crim.status))
             print("Prison: {}".format(crim.prison))
             print("Crimes: {}".format("; ".join(crim.crimes) if crim.crimes else "None"))
             div()

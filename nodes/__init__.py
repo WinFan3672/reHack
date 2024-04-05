@@ -25,6 +25,7 @@ wiki_hacking.add_page("Hacking Tor")
 wiki_hacking.add_page("Firewalls")
 wiki_hacking.add_page("LAN")
 wiki_hacking.add_page("Encrypted Files")
+wiki_hacking.add_page("Traces")
 
 wiki_nodes = rhwiki.homepage.add_category("Nodes")
 wiki_nodes.add_page("Tor")

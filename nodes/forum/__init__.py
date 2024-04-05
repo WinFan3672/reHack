@@ -283,8 +283,11 @@ mht_irc.reply("server", "admin locked this topic")
 # ds_general = darkstore.boards[0]
 # ds_store = darkstore.add_board("Store")
 
+thatcd = programs.Forum("ThatCD", "thatcd", "that.cd", private=True)
+thatcd_general = thatcd.boards[0]
+
 def main():
-    return []
+    return [thatcd]
 
 def tor():
     return [vcforum, chan]
