@@ -175,8 +175,8 @@ def getTorNode(uid: str, strict:bool=False):
         if (uid == item.uid and not strict) or uid == item.address and item.check_health():
             return item
 
-def getAnyNode(uid, strict=False):
-    node = getNode(uid, strict)
+def getAnyNode(uid, strict=False, force=False):
+    node = getNode(uid, strict, force)
     if not node:
         node = getTorNode(uid, strict)
     return node

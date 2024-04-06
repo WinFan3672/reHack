@@ -3612,8 +3612,8 @@ def folderView(self, writeAccess=False):
             elif type(file) in [File, EncryptedFile]:
                 fileView(file, self, True if writeAccess else self.writeAccess)
         except:
-            print(traceback.format_exc())
-            br()
+            # print(traceback.format_exc())
+            # br()
             return
 
 def get_origin(origin):
@@ -3869,9 +3869,7 @@ def date(args, player):
 class HostKillMission(Mission):
     def check_end(self):
         node = data.getAnyNode(self.target)
-        if not node:
-            return False
-        return node.check_health()
+        return not node
 
 def openftp(args):
     if len(args) == 1:
