@@ -18,6 +18,9 @@ from game.programs import (
     FileDeletedCheck,
     FileCheckMission,
     HostKillMission,
+    NodeCheckMission,
+    NodeCheck,
+    UserNodeCheck,
 )
 import nodes
 import nodes.forum
@@ -863,6 +866,77 @@ def start_missions(self):
     ]
     return MISSIONS
 
+def scsi(self):
+    def thatcd_end():
+        """
+        This function is the end function for the scsi_thatcd mission.
+        """
+        player = data.getNode("localhost")
+        that = data.getNode("thatcd")
+        that.hacked = False
+        that.minPorts=65536
+        that_irc = data.getNode("thatirc")
+        that.users = [x for x in that.users if x.name != "septic"]
+        that_irc.create_user(self.name, self.password)
+
+        dm = that_irc.add_direct_message(["admin", player.name])
+        dm.add_message("admin", "Hello @{}".format(player.name))
+        dm.add_message("admin", "I was watching you while you broke into our system.")
+        dm.add_message("admin", "I watched as you added a new user (septic) over ssh")
+        dm.add_message("admin", "I have enough evidence to take to the police")
+        dm.add_message("admin", "However, I'm better than that.")
+        dm.add_message("admin", "septic isn't welcome in our forum, and nor are you. I wish you the best.")
+
+        sendEmail(Email(
+            "null@null.null",
+            "{}@jmail.com".format(player.name),
+            "[irc.that.cd] You have been invited to our IRC Server",
+            """Hello!
+You have been invited into the ThatCD IRC Server. The admin has already messaged you. Please log in with your reHack credentials."""
+            ))
+
+    end_email = Email("null@null.null", "{}@jmail.com".format(self.name), "Mission Complete!", "Thanks for working with SCSI group.")
+
+    that_nc = NodeCheck("thatcd")
+    that_nc.add(UserNodeCheck("septic", "password"))
+
+    bodies = [
+        [
+            "Hello and welcome to SCSI. As an introductory task, we'd like you to assist a friend of ours with joining a website.",
+            "Have you heard of that.cd? It's a private BitTorrent tracker specialising in music. It has something like 1,000,000 torrents, all of which are uploaded at the highest quality.",
+            "Unfortunately, that.cd is notoriosuly difficult to enter, and our friend here has tried the interview process and failed.",
+            "That's where you come in.",
+            "I want you to hack into the forum and ssh into it. Then, run this command:",
+            "",
+            "user add septic password",
+            "",
+            "This will create a new user 'septic' with the password 'password'.",
+            "Security should be minimal, that.cd has a pretty bad reputation when it comes to making sure their Apache server and such is up-to-date.",
+        ]
+    ]
+    bodies = ["\n".join(x) for x in bodies]
+    emails = [
+        Email(
+            "null@null.null",
+            "{}@jmail.com".format(self.name),
+            "Introductory Mission: ThatCD",
+            bodies[0],
+        )
+    ]
+    return [
+        NodeCheckMission(
+            self,
+            "scsi_thatcd",
+            "Introductory Mission: ThatCD",
+            that_nc,
+            emails[0],
+            end_email,
+            reward=1500,
+            end_function=thatcd_end,
+        )
+    ]
+
 def main(self):
     nodes.forum.chan_jobs.topics += chan_missions(self)
-    return start_missions(self) + base_missions(self) + main_story_missions(self)
+    nodes.lan.scsi_jobs.missions = scsi(self)
+    return start_missions(self) + base_missions(self) + main_story_missions(self) + scsi(self)

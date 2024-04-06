@@ -42,6 +42,9 @@ scsi_irc = programs.IRCServer("SCSI Group IRC", "irc", "irc.local")
 scsirc_general = scsi_irc.add_channel("#general", "The main discussion")
 scsi.add_device(scsi_irc)
 
+scsi_jobs = programs.MissionServer("Jobs", "jobs", "jobs.local")
+scsi.add_device(scsi_jobs)
+
 scsi_test = Node("Test Node", "test", "test.local", ports=[data.getPort(21), data.getPort(22)])
 scsi.add_device(scsi_test)
 

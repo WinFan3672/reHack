@@ -1250,12 +1250,11 @@ class XOSDevice(Node):
         super().__init__(name, uid, address)
         self.users = [User("admin", password)]
         self.ports = [
-            data.getPort(22),
             data.getPort(21),
             data.getPort(23),
-            data.getPort(6881),
+            data.getPort(1443),
         ]
-        self.minPorts = 5
+        self.minPorts = 4
         self.notes = notes
         self.accounts = accounts
         self.model = model
@@ -1562,16 +1561,16 @@ def logview(args):
 
 
 class MissionServer(Node):
-    def __init__(self, name, uid, address, player, missions=[]):
+    def __init__(self, name, uid, address, missions=[]):
         super().__init__(name, uid, address)
-        self.player = player
         self.ports = [data.getPort(22), data.getPort(1433), data.getPort(23)]
-        self.users = [User("admin"), User(self.player.name)]
+        self.users = [User("admin")]
         self.minPorts = 4
         self.main_hacked = self.main
         self.missions = missions
-
+    
     def main(self):
+        self.player = data.getNode("localhost")
         self.missions = [x for x in self.missions if not x.complete]
         print("Welcome.")
         print("There are {} contracts available.".format(len(self.missions)))
@@ -3784,7 +3783,7 @@ class IRChannel(Base):
 
 class IRCServer(Node):
     def __init__(self, name, uid, address, private=False, *args, **kwargs):
-        super().__init__(name, uid, address, ports=[data.getPort(6667), data.getPort(22), data.getPort(80), data.getPort(21)],minPorts=4, *args, **kwargs)
+        super().__init__(name, uid, address, ports=[data.getPort(6667), data.getPort(22), data.getPort(80), data.getPort(21)], minPorts=4, *args, **kwargs)
         self.channels = []
         self.private = private
     def add_channel(self, *args, **kwargs):
@@ -4179,6 +4178,10 @@ def ircmain(server, username):
 def irclogin(node):
     loginUser = None
     if node.private and not node.hacked:
+        cls()
+        div()
+        print("Sign Into {}".format(node.name))
+        div()
         username, password = input("Username $"), getpass.getpass("Password $")
         for user in node.users:
             if user.name == username and user.password == password:
@@ -4365,3 +4368,36 @@ def autohack(args):
         div()
         print("autohack check: check if all needed programs are installed")
         div()
+
+class NodeKillCheck:
+    def check(self, node):
+        return not data.getAnyNode(node).check_health()
+
+class UserNodeCheck:
+    def __init__(self, username, password=None):
+        self.username = username
+        self.password = password
+    def check(self, node):
+        for user in node.users:
+            if user.name == self.username and (not self.password or self.password == user.password):
+                return True
+
+
+class NodeCheck:
+    def __init__(self, node):
+        self.node = node
+        self.checks = []
+    def add(self, check):
+        self.checks.append(check)
+
+class NodeCheckMission(Mission):
+    def check_end(self):
+        if not isinstance(self.target, NodeCheck):
+            raise TypeError("Mission target must be a NodeCheck")
+        node = data.getAnyNode(self.target.node)
+        if not node:
+            return False
+        for check in self.target.checks:
+            if not check.check(node):
+                return False
+        return True

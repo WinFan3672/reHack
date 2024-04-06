@@ -21,6 +21,7 @@ lan.add_device(lan_nest)
 lan.add_device(Node("Hack me", "hackme", lan.generateIP()))
 
 forum = programs.Forum("Test Forum", "forum", "forum.rehack.test", admin_password="root")
+forum.hacked = True
 
 forum_general = forum.boards[0]
 forum_offtopic = forum.add_board("Off topic")
@@ -39,5 +40,7 @@ forum_rules.reply("ThirdUser", "+1")
 
 git = programs.GitServer("Test Server VC", "testgit", "git.rehack.test")
 
+blank = Node("Blank Node", "blanktest", "blank.rehack.test")
+
 def main():
-    return [git, forum, lan]
+    return [git, forum, lan, blank]

@@ -262,11 +262,7 @@ class Node(Base):
         self.readAccess = False ## FTP read access
         self.playerPlease = False # if true, connect will pass player
                                   # to main() or main_hacked()
-        self.motd = "\n".join([
-            "$ Welcome to Bash on Debian GNU/Linux 5.0.5",
-            "$ To open a remote shell, run ssh <address of this node>",
-            "$ To browse this terminal's files, run ssh <address of this node>",
-        ])
+        self.installedPrograms = ["scan", "user", "info"] ## Used by ssh
         self.trace = None
     def genRand(self, length=1024):
         s = ""
@@ -309,11 +305,16 @@ class Node(Base):
     
     def main(self, player=None):
         print("ERROR: Access denied.")
-    def main_hacked(self, player=None):
-        print(self.motd)
+    # def main_hacked(self, player=None):
+    #     print(self.motd)
 
     def create_user(self, username, password=None):
         self.users.append(User(username, password))
+    
+    def get_user(self, username):
+        for user in self.users:
+            if user.name == username:
+                return user
 
     def get_file(self, name):
         for file in self.files:

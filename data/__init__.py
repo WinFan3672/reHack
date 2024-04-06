@@ -587,7 +587,7 @@ N = [
     programs.MailDotComTracker(),
     programs.WebServer("Donate to the EFF", "effdonate", "donate.eff.org", "effdonate"),
     programs.PublicFTPServer("MHT FTP", "mhtftp", "ftp.mht.com", False),
-    programs.WebServer("WarpMedia Broadband", "warpmediaweb", "warp.media", "warpmedia")
+    programs.WebServer("WarpMedia Broadband", "warpmediaweb", "warp.media", "warpmedia"),
 ]
 for item in N:
     NODES.append(item)
@@ -622,7 +622,7 @@ PROGRAMS = [
     Program("bruter", 1.0, "Attempts to brute-force a node's admin password using a small dictionary", programs.bruter, True, classPlease=True),
     Program("emailbruter", 1.0, "Attempts to brute-force an email address password using a small dictionary", programs.emailbruter, True, classPlease=True),
     Program("firewall", 1.0, "The firewall multi-tool, free for a limited time only", programs.firewall, price=0),
-    Program("tor", 1.0, "Connect to the Tor network", programs.tor, True, classPlease=True),
+    Program("tor", 1.0, "Connect to the Tor network", programs.tor, True, classPlease=True, inStore=False),
     # Program("sweep", programs.sweep, price=0),
     Program("save", 1.0, "Save the game", programs.save,True,classPlease=True),
     Program("lanconnect", 1.0, "Connect to a hacked LAN as if you were inside of the network", programs.LANConnect, True, classPlease=True),

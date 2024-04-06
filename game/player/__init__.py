@@ -21,6 +21,7 @@ from game.programs import (
     NodeTracker,
     SignupService,
     TorSignupService,
+    ProgramInstaller,
 )
 
 import data
@@ -198,13 +199,12 @@ class PlayerNode(Node):
                 "null.null", "nullmail", "null.null", self, [User("null")], minPorts=0
             ),
             MissionServer(
-                "Rejected Missions Repository", "rejected", "rejects.rehack.org", self
+                "Rejected Missions Repository", "rejected", "rejects.rehack.org",
             ),
             MissionServer(
                 "reHack Contract Hub",
                 "rehack_contracts",
                 "contracts.rehack.org",
-                self,
                 missions.main_story_missions(self),
             ),
             MailServer(
@@ -250,6 +250,7 @@ class PlayerNode(Node):
             MailServer("Debian Mail", "debianmail", "mail.debian.org", self, [User("admin")]),
             CriminalDatabase(),
             PlayerShodan(),
+            ProgramInstaller("Tor Download Service", "tordl", "dl.tor.org", data.getProgram("tor", 1.0)),
         ] + nodes.main()
         onionsites = [
             TorMailServer(
