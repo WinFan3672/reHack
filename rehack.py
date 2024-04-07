@@ -1,4 +1,5 @@
 #!/usr/bin/env python
 import game.main
 
-game.main.start()
+if __name__ == "__main__":
+    game.main.start()
