@@ -425,6 +425,12 @@ def debuginfo(args, player):
     elif args == ["test"]:
         for node in data.NODES:
             nmap([node.address])
+    elif args == ["freecash"]:
+        reward = 0
+        for mission in [x for x in player.MISSIONS if x.complete]:
+            reward += mission.reward
+        player.creditCount += reward
+        print("Gained {:,} Cr.".format(reward))
     elif args == ["trace"]:
         player.trace = Trace("debianftp", "Corporate", 5)
     elif args == ["ide"]:

@@ -564,17 +564,17 @@ def main_story_missions(self):
             end_function=pentest1_end,
             next_id="pentest1_ctf",
         ),
-        Mission(
-            self,
-            "pentest2",
-            "Pentesting Series: Mail.com",
-            "cinnamon",
-            emails[9],
-            emails[10],
-            reward=2500,
-            end_function = pentest2_end,
-            next_id = "pentest2_ctf",
-        ),
+        # Mission(
+        #     self,
+        #     "pentest2",
+        #     "Pentesting Series: Mail.com",
+        #     "cinnamon",
+        #     emails[9],
+        #     emails[10],
+        #     reward=2500,
+        #     end_function = pentest2_end,
+        #     next_id = "pentest2_ctf",
+        # ),
     ]
 
 
