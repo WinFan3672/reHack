@@ -189,15 +189,15 @@ def base_missions(self):
             emails[1],
             reward=7500,
         ),
-        Mission(
-            self,
-            "pentest2_ctf",
-            "CTF: Mail.com",
-            "cinnamon",
-            emails[0],
-            emails[1],
-            reward=5500,
-        ),
+        # Mission(
+        #     self,
+        #     "pentest2_ctf",
+        #     "CTF: Mail.com",
+        #     "cinnamon",
+        #     emails[0],
+        #     emails[1],
+        #     reward=5500,
+        # ),
     ]
 
 

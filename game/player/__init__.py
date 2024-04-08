@@ -141,25 +141,27 @@ class PlayerNode(Node):
             elif ch in ["clear", "cls"]:
                 cls()
             else:
-                parts = ch.split(" ")
-                if len(parts) == 1:
-                    args = []
-                else:
-                    args = parts[1:]
-                name = parts[0]
-                program = getProgram(name)
-                if program and program.unlocked:
-                    try:
-                        if program.classPlease:
-                            program.execute(args, self)
-                        else:
-                            program.execute(args)
-                    except:
-                        print(traceback.format_exc())
-                else:
-                    print("FATAL ERROR: The program was not found.")
+                self.run_command(ch)
             for node in data.NODES + data.TOR_NODES:
                 node.tick()
+    def run_command(self, command):
+        parts = command.split(" ")
+        if len(parts) == 1:
+            args = []
+        else:
+            args = parts[1:]
+        name = parts[0]
+        program = getProgram(name)
+        if program and program.unlocked:
+            try:
+                if program.classPlease:
+                    program.execute(args, self)
+                else:
+                    program.execute(args)
+            except:
+                print(traceback.format_exc())
+        else:
+            print("FATAL ERROR: The program was not found.")
     def check_health(self):
         return True
     def startActions(self):
