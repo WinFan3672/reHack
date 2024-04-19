@@ -423,8 +423,7 @@ def debuginfo(args, player):
         #     print(folder.files == fc.files)
         #     print(folder.files == fdc.files)
     elif args == ["test"]:
-        for node in data.NODES:
-            nmap([node.address])
+        pass
     elif args == ["freecash"]:
         reward = 0
         for mission in [x for x in player.MISSIONS if x.complete]:
@@ -2311,6 +2310,7 @@ def tor(args, player):
                         node.main(player)
                     else:
                         node.main()
+                node.visited = True
             else:
                 print("ERROR: Onionsite '{}' not found.".format(arg))
     else:

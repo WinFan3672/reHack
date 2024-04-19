@@ -588,6 +588,7 @@ N = [
     programs.WebServer("Donate to the EFF", "effdonate", "donate.eff.org", "effdonate"),
     programs.PublicFTPServer("MHT FTP", "mhtftp", "ftp.mht.com", False),
     programs.WebServer("WarpMedia Broadband", "warpmediaweb", "warp.media", "warpmedia"),
+    Node("Workspaces 7 Workstation Edition", "5chan_mission1", generateIP(), ports=[getPort(21), getPort(22), getPort(6881)]),
 ]
 for item in N:
     NODES.append(item)

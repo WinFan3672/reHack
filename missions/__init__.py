@@ -41,6 +41,18 @@ def chan_missions(self):
     Missions located in the "Jobs" board in 5chan.
     """
     bodies = [
+        [
+            "Right. You might have heard of the game World of Legends. It's fairly popular, and I've recently found out that it's peer-to-peer.",
+            "This means that I can quite easily find the IP's of any player I play with.",
+            "Earlier today, I played against someone who was really, really good. So good, in fact, that I'm quite sure they were cheating.",
+            "(I say 'quite sure', but they were casting spells from across the map with a level three character.)",
+            "",
+            "Because I hate cheaters, I want them to get what they deserve.",
+            "Their system can't be that secure, so could you connect to their PC and delete some system files?",
+            # "I'm not that technical but looking in my personal filesystem, I can see this file called core.sys that looks important.",
+            # "Maybe that'll point you in the right direction.",
+            "Oh, yeah the address: {}".format(data.getNode("5chan_mission1").address)
+        ]
     ]
     end_email = Email(
         "null", 
@@ -50,8 +62,23 @@ def chan_missions(self):
     )
     bodies = ["\n".join(x) for x in bodies]
     emails = [
+        Email(
+            "null",
+            "{}@jmail.com".format(self.name),
+            "Die, Cheater",
+            bodies[0],
+        )
     ]
     return [
+        HostKillMission(
+            self,
+            "5chan_mission1",
+            "Die, Cheater",
+            "5chan_mission1",
+            emails[0],
+            end_email,
+            reward=650,
+        )
     ]
 
 
@@ -939,4 +966,4 @@ You have been invited into the ThatCD IRC Server. The admin has already messaged
 def main(self):
     nodes.forum.chan_jobs.topics += chan_missions(self)
     nodes.lan.scsi_jobs.missions = scsi(self)
-    return start_missions(self) + base_missions(self) + main_story_missions(self) + scsi(self)
+    return start_missions(self) + base_missions(self) + main_story_missions(self) + scsi(self) + chan_missions(self)
