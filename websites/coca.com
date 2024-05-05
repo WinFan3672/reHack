@@ -5,10 +5,10 @@ For over 130 years, Coca has provided the world with the best-tasting, most refr
 div()
 Buy now at:
 * A supermarket
-* A off-license shop
+* A convenience store
 * A restaurant
-* At school vending machines
-* At sporting events
+* School vending machines
+* Sporting events
 div()
 $0.99 per can.
 div()
