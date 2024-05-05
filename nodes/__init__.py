@@ -121,17 +121,22 @@ that_irc = programs.IRCServer("ThatCD IRC", "thatirc", "irc.that.cd", private=Tr
 
 dcse = programs.StockMarket("DCSE", "dcse", "trade.dcse.com")
 
-dcse_coca = programs.Stock("Coca Corporation", "COCA", 115)
-dcse_idco = programs.Stock("IsDedCo", "IDCO", 115)
+dcse_coca = programs.Stock("Coca Corporation", "COCA", 25)
+dcse_idco = programs.Stock("IsDedCo", "IDCO", 62)
 dcse_acme = programs.Stock("Acme Corporation", "ACME", 50)
+dcse_anon = programs.Stock("AnonMail GmbH", "ANON", 11)
+dcse_duck = programs.Stock("DuckDonald Corporation", "DUCK", 66)
+dcse_mail = programs.Stock("JMail Incorporated", "MAIL", 45)
 
-dcse.add_free_stock("COCA", 1)
-dcse.add_free_stock("IDCO", 1)
-dcse.add_free_stock("ACME", 1)
+dcse.add_free_stock("COCA", 2)
+dcse.add_free_stock("DUCK", 1)
 
 dcse.add_stock(dcse_coca)
 dcse.add_stock(dcse_idco)
 dcse.add_stock(dcse_acme)
+dcse.add_stock(dcse_anon)
+dcse.add_stock(dcse_duck)
+dcse.add_stock(dcse_mail)
 
 def main():
     return [
