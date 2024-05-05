@@ -47,7 +47,7 @@ div()
     * 5chan: N/A
         * anonymous image board and forum
         * w3d notice: The URL for 5chan has been removed from the directory by request of the US government.
-          To access this website, please contact us: support@w3d.org
+          To access this website, please contact us: support@w3d.mail.com
 div()
 w3d notice: We cannot guarantee that all links to websites are valid. Due to link rot, some links may be dead.
 div()
