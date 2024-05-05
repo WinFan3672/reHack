@@ -52,6 +52,11 @@ isp.reply("u/admin", "looks like you get ripped of no matter how little or how m
 
 dcsebets_welcome = dcsebets.add_topic("u/dcse_killer", "Welcome to n/dcsebets!", """DCSE Bets is a subnerd dedicated to getting rich through the DC Stock Exchangce (DCSE), through the use of high-rick and non-confirmist strategies.""")
 
+dcsebets_tutorial = dcsebets.add_topic("u/dcse_killer", "How To Trade On DCSE", """1. Connect to trade.dcse.com
+2. Create an account
+3. Purchase some shares
+4. Profit""")
+
 future_plans = meta.add_topic("u/admin", "Plans For The Future", """1. A new Ranking system
 
 The idea is to let users Up-Rank or Down-Rank a post or reply to that post if they think it's good or bad.
@@ -59,7 +64,7 @@ That way, content is sorted based on rank. Bad posts would get pushed away, and 
 
 2. A new profile system.
 
-Each user has a profile with a certain amount of rankpoints. Every time someone up-ranks your post, you get +0.25, or +0.125 for a reply, and you lose that much per down-rank.
+Each user has a profile with a certain amount of rankpoints. Every time someone up-ranks your post, you get +0.25, and you lose that much per down-rank. Replying to a post or posting gives you +0.125.
 
 3. Profile tiers (WIP)
 
@@ -72,12 +77,11 @@ Each user has a profile with a certain amount of rankpoints. Every time someone 
 * >= 5000 Rank: Plus User
     These users have a [+] next to their u/name, which stands out from other users. They can also give 5 awards per day.
 * >= 10000 Rank: Plus+ User
-    ???
+    Plus+ users are able to moderate any subnerd. The settings for the subnerd will be able to block specific users or disable all Plus+ moderation entirely.
 
 4. Awards
 
-Standard+ and higher users get daily free Awards to give out. You cannot give yourself awards, and the amount of free awards you have per day resets, and does not stack.
-You can also buy ranks if you don't have any.
+Standard+ and higher users get daily free Awards to give out. You cannot give yourself awards, and the amount of free awards you have per day resets, and does not stack. Some awards are purchaseable, and are more powerful.
 
 * 'Good': +10 Rank ($0.99)
 * 'Bad': -10 Rank ($0.99)
@@ -96,8 +100,47 @@ To make all of this possible, NerdNet will need a custom server and client, inst
 
 More news coming soon.""")
 
+future_plans.reply("u/nerd", "The Plus+ thing concerns me. I think this will introduce a culture of power-hungry moderators who 'get off', so to speak, off their own abilities to silence criticism.")
+future_plans.reply("u/admin", "you may have a point")
+future_plans.reply("u/mht", "What will we think when we look back at this very early post in ten years' time?")
+future_plans.reply("u/admin", "I don't think nerdnet will survive that long :)")
+future_plans.reply("u/mht", "I beg to differ - nerds will LOVE it, and they will flock to it")
+future_plans.reply("u/admin", "I imagine the network effect will help as well")
+future_plans.reply("u/mht", "Ah, but the network effect is a but double-edged sword, remember what happened to OurSpaces?")
+future_plans.reply("u/bit", "My grandmother was so displeased when it shut down, she phoned be about it and everything")
+future_plans.reply("u/gold", "A genine idea: awards should have a pay-it-forward deal, where if someone gives you an award, you can then award it to someone else")
+future_plans.reply("u/admin", "I'll only do that for the free ones, but it's a great idea")
+future_plans.reply("u/admin", "It'll have to be a temporary thing - after 24h, the award goes poof")
+future_plans.reply("u/reack", "Perhaps some of our agents may be able to assist you with building server software?")
+future_plans.reply("u/admin", "I don't trust hackers, least of all black-hats like you lot")
+future_plans.reply("u/rehack", "I imagine you read all the ColonSlash propaganda?")
+future_plans.reply("u/admin", "As a matter of fact, I did")
+future_plans.reply("u/rehack", "And you never saw the notice at the bottom saying it was AI-generated?")
+future_plans.reply("u/rehack", "Nonesense! It's 2010, AI can barely identify plant pots in images!")
+future_plans.reply("u/admin", "Funny you mention that, actually, I installed the SearchOS Item Identify software earlier today, it's quite cool")
+future_plans.reply("u/someone", "I wonder how far Artificial Intelligence and Machine Learning will come in ten years? fifteen? twenty?")
+future_plans.reply("u/admin", "I doubt it'd be able to play Chess any better than it already does")
+future_plans.reply("u/neckbeards_alliance", "genine question: are the award prices final? Silver looks like bad value compared to Gold")
+future_plans.reply("u/admin", "they might change in the final impementation, and inflation will likely push it up over time :)")
+future_plans.reply("u/admin", "and of course silver is bad value, it's a funnel towards paying $1 more for gold")
+future_plans.reply("u/dcse_killer", "do you plan on going public any time (haha)")
+future_plans.reply("u/admin", "speaking genuinely, n/dcsebets will be locked down temporarily during that period")
+future_plans.reply("u/dcse_killer", "people in The Community will know what to do when the time comes")
+future_plans.reply("u/admin", "well, a short squeeze sounds good to me")
+future_plans.reply("u/dcse_killer", "wait until the crash, that will be fun")
+
+web_server = programming.add_topic("u/neckbeards_alliance", "Apache or WebEngine?", """Which one is best? I need to know.""")
+web_server.reply("u/horseman", "WebEngine is way lighter and just as powerful, plus it has a better license")
+web_server.reply("u/neckbeards_alliance", "Do NOT open up the Apache License VS BSD 'debate' can of worms, you'll just piss off a bunch of nerds")
+web_server.reply("u/strange_fluid", "I hear WebEngine is gonna make a proprietary version of their software soon")
+web_server.reply("u/admin", "yeah well they can't do anything to the original, if they take THAT proprietary instead of spinning it off, someone'll fork it")
+web_server.reply("u/neckbeards_alliance", "someone will fork it --> someone else will do it anyway, why should I fork it?")
+
+nerdnet_tor = copy.copy(nerdnet)
+nerdnet_tor.address = "nerd-net.onion"
+
 def main():
     return [nerdnet]
 
 def tor():
-    return []
+    return [nerdnet_tor]

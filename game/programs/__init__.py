@@ -8,7 +8,7 @@ import types
 import inspect
 import traceback
 import game.programs.connect as connect
-import game.programs.connect as CONNECT
+import game.programs.connect as CONNECT # used in LANConnect()
 import uuid
 import random
 import copy
@@ -4405,3 +4405,183 @@ class NodeCheckMission(Mission):
             if not check.check(node):
                 return False
         return True
+
+
+class Stock(Base):
+    def __init__(self, name, symbol, price=1.0):
+        self.name = name
+        self.symbol = symbol
+        self.price = price
+        self.prevPrice = price
+    def change_price(self, percent):
+        multiplier = 1 + percent / 100
+        self.prevPrice = int(self.price)
+        self.price *= multiplier
+        self.price = int(self.price)
+    def get_value(self, market, shares):
+        return market.get_stock(self.symbol).price * shares
+
+class StockMarketAccount(Base):
+    def __init__(self, market, username, password, stocks={}):
+        self.username = username
+        self.password = password
+        self.stocks = stocks
+        self.market = market
+    def get_value(self):
+        val = 0
+        for symb in self.stocks:
+            val += self.market.get_stock(symb).price * self.stocks[symb]
+        return val
+
+class StockMarket(Node):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, ports=[data.getPort(80), data.getPort(22)], minPorts=65536, **kwargs)
+        self.stocks = []
+        self.accounts = []
+        self.free_stocks = {}
+    def main(self):
+        player = data.getNode("localhost")
+        while True:
+            cls()
+            div()
+            print(self.name)
+            div()
+            print("[1] New Account")
+            print("[2] Existing Account")
+            div()
+            try:
+                ch = int(input(">"))
+            except:
+                return
+            if ch == 1:
+                self.new_account(player)
+            elif ch == 2:
+                self.existing_account_login(player)
+    def get_stock(self, symbol):
+        for stock in self.stocks:
+            if stock.symbol == symbol:
+                return stock
+    def new_account(self, player):
+        cls()
+        div()
+        print("Create Account")
+        div()
+        username, password = input("Username $"), getpass.getpass("Password $")
+        if username and password:
+            account = StockMarketAccount(self, username, password, {x.symbol:0 for x in self.stocks})
+            for stock in self.free_stocks:
+                account.stocks[stock] = self.free_stocks[stock]
+            self.accounts.append(account)
+            cls()
+            div()
+            print("Successfully created account.")
+            br()
+        else:
+            div()
+            print("ERROR: Both a username and password are required.")
+            br()
+    def existing_account_login(self, player):
+        cls()
+        div()
+        print("Log In")
+        div()
+        username, password = input("Username $"), getpass.getpass("Password $")
+        for account in self.accounts:
+            if username == account.username and password == account.password:
+                self.existing_account(player, account)
+    def existing_account(self, player, account):
+        while True:
+            cls()
+            div()
+            print(account.username)
+            div()
+            print("Balance: {} Credits".format(player.creditCount))
+            print("Portfolio: {} Credits".format(account.get_value()))
+            div()
+            print("[1] View Market")
+            print("[2] View Portfolio")
+            print("[3] Buy Shares")
+            print("[4] Sell Shares")
+            print("[0] Log Off")
+            div()
+            try:
+                ch = int(input(">"))
+            except:
+                continue
+            if ch == 1:
+                self.view_market(player)
+            elif ch == 2:
+                self.view_portfolio(player, account)
+            elif ch == 3:
+                self.buy_shares(player, account)
+            elif ch == 4:
+                self.sell_shares(player, account)
+            elif ch == 0:
+                return
+    def buy_shares(self, player, account):
+        cls()
+        symb = input("Enter Symbol $").upper()
+        stock = self.get_stock(symb)
+        if not stock:
+            print("ERROR: Invalid stock.")
+            br()
+            return
+        max_shares = int(player.creditCount / stock.price)
+        if not max_shares:
+            print("ERROR: Cannot afford any shares.")
+            br()
+            return
+        try:
+            shares = int(input("Enter Shares To Buy (Max: {}) $".format(max_shares)))
+        except:
+            shares = max_shares
+        shares = shares if shares <= max_shares else max_shares
+        account.stocks[symb] += shares
+        player.creditCount -= stock.price * shares
+        div()
+        print("Successfully purchased {} shares for {} Credits.".format(shares, stock.price*shares))
+        br()
+        
+    def view_market(self, player):
+        cls()
+        for stock in self.stocks:
+            div()
+            print("{} ({})".format(stock.name, stock.symbol))
+            div()
+            print("Opening Price: {}".format(stock.price))
+            print("Last Opening Price: {}".format(stock.prevPrice))
+        br()
+    def view_portfolio(self, player, account):
+        cls()
+        div()
+        for symb in account.stocks:
+            value = account.stocks[symb] * self.get_stock(symb).price
+            print("{}: {} Shares (Value: {})".format(symb, account.stocks[symb], value))
+        br()
+    def add_stock(self, stock):
+        self.stocks.append(stock)
+        for account in self.accounts:
+            account.stocks[stock.symbol] = 0
+    def add_free_stock(self, symbol, amount):
+        self.free_stocks[symbol] = amount
+
+    def sell_shares(self, player, account):
+        cls()
+        symb = input("Enter Symbol $").upper()
+        stock = self.get_stock(symb)
+        if not stock:
+            print("ERROR: Invalid stock.")
+            br()
+            return
+        try:
+            shares = int(input("Enter Shares To Sell (Owned: {}) $".format(account.stocks[symb])))
+        except:
+            shares = account.stocks[symb]
+        owned_shares = account.stocks[symb]
+        shares = shares if shares <= owned_shares else owned_shares
+        account.stocks[symb] -= shares
+        player.creditCount += shares * stock.price
+        cls()
+        div()
+        print("Successfully sold {} shares for {} Credits.".format(shares, shares * stock.price))
+        br()

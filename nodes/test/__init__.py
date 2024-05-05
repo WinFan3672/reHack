@@ -21,7 +21,7 @@ lan.add_device(lan_nest)
 lan.add_device(Node("Hack me", "hackme", lan.generateIP()))
 
 forum = programs.Forum("Test Forum", "forum", "forum.rehack.test", admin_password="root")
-forum.hacked = True
+# forum.hacked = True
 
 forum_general = forum.boards[0]
 forum_offtopic = forum.add_board("Off topic")

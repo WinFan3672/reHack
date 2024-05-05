@@ -46,21 +46,19 @@ DO:
 DON'T:
     1. Change data without permission.
     2. Be disrespectful of others' time.
-    3. Attempt to disrupt the operation of the USFCD.
+    3. Attempt to disrupt the operation of the network.
 
 Failure to comply with these DOs and DON'Ts can lead to:
     1. Prison time;
     2. Severe fines;
-    3. Deportation back to your country of origin, in the case of immigrant/foreign workers
-
-REMEMBER THIS OR ELSE."""
+    3. Deportation back to your country of origin, in the case of immigrant/foreign workers."""
 INCOMING_README = """This is the incoming folder.
 If you have write access, this is where uploaded files should go.
 Please respect the wishes of the maintainers of this FTP server and don't:
 
 1. Upload files they wouldn't want on the server;
 2. Waste bandwidth and/or storage space;
-3. Delete other people's files;
+3. Delete other people's files without reason;
 4. Attempt to gain write access maliciously;
 
 This message was brought to you by the Apache Foundation."""
@@ -589,6 +587,7 @@ N = [
     programs.PublicFTPServer("MHT FTP", "mhtftp", "ftp.mht.com", False),
     programs.WebServer("WarpMedia Broadband", "warpmediaweb", "warp.media", "warpmedia"),
     Node("Workspaces 7 Workstation Edition", "5chan_mission1", generateIP(), ports=[getPort(21), getPort(22), getPort(6881)]),
+    programs.WebServer("DCSE Homepage", "dcseweb", "dcse.com", "dcse"),
 ]
 for item in N:
     NODES.append(item)

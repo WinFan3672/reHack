@@ -49,6 +49,10 @@ with open("msgboard/mht.com/Confirming The Rumours") as f:
     mht_rumours.reply("admin", "rehack: Probably not, they've ignored it since the OG xPhone")
     mht_rumours.reply("duplexity", "what a madman; publishing an article months ahead of time under nda while saying literally nothing")
 
+with open("msgboard/mht.com/dcseweb") as f:
+    mht_dcse = mht.add_story("DCSE Launches New Web-Based Stock Exchange", "Admin", GameDate(), f.read())
+    mht_dcse.reply("rehack", "when a company cites state-of-the-art encryption etc. they're just spurring on egotistical hackers")
+
 debian_ftp = programs.PublicFTPServer("Debian FTP", "debianftp", "ftp.debian.org", False)
 debian_ftp.pub.create_file("debian-5.0.5.iso", debian_ftp.genRand())
 debian_ftp.pub.create_file("debian-5.0.5.iso.gz", debian_ftp.genRand())
@@ -115,6 +119,20 @@ irc_rules.add_message("admin", "6. Report suspected undercover agents to me ASAP
 that_irc = programs.IRCServer("ThatCD IRC", "thatirc", "irc.that.cd", private=True)
 # that_rec = that_irc.add_channel("#recruitment", "Joining ThatCD? Get interviewed here!")
 
+dcse = programs.StockMarket("DCSE", "dcse", "trade.dcse.com")
+
+dcse_coca = programs.Stock("Coca Corporation", "COCA", 115)
+dcse_idco = programs.Stock("IsDedCo", "IDCO", 115)
+dcse_acme = programs.Stock("Acme Corporation", "ACME", 50)
+
+dcse.add_free_stock("COCA", 1)
+dcse.add_free_stock("IDCO", 1)
+dcse.add_free_stock("ACME", 1)
+
+dcse.add_stock(dcse_coca)
+dcse.add_stock(dcse_idco)
+dcse.add_stock(dcse_acme)
+
 def main():
     return [
         mht,
@@ -126,7 +144,8 @@ def main():
         meddb,
         irc,
         that_irc,
+        dcse,
     ] + nodes.forum.main() + nodes.forum.nerdnet.main() + nodes.test.main() + nodes.lan.main()
 
 def tor():
-    return [] + nodes.forum.tor() + nodes.lan.tor()
+    return [] + nodes.forum.tor() + nodes.forum.nerdnet.tor() + nodes.lan.tor()
