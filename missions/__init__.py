@@ -52,7 +52,7 @@ def chan_missions(self):
             # "I'm not that technical but looking in my personal filesystem, I can see this file called core.sys that looks important.",
             # "Maybe that'll point you in the right direction.",
             "Oh, yeah the address: {}".format(data.getNode("5chan_mission1").address)
-        ]
+        ],
     ]
     end_email = Email(
         "null", 

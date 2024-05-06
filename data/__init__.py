@@ -199,9 +199,9 @@ def generateTorURL(prefix=""):
     '''
     if type(prefix) != str:
         raise TypeError("Prefix must be a string.")
-    if len(prefix) > 64:
-        raise TypeError("Prefix cannot be > 64 characters long.")
-    genLength = 64 - len(prefix)
+    if len(prefix) > 16:
+        raise TypeError("Prefix cannot be > 16 characters long.")
+    genLength = 16 - len(prefix)
     return prefix + genString(genLength) + ".onion"
 
 def generateIP():
