@@ -591,6 +591,7 @@ N = [
     programs.WebServer("SFEC Homepage", "sfecweb", "sfec.com", "sfec", linked=["sfeclan", "sfecmail"]),
     programs.WebServer("XCombinator", "xcombinatorweb", "xcombinator.com", "xcombinator"),
     programs.WebServer("Nestaq: Home", "nestaqweb", "nestaq.com", "nestaq"),
+    programs.WebServer("DEC Solutions", "decweb", "dec.com", "dec"),
 ]
 for item in N:
     NODES.append(item)

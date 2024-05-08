@@ -670,6 +670,7 @@ class MailServer(Node):
         accounts=[],
         hideLookup=False,
         minPorts=4,
+        **kwargs
         ):
         super().__init__(
             name,
@@ -683,6 +684,7 @@ class MailServer(Node):
             ],
             minPorts=minPorts,
             player=player,
+            **kwargs,
         )
         self.users = users
         self.accounts = [MailAccount("accounts-daemon")]
@@ -988,8 +990,8 @@ def jmail(args, player):
     mailman_base([acc, player.password], player)
 
 class MailDotCom(MailServer):
-    def __init__(self, name, address, player, users=[]):
-        super().__init__(name, address, address, player)
+    def __init__(self, name, address, player, users=[], **kwargs):
+        super().__init__(name, address, address, player, users=users, **kwargs)
         self.ports = [
             data.getPort(21),
             data.getPort(22),
@@ -3605,7 +3607,7 @@ def folderView(self, writeAccess=False):
                 typ = "Encrypted File"
             else:
                 typ = "Corrupt"
-            print("[{}] {} ({})".format(i, file.name, "Folder: ({} files)".format(len(file.files)) if isinstance(file, Folder) else typ))
+            print("[{}] {} ({})".format(i, file.name, "Folder: {} files".format(len(file.files)) if isinstance(file, Folder) else typ))
             i += 1
         div()
         try:

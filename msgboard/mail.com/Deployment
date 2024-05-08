@@ -1,0 +1,12 @@
+Deployment Instructions
+div()
+1. Install QuickMail 2007 + CME.
+2. Connect domain.
+3. Connect to central server
+4. Charge customer.
+5. Send temporary login to admin panel to customer.
+div()
+About CME
+div()
+CME (Custom Mial Extensions) is a collection of third-party plugins that customises the QuickMail server how we want. 
+It includes MX masking and security extensions. The .zip file is on our FTP server (ftp.mail.com).

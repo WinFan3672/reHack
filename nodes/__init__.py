@@ -144,6 +144,10 @@ ffcftp = programs.FTPServer("FFC FTP Server", "ffcftp", "ftp.ffc.com")
 with open("data/ffc.txt") as f:
     ffcftp.pub.create_file("HerbsAndSpices.docx", f.read())
 
+mailcomftp = programs.FTPServer("Mail.Com FTP Server", "mailcomftp", "ftp.mail.com")
+mailcomftp.pub.create_file("CME_2009_12_07.zip", None)
+mailcomftp.pub.create_file("ReadMe.txt", """This folder contains tools deployed on all servers. For more info, see the docs server.""")
+
 def main():
     return [
         mht,
@@ -158,6 +162,7 @@ def main():
         dcse,
         nestaq,
         ffcftp,
+        mailcomftp,
     ] + nodes.forum.main() + nodes.forum.nerdnet.main() + nodes.test.main() + nodes.lan.main()
 
 def tor():

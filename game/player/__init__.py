@@ -254,6 +254,7 @@ class PlayerNode(Node):
             PlayerShodan(),
             ProgramInstaller("Tor Download Service", "tordl", "dl.tor.org", data.getProgram("tor", 1.0)),
             MailServer("SFEC Mail", "sfecmail", "sfec.mail", self, [User("admin"), User("xcombinator", "epilepsy"), User("dcse", "hydrogen")]),
+            MailDotCom("DEC Solutions Mail", "dec.mail.com", self, [User("admin", "password123"), User("sales", "password123"), User("press", "password123")]),
         ] + nodes.main()
         onionsites = [
             TorMailServer(
