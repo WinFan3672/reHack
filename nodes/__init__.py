@@ -138,6 +138,12 @@ dcse.add_stock(dcse_anon)
 dcse.add_stock(dcse_duck)
 dcse.add_stock(dcse_mail)
 
+nestaq = programs.StockMarket("Nestaq Stock Exchange", "nestaq", "trade.nestaq.com")
+
+ffcftp = programs.FTPServer("FFC FTP Server", "ffcftp", "ftp.ffc.com")
+with open("data/ffc.txt") as f:
+    ffcftp.pub.create_file("HerbsAndSpices.docx", f.read())
+
 def main():
     return [
         mht,
@@ -150,6 +156,8 @@ def main():
         irc,
         that_irc,
         dcse,
+        nestaq,
+        ffcftp,
     ] + nodes.forum.main() + nodes.forum.nerdnet.main() + nodes.test.main() + nodes.lan.main()
 
 def tor():

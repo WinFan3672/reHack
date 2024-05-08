@@ -3325,7 +3325,6 @@ class Shodan(Node):
     def __init__(self):
         super().__init__("SHODAN", "shodan", data.generateIP(), minPorts = 65536)
         self.enwiredEvent = False
-        self.mhtForum = False
         self.xdgNet = False
     def main(self):
         print("SHODAN breaks the fourth wall.")
@@ -3578,6 +3577,8 @@ class FTPServer(Node):
         self.pub = self.create_folder("pub")
         self.inc = self.create_folder("incoming", True)
         self.inc.create_file("ReadMe.txt", data.INCOMING_README)
+    def main(self):
+        print("ERROR: An FTP client is required to connect to this server.")
 class PublicFTPServer(Node):
     def __init__(self, node, uid, address, acceptUpload=True, *args, **kwargs):
         super().__init__(node, uid, address, ports=[data.getPort(21)], *args, **kwargs)
@@ -3585,6 +3586,8 @@ class PublicFTPServer(Node):
         self.inc = self.create_folder("incoming", acceptUpload)
         self.inc.create_file("ReadMe.txt", data.INCOMING_README)
         self.readAccess = True
+    def main(self):
+        print("ERROR: An FTP client is required to connect to this server.")
 
 def folderView(self, writeAccess=False):
     while True:
@@ -4324,7 +4327,8 @@ def unhack(args):
         div()
         print("unhack <ip address>")
         div()
-        print("Removes root access (acquired from porthack/login/etc.) from a node.")
+        print("Removes root access (acquired from porthack/login/etc) from a node.")
+        div()
 
 def bal(args):
     player = data.getNode("localhost")
@@ -4435,10 +4439,14 @@ class StockMarketAccount(Base):
 
 class StockMarket(Node):
     def __init__(self, *args, **kwargs):
-        super().__init__(*args, ports=[data.getPort(80), data.getPort(22)], minPorts=65536, **kwargs)
+        super().__init__(*args, ports=[data.getPort(80), data.getPort(22), data.getPort(21)], minPorts=65536, **kwargs)
         self.stocks = []
         self.accounts = []
         self.free_stocks = {}
+        self.folder = self.create_folder("StockMarket")
+        self.folder.create_file("ReadMe.txt", "For support on how to manage the Stock Market server, contact Stock Market Solutions: sms.us")
+    def check_locked(self):
+        return "LOCKFILE" in [x.name for x in self.folder.flatten()]
     def main(self):
         player = data.getNode("localhost")
         while True:
@@ -4448,6 +4456,8 @@ class StockMarket(Node):
             div()
             print("[1] New Account")
             print("[2] Existing Account")
+            if self.hacked:
+                print("[3] Admin Panel")
             div()
             try:
                 ch = int(input(">"))
@@ -4457,11 +4467,54 @@ class StockMarket(Node):
                 self.new_account(player)
             elif ch == 2:
                 self.existing_account_login(player)
+            elif ch == 3 and self.hacked:
+                self.admin_panel(player)
+    def admin_panel(self, player):
+        while True:
+            cls()
+            div()
+            print("Admin Panel")
+            div()
+            print("[1] Shut Down Exchange")
+            div()
+            try:
+                ch = int(input(">"))
+            except:
+                return
+            if ch == 1:
+                self.shut_down(player)
+    def shut_down(self, player):
+        cls()
+        div()
+        print("Confirm?")
+        div()
+        print("Are you sure you wish to shut down the exchange?")
+        print("This cannot be undone through this panel and requires additional access.")
+        div()
+        print("[1] YES")
+        print("[0] No")
+        div()
+        ch = int(input(">"))
+        if ch == "1":
+            self.folder.create_file("LOCKFILE", "Delete this file to re-open the stock market.")
+            cls()
+            div()
+            print("Success")
+            div()
+            print("New sessions will be rejected. Existing sessions will disappear shortly.")
+            print("To start up again, delete the LOCKFILE from the /StockMarket directory. You can use an FTP server.")
+            br()
     def get_stock(self, symbol):
         for stock in self.stocks:
             if stock.symbol == symbol:
                 return stock
     def new_account(self, player):
+        if self.check_locked():
+            cls()
+            div()
+            print("ERROR: The server is down for maintenance. Check back later.")
+            br()
+            return
         cls()
         div()
         print("Create Account")
@@ -4481,6 +4534,12 @@ class StockMarket(Node):
             print("ERROR: Both a username and password are required.")
             br()
     def existing_account_login(self, player):
+        if self.check_locked():
+            cls()
+            div()
+            print("ERROR: The server is down for maintenance. Check back later.")
+            br()
+            return
         cls()
         div()
         print("Log In")

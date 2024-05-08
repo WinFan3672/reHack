@@ -297,9 +297,10 @@ mht_general = mht.boards[0]
 mht_anonmail = mht_general.add_topic("unknown_number", "AnonMail: Why the 100k message limit?", """I was reading an ad for AnonMail,
 and it said something about a 100,000 message limit before my inbox is shut down.
 Looking online, I've NEVER heard anyone have their inboxes shut down, unless law enforcemnt requested it.""")
-mht_anonmail.reply("anon.mail", "!whoami")
-mht_anonmail.reply("system", "anon.mail: admin@anon.mail")
-mht_anonmail.reply("anon.mail", "The 'limit' allows me to MANUALLY delete accounts with excessive traffic, but I almost never do this because we have like 500% the capacity we need.")
+mht_anonmail.reply("anonmail", "Thanks for being interested in my service :)")
+mht_anonmail.reply("anonmail", "The 'limit' allows me to MANUALLY delete accounts with excessive traffic, but I almost never do this because we have like 500% the capacity we need.")
+mht_anonmail.reply("anonmail", "which in reflection is a bad thing because we've had a net loss since inception")
+mht_anonmail.reply("admin", "hey, me too! Journalism is hard")
 
 mht_irc = mht_general.add_topic("admin", "Should MHT have an IRC, or is a forum enough?", "See title")
 mht_irc.reply("anon.mail", "an irc would allow for more real-time communication, but a forum is very scalable")
@@ -307,18 +308,16 @@ mht_irc.reply("anon.mail", "forums can easily accomodate tens of thousands of me
 mht_irc.reply("bit", "as someone who's administered both, irc is a PITA to moderate, since users can change IP very easily, plus IRC does this thing with fallback nicknames thats kinda annoying")
 mht_irc.reply("admin", "yeah, already have an FTP server and this forum")
 mht_irc.reply("admin", "so an IRC would add to the expense and also responsibility for myself")
+mht_irc.reply("admin", "case closed then")
 mht_irc.reply("admin", "If you want to become a forum admin, contact me here: admin@mht.mail.com")
 mht_irc.reply("server", "admin locked this topic")
 
-# darkstore = programs.Forum("Dark.Store", "darkstore", data.generateTorURL("dstore"))
-# ds_general = darkstore.boards[0]
-# ds_store = darkstore.add_board("Store")
-
 thatcd = programs.Forum("ThatCD", "thatcd", "that.cd", private=True)
 thatcd_general = thatcd.boards[0]
+thatcd_requests = thatcd.add_board("Requests")
 
 def main():
-    return [thatcd]
+    return [thatcd, mht]
 
 def tor():
     return [vcforum, chan]

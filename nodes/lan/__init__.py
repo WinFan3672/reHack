@@ -58,7 +58,19 @@ mview_ftp.pub.create_encrypted_file(File("Password.txt", "mountainous", "jrallyp
 mview_ftp.inc.create_file("DearJames.txt", "Hello James. Please stop leaving passwords in the INCOMING folder. Just leave them in your PC's home folder. -Noah", "nbaileypc")
 mview.add_device(mview_ftp)
 
+sfec = programs.RemoteLAN("SFEC Intranet", "sfeclan", "lan.sfec.com")
+
+sfec_files = programs.PublicFTPServer("Files", "files", "files.local")
+with open("data/sfeclan/report2010.txt") as f:
+    sfec_files.pub.create_file("2010 Report.docx", f.read())
+sfec_irc = programs.IRCServer("SFEC Internal IRC", "irc", "irc.local")
+sfec_general = sfec_irc.add_channel("#general", "SFEC concerns")
+sfec_general.add_message("admin", "welcome to the channel")
+
+sfec.add_device(sfec_files)
+sfec.add_device(sfec_irc)
+
 def main():
-    return [cialan, mview]
+    return [cialan, mview, sfec]
 def tor():
     return [scsi]

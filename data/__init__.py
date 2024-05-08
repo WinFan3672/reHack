@@ -423,7 +423,7 @@ N = [
         minPorts=4,
     ),
     programs.WebServer("UK Government", "gov.uk", "gov.uk", "gov.uk"),
-    programs.WebServer("FFC Corporate Home", "ffc.com", "ffc.com", "ffc.com"),
+    programs.WebServer("FFC Corporate Home", "ffc.com", "ffc.com", "ffc.com", linked=["ffcftp"]),
     programs.WebServer(
         "XWebDesign Home", "xwebdesign.com", "xwebdesign.com", "xwebdesign.com"
     ),
@@ -587,7 +587,10 @@ N = [
     programs.PublicFTPServer("MHT FTP", "mhtftp", "ftp.mht.com", False),
     programs.WebServer("WarpMedia Broadband", "warpmediaweb", "warp.media", "warpmedia"),
     Node("Workspaces 7 Workstation Edition", "5chan_mission1", generateIP(), ports=[getPort(21), getPort(22), getPort(6881)]),
-    programs.WebServer("DCSE Homepage", "dcseweb", "dcse.com", "dcse"),
+    programs.WebServer("DCSE Homepage", "dcseweb", "dcse.com", "dcse", linked=["sfecweb"]),
+    programs.WebServer("SFEC Homepage", "sfecweb", "sfec.com", "sfec", linked=["sfeclan", "sfecmail"]),
+    programs.WebServer("XCombinator", "xcombinatorweb", "xcombinator.com", "xcombinator"),
+    programs.WebServer("Nestaq: Home", "nestaqweb", "nestaq.com", "nestaq"),
 ]
 for item in N:
     NODES.append(item)

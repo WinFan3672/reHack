@@ -21,6 +21,7 @@ from game.programs import (
     NodeCheckMission,
     NodeCheck,
     UserNodeCheck,
+    FunctionMission,
 )
 import nodes
 import nodes.forum
@@ -53,9 +54,16 @@ def chan_missions(self):
             # "Maybe that'll point you in the right direction.",
             "Oh, yeah the address: {}".format(data.getNode("5chan_mission1").address)
         ],
+        [
+            "I imagine you've heard of the new DCSE online platform.",
+            "Well, I have a great idea on how to cause some chaos. Think of it as hacktivism.",
+            "The DCSE trading platform is built off standard software that is known to have an off-switch. Hack in and shut down the exchange.",
+            "Oh, and most importantly, don't delete any system files, this needs to look like the server is down for maintenance, not dead."
+            "The DCSE website can be found here: dcse.com",
+        ],
     ]
     end_email = Email(
-        "null", 
+        "null@null.null", 
         "{}@jmail.com".format(self.name),
         "Mission Complete",
         "Payment should be credited within the next 2 business days.",
@@ -63,10 +71,16 @@ def chan_missions(self):
     bodies = ["\n".join(x) for x in bodies]
     emails = [
         Email(
-            "null",
+            "null@null.null",
             "{}@jmail.com".format(self.name),
             "Die, Cheater",
             bodies[0],
+        ),
+        Email(
+            "null@null.null",
+            "{}@jmail.com".format(self.name),
+            "Sharing Is Caring",
+            bodies[1],
         )
     ]
     return [
@@ -78,102 +92,18 @@ def chan_missions(self):
             emails[0],
             end_email,
             reward=650,
-        )
+        ),
+        FunctionMission(
+            self,
+            "5chan_mission2",
+            "Sharing Is Caring",
+            data.getNode("dcse").check_locked,
+            emails[1],
+            end_email,
+            reward=4500,
+        ),
     ]
 
-
-# def investigate_missions(self):
-#
-#     bodies = [
-#             [
-#                 "Hello. This is [DATA EXPUNGED], Administrator of reHack.",
-#                 "We have noticed that you recently assisted with the exposé of Project Autocrat.",
-#                 "I know that the news hasn't started recycling the stories yet, but I'm not an idiot.",
-#                 "You have proven yourself to be VERY skilled, especially since you joined so recently.",
-#                 "It is obvious you have a lot of talent that needs nurtuting.",
-#                 "Hopefully, you can take hints as well.",
-#                 "I have some things that need investigating. If you agree to this, simply complete the mission to proceed.",
-#             ],
-#             [
-#                 "Hack into this server: {}",
-#             ],
-#             [
-#                 "Thanks for the help. You probably want an explanation, right?",
-#                 "Well, I don't trust you enough to divulge that. As in, I don't trust anyone.",
-#                 "So you can take your questions and thake them where the sun don't shine.",
-#                 "",
-#                 "[DATA EXPUNGED]",
-#                 "reHack Administrator"
-#             ],
-#             ]
-#     bodies = ["\n".join(x) for x in bodies]
-#     emails = [
-#             Email(
-#                 "admin@rehack.mail",
-#                 "{}@jmail.com".format(self.name),
-#                 "Investigations",
-#                 bodies[0],
-#             ),
-#             Email(
-#                 "admin@rehack.mail",
-#                 "{}@jmail.com".format(self.name),
-#                 "Investigations (Part 2)",
-#                 bodies[1].format(data.getNode("shodan").address),
-#             ),
-#             Email(
-#                 "admin@rehack.mail",
-#                 "{}@jmail.com".format(self.name),
-#                 "Investigations (Part 3)",
-#                 bodies[1].format(data.getNode("testhub").address),
-#             ),
-#             Email(
-#                 "admin@rehack.mail",
-#                 "{}@jmail.com".format(self.name),
-#                 "Investigations (Part 4)",
-#                 bodies[1].format(data.getNode("dexpertweb").address),
-#             ),
-#             Email(
-#                 "admin@rehack.mail",
-#                 "{}@jmail.com".format(self.name),
-#                 "Great Job",
-#                 bodies[2],
-#             ),
-#             ]
-#     return [
-#             BlankMission(
-#                 self,
-#                 "investigate1",
-#                 "Investigate",
-#                 None,
-#                 emails[0],
-#                 next_id = "investigate2"
-#             ),
-#             Mission(
-#                 self,
-#                 "investigate2",
-#                 "Investigate (Part 2)",
-#                 "shodan",
-#                 emails[1],
-#                 next_id = "investigate3",
-#             ),
-#             Mission(
-#                 self,
-#                 "investigate3",
-#                 "Investigate (Part 3)",
-#                 "testhub",
-#                 emails[2],
-#                 next_id = "investigate4",
-#             ),
-#             Mission(
-#                 self,
-#                 "investigate4",
-#                 "Investigate (Part 4)",
-#                 "dexpertweb",
-#                 emails[3],
-#                 emails[4],
-#                 reward=2500,
-#             ),
-#             ]
 
 def base_missions(self):
     bodies = [
@@ -182,13 +112,12 @@ def base_missions(self):
             "In every mission in our Pentest Series, we like to include a secret CTF-style challenge at the end.",
             "We'd like you to hack into the same network the client just secured, and if you hack it, we'll pay you nicely.",
             "If you can't hack in, just cancel the mission. We get it. Not all sysadmins suck at their job."
-                "",
             "Good luck!",
         ],
         [
             "Well done. Your generous payment has been provided.",
             "The client has not been informed about this.",
-            "Please keep this a secret, in order to keep up with the spirit of the CTF challenges."
+            "Please keep this a secret, in order to keep the spirit of the CTF challenges going."
         ],
     ]
     bodies = ["\n".join(x) for x in bodies]
@@ -234,7 +163,7 @@ def main_story_missions(self):
             player = data.getNode("localhost")
             mht = data.getNode("mht")
             with open("msgboard/mht.com/mountain2") as f:
-                story = mht.add_story("Mountain View Leaker Arrested", "Admin", player.date.clone() + 2, f.read())
+                story = mht.add_story("Mountain View Leaker Arrested", "Admin", player.date.clone(), f.read())
                 story.reply("bit", "did not expect so much to happen so quickly")
                 story.reply("admin", "I had a hunch something like this would happen; just think how many billions of $'s IsDedCo makes from soft drink sales.")
                 story.reply("mindman", "IDCO is down 76%, whereas COCA is up 366% on the DCSE (DC Stock Exchange), isn't it crazy?")
@@ -921,11 +850,71 @@ def scsi(self):
             """Hello!
 You have been invited into the ThatCD IRC Server. The admin has already messaged you. Please log in with your reHack credentials."""
             ))
+    
+    def ffc_end():
+        player = data.getNode("localhost")
+        mht = data.getNode("mht")
+        mhtforum = data.getNode("mhtforum")
+        mhtftp = data.getNode("mhtftp")
+        chan = data.getTorNode("5chan")
+        nerdnet = data.getNode("nerdnet")
+
+        with open("msgboard/mht.com/ffc") as f:
+            story = mht.add_story("FFC Herb And Spice List Leaked", "Admin", player.date.clone(), f.read())
+            story.reply("bit", "first IsDedCo, now FFC, what is happening?")
+            story.reply("sizzle", "i bet rehack is behind it")
+            story.reply("rehack", "none of our agents did it, that's all we can say")
+            story.reply("hmm", "then it must be someone more elite")
+            story.reply("bit", "the way they described it, it doesn't seem elite to me")
+            story.reply("suspicions", "maybe 5chan did it? VCFORUM? SCSI, even?")
+            story.reply("rehack", "whoever it is, they're continuing what the first leak started")
+            story.reply("septic", "i know for a fact that more targets are coming :)")
+
+        with open("data/ffc.txt") as f:
+            mhtftp.pub.create_file("HerbsAndSpices.docx", f.read())
+
+        forum_general = mhtforum.boards[0]
+        forum_notice = forum_general.add_topic("admin", "Sad announcement", """This is the first time I've announced this online.
+I have cancer. The good thing being that it was caught early, so my chances of survival are estimated to be 95%.
+I'll be undergoing radiotherapy for the next six months at the least. This won't affect my work much, but I'll still be taking time off to de-stress.
+I won't be long, and articles will keep on coming, it's just that I do need to focus on my health a little more, and taking a step back.""")
+
+        forum_notice.reply("bit", "on behalf of the community, I am very sorry for what has happened and I hope you recover")
+        forum_notice.reply("superuser", "indeed, get well soon, and remember, laughter is the best medicine, and studies have shown that miserable people live shorter lives :)")
+        forum_notice.reply("admin", "and how does sarcasm affect that?")
+        forum_notice.reply("superuser", "it causes your live expectancy to become negative")
+        forum_notice.reply("anonmail", "get well soon, we can't lose MHT")
+        forum_notice.reply("admin", "my son says he'll be able to replace me, so i wonder how well that goes :)")
+        forum_notice.reply("anonmail", "best not get cynical")
+        forum_notice.reply("debian", "as a representative of the debian foundation, we all extend our support and thanks for giving us all some nice water cooler talk :)")
+
+        chan_general = chan.boards[0]
+
+        chan_post = chan_general.add_topic("bit", "MHT Founder Has Cancer", "See the forum post: forum.mht.com")
+        chan_post.reply("admin", "hope he recovers, 95% sounds like a good success rate")
+        chan_post.reply("foundation", "+1")
+        chan_post.reply("bit", "+1")
+        chan_post.reply("entropy", "+1")
+        chan_post.reply("anonmail", "+1")
+        chan_post.reply("rosebud", "+1")
+        chan_post.reply("halt", "+1")
+        chan_post.reply("nullzsec", "+1")
+        chan_post.reply("digit", "+1")
+        chan_post.reply("mht", "hey all, thanks for all the support on both here and my forum")
+        
+        dcsebets = nerdnet.get_board("n/dcsebets")
+
+        nerdnet.duck = dcsebets.add_topic("u/dcsekiller", "Buy DUCK Now", """The recent MHT post is bad for FFC. Buy DUCK, it'll go up!""")
+        nerdnet.duck.reply("u/foundation", "this may end badly")
+
 
     end_email = Email("null@null.null", "{}@jmail.com".format(self.name), "Mission Complete!", "Thanks for working with SCSI group.")
 
     that_nc = NodeCheck("thatcd")
     that_nc.add(UserNodeCheck("septic", "password"))
+
+    ffc_nc = NodeCheck("rhdrop")
+    ffc_nc.add(FileCopiedCheck("HerbsAndSpices.docx", origin="ffcftp"))
 
     bodies = [
         [
@@ -939,7 +928,15 @@ You have been invited into the ThatCD IRC Server. The admin has already messaged
             "",
             "This will create a new user 'septic' with the password 'password'.",
             "Security should be minimal, that.cd has a pretty bad reputation when it comes to making sure their Apache server and such is up-to-date.",
-        ]
+        ],
+        [
+            "So, you migt have heard about the Mountain View heist in the news. I hear that the blyat who did it ended up here, at SCSI.",
+            "I want the string of heists to continue: let's target FFC.",
+            "I hear they have an FTP server with important documents inside that just so happens to be accessible to the public.",
+            "By default, FTP servers are poorly secured, so why don't you give it a go? Hack in and send the herbs and spices list to our drop server!",
+            "Their website: ffc.com",
+            "Our dropserver: drop.rehack.org",
+        ],
     ]
     bodies = ["\n".join(x) for x in bodies]
     emails = [
@@ -948,7 +945,13 @@ You have been invited into the ThatCD IRC Server. The admin has already messaged
             "{}@jmail.com".format(self.name),
             "Introductory Mission: ThatCD",
             bodies[0],
-        )
+        ),
+        Email(
+            "null@null.null",
+            "{}@jmail.com".format(self.name),
+            "Peanuts And Chicken", ## So-called because it's about a chicken shop and it's peanuts (old-time slang for 'easy')
+            bodies[1],
+        ),
     ]
     return [
         NodeCheckMission(
@@ -960,7 +963,17 @@ You have been invited into the ThatCD IRC Server. The admin has already messaged
             end_email,
             reward=1500,
             end_function=thatcd_end,
-        )
+        ),
+        NodeCheckMission(
+            self,
+            "scsi_ffc",
+            "Peanuts and Chicken",
+            ffc_nc,
+            emails[1],
+            end_email,
+            reward=500,
+            end_function=ffc_end,
+        ),
     ]
 
 def main(self):

@@ -8,8 +8,8 @@ div()
         * Operating systems and system utilities made easy.
     * XDevices: xdevices.com
         * Makers of the xPhone and xOS.
-    * Search: sear.ch
-        * Introducing the Search MegaPixel 7.
+    * Search.Com: search.com
+        * Introducing the Search.Com MegaPixel 7.
     * JMail: jmail.com
         * Mail made simple.
     * AnonMail: www.anon.mail
@@ -18,6 +18,11 @@ div()
         * Create a VPS for any purpose. Now a reHack brand.
     * DomainExpert: domain.expert
         * Every website needs a name.
+* Finance
+    * DCSE: dcse.com
+        * Trading stocks and shares like no tomorrow (estd. 1792)
+    * Nestaq: nestaq.com
+        * The world's foremost stock exchange (estd. 1972)
 * Education:
     * United University Association: uua.edu
         * A collection of 25 US universities operating in unison.

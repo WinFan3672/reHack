@@ -253,6 +253,7 @@ class PlayerNode(Node):
             CriminalDatabase(),
             PlayerShodan(),
             ProgramInstaller("Tor Download Service", "tordl", "dl.tor.org", data.getProgram("tor", 1.0)),
+            MailServer("SFEC Mail", "sfecmail", "sfec.mail", self, [User("admin"), User("xcombinator", "epilepsy"), User("dcse", "hydrogen")]),
         ] + nodes.main()
         onionsites = [
             TorMailServer(
