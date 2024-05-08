@@ -126,6 +126,8 @@ class EncryptedFile(Base):
             return password == self.password
         else:
             return True
+    def clone(self):
+        return EncryptedFile(self.file, self.origin, self.password)
 
 
 class Folder(Base):

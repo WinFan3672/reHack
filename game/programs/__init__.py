@@ -3660,7 +3660,7 @@ def fileView(self, folder, writeAccess=False):
         if node and data.checkPort(node, 21):
             inc = data.getFile(node, "incoming", "Folder")
             if inc and inc.writeAccess:
-                inc.files.append(File(self.name, self.data, self.origin))
+                inc.files.append(self.clone())
                 print("Successfully uploaded file.")
             else:
                 print("ERROR: Cannot upload to server")
