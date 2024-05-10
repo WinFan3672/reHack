@@ -19,7 +19,7 @@ div()
 div()
 3 Email
 div()
-Receiving email from Tor can be tricky; most email services automatically rejcect Tor emails, including mail.com and JMail. Yes, even mail.com with its terrible security blocks tor traffic, and the industry follows mail.com, so you need a tor mail client and service. 
+Because Tor works on a separate network than the clearnet, you can only send emails within Tor to other Tor mail servers. It is possible to use basic bridge software to move between the clearnet and Tor, but this is strongly discouraged due to security issues, and most mail servers drop such emails anyway, so it's not worth it. The point is, you need a Tor email address.
 div()
 3.1 Client
 div()

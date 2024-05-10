@@ -913,7 +913,7 @@ I won't be long, and articles will keep on coming, it's just that I do need to f
     that_nc = NodeCheck("thatcd")
     that_nc.add(UserNodeCheck("septic", "password"))
 
-    ffc_nc = NodeCheck("rhdrop")
+    ffc_nc = FileCheck("drop.rehack.org")
     ffc_nc.add(FileCopiedCheck("HerbsAndSpices.docx", origin="ffcftp"))
 
     bodies = [
@@ -964,7 +964,7 @@ I won't be long, and articles will keep on coming, it's just that I do need to f
             reward=1500,
             end_function=thatcd_end,
         ),
-        NodeCheckMission(
+        FileCheckMission(
             self,
             "scsi_ffc",
             "Peanuts and Chicken",

@@ -110,7 +110,7 @@ class File(Base):
         return "File(name='{}')".format(self.name)
 
     def clone(self):
-        return File(self.name, self.data)
+        return File(self.name, self.data, self.origin)
 
 
 class EncryptedFile(Base):

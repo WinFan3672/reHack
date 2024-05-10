@@ -87,7 +87,7 @@ def genBinaryFileData(length=1024, prefix=""):
         s += random.choice(string.printable)
     return s
 
-def createFolder(node):
+def createFolder(node: programs.Node):
     folder = Folder("", node.files)
     folder.origin = node.uid
     return folder

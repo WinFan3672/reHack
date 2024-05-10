@@ -165,35 +165,35 @@ def main():
 
 def start():
     while True:
-        try:
-            cls()
-            div()
-            with open("logo.txt") as f:
-                print(f.read())
-            div()
-            print("[1] New Game")
-            print("[2] Load Game")
-            print("[3] Credits")
-            print("[6] Exit")
-            div()
-            print(
-                "Version: {}".format(
-                    resourceInfo.friendlyVersion
-                )
+        cls()
+        div()
+        with open("logo.txt") as f:
+            print(f.read())
+        div()
+        print("[1] New Game")
+        print("[2] Load Game")
+        print("[3] Credits")
+        print("[6] Exit")
+        div()
+        print(
+            "Version: {}".format(
+                resourceInfo.friendlyVersion
             )
-            div()
+        )
+        div()
+        try:
             ch = int(input("$"))
-            if ch == 1:
-                main()
-            elif ch == 2:
-                loadGame()
-            elif ch == 3:
-                credits()
-            elif ch == 6:
-                return
-            elif ch == 10:
-                cls()
-                PlayerNode("gordinator", "root").main()
         except:
-            print(traceback.format_exc())
-            br()
+            ch = 777 # A bit janky of a solution, but it's the simplest and least problematic
+                     # Besides, `continue` is a little confusing, isn't it?
+        if ch == 1:
+            main()
+        elif ch == 2:
+            loadGame()
+        elif ch == 3:
+            credits()
+        elif ch == 6:
+            return
+        elif ch == 10:
+            cls()
+            PlayerNode("gordinator", "root").main()
