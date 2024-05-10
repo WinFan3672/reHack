@@ -113,6 +113,16 @@ class File(Base):
         return File(self.name, self.data, self.origin)
 
 
+class ZippedFile(Base):
+    def __init__(self, name, folder, origin=None):
+        self.name = name
+        self.folder = folder if isinstance(folder, Folder) else Folder(name, origin=origin)
+        self.origin = origin
+    def clone(self):
+        return ZippedFile(self.name, self.folder.clone(), self.origin)
+    def __str__(self):
+        return "ZippedFile(name='{}')".format(self.name)
+
 class EncryptedFile(Base):
     def __init__(self, file, origin, password=None):
         self.file = file
