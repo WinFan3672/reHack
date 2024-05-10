@@ -113,13 +113,13 @@ class File(Base):
         return File(self.name, self.data, self.origin)
 
 
-class ZippedFile(Base):
+class ZippedFolder(Base):
     def __init__(self, name, folder, origin=None):
         self.name = name
         self.folder = folder if isinstance(folder, Folder) else Folder(name, origin=origin)
         self.origin = origin
     def clone(self):
-        return ZippedFile(self.name, self.folder.clone(), self.origin)
+        return ZippedFolder(self.name, self.folder.clone(), self.origin)
     def __str__(self):
         return "ZippedFile(name='{}')".format(self.name)
 
@@ -189,7 +189,7 @@ class Folder(Base):
                 elif filetype == "File" and isinstance(file, File):
                     return file
     def add_file(self, file):
-        if type(file) in [File, EncryptedFile, Folder]:
+        if type(file) in [File, EncryptedFile, ZippedFolder, Folder]:
             file.origin = self.origin
             self.files.append(file.clone())
     

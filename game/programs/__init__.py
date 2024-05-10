@@ -3605,6 +3605,8 @@ def folderView(self, writeAccess=False):
                 typ = "File"
             elif isinstance(file, EncryptedFile):
                 typ = "Encrypted File"
+            elif isinstance(file, ZippedFolder):
+                typ = "Compressed Folder"
             else:
                 typ = "Corrupt"
             print("[{}] {} ({})".format(i, file.name, "Folder: {} files".format(len(file.files)) if isinstance(file, Folder) else typ))
@@ -3620,7 +3622,7 @@ def folderView(self, writeAccess=False):
                     folderView(file, True)
                 else:
                     folderView(file, file.writeAccess)
-            elif type(file) in [File, EncryptedFile]:
+            elif type(file) in [File, EncryptedFile, ZippedFolder]:
                 fileView(file, self, True if writeAccess else self.writeAccess)
         except:
             # print(traceback.format_exc())
@@ -3648,6 +3650,9 @@ def fileView(self, folder, writeAccess=False):
     if isinstance(self, EncryptedFile):
         print("[4] Decrypt")
         print("[5] View Header")
+    if isinstance(self, ZippedFolder):
+        print("[4] Extract Contents")
+        print("[5] Browse Folder")
     div()
     ch = input("$")
     if ch == "1":
@@ -3657,6 +3662,7 @@ def fileView(self, folder, writeAccess=False):
         br()
     elif ch == "2":
         target = input("Target IP $")
+        cls()
         div()
         node = data.getNode(target, True)
         if node and data.checkPort(node, 21):
@@ -3679,15 +3685,26 @@ def fileView(self, folder, writeAccess=False):
         if self.check(passwd):
             if folder.writeAccess:
                 folder.files.append(self.file)
+                cls()
                 div()
                 print("Successfully decrypted file.")
                 br()
             else:
+                cls()
                 div()
                 print("ERROR: No write access.")
                 br()
         else:
+            cls()
+            div()
             print("ERROR: Invalid password.")
+            br()
+    elif ch == "4" and isinstance(self, ZippedFolder):
+        if writeAccess:
+            folder.add_file(self.folder)
+            cls()
+            div()
+            print("Successfully extracted folder.")
             br()
     elif ch == "5" and isinstance(self, EncryptedFile):
         node = data.getNode(self.header["origin"])
@@ -3698,6 +3715,8 @@ def fileView(self, folder, writeAccess=False):
         print("Origin: {}".format(origin))
         print("Software: {}".format(self.header["software"]))
         br()
+    elif ch == "5" and isinstance(self, ZippedFolder):
+        folderView(self.folder)
 
 def history(args, player):
     div()
