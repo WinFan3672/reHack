@@ -617,6 +617,12 @@ N = [
     programs.WebServer("DEC Solutions", "decweb", "dec.com", "dec", linked=["dec.mail.com"]),
     programs.SignupService("decsignup", "private-signup.dec.com", "declan"),
     programs.WebServer("sms (homepage)", "smsweb", "sms.us", "sms"),
+    programs.WebServer("UUA Home", "uuaweb", "uua.edu", "uua"),
+    programs.WebServer("Harvard", "harvardweb", "harvard.edu", "harvard"),
+    programs.WebServer("Yale", "yaleweb", "yale.edu", "yale"),
+    programs.WebServer("MIT", "mitweb", "mit.edu", "mit"),
+    programs.WebServer("Dartmouth", "dartmoutheb", "dartmouth.edu", "apache"),
+    programs.WebServer("Berkley", "berkleyweb", "berkley.edu", "berkley"),
 ]
 for item in N:
     NODES.append(item)

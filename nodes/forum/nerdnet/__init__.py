@@ -50,7 +50,7 @@ Recently, they vowed to provide one price for all homes in the UK for their broa
 What the Hell? Is ANY of this good 'value'?""")
 isp.reply("u/admin", "looks like you get ripped of no matter how little or how much you pay for")
 
-dcsebets_welcome = dcsebets.add_topic("u/dcse_killer", "Welcome to n/dcsebets!", """DCSE Bets is a subnerd dedicated to getting rich through the DC Stock Exchangce (DCSE), through the use of high-rick and non-confirmist strategies.""")
+dcsebets_welcome = dcsebets.add_topic("u/dcse_killer", "Welcome to n/dcsebets!", """DCSE Bets is a subnerd dedicated to getting rich through the DC Stock Exchangce (DCSE), through the use of high-risk and non-confirmist strategies.""")
 
 dcsebets_tutorial = dcsebets.add_topic("u/dcse_killer", "How To Trade On DCSE", """1. Connect to trade.dcse.com
 2. Create an account
@@ -106,12 +106,12 @@ future_plans.reply("u/mht", "What will we think when we look back at this very e
 future_plans.reply("u/admin", "I don't think nerdnet will survive that long :)")
 future_plans.reply("u/mht", "I beg to differ - nerds will LOVE it, and they will flock to it")
 future_plans.reply("u/admin", "I imagine the network effect will help as well")
-future_plans.reply("u/mht", "Ah, but the network effect is a but double-edged sword, remember what happened to OurSpaces?")
-future_plans.reply("u/bit", "My grandmother was so displeased when it shut down, she phoned be about it and everything")
-future_plans.reply("u/gold", "A genine idea: awards should have a pay-it-forward deal, where if someone gives you an award, you can then award it to someone else")
+future_plans.reply("u/mht", "Ah, the network effect is a but double-edged sword, remember what happened to OurSpaces?")
+future_plans.reply("u/bit", "My grandmother was so displeased when it shut down, she phoned me about it and everything")
+future_plans.reply("u/gold", "A genuine idea: awards should have a pay-it-forward deal, where if someone gives you an award, you can then award it to someone else")
 future_plans.reply("u/admin", "I'll only do that for the free ones, but it's a great idea")
 future_plans.reply("u/admin", "It'll have to be a temporary thing - after 24h, the award goes poof")
-future_plans.reply("u/reack", "Perhaps some of our agents may be able to assist you with building server software?")
+future_plans.reply("u/rehack", "Perhaps some of our agents may be able to assist you with building server software?")
 future_plans.reply("u/admin", "I don't trust hackers, least of all black-hats like you lot")
 future_plans.reply("u/rehack", "I imagine you read all the ColonSlash propaganda?")
 future_plans.reply("u/admin", "As a matter of fact, I did")
@@ -128,13 +128,25 @@ future_plans.reply("u/admin", "speaking genuinely, n/dcsebets will be locked dow
 future_plans.reply("u/dcse_killer", "people in The Community will know what to do when the time comes")
 future_plans.reply("u/admin", "well, a short squeeze sounds good to me")
 future_plans.reply("u/dcse_killer", "wait until the crash, that will be fun")
+future_plans.reply("u/rehack", "you still believe the ColonSlash garbage, u/admin?")
+future_plans.reply("u/admin", "i need some more conclusive evidence than *that*")
+future_plans.reply("u/rehack", "the ONLY thing ColonSlash has posted is that expose")
+future_plans.reply("u/admin", "nothing before, nothing since?")
+future_plans.reply("u/rehack", "uh-huh")
+future_plans.reply("u/admin", "that *is* suspicious...")
 
 web_server = programming.add_topic("u/neckbeards_alliance", "Apache or WebEngine?", """Which one is best? I need to know.""")
 web_server.reply("u/horseman", "WebEngine is way lighter and just as powerful, plus it has a better license")
 web_server.reply("u/neckbeards_alliance", "Do NOT open up the Apache License VS BSD 'debate' can of worms, you'll just piss off a bunch of nerds")
 web_server.reply("u/strange_fluid", "I hear WebEngine is gonna make a proprietary version of their software soon")
 web_server.reply("u/admin", "yeah well they can't do anything to the original, if they take THAT proprietary instead of spinning it off, someone'll fork it")
-web_server.reply("u/neckbeards_alliance", "someone will fork it --> someone else will do it anyway, why should I fork it?")
+web_server.reply("u/neckbeards_alliance", "someone will fork it --> someone else will do it anyway, why should I fork it? --> No-one will fork it")
+
+tor_node = meta.add_topic("u/admin", "We have a Tor mirror!", "The folks over at Tor project handed us access to nerd-net.onion, so we have a mirror! It SHOULD work perfectly.")
+tor_node.reply("u/bit", "cool, but it doesn't support logins, so what's the point?")
+tor_node.reply("u/admin", "for browsing anonymously. when you post however, you are de-anoymised by nature, so you might as well give us your IP")
+tor_node.reply("u/neckbeards_alliance", "it's a conspiracy theory to discourage usage of the Tor node, funneling ppl towards the clearnet version")
+tor_node.reply("u/admin", "FINE! logins and signups have been enabled for the tor versions")
 
 nerdnet_tor = copy.copy(nerdnet)
 nerdnet_tor.address = "nerd-net.onion"

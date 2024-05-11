@@ -218,6 +218,19 @@ debnews = programs.NewsServer("Debian News", "debnews", "news.debian.org")
 with open("msgboard/debian/deb505") as f:
     debnews.add_story("Debian 5.0.5 Release Notes", "Debian Team", GameDate(2010, 1, 30), f.read())
 
+duckdonald = programs.WikiServer("DuckDonald", "duckdonald", "duckdonald.com", "duckdonald", "Home")
+
+duckdonald.homepage.add_page("About")
+
+duck_meals = duckdonald.homepage.add_category("Menu Items")
+duck_meals.add_page("DuckBurger")
+duck_meals.add_page("DuckSalad")
+duck_meals.add_page("Egg DuckMuffin")
+duck_meals.add_page("Refreshments")
+
+duckdonald.homepage.add_page("Careers")
+duckdonald.homepage.add_page("Locations")
+
 def main():
     return [
         mht,
@@ -234,6 +247,7 @@ def main():
         ffcftp,
         mailcomftp,
         debnews,
+        duckdonald,
     ] + nodes.forum.main() + nodes.forum.nerdnet.main() + nodes.test.main() + nodes.lan.main()
 
 def tor():

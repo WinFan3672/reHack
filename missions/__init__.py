@@ -954,7 +954,7 @@ I won't be long, and articles will keep on coming, it's just that I do need to f
     ffc_nc.add(FileCopiedCheck("HerbsAndSpices.docx", origin="ffcftp"))
 
     dec_nc = FileCheck("rhdrop")
-    dec_nc.add(FileCopiedCheck("dec-src-v1.0.zip", origin="roynet"))
+    dec_nc.add(FileCopiedCheck("dec-src-v1.0.zip"))
 
     bodies = [
         [

@@ -4678,3 +4678,4 @@ class StockMarket(Node):
         div()
         print("Successfully sold {} shares for {} Credits.".format(shares, shares * stock.price))
         br()
+
