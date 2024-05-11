@@ -43,7 +43,8 @@ git = programs.GitServer("Test Server VC", "testgit", "git.rehack.test")
 blank = Node("Blank Node", "blanktest", "blank.rehack.test")
 
 ftp = programs.PublicFTPServer("FTP Server Test", "ftptest", "ftp.rehack.test", users=[User("admin", "admin")])
-ftp.pub.add_file(ZippedFolder("test.zip", Folder("test", [File("foo"), File("bar")])))
+ftp.pub.add_file(ZippedFolder(Folder("test", [File("foo"), File("bar")])))
+ftp.pub.add_file(EncryptedFile(ZippedFolder(Folder("encryption_test", [File("foo"), File("bar")]))))
 
 def main():
     return [git, forum, lan, blank, ftp]

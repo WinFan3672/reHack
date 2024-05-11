@@ -51,13 +51,78 @@ with open("msgboard/mht.com/Confirming The Rumours") as f:
 
 with open("msgboard/mht.com/dcseweb") as f:
     mht_dcse = mht.add_story("DCSE Launches New Web-Based Stock Exchange", "Admin", GameDate(), f.read())
-    mht_dcse.reply("rehack", "when a company cites state-of-the-art encryption etc. they're just spurring on egotistical hackers")
+    mht_dcse.reply("rehack", "when a company cites state-of-the-art encryption etc. they're asking to get pwnd")
 
 debian_ftp = programs.PublicFTPServer("Debian FTP", "debianftp", "ftp.debian.org", False)
 debian_ftp.pub.create_file("debian-5.0.5.iso", debian_ftp.genRand())
 debian_ftp.pub.create_file("debian-5.0.5.iso.gz", debian_ftp.genRand())
 debian_ftp.pub.create_file("debian-5.0.5.iso.zip", debian_ftp.genRand())
-debian_ftp.pub.create_encrypted_file(File("debian-5.0.6.iso", debian_ftp.genRand(), "debianftp"), "debianftp", "debian")
+debian_src = ZippedFolder(Folder("debian-5.0.5-src", [
+    Folder("src", [
+        Folder("drivers", [
+            Folder("network", [
+                File("network-aio.deb.cpp"),
+                File("networklegacy-aio.deb.cpp"),
+            ]),
+            Folder("audio", [
+                File("audio-aio.deb.cpp"),
+                File("audiolegacy-aio.deb.cpp"),
+            ]),
+            File("cpu-gpu-readme.txt", "As you know, SMC ships FOSS drivers for their product. Debian doesn't ship the src to the drivers, but does ship the drivers themselves."),
+        ]),
+    ]),
+    Folder("config", [
+        Folder("etc", [
+            Folder("apt", [
+                File("sources.txt"),
+            ]),
+        ]),
+    ]),
+    Folder("bin", [
+        Folder("debs", [
+            File("coreutils.deb"),
+            File("base.deb")
+        ]),
+        Folder("libs", [
+            Folder("libdec", [
+                File("libdec.so"),
+                File("libdec.h"),
+            ]),
+            Folder("libaudio", [
+                File("libaudio.so"),
+                File("libaudio.h"),
+            ]),
+        ]),
+        Folder("drivers", [
+            Folder("gpu", [
+                Folder("smc", [
+                    File("smc-gpu-v222.45.22.deb"),
+                ]),
+                Folder("evasia", [
+                    File("evasia-gpu-v2010.06.01.deb"),
+                ]),
+            ]),
+            Folder("cpu", [
+                Folder("simtel", [
+                    File("simtel-cpu.deb"),
+                    File("simtel-microcode.deb"),
+                    File("simtel-management-engine.deb"),
+                    File("ReadMe.txt", "This is the SimTel CPU drivers for up to SimTel Core (1st Generation)."),
+                ]),
+                Folder("smc", [
+                    File("smc-cpu.deb"),
+                    File("smc-microcode.deb"),
+                    File("smc-psp.deb"),
+                    File("ReadMe.txt", "This is the SMC CPU drivers for up to Apteron."),
+                ]),
+            ]),
+        ]),
+    ]),
+    File("Makefile"),
+    File("ReadMe.txt", """This is the Debian 5.0.5 source code. It includes proprietary blobs (incl. CPU/GPU drivers) that can be deleted.""")
+]))
+
+debian_ftp.pub.add_file(debian_src)
 
 search = programs.SearchEngine("Search: Find It All", "search", "search.com")
 search.add("search")
@@ -119,7 +184,7 @@ irc_rules.add_message("admin", "6. Report suspected undercover agents to me ASAP
 that_irc = programs.IRCServer("ThatCD IRC", "thatirc", "irc.that.cd", private=True)
 # that_rec = that_irc.add_channel("#recruitment", "Joining ThatCD? Get interviewed here!")
 
-dcse = programs.StockMarket("DCSE", "dcse", "trade.dcse.com")
+dcse = programs.StockMarket("DCSE", "dcse", "trade.dcse.com", adminPassword="shipment")
 
 dcse_coca = programs.Stock("Coca Corporation", "COCA", 25)
 dcse_idco = programs.Stock("IsDedCo", "IDCO", 62)
@@ -148,6 +213,11 @@ mailcomftp = programs.FTPServer("Mail.Com FTP Server", "mailcomftp", "ftp.mail.c
 mailcomftp.pub.create_file("CME_2009_12_07.zip", None)
 mailcomftp.pub.create_file("ReadMe.txt", """This folder contains tools deployed on all servers. For more info, see the docs server.""")
 
+
+debnews = programs.NewsServer("Debian News", "debnews", "news.debian.org")
+with open("msgboard/debian/deb505") as f:
+    debnews.add_story("Debian 5.0.5 Release Notes", "Debian Team", GameDate(2010, 1, 30), f.read())
+
 def main():
     return [
         mht,
@@ -163,6 +233,7 @@ def main():
         nestaq,
         ffcftp,
         mailcomftp,
+        debnews,
     ] + nodes.forum.main() + nodes.forum.nerdnet.main() + nodes.test.main() + nodes.lan.main()
 
 def tor():

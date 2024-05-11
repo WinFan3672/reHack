@@ -48,7 +48,7 @@ def sendEmail(email):
             m = [
                 "Your message to {} could not be delivered.".format(recipient),
                 "Please check that the email address is valid and try again.",
-                "You can use the `mxlookup` utility for a list of email accounts on our server.",
+                # "You can use the `mxlookup` utility for a list of email accounts on our server.",
                 "",
                 "FROM: {}".format(email.sender),
                 "TO: {}".format(email.receiver),
@@ -1003,6 +1003,8 @@ class MailDotCom(MailServer):
         for item in users:
             self.accounts.append(MailAccount(item.name, item.password))
         self.alive = True
+    def main(self):
+        connect.main(["mail.com"], data.getNode("localhost"))
     def lookup(self):
         return [MailAccount("admin")]
     def tick(self):
@@ -2038,7 +2040,7 @@ class MasterVPS(Node):
 
 def firewall(args):
     if "test" in args and len(args) == 2:
-        node = data.getNode(args[1])
+        node = data.getNode(args[1], True)
         if node:
             if node.firewall:
                 print("Firewall active.")
@@ -2047,7 +2049,7 @@ def firewall(args):
         else:
             print("ERROR: Invalid IP address.")
     elif "crack" in args and len(args) == 2:
-        node = data.getNode(args[1])
+        node = data.getNode(args[1], True)
         if node:
             if node.firewall:
                 guessed_letters = 0
@@ -2063,17 +2065,17 @@ def firewall(args):
                     time.sleep(node.firewall.time)
                     guessed_letters += 1
                 print("Solution: {}".format(node.firewall.solution))
+                firewall(["solve", node.address, node.firewall.solution])
             else:
                 print("ERROR: No firewall active.")
         else:
             print("ERROR: Invalid IP address.")
     elif "solve" in args and len(args) == 3:
-        node = data.getNode(args[1])
+        node = data.getNode(args[1], True)
         if node:
             if node.firewall:
                 if node.firewall.solution == args[2]:
-                    print("Successfully solved firewall.")
-                    print("Firewall disabled.")
+                    print("SUCCESS: Firewall disabled.")
                     node.firewall = None
                 else:
                     print("ERROR: Incorrect solution.")
@@ -3415,7 +3417,7 @@ Have a lovely day, and check out my story on mht.com for the full story.""")
         irc_general.add_message("server", "data_expunged renamed admin to bit")
         irc_general.add_message("server", "data_expunged renamed aye_aye_captain to admin")
         irc_general.add_message("server", "data_expunged removed admin ban from admin")
-        irc_general.add_message("data_expunged", "now get back to work, y'all drained my patience")
+        irc_general.add_message("data_expunged", "now get back to work, y'all have drained my patience")
 
         dm = irc.add_direct_message(["insolvent", player.name])
         dm.add_message("insolvent", "Hello, we have noticed your talent, and would like to invite you to SCSI group")
@@ -3582,8 +3584,8 @@ class FTPServer(Node):
     def main(self):
         print("ERROR: An FTP client is required to connect to this server.")
 class PublicFTPServer(Node):
-    def __init__(self, node, uid, address, acceptUpload=True, *args, **kwargs):
-        super().__init__(node, uid, address, ports=[data.getPort(21)], *args, **kwargs)
+    def __init__(self, node, uid, address, acceptUpload=True, **kwargs):
+        super().__init__(node, uid, address, ports=[data.getPort(21)], **kwargs)
         self.pub = self.create_folder("pub")
         self.inc = self.create_folder("incoming", acceptUpload)
         self.inc.create_file("ReadMe.txt", data.INCOMING_README)
@@ -3595,7 +3597,7 @@ def folderView(self, writeAccess=False):
     while True:
         cls()
         div()
-        print("Index of /{} (Permissions: {})".format(self.name, "rw" if writeAccess else "r"))
+        print("Index of {} (Permissions: {})".format(self.name, "rw" if writeAccess else "r"))
         div()
         i = 1
         for file in self.files:
@@ -3648,7 +3650,7 @@ def fileView(self, folder, writeAccess=False):
     else:
         print("[ ] Delete File")
     if isinstance(self, EncryptedFile):
-        print("[4] Decrypt")
+        print("[4] Decrypt" if self.password else "[4] Extract")
         print("[5] View Header")
     if isinstance(self, ZippedFolder):
         print("[4] Extract Contents")
@@ -4459,8 +4461,8 @@ class StockMarketAccount(Base):
         return val
 
 class StockMarket(Node):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, ports=[data.getPort(80), data.getPort(22), data.getPort(21)], minPorts=65536, **kwargs)
+    def __init__(self, *args, adminPassword=None, minPorts=63336, **kwargs):
+        super().__init__(*args, users=[User("admin", adminPassword)], ports=[data.getPort(80), data.getPort(22), data.getPort(21)], minPorts=minPorts, **kwargs)
         self.stocks = []
         self.accounts = []
         self.free_stocks = {}
@@ -4491,7 +4493,17 @@ class StockMarket(Node):
             elif ch == 3 and self.hacked:
                 self.admin_panel(player)
     def admin_panel(self, player):
+        if self.check_locked():
+            cls()
+            div()
+            print("ERROR: The server is down for maintenance. Check back later.")
+            print("NOTE: To remove the maintenance lock, delete /StockMarket/LOCKFILE.")
+            br()
+            return
+
         while True:
+            if self.check_locked():
+                return
             cls()
             div()
             print("Admin Panel")
@@ -4515,7 +4527,7 @@ class StockMarket(Node):
         print("[1] YES")
         print("[0] No")
         div()
-        ch = int(input(">"))
+        ch = input(">")
         if ch == "1":
             self.folder.create_file("LOCKFILE", "Delete this file to re-open the stock market.")
             cls()
@@ -4525,6 +4537,7 @@ class StockMarket(Node):
             print("New sessions will be rejected. Existing sessions will disappear shortly.")
             print("To start up again, delete the LOCKFILE from the /StockMarket directory. You can use an FTP server.")
             br()
+            return
     def get_stock(self, symbol):
         for stock in self.stocks:
             if stock.symbol == symbol:

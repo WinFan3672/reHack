@@ -1,0 +1,10 @@
+Debian recently announced that it will be removing libdec from the operating system following the recent DEC Solutions hack.
+
+A recent news.debian.org press statement reads as follows:
+    We will be removing `libdec` from our product in Debian 5.0.6, which will be releasing today. You can upgrade your OS very easily by following the instructions in the manual.
+    We have done this because we no longer believe DEC as a format is secure. Many different security vulnerabilities have been found, and we will not allow this in Debian.
+With regards to compatibility, they said the following:
+    We have moved libdec to the `nonfree` package repository, which is disabled by default but can be added through editing of a config file.
+    All programs that rely on DEC will need to update to add this dependency to the dependency list. 
+Debian is the first Linux distribution to do this, which is surprising given its emphasis on stability and not being up-to-date.
+Debian 5.0.6 will release soon.

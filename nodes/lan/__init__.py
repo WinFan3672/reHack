@@ -70,7 +70,87 @@ sfec_general.add_message("admin", "welcome to the channel")
 sfec.add_device(sfec_files)
 sfec.add_device(sfec_irc)
 
+dec = programs.RemoteLAN("DEC Remote LAN", "declan", data.generateIP(), minPorts=65536, users=[User("roy", "31718")])
+dec.firewall = Firewall("dec", 3)
+
+dec_ftp = programs.PublicFTPServer("FTP", "ftp", "ftp.local")
+
+dec_src = ZippedFolder(Folder("dec-src-v1.0", [
+    Folder("client", [
+        Folder("cli", [
+            File("main.c"),
+            File("Makefile"),
+        ]),
+        Folder("gui", [
+            File("main.c"),
+            File("Makefile"),
+        ]),
+        Folder("libdec", [
+            File("libdec.c"),
+            File("libdec.h"),
+            File("Makefile"),
+        ]),
+        Folder("private", [
+            Folder("cli", [
+                File("main.c"),
+                File("Makefile")
+            ]),
+            Folder("lib", [
+                File("libdecbruter.c"),
+                File("libdecbruter.h"),
+                File("Makefile")
+            ]),
+            File("ReadMe.txt", "Src for decbruter (can brute-force the passwords for DEC archives). If the public gets a copy of this, all hell breaks loose.")
+        ]),
+    ]),
+    Folder("bin", [
+        Folder("unix", [
+            File("dec"),
+            File("dec-gui"),
+            File("libdec.so"),
+            File("libdec.h")
+        ]),
+        Folder("workspaces", [
+            File("dec.exe"),
+            File("dec-gui.exe"),
+            File("libdec.dll"),
+            File("libdec.h"),
+        ]),
+    ]),
+    Folder("crypto", [
+        Folder("sigs", [
+            Folder("public", [
+                File("current.pem"),
+                File("revoked.pem"),
+            ]),
+            Folder("private", [
+                File("current.pem"),
+                File("revoked.pem"),
+            ]),
+            File("ReadMe.txt", "This folder contains signatures used to sign compiled executables. They were acquired from a CA trusted by Nanosoft.")
+        ]),
+    ]),
+    File("Makefile"),
+    File("ReadMe.txt", "This is the src for DEC Suite v1.0. Do not distribute. Compile with SCC (Standard Compiler Collection) v2010.5.1+. Sign with crypto/sigs/private/current.pem"),
+]), "roynet")
+
+dec_enc = EncryptedFile(dec_src, "roynet", "infiltrate")
+dec_ftp.pub.add_file(dec_enc, True)
+
+dec.add_device(dec_ftp)
+
+roynet = programs.LocalAreaNetwork("Roy Andresson's Network", "roynet", data.generateIP())
+roynet_pc = Node("Roy's PC", "roy", "roy.local", ports=[data.getPort(22)])
+roynet_nas = programs.FTPServer("Roy's Simology NAS", "nas", "nas.local")
+
+
+with open("data/roy.txt") as f:
+    roynet_nas.pub.create_file("Diary.docx", f.read())
+
+roynet.add_device(roynet_pc)
+roynet.add_device(roynet_nas)
+
 def main():
-    return [cialan, mview, sfec]
+    return [cialan, mview, sfec, dec, roynet]
 def tor():
     return [scsi]

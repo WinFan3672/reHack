@@ -1,0 +1,7 @@
+We will be removing `libdec` from our product in Debian 5.0.6, which will be releasing today. You can upgrade your OS very easily by following the instructions in the manual.
+We have done this because we no longer believe DEC as a format is secure. Many different security vulnerabilities have been found, and we will not allow this in Debian.
+
+We have moved libdec to the `nonfree` package repository, which is disabled by default but can be added through editing of a config file.
+All programs that rely on DEC will need to update to add this dependency to the dependency list.
+
+We will make sure that something like this doesn't happen in future.

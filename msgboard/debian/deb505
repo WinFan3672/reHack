@@ -1,0 +1,2 @@
+* Updated ssh to 1.2.2, which includes security fixes over 1.2.1.
+* Updated sshd to 1.2.2, which includes security fixes over 1.2.1.

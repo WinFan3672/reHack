@@ -254,7 +254,8 @@ class PlayerNode(Node):
             PlayerShodan(),
             ProgramInstaller("Tor Download Service", "tordl", "dl.tor.org", data.getProgram("tor", 1.0)),
             MailServer("SFEC Mail", "sfecmail", "sfec.mail", self, [User("admin"), User("xcombinator", "epilepsy"), User("dcse", "hydrogen")]),
-            MailDotCom("DEC Solutions Mail", "dec.mail.com", self, [User("admin", "password123"), User("sales", "password123"), User("press", "password123")]),
+            MailDotCom("DEC Solutions Mail", "dec.mail.com", self, [User("admin", "password123"), User("sales", "password123"), User("press", "password123"), User("roy", "fruition"), User("recruitment")]),
+            MailDotCom("sms", "sms.mail.com", self, [User("sales", "morality")]),
         ] + nodes.main()
         onionsites = [
             TorMailServer(
@@ -363,6 +364,17 @@ class PlayerNode(Node):
                 "[DATA EXPUNGED],",
                 "reHack Corporation Administrator.",
             ],
+            [
+                "Dear Mr Roy Andresson,",
+                "Congratulations, your application to work for DEC Solutions as a Senior Programmer has been accepted.",
+                "Because the work is remote, you will need to:",
+                "",
+                "1: Create an account using our Signup Service (private-signup.dec.com), creating an account and logging in.",
+                "2: Connect to the LAN (the signup service will provide the IP address)",
+                "3: Connect to ftp.local and find the file called 'ROY_TODO.TXT'. Read it and follow the instructions.",
+                "",
+                "We hope you find this work exciting.",
+            ],
         ]
         bodies = ["\n".join(x) for x in bodies]
         emails = [
@@ -454,6 +466,7 @@ class PlayerNode(Node):
             Email("admin@mview.mail.com", "admin@jmail.com", "IMPORTANT: Data Destruction Request", bodies[4]),
             Email("admin@jmail.com", "admin@mview.mail.com", "RE: IMPORTANT: Data Destruction Request", bodies[5]),
             Email("admin@cia.mail.gov", "admin@cia.mail.gov", "Autocrat Mainframe Password (DO NOT LOSE!)", bodies[6]),
+            Email("recruitment@dec.mail.com", "roy@dec.mail.com", "Congratulations", bodies[8]),
         ]
         for item in servers:
             data.NODES.append(item)

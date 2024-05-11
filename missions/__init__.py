@@ -906,15 +906,55 @@ I won't be long, and articles will keep on coming, it's just that I do need to f
 
         nerdnet.duck = dcsebets.add_topic("u/dcsekiller", "Buy DUCK Now", """The recent MHT post is bad for FFC. Buy DUCK, it'll go up!""")
         nerdnet.duck.reply("u/foundation", "this may end badly")
+    
+    def dec_end():
+        mht = data.getNode("mht")
+        player = data.getNode("localhost")
+        mhtftp = data.getNode("mhtftp")
+        nerdnet = data.getNode("nerdnet")
+        xdgnet = data.getNode("xdgnet")
+        debnews = data.getNode("debnews")
 
+        with open("msgboard/mht.com/dec") as f:
+            story = mht.add_story("DEC Solutions Hacked, Source Code For Encryption Suite Leaked", "Admin", player.date.clone(), f.read())
+            story.reply("bit", "another hack?")
+            story.reply("admin", "2010 will be remembered as a bad year for governments and corporations alike")
+            story.reply("null", "i knew there was something off with DEC, it even has an official brute-force program")
+            story.reply("null", "s/official/internal")
+            story.reply("admin", "i tried decbruter, and it takes ~3s to brute-force a DEC archive with a 64-character password, not good")
+            story.reply("admin", "to be fair that was on a top-of-the-line GPU (Evasia SuperForce 480)")
+            story.reply("entropy", "and considering the fact most ppl don't use such long passwords...")
+            story.reply("admin", "the GUI actually limits you to 24-character passwords, which I can decrypt fast enough to have a frame rate")
+            story.reply("suspicions", "DEC 2.0 better be more secure when it comes out")
+            story.reply("digit", "but what do we use until then?")
+            story.reply("admin", "something like VertCrypt, probably")
+        if xdgnet:
+            with open("msgboard/xdg.net/dec") as f:
+                story = xdgnet.add_story("Debian Drops libdec From Its OS", "Jacob Marksman", player.date.clone(), f.read())
+
+        with open("msgboard/debian/dec") as f:
+            debnews.add_story("Debian Will Remove libdec Starting With Debian 5.0.6", "Debian Team", player.date.clone(), f.read())
+
+        data.copyFile("rhdrop", "mhtftp", "dec-src-v1.0.zip", "incoming", "pub")
+
+        technology = nerdnet.get_board("n/technology")
+
+        nerdpost = technology.add_topic("u/admin", "DEC Solutions hack looks bad", "See full article: mht.com")
+        nerdpost.reply("u/bit", "debian has ALREADY dropped libdec from their distro")
+        nerdpost.reply("u/rehack", "sadly, i cannot claim the trophy of responsibility")
+        nerdpost.reply("u/admin", "who did it then?")
+        nerdpost.reply("u/vcforum", "it wasnt any of our members, apparently the poster tried to pin the blame on us")
 
     end_email = Email("null@null.null", "{}@jmail.com".format(self.name), "Mission Complete!", "Thanks for working with SCSI group.")
 
     that_nc = NodeCheck("thatcd")
     that_nc.add(UserNodeCheck("septic", "password"))
 
-    ffc_nc = FileCheck("drop.rehack.org")
+    ffc_nc = FileCheck("rhdrop")
     ffc_nc.add(FileCopiedCheck("HerbsAndSpices.docx", origin="ffcftp"))
+
+    dec_nc = FileCheck("rhdrop")
+    dec_nc.add(FileCopiedCheck("dec-src-v1.0.zip", origin="roynet"))
 
     bodies = [
         [
@@ -930,12 +970,21 @@ I won't be long, and articles will keep on coming, it's just that I do need to f
             "Security should be minimal, that.cd has a pretty bad reputation when it comes to making sure their Apache server and such is up-to-date.",
         ],
         [
-            "So, you migt have heard about the Mountain View heist in the news. I hear that the blyat who did it ended up here, at SCSI.",
+            "So, you might have heard about the Mountain View heist in the news. I heard somewhere that the guy who did it ended up here, at SCSI.",
             "I want the string of heists to continue: let's target FFC.",
             "I hear they have an FTP server with important documents inside that just so happens to be accessible to the public.",
             "By default, FTP servers are poorly secured, so why don't you give it a go? Hack in and send the herbs and spices list to our drop server!",
             "Their website: ffc.com",
             "Our dropserver: drop.rehack.org",
+        ],
+        [
+            "You've likely dealt with a .dec file before, right? It's an encrypted file that is quite flawed, yes?",
+            "Well, I have a hunch that the software has some security issues. As such, I think we should steal the source code.",
+            "I reckon this'll be a little complex, but their website should be a good starting point.",
+            "Get inside their network, find the source code (should be in a .zip somewhere), and send it to the dropserver.",
+            "",
+            "Website: dec.com",
+            "Dropserver: drop.rehack.org",
         ],
     ]
     bodies = ["\n".join(x) for x in bodies]
@@ -951,6 +1000,12 @@ I won't be long, and articles will keep on coming, it's just that I do need to f
             "{}@jmail.com".format(self.name),
             "Peanuts And Chicken", ## So-called because it's about a chicken shop and it's peanuts (old-time slang for 'easy')
             bodies[1],
+        ),
+        Email(
+            "null@null.null",
+            "{}@jmail.com".format(self.name),
+            "Breaking Insecure Security",
+            bodies[2],
         ),
     ]
     return [
@@ -973,6 +1028,16 @@ I won't be long, and articles will keep on coming, it's just that I do need to f
             end_email,
             reward=500,
             end_function=ffc_end,
+        ),
+        FileCheckMission(
+            self,
+            "scsi_dec",
+            "Breaking Insecure Security",
+            dec_nc,
+            emails[2],
+            end_email,
+            reward=800,
+            end_function=dec_end,
         ),
     ]
 

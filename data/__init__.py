@@ -9,6 +9,26 @@ import copy
 import string
 import getpass
 
+def copyFile(from_uid, to_uid, filename, from_foldername=None, to_foldername=None, preserve_origin=False):
+    """
+    Copies a file from one place to another.
+
+    from_uid: UID of the node to copy from
+    to_uid: UID of the node to copy from
+    filename: name of file to copy
+    from_foldername: name of folder to grab from (NOT recursive)
+    to_foldername: name of folder to copy to
+    preserve_origin: if True, the origin will not be overwritten
+    """
+    fromNode, toNode = getNode(from_uid), getNode(to_uid)
+    from_folder = fromNode.get_file(from_foldername) if from_foldername else createFolder(fromNode)
+    to_folder = toNode.get_file(to_foldername) if to_foldername else createFolder(toNode)
+
+    file = from_folder.get_file(filename).clone()
+    file.origin = fromNode.address
+
+    to_folder.add_file(file, preserve_origin)
+
 def getObject(iterable, obj):
     """
     Iterates through an iterable, and returns the first instance where it is equal to obj
@@ -88,18 +108,20 @@ def genBinaryFileData(length=1024, prefix=""):
     return s
 
 def createFolder(node: programs.Node):
-    folder = Folder("", node.files)
+    folder = Folder("/", node.files)
     folder.origin = node.uid
     return folder
 
 def getFile(node, name, kind="Any"):
+    FILES = [File, EncryptedFile, ZippedFolder]
+    FOLDERS = [Folder]
     folder = Folder("", node.files)
     file = folder.get_file(name)
-    if kind == "Folder" and isinstance(file, Folder):
+    if kind == "Any" and type(file) in FILES + FOLDERS:
         return file
-    elif kind == "File" and isinstance(file, File):
+    elif kind == "File" and type(file) in FILES:
         return file
-    elif kind == "Any" and type(file) in [File, Folder]:
+    elif kind == "Folder" and type(file) in FOLDERS:
         return file
 
 def div():
@@ -130,7 +152,9 @@ def getMission(mission_id: string, player):
 
 
 def checkEmailAddress(address: str, checkDomain=None) -> bool:
-    ## Function that returns a boolean value depending on if an email address exists.
+    """
+    Function that returns a boolean value depending on if an email address exists.
+    """
     if not "@" in address:
         ## User entered something wrong
         return False
@@ -574,7 +598,6 @@ N = [
     programs.WebServer("Dark.Store Landing Page", "darkstore", "dark.store", "dark.store"),
     programs.SignupService("jmailsu", "signup.jmail.com", "jmail", junkMail=JMAIL_STARTING_EMAILS),
     programs.TorForwarder("rhomail-signup", "om.rehack.org", "rhomail-signup"),
-    programs.PublicFTPServer("Test FTP", "ftptest", "ftp.test", users=[User("admin", "admin")]),
     programs.PublicFTPServer("reHack Drop Server", "rhdrop", "drop.rehack.org", minPorts=65536),
     programs.Forwarder("mvps", "mvps.me", "mastervps_central"),
     programs.WebServer("reHack Signup Meta-Service", "sign.up", "sign.up", "sign.up"),
@@ -591,7 +614,9 @@ N = [
     programs.WebServer("SFEC Homepage", "sfecweb", "sfec.com", "sfec", linked=["sfeclan", "sfecmail"]),
     programs.WebServer("XCombinator", "xcombinatorweb", "xcombinator.com", "xcombinator"),
     programs.WebServer("Nestaq: Home", "nestaqweb", "nestaq.com", "nestaq"),
-    programs.WebServer("DEC Solutions", "decweb", "dec.com", "dec"),
+    programs.WebServer("DEC Solutions", "decweb", "dec.com", "dec", linked=["dec.mail.com"]),
+    programs.SignupService("decsignup", "private-signup.dec.com", "declan"),
+    programs.WebServer("sms (homepage)", "smsweb", "sms.us", "sms"),
 ]
 for item in N:
     NODES.append(item)

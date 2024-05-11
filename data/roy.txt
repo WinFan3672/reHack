@@ -1,0 +1,7 @@
+ROY'S DIARY
+
+= 2010-01-21 =
+
+Today I got a job at DEC Solutions. I can't wait to get started already. My job is to work on DEC Suite, a collection of utilities for encrypting and decrypting DEC archives, which are slated to hit the market in 2009. I've already voiced some concerns with the standard, but it appears that those concerns have been ignored. I'M THE LEAD PROGRAMMER AROUND HERE, LET ME MAKE IT MORE SECURE! I CO-INVENTED AES, FOR DARWIN'S SAKE!
+
+Anyway, the suite source code is encrypted using a .dec archive (ironically enough), and they told me the password was 'infiltrate'. Better keep note.

@@ -86,7 +86,7 @@ def connect(item):
                 print("{}: {}".format(node.name, node.address))
             if not valid:
                 print("ERROR: No links found.")
-        elif args == ["user"] and user in item.installedPrograms:
+        elif args == ["user"] and "user" in item.installedPrograms:
             div()
             print("user [args]")
             div()

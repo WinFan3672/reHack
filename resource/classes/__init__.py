@@ -114,20 +114,20 @@ class File(Base):
 
 
 class ZippedFolder(Base):
-    def __init__(self, name, folder, origin=None):
-        self.name = name
+    def __init__(self, folder, origin=None):
+        self.name = folder.name + ".zip"
         self.folder = folder if isinstance(folder, Folder) else Folder(name, origin=origin)
         self.origin = origin
     def clone(self):
-        return ZippedFolder(self.name, self.folder.clone(), self.origin)
+        return ZippedFolder(self.folder.clone(), self.origin)
     def __str__(self):
         return "ZippedFile(name='{}')".format(self.name)
 
 class EncryptedFile(Base):
-    def __init__(self, file, origin, password=None):
+    def __init__(self, file, origin=None, password=None):
         self.file = file
         self.name = file.name + ".dec"
-        self.origin = file.origin
+        self.origin = origin if origin else file.origin
         self.header = {"name": file.name, "origin": origin, "software": "DEC Solutions Encrypter v1.0a"}
         self.password = password
         self.data = "This file is encrypted.\nTo decrypt it, select DECRYPT FILE and enter the password, if one was set."
@@ -136,8 +136,8 @@ class EncryptedFile(Base):
             return password == self.password
         else:
             return True
-    def clone(self):
-        return EncryptedFile(self.file, self.origin, self.password)
+    def clone(self, deep=True):
+        return EncryptedFile(self.file.clone() if deep else self.file, self.origin, self.password)
 
 
 class Folder(Base):
@@ -188,9 +188,10 @@ class Folder(Base):
                     return file
                 elif filetype == "File" and isinstance(file, File):
                     return file
-    def add_file(self, file):
+    def add_file(self, file, preserve_origin=False):
         if type(file) in [File, EncryptedFile, ZippedFolder, Folder]:
-            file.origin = self.origin
+            if not preserve_origin:
+                file.origin = self.origin
             self.files.append(file.clone())
     
     def create_file(self, name, data, origin=None):
