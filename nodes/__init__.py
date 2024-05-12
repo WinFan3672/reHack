@@ -237,8 +237,25 @@ apache.homepage.add_page("Wiki Server")
 apache.homepage.add_page("Apache Forwarder")
 
 enwired_ftp = programs.FTPServer("EnWired FTP Server", "eneired-ftp", "ftp.enwired.com")
-with open("data/EnwiredArticleList.docx.txt") as f:
+with open("data/enwired/EnwiredArticleList.docx.txt") as f:
     enwired_ftp.pub.create_file("EnwiredArticleList.docx", f.read())
+
+enwired_articles = Folder("Articles")
+
+ARTICLES = [
+    "1978-0000.doc",
+    "1990-0000.doc",
+    "2000-0000.doc",
+    "2003-0000.doc",
+]
+
+for article in ARTICLES:
+    with open("data/enwired/articles/{}.txt".format(article)) as f:
+        enwired_articles.create_file(article, f.read())
+
+enwired_zip = ZippedFolder(enwired_articles)
+
+enwired_ftp.pub.add_file(enwired_zip)
 
 def main():
     return [

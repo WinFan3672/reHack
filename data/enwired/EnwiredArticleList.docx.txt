@@ -4,7 +4,7 @@ EnWired Official Article List
 DATE        ID          TITLE
 ************************************************
 1978-01-01  1878-0000   Greetings From EnWired
-1978-01-01  1978-0001   Ataro 2600: The Hot New Computer
+1978-01-01  1978-0001   Ataro 2600: The Hot New Computer#
 1978-01-01  1978-0002   x86: The Future Of Computing?
 1978-01-01  1978-0003   Xerox Park: A Fascinating Story
 1978-01-01  1978-0005   xDevices II Plus: Coming 1979
@@ -65,6 +65,7 @@ DATE        ID          TITLE
 
 1984-06-01  1984-0009   HP Releases Wildly Successful Laser Printer: Fast And Legible Text And Images?
 1984-06-01  1984-0010   Armstrad CPC: An Interesting Gommodore And xDevices Competitor
+
 1984-09-01  1984-0011   NS-DOS/PC-DOS 3.0: Small, Iterative Changes (32MB FAT16 Partition & 1.2M Floppy Disk Support)
 1984-09-01  1984-0012   Macintosh Gets 512K Model: 'Fat Mac'
 
@@ -276,8 +277,8 @@ DATE        ID          TITLE
 2005-06-01  2005-0006   SMC Athlon 64 X2: Dual-Core 64-Bit CPU
 2005-06-01  2005-0007   xDevices Announces Switch To Simtel CPUs
 
-2006-01-01  2005-0000   EnWired Direct: Things Are Getting Bad
-2006-01-01  2005-0001   Last Year: Workspaces Vista Announced; Xbox 360 Released
+2006-01-01  2006-0000   EnWired Direct: Things Are Getting Bad
+2006-01-01  2006-0001   Last Year: Workspaces Vista Announced; Xbox 360 Released
 
 2006-03-01  2006-0002   Simtel Core Brand Created: Is Pentium Done For?
 

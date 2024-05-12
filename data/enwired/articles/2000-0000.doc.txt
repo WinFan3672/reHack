@@ -1,0 +1,26 @@
+************************************************
+EnWired Direct: Welcome To A New Millenium
+2000-01-01 :: 2000-0000
+BY: Elliot Marksman (CEO; Editor-In-Chief)
+************************************************
+It's time for the once-in-a-decade recap of the last ten years. In our January 1990 issue, we went over all the innovation we thought was notable from the years 1980 to 1989.
+This time, we're covering 1990 to 1999, where technology kept on progressing at an amazingly rapid pace, with great new OS, software, and hardware releases really shaking things up.
+
+Here goes:
+
+- NanoSoft Workspaces 3.0 (1990) was the first successful release of Workspaces, because it was prettier and easier to use.
+- The age of the Gommodore 64 was out, and Amiga was in. Sadly, the high cost and competition meant it never sold well.
+- The Macintosh II was a real shake-up for Macintosh fans.
+- PGP and Linux were two notable open-source projects that became highly successful due to their superiority.
+- A lot of form factor experiments (Gommodore CDTV, etc.) occured.
+- The Creative Labs SoundBlaster series (particularly the 16) were highly innovative and popular sound cards.
+- DOS really did die, with 6.22 being the last release of NS-DOS, the most popular version.
+- The World Wide Web launched, and has been massively successful, with loads of companies capitalising on the growing communities of Internet users 'surfing the net'.
+- id Software revolutionised PC gaming with Wolfenstein 3D and DOOM.
+- The MP3 audio format provided an excellent size/quality compromise, and is widely used to this day.
+- PlayStation was a big deal, with millions of units sold across the world.
+- IBM Deep Blue beat world Chess champion Gary Kasparov in a milestone for machine learning that will be remembered forever.
+- The Year 2000 Problem (Y2K) came and went, with far less disruption than expected.
+
+We hope that by the time 2010 rolls around, more and more innovation keeps coming, and we hope to document all of it here at EnWired.
+************************************************

@@ -1,0 +1,27 @@
+************************************************
+A New Decade: Looking Back At The 1980s
+1990-01-01 : 1990-0000
+BY: Elliot Marksman, Editor-In-Chief
+************************************************
+Hello, and welcome to 1990! It's a new decade, and boy has the last decade been exciting! This introductory article is a romp back into the past, looking at all the innovation the years 1980 to 1989 had to offer. 
+
+The 1980s were a time to be excited about technology. Processors got faster, interfaces became graphical, and x86 evolved faster than the average person could keep up with.
+In the last decade, we've published 74 different articles across a few dozen magazine issues (although 1988 and 1989 were a lot calmer), and answered countless letters from our fellow readers.
+
+So, here's a list of the most important innovations of the past decade:
+
+- PC-DOS, NS-DOS and UNIX were the new kids on the block, replacing CP/M and introducing the world to all-new design philosophies, with UNIX in particular spawning many different clones.
+- The BBC Micro (1982) brought the computer into schools for a very low price, cementing the computer as a vital educational tool.
+- TCP/IP and DNS were the first big technologies that brought the Internet into fruition.
+- The Gommodore 64 was insanely successful, selling millions of units and kick-starting the home PC market.
+- The Xerox STAR was the first GUI machine, with xDevices Lisa being the first one sold to consumers. Despite the Lisa not selling well, it paved the way towards the graphical world we live in.
+- Simtel kept launching exciting new processor after exciting new processor, with the 286 series being particularly notable.
+- The IBM XT was the first PC with a hard drive, allowing for permanent storage of files.
+- NanoSoft Workspaces, a graphical shell for DOS, released, being technically impressive but difficult to use and too power-hungry for most people to care.
+- Office suites like Lotus 1-2-3 replaced a lot of previously paper-based work in offices all around the world.
+- Floppy disks kept on getting bigger, with 1.44M being achieved by the end of the decade.
+- Sound cards began to get popular, with Ad-Lib being a stand-out for sure.
+- The CD-ROM was a big deal, storing a whopping 650M of data in a single 10cm disc.
+
+The 1980s were all very exciting, and we couldn't have done it very good justice in a dozen bullet points. However, you can purchase our 1980s collection for just $499.99, which will have every article from 1980 to 1989 shipped to your door. Comes with a free 1-year subscription as well. 
+************************************************

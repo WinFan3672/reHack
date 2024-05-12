@@ -118,6 +118,7 @@ class ZippedFolder(Base):
         self.name = folder.name + ".zip"
         self.folder = folder if isinstance(folder, Folder) else Folder(name, origin=origin)
         self.origin = origin
+        self.data = "This is a zipped folder. It requires compatible software to view and extract contents."
     def clone(self):
         return ZippedFolder(self.folder.clone(), self.origin)
     def __str__(self):
