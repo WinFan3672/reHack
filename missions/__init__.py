@@ -50,15 +50,13 @@ def chan_missions(self):
             "",
             "Because I hate cheaters, I want them to get what they deserve.",
             "Their system can't be that secure, so could you connect to their PC and delete some system files?",
-            # "I'm not that technical but looking in my personal filesystem, I can see this file called core.sys that looks important.",
-            # "Maybe that'll point you in the right direction.",
             "Oh, yeah the address: {}".format(data.getNode("5chan_mission1").address)
         ],
         [
             "I imagine you've heard of the new DCSE online platform.",
             "Well, I have a great idea on how to cause some chaos. Think of it as hacktivism.",
             "The DCSE trading platform is built off standard software that is known to have an off-switch. Hack in and shut down the exchange.",
-            "Oh, and most importantly, don't delete any system files, this needs to look like the server is down for maintenance, not dead."
+            "Oh, and most importantly, don't delete anything, we don't want to cause lasting damage, just confusion.",
             "The DCSE website can be found here: dcse.com",
         ],
     ]
@@ -873,35 +871,6 @@ You have been invited into the ThatCD IRC Server. The admin has already messaged
         with open("data/ffc.txt") as f:
             mhtftp.pub.create_file("HerbsAndSpices.docx", f.read())
 
-        forum_general = mhtforum.boards[0]
-        forum_notice = forum_general.add_topic("admin", "Sad announcement", """This is the first time I've announced this online.
-I have cancer. The good thing being that it was caught early, so my chances of survival are estimated to be 95%.
-I'll be undergoing radiotherapy for the next six months at the least. This won't affect my work much, but I'll still be taking time off to de-stress.
-I won't be long, and articles will keep on coming, it's just that I do need to focus on my health a little more, and taking a step back.""")
-
-        forum_notice.reply("bit", "on behalf of the community, I am very sorry for what has happened and I hope you recover")
-        forum_notice.reply("superuser", "indeed, get well soon, and remember, laughter is the best medicine, and studies have shown that miserable people live shorter lives :)")
-        forum_notice.reply("admin", "and how does sarcasm affect that?")
-        forum_notice.reply("superuser", "it causes your live expectancy to become negative")
-        forum_notice.reply("anonmail", "get well soon, we can't lose MHT")
-        forum_notice.reply("admin", "my son says he'll be able to replace me, so i wonder how well that goes :)")
-        forum_notice.reply("anonmail", "best not get cynical")
-        forum_notice.reply("debian", "as a representative of the debian foundation, we all extend our support and thanks for giving us all some nice water cooler talk :)")
-
-        chan_general = chan.boards[0]
-
-        chan_post = chan_general.add_topic("bit", "MHT Founder Has Cancer", "See the forum post: forum.mht.com")
-        chan_post.reply("admin", "hope he recovers, 95% sounds like a good success rate")
-        chan_post.reply("foundation", "+1")
-        chan_post.reply("bit", "+1")
-        chan_post.reply("entropy", "+1")
-        chan_post.reply("anonmail", "+1")
-        chan_post.reply("rosebud", "+1")
-        chan_post.reply("halt", "+1")
-        chan_post.reply("nullzsec", "+1")
-        chan_post.reply("digit", "+1")
-        chan_post.reply("mht", "hey all, thanks for all the support on both here and my forum")
-        
         dcsebets = nerdnet.get_board("n/dcsebets")
 
         nerdnet.duck = dcsebets.add_topic("u/dcsekiller", "Buy DUCK Now", """The recent MHT post is bad for FFC. Buy DUCK, it'll go up!""")
