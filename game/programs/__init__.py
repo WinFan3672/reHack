@@ -1687,6 +1687,9 @@ def nodecheck(args):
         VersionControl: "version_control",
         BankServer: "bank",
         BankBackEnd: "bank_backend",
+        LocalAreaNetwork: "router",
+        Forwarder: "forwarder",
+        TorForwarder: "forwarder",
 
     }
     if args:
@@ -3533,7 +3536,7 @@ class Forwarder(Node):
         self.forwarding_url = forwarding_url
         self.playerPlease = True
         self.show_origin = show_origin
-        self.users = [User("admin", "admin")]
+        self.users = [User("admin")]
 
     def get_node(self, address):
         return data.getNode(self.forwarding_url)

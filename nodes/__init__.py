@@ -231,6 +231,11 @@ duck_meals.add_page("Refreshments")
 duckdonald.homepage.add_page("Careers")
 duckdonald.homepage.add_page("Locations")
 
+apache = programs.WikiServer("Apache Foundation", "apacheweb", "apache.org", "apache", "Apache")
+apache.homepage.add_page("HTTP Server")
+apache.homepage.add_page("Wiki Server")
+apache.homepage.add_page("Apache Forwarder")
+
 def main():
     return [
         mht,
@@ -248,6 +253,7 @@ def main():
         mailcomftp,
         debnews,
         duckdonald,
+        apache,
     ] + nodes.forum.main() + nodes.forum.nerdnet.main() + nodes.test.main() + nodes.lan.main()
 
 def tor():

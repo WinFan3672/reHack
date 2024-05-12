@@ -1,0 +1,2 @@
+The Apache Forwarder forwards connections to another node transparently and seamlessly.
+It can be used for anything from alternate domains to Tor mirrors to an IP address masking tool.

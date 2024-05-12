@@ -1026,7 +1026,7 @@ I won't be long, and articles will keep on coming, it's just that I do need to f
             ffc_nc,
             emails[1],
             end_email,
-            reward=500,
+            reward=1500,
             end_function=ffc_end,
         ),
         FileCheckMission(
@@ -1036,7 +1036,7 @@ I won't be long, and articles will keep on coming, it's just that I do need to f
             dec_nc,
             emails[2],
             end_email,
-            reward=800,
+            reward=3500,
             end_function=dec_end,
         ),
     ]

@@ -623,6 +623,11 @@ N = [
     programs.WebServer("MIT", "mitweb", "mit.edu", "mit"),
     programs.WebServer("Dartmouth", "dartmoutheb", "dartmouth.edu", "apache"),
     programs.WebServer("Berkley", "berkleyweb", "berkley.edu", "berkley"),
+    programs.WebServer("NanoSoft Expo 2010", "expo2010web", "expo2010.nanosoft.com", "expo2010"),
+    programs.WebServer("NanoSoft Workspaces 8", "wp8web", "w8.nanosoft.com", "w8"),
+    programs.WebServer("Workspaces Phone 8", "wp8web", "wp8.nanosoft.com", "wp8"),
+    programs.Forwarder("duck", "duck.com", "duckdonald"),
+    programs.WebServer("IsDed", "isded", "isded.com", "isded"),
 ]
 for item in N:
     NODES.append(item)
@@ -804,6 +809,8 @@ TN = [
     programs.TorSignupService("ds-signup", generateTorURL("darkstoresu"), "darkstore", usePlayerName=True, private=["rhmail"]),
     programs.ProgramInstaller("DarkStore", "darkstore", "darkstore.onion", getProgram("darkstore", 1.0)),
     programs.ProgramInstaller("SCSI Client", "scsiclient", generateTorURL("scsiclient"), getProgram("scsi", 1.0)),
+    programs.Forwarder("nerdnet", "nerd-net.onion", "nerdnet"),
+    programs.Forwarder("mht", "mht.onion", "mht"),
 ]
 for node in TN:
     TOR_NODES.append(node)

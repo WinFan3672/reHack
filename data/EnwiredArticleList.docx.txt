@@ -1,0 +1,32 @@
+************************************************
+EnWired Official Article List
+************************************************
+DATE        ID          TITLE
+************************************************
+1978-01-01  1878-0000   Greetings From EnWired
+1978-01-01  1978-0001   Ataro 2600: The Hot New Computer
+1978-01-01  1978-0002   x86: The Future Of Computing?
+1978-01-01  1978-0003   Xerox Park: A Fascinating Story
+1978-01-01  1978-0005   xDevices II Plus: Coming 1979
+1878-01-01  1878-0006   Simtel 8086 Officially Announced   
+
+1979-01-01  1878-0000   Greetings From EnWired
+1979-01-01  1979-0001   Motorisor 65k Released: A Big Milestone In Computing
+1979-01-01  1979-0002   In Retrospect #1: Z1 Computer
+1979-0-01   1979-0003   Teaching Computers To Think (Prof. W. Falken, P.H.D)
+
+1980-01-01  1878-0000   Greetings From EnWired
+1980-01-01  1980-0001   PC-DOS: The Next Generation of Computer OS?
+1980-01-01  1980-0002   Space Infiltrators: Tatio's New Shoot 'Em Up
+1980-01-01  1980-0003   CP/M Loses Steam; Discontinuation Looks Likely
+
+1981-01-01  1878-0000   Greetings From EnWired
+1981-01-01  1981-0001   UNIX: The New Craze Or Something More?
+1981-01-01  1981-0002   The Chess Machine (Prof. W. Falken, P.H.D)
+1981-01-01  1981-0003   VAX: DEC's Fascinating x86 Computer Lineup
+
+1982-01-01  1982-0000   Greetings From EnWired
+1982-01-01  1982-0001   
+************************************************
+(c) 2008 EnWired, all rights reserved.
+************************************************

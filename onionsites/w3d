@@ -3,7 +3,11 @@ World Wide Web Directory: Onionsites
 div()
 * Technology
     * W3D: w3d.onion
+        * This website ;)
     * reHack: rehack.onion
+        * Mirror of rehack.org
+    * NerdNet: nerd-net.onion
+        * Mirror of nerd.net
 * Email:
     * TorMail: www.tormail.onion
         * Email client for Tor.
@@ -15,7 +19,8 @@ div()
 * News
     * EnWired: enwired.onion
         * Following recent events, the onionsite appears to have gone down. 
-	* Use the clearnet site instead: enwired.com
+	    * Use the clearnet site instead: enwired.com
     * MHT: mht.onion
+        * Mirror of mht.com
     * The Tor Times: tortimes.onion
 div()

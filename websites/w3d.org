@@ -18,6 +18,9 @@ div()
         * Create a VPS for any purpose. Now a reHack brand.
     * DomainExpert: domain.expert
         * Every website needs a name.
+    * NerdNet: nerd.net
+        * Being Right > Money
+        * Editor's Note: A general-purpose forum that splits communities into "subnerds"
 * Finance
     * DCSE: dcse.com
         * Trading stocks and shares like no tomorrow (estd. 1792)
@@ -49,10 +52,6 @@ div()
 * News
     * MHT: mht.com
         * Technology journalism done right
-    * 5chan: N/A
-        * anonymous image board and forum
-        * w3d notice: The URL for 5chan has been removed from the directory by request of the US government.
-          To access this website, please contact us: support@w3d.mail.com
 div()
 w3d notice: We cannot guarantee that all links to websites are valid. Due to link rot, some links may be dead.
 div()

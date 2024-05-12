@@ -133,7 +133,7 @@ future_plans.reply("u/admin", "i need some more conclusive evidence than *that*"
 future_plans.reply("u/rehack", "the ONLY thing ColonSlash has posted is that expose")
 future_plans.reply("u/admin", "nothing before, nothing since?")
 future_plans.reply("u/rehack", "uh-huh")
-future_plans.reply("u/admin", "that *is* suspicious...")
+future_plans.reply("u/admin", "that *is* suspicious")
 
 web_server = programming.add_topic("u/neckbeards_alliance", "Apache or WebEngine?", """Which one is best? I need to know.""")
 web_server.reply("u/horseman", "WebEngine is way lighter and just as powerful, plus it has a better license")
@@ -148,11 +148,8 @@ tor_node.reply("u/admin", "for browsing anonymously. when you post however, you 
 tor_node.reply("u/neckbeards_alliance", "it's a conspiracy theory to discourage usage of the Tor node, funneling ppl towards the clearnet version")
 tor_node.reply("u/admin", "FINE! logins and signups have been enabled for the tor versions")
 
-nerdnet_tor = copy.copy(nerdnet)
-nerdnet_tor.address = "nerd-net.onion"
-
 def main():
     return [nerdnet]
 
 def tor():
-    return [nerdnet_tor]
+    return []
