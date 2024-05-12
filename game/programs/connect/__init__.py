@@ -7,23 +7,6 @@ import time
 import json
 
 
-def div():
-    print("--------------------")
-
-
-def br():
-    div()
-    input("Press ENTER to continue.")
-
-
-def cls():
-    """
-    Clears the terminal screen.
-    """
-    res = platform.uname()
-    os.system("cls" if res[0] == "Windows" else "clear")
-
-
 def listDirTree(directory):
     d = []
     for item in directory:
