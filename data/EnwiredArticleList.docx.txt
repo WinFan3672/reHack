@@ -223,6 +223,81 @@ DATE        ID          TITLE
 
 1999-09-01  1999-0003   xDevices Launches Power Mac G4
 1999-09-01  1999-0004   The Year 2000 Problem: A Big Issue, Or Manufactured Pandemonium?
+
+2000-01-01  2000-0000   EnWired Direct: Welcome To A New Millenium
+2000-01-01  2000-0001   Last Year: Evasia Launches n-Force GPUs; 70MHz SMC Athlon
+2000-01-01  2000-0002   Us Govt. Relaxes Cryptography Export Restrictions
+2000-01-01  2000-0003   New Company (Transmeta) Launches Crusoe Laptop Processor?
+
+2000-03-01  2000-0004   NanoSoft Workspaces 2000: NT-Based Business OS?
+2000-03-01  2000-0005   PlayStation 2 Is A Massive Hit (Just Like Original)
+2000-03-01  2000-0006   BeOS R5: Freely Downloadable Version Available Online
+
+2000-06-01  2000-0007   EnWired Direct: Our New Website (Plus Digital Subscription)
+2000-06-01  2000-0008   In Retrospect #3: DOS Was An Important Stepping Stone
+2000-06-01  2000-0009   Looking Forward #1: Are Laptops The Future?
+
+2000-09-01  2000-0010   NanoSoft Workspaces Me Releases: It's A Buggy Mess
+2000-09-01  2000-0011   RSA Patent Expires: RSA Encryption Algorithm Public Domain
+
+2001-01-01  2001-0001   Last Year: Pentium 4 Releases (To Little Fanfare)
+2001-01-01  2001-0002   Linux 2.4.0 Releases
+
+2001-03-01  2001-0003   Agile Manifesto Releases: A New Project Management Methodology?
+2001-03-01  2001-0004   macOS X Releases: An All-New Refresh To The Decades-Old OS
+
+2001-09-01  2001-0005   GameCube Poised To Compete With PlayStation 2
+
+2002-01-01  2002-0001   Last Year: Xbox Releases; Workspaces XP A Smash-Hit
+
+2002-03-01  2002-0002   First BlackBerry Smartphone: It's A Big Deal
+
+2002-09-01  2002-0003   Blender Becomes Open-Source After Raising €100,000
+
+2003-03-01  2003-0000   EnWired Direct: News Stories Dry Up And We're Losing Subscribers
+2003-03-01  2003-0001   Evasia nForce FX: DirectX 9 Graphics Cards Release
+2003-03-01  2003-0002   SCO vs IBM: Did IBM Steal Code To Put Into Linux?
+2003-03-01  2003-0003   Pentium M Laptop Processors Launch
+
+2003-06-01  2003-0004   SMC Apteron Server Processors Launch: Is 64-Bit The Next Big Thing?
+
+2003-09-01  2003-0005   Athlon 64 Launched: 64-Bit Reaches The Consumer Market
+
+2004-01-01  2004-0000   EnWired Direct: No Articles Until September
+
+2004-09-01  2004-0001   Gmail Launched By Search.Com
+2004-09-01  2004-0002   nForce 6800: Beefy GPUs Run Games Amazingly Well
+
+2005-06-01  2005-0001   Ubuntu: Debian, But More Enterprise-y?
+2005-06-01  2005-0002   Firefox: The Hot New Web Browser?
+2005-06-01  2005-0003   macOS 10.4 Tiger: Pretty Cool
+2005-06-01  2005-0004   Nokia 770 Tablet: Interesting New Form Factor
+2005-06-01  2005-0005   Pentium D: Dual-Core 64-Bit CPU
+2005-06-01  2005-0006   SMC Athlon 64 X2: Dual-Core 64-Bit CPU
+2005-06-01  2005-0007   xDevices Announces Switch To Simtel CPUs
+
+2006-01-01  2005-0000   EnWired Direct: Things Are Getting Bad
+2006-01-01  2005-0001   Last Year: Workspaces Vista Announced; Xbox 360 Released
+
+2006-03-01  2006-0002   Simtel Core Brand Created: Is Pentium Done For?
+
+2006-09-01  2006-0003   Simtel Core 2 Processors: They're Really Good
+2006-09-01  2006-0004   PlayStation 3: Most Expensive Console Ever, But It's POWERFUL
+
+2007-01-01  2007-0000   EnWired Direct: EnWired Has Less Than Two Years Left
+2007-01-01  2007-0001   Last Year: Wii, Amiga OS 4
+
+2007-03-01  2007-0002   xDevices Announces xPhone: A Smartphone Without A Keyboard?
+2007-03-01  2007-0003   Workspaces Vista Releases: People HATE It
+
+2007-06-01  2007-0004   Asus Eee PC: The First Netbook (Yes, It Runs Linux)
+
+2008-01-01  2008-0000   EnWired Direct: We Are Officially Bankrupt (Capter 11 Bankruptcy Protection)
+2008-01-01  2007-0001   In Retrospect #4: 30 Years of EnWired
+
+2008-04-04  2008-0001   Goodbye EnWired (Online Article)
+
+2008-04-21  2008-0002   Goodbye EnWired - Comments (Online Article)
 ************************************************
 Frequently Asked Questions
 ************************************************
@@ -231,7 +306,11 @@ A: Yes. Go to our website (enwired.com) for more info.
 
 Q: Can I Buy Magazines?
 A: Sadly not. Most of the original printing data
-is lost to time. However, you can always buy second-hand.
+   is lost to time. However, you can always buy second-hand.
+
+Q: What Happened To Online Articles:
+A: We've removed them from our website, but they have been archived
+   and will return soon. In the meantime, patience.
 ************************************************
 (c) 2008 EnWired, all rights reserved.
 ************************************************

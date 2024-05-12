@@ -236,6 +236,10 @@ apache.homepage.add_page("HTTP Server")
 apache.homepage.add_page("Wiki Server")
 apache.homepage.add_page("Apache Forwarder")
 
+enwired_ftp = programs.FTPServer("EnWired FTP Server", "eneired-ftp", "ftp.enwired.com")
+with open("data/EnwiredArticleList.docx.txt") as f:
+    enwired_ftp.pub.create_file("EnwiredArticleList.docx", f.read())
+
 def main():
     return [
         mht,
@@ -254,6 +258,7 @@ def main():
         debnews,
         duckdonald,
         apache,
+        enwired_ftp,
     ] + nodes.forum.main() + nodes.forum.nerdnet.main() + nodes.test.main() + nodes.lan.main()
 
 def tor():
