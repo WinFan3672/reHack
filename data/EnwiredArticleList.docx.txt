@@ -10,23 +10,228 @@ DATE        ID          TITLE
 1978-01-01  1978-0005   xDevices II Plus: Coming 1979
 1878-01-01  1878-0006   Simtel 8086 Officially Announced   
 
-1979-01-01  1878-0000   Greetings From EnWired
-1979-01-01  1979-0001   Motorisor 65k Released: A Big Milestone In Computing
+1979-01-01  1979-0001   Motorisor 68k Released: A Big Milestone In Computing
 1979-01-01  1979-0002   In Retrospect #1: Z1 Computer
-1979-0-01   1979-0003   Teaching Computers To Think (Prof. W. Falken, P.H.D)
+1979-01-01  1979-0003   Teaching Computers To Think (Scientific Paper)
 
-1980-01-01  1878-0000   Greetings From EnWired
 1980-01-01  1980-0001   PC-DOS: The Next Generation of Computer OS?
 1980-01-01  1980-0002   Space Infiltrators: Tatio's New Shoot 'Em Up
 1980-01-01  1980-0003   CP/M Loses Steam; Discontinuation Looks Likely
 
-1981-01-01  1878-0000   Greetings From EnWired
 1981-01-01  1981-0001   UNIX: The New Craze Or Something More?
-1981-01-01  1981-0002   The Chess Machine (Prof. W. Falken, P.H.D)
+1981-01-01  1981-0002   The Chess Machine: Teaching Computers To Play (Scientific Paper)
 1981-01-01  1981-0003   VAX: DEC's Fascinating x86 Computer Lineup
 
-1982-01-01  1982-0000   Greetings From EnWired
-1982-01-01  1982-0001   
+1982-01-01  1982-0001   BBC Micro: Bringing The Computer To Schools
+1982-01-01  1982-0002   TCP/IP: The Future Of Networking
+1982-01-01  1982-0003   Gommodore 64 Poised To Sell Well (Launches August)
+1982-01-01  1982-0004   Xerox STAR: First Ever 'Graphical User Interface'
+1982-01-01  1982-0004   Is WIMP The Future Of Computing?
+1982-01-01  1982-0005   IBM PC: Is Open Architecture The Future Of Competition?
+
+1982-03-01  1982-0005   Simtel 80286: It's Really Powerful
+1982-03-01  1982-0006   NS-DOS: The Next DOS Or Just A Clone?
+1982-03-01  1982-0007   PC-DOS 1.1 V.S NS-DOS 1.25: Which Is Better?
+
+1982-06-01  1982-0008   Simclair XS Spectrum: A Gommodore Competitor For Just £125?
+1982-06-01  1982-0009   IBM Launches New 320K Double-Sided Floppy Disk
+
+1982-09-01  1982-0010   MIDI: Making Computers Talk To Musical Instruments
+1982-09-01  1982-0011   Gommodore 64 Finally Releases - Sells Like Hot Cakes
+
+1983-01-01  1983-0001   xDevices Lisa: First Consumer Computer With a GUI
+1983-01-01  1983-0002   IBM Buys 12% Stake In Simtel: A Good Investment Or No?
+1983-01-01  1983-0003   Lisp Machines: A Fad Or A Trend?
+1983-01-01  1983-0004   CD: A Massive Optical Storage Medium For Music
+
+1983-03-01  1983-0004   IBM XT: A PC With A Hard Drive?
+1983-03-01  1983-0005   Compaq Portable: First IBM PC Clone Releases
+
+1983-06-01  1983-0006   Thinking Machines Corporation: An Artificial Intelligence Company?
+1983-06-01  1983-0007   NS-DOS/PC-DOS 2.0 Introduces Folders?
+
+1983-09-01  1983-0008   GNU Project: A 'Free-As-In-Freedom' Alternative To UNIX?
+1983-09-01  1983-0009   Why Are There So Many DOS Clones?
+1983-09-01  1983-0010   Which Computer Should You Buy? 1983 Edition
+
+1984-01-01  1984-0001   NanoSoft Workspaces: A Graphical Shell For DOS: Coming Soon?
+1984-01-01  1984-0002   Domain Name System: Gone Are Hard To Remember Phone Numbers
+1984-01-01  1984-0003   NanoSoft Word: New Word Processor
+1984-01-01  1984-0004   Lotus 1-2-3: Brand New Office Suite
+1984-01-01  1984-0005   Turbo Pascal: Programming For The Layperson
+1984-01-01  1984-0006   Galaksija: A Build-It-Yourself, Functional Computer?
+1984-01-01  1984-0007   Simclair Branches Out To Business: Simclair QL
+1984-01-01  1984-0008   xDevices Macintosh: A Successful Lisa Successor?
+
+1984-06-01  1984-0009   HP Releases Wildly Successful Laser Printer: Fast And Legible Text And Images?
+1984-06-01  1984-0010   Armstrad CPC: An Interesting Gommodore And xDevices Competitor
+1984-09-01  1984-0011   NS-DOS/PC-DOS 3.0: Small, Iterative Changes (32MB FAT16 Partition & 1.2M Floppy Disk Support)
+1984-09-01  1984-0012   Macintosh Gets 512K Model: 'Fat Mac'
+
+1985-01-01  1985-0001   PostScript: A 'Page Description Language' For Printers?
+1985-01-01  1985-0002   First .COM Domain Registered: A Big Milestone For DNS Fans
+
+1985-03-01  1985-0003   PC-DOS/MS-DOS 3.1: More Iterative Improvements
+
+1985-06-01  1985-0004   Lotus And Simtel Break The 640K Memory Limit: Expanded Memory
+1985-06-01  1985-0005   Gommodore 128: A Powerful, Expensive G64, Or Something More?
+1985-06-01  1985-0006   Ataro ST: An Inexpensive 'Jackintosh'
+1985-06-01  1985-0007   Tetris Mania In The USSR And Abroad
+
+1985-09-01  1985-0008   Gommodore Amiga: The First Preemptive Multitasking Computer
+1985-09-01  1985-0009   Which DOS Is For You?
+
+1986-01-01  1986-0001   NanoSoft Workspaces Finally Launches: Few Impressed By Cheap Macintosh Clone
+1986-01-01  1986-0002   CD-ROM Launches With 650M Of Storage
+1986-01-01  1986-0003   Simtel 80386: 33MHz CPU Amazes Technology Enthusiasts
+1986-01-01  1986-0004   Macintosh Plus: Enhanced Mac Experience?
+
+1986-03-01  1986-0005   Simclair Shows Little Improvement Over 1982 Model: SX Spectrum 128
+
+1986-06-01  1986-0006   xDevices Macintosh 512Ke: Bigger Floppy Disk Model Launches
+1986-06-01  1986-0007   Simclair Acquired By Armstrad: This Is Massive
+1986-06-01  1986-0008   LISTSERV: Is The Mailing List The Future Of Electronic Mail?
+1986-06-01  1986-0009   In Retrospect #2: TCP/IP And DNS Were The Forerunners Of The Internet
+
+1986-09-01  1986-0010   Amstrad Announces PC 1512: Cheap Yet Powerful
+1986-09-01  1986-0011   The Future Of Computing Is Definitely WIMP
+
+1987-03-01  1987-0001   Macintosh II: Motorisor 68k Mac Machines? 
+
+1987-06-01  1987-0002   IBM PS/2: New PC With 1.44M Floppy Disks?
+1987-06-01  1987-0003   OS/2: A Joint IBM-Nanosoft Venture?
+1987-06-01  1987-0004   Acorn Archimedes: Acorn Enters Computer Race?
+
+1987-09-01  1987-0005   Ad-Lib Sound Card: PC Cards For SOUND? 
+1987-09-01  1987-0006   Connection Machine: Fascinating 2 Billion Operations Per Second Supercomputer
+1987-09-01  1987-0007   VGA: The Future Of Graphics?
+1987-09-01  1987-0008   HyperCard: Fascinating New 'Hypermedia' Development Kit
+
+1988-01-01  1988-0001   Amgia 5000 And 2000: Gommodore Keeps Up With Heavy Hitters
+1988-01-01  1988-0002   MPEG Group: Sound With Compression?
+
+1988-06-01  1988-0003   Simtel 80386SX: Yet More 386 Processors
+
+1988-09-01  1988-0004   NS-DOS 4.0: DOS? More Like SOS
+1988-09-01  1988-0005   Photoshop: A New Photo Manipulation Application For Mac?
+
+1989-09-01  1989-0001   Tim Berners-Lee's WWW Looks Like A Big Deal
+1989-09-01  1989-0002   EnWired Direct: Addressing A Lack of Articles This Year
+
+1990-01-01  1990-0000   A New Decade: Looking Back At The 1980s
+1990-01-01  1990-0001   Motorisor 68040: More Powerful m68k processor
+
+1990-03-01  1990-0002   Macintosh IIfx: Faster CPU, Faster SCSI Adapter
+
+1990-06-01  1990-0003   NanoSoft Workspaces 3.0: Finally, A Successful Workspaces?
+1990-06-01  1990-0004   Amiga 3000: First 32-Bit Amiga + Amiga OS 2.0
+
+1990-09-01  1990-0005   Macintosh Classic: A Confusing (Re-)Release
+1990-09-01  1990-0006   Multimedia PC: A Specification For The Optimal PC?
+
+1991-01-01  1991-0001   NanoSoft Workplace: A Full Office Suite
+1991-01-01  1991-0002   PGP: A Freely Available Encryption Algorithm Looks Like The Most Secure Yet
+
+1991-03-01  1991-0003   Gommodore CDTV: Confusing Yet Fascinating - A 'Multimedia Applicance'?
+
+1991-06-01  1991-0004   Creative Labs SoundBlaster Pro: The Best Sound Card, Or Cheap Ad-Lib Clone?
+1991-06-01  1991-0005   'DOS Is Dead', Says NanoSoft CEO
+
+1991-09-01  1991-0006   Linux: A Free Unix Announced On comp.os.minix
+1991-09-01  1991-0007   GNU Project Adopts Fledgling Linux As Its Kernel; Hurd Looks Dead Already
+1991-09-01  1991-0008   NanoSoft Announces Workspaces 'NT' Project
+
+1992-01-01  1992-0001   64-Bit Architecture? MIPS Release MIPS R4000
+1992-01-01  1992-0002   Workspaces NT Will Address 2GB Of RAM: "More than any application will ever need"
+1992-01-01  1992-0003   CDi - A Videogame Console With An Official CD Standard?
+
+1992-03-01  1992-0004   ThinkPad: IBM's New Business Laptop Lineup
+
+1992-06-01  1992-0005   id Software's Wolfenstein 3D Is A Milestone In PC Gaming
+1992-06-01  1992-0006   Workspaces 3.1: A Big Improvement Over Successful 3.0
+1992-06-01  1992-0007   Sound Blaster 16: Sounds Pretty Cool
+
+1993-01-01  1993-0001   Mosaic: New Web Browser For WWW
+1993-01-01  1993-0002   Amiga 1200/4000: Better CPUs, Better Graphics
+1993-01-01  1993-0003   The Internet Service Provider: A New Business
+
+1993-03-01  1993-0004   ELOQUENS: Commercial Text-To-Speech Software
+1993-03-01  1993-0005   Digital Research Sold To Novell; DR-DOS --> Novell DOS
+1993-03-01  1993-0006   MP3: Commercial Compressed Audio Format Released
+1993-03-01  1993-0007   MS-DOS 6.0 Launches With DoubleSpace Disk Compression Technology
+
+1993-06-01  1993-0008   Multimedia PC Level 2: Official Specification Announced
+1993-06-01  1993-0009   First Ever Live Internet Concert, Courtesy of MBone
+
+1993-09-01  1993-0010   Workspaces NT 3.1: 32-Bit Program Support
+
+1994-01-01  1994-0001   1994 Is The Year Of The PC Game
+1994-01-01  1994-0002   Peter Shor Creates Quantum Algoritm
+1994-01-01  1994-0003   Is Quantum Computing The Next Big Thing?
+
+1994-03-01  1994-0004   Linux Kernel Gets 1.0 Release
+1994-03-01  1994-0005   New Simtel Pentium: It Looks Great
+
+1994-06-01  1994-0006   Gommodore Corporation Bankrupt
+
+1994-09-01  1994-0007   IBM Simon: An Interesting Computer
+1994-09-01  1994-0008   PC-DOS 6.3: The Death Knell Of DOS
+
+1995-01-01  1995-0001   Simtel Pentium Gets Lower-End 75MHz Model
+1995-01-01  1995-0002   Netscape Navigator: A Better Mosaic?
+1995-01-01  1995-0003   PlayStation Sells Millions Of Units In Japan: International Release Coming Soon
+1995-01-01  1995-0004   Zip Drive: IOMEGA's New 100M 'Superfloppy'
+
+1995-03-01  1995-0005   Linux 1.2.0 ('Linux 95') Releases
+1995-03-01  1995-0006   Sun Microsystems Announces 'Java' Programming Language
+
+1995-09-01  1995-0007   NanoSoft Workspaces 95 Is A Massive Deal
+1995-09-01  1995-0008   Simtel Launches New 133MHz Pentium Processor
+
+1996-01-01  1996-0001   Be Inc. Launches BeBox Computer Running BeOS
+1996-01-01  1996-0002   3DFX Voodoo: A New Graphics Card Technology
+1996-01-01  1996-0003   Netscape Announces JavaScript: Making The 'Net Interactive?
+1996-01-01  1996-0004   CompuServe Blocks 200 'Sexually Explicit' Usenet Groups
+1996-01-01  1996-0005   Nokia Releases 9000 'Smartphone'
+1996-01-01  1996-0006   Quake: The Next Doom?
+
+1996-06-01  1996-0007   Toshiba Launches Libretto Notebook: Smallest PC Ever
+1996-06-01  1996-0008   Linux 2.0 Releases
+
+1997-01-01  1997-0001   3D Gaming Demand Booms
+1997-01-01  1997-0002   Pentium MMX: Multimedia Extensions For x86?
+
+1997-06-01  1997-0003   IBM 'Deep Blue' Computer Beats World Chess Champion
+1997-06-01  1997-0004   Pentium II: More Power, More Instructions
+
+1997-09-01  1997-0005   NanoSoft Purchases 100,000 Non-Voting xDevices Shares: xDevices In Trouble?
+1997-09-01  1997-0006   Internet Explorer 4.0: Is Netscape In Trouble?
+
+1998-01-01  1998-0001   Compaq Announces $9.6B Acquisition of DEC
+
+1998-03-01  1998-0002   Simtel Releases 333MHz Pentium II
+1998-03-01  1998-0003   BeOS R3: Finally - x86 and PowerPC Compatibility!
+
+1998-06-01  1998-0004   xDevices Launches iMac: New All-In-One Computer
+1998-06-01  1998-0005   Workspaces 98: A Tune-Up To 95
+
+1998-09-01  1998-0006   eMachines Launches $399 and $499 PC's: How?
+
+1999-01-01  1999-0001   Linux Kernel 2.2.0: 10 Million Estimated Users?
+
+1999-03-01  1999-0002   SMC Launches K6-III Processors: A True Pentium Competitor Or No?
+
+1999-09-01  1999-0003   xDevices Launches Power Mac G4
+1999-09-01  1999-0004   The Year 2000 Problem: A Big Issue, Or Manufactured Pandemonium?
+************************************************
+Frequently Asked Questions
+************************************************
+Q: Can I Buy Articles?
+A: Yes. Go to our website (enwired.com) for more info.
+
+Q: Can I Buy Magazines?
+A: Sadly not. Most of the original printing data
+is lost to time. However, you can always buy second-hand.
 ************************************************
 (c) 2008 EnWired, all rights reserved.
 ************************************************
