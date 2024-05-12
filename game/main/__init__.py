@@ -104,11 +104,11 @@ def credits():
     )
     for item in resourceInfo.contributors:
         print("* {}".format(item))
-    if resourceInfo.formerContributors:
-        div()
-        print("The following people are former contributors:")
-        for item in resourceInfo.formerContributors:
-            print("* {}".format(item))
+    # if resourceInfo.formerContributors:
+    #     div()
+    #     print("The following people are former contributors:")
+    #     for item in resourceInfo.formerContributors:
+    #         print("* {}".format(item))
     div()
     print("LEGAL NOTICES")
     div()

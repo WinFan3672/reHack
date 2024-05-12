@@ -258,7 +258,7 @@ apache.homepage.add_page("HTTP Server")
 apache.homepage.add_page("Wiki Server")
 apache.homepage.add_page("Apache Forwarder")
 
-enwired_ftp = programs.FTPServer("EnWired FTP Server", "eneired-ftp", "ftp.enwired.com")
+enwired_ftp = programs.FTPServer("EnWired FTP Server", "enwired-ftp", "ftp.enwired.com")
 with open("data/enwired/EnwiredArticleList.docx.txt") as f:
     enwired_ftp.pub.create_file("EnwiredArticleList.docx", f.read())
 

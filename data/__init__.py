@@ -145,7 +145,7 @@ def getNodeList():
     return [x.uid for x in NODES if x.check_health()]
 
 
-def getMission(mission_id: string, player):
+def getMission(mission_id: str, player):
     for mission in player.MISSIONS:
         if mission_id == mission.mission_id:
             return mission

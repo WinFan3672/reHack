@@ -37,61 +37,6 @@ def pickSelection(a_list: list, amount=1, remove=True):
 
     return x
 
-
-def div():
-    print("--------------------")
-
-
-def br():
-    div()
-    input("Press ENTER to continue.")
-
-
-def cls():
-    """
-    Clears the terminal screen.
-    """
-    res = platform.uname()
-    os.system("cls" if res[0] == "Windows" else "clear")
-
-
-def objToDict(obj, addItemType=True):
-    """
-    Recursively convert an object and all its attributes to a dictionary.
-    """
-    if isinstance(obj, (int, float, bool, str)):
-        return obj
-    if inspect.isclass(obj):
-        return {"__class__": obj.__name__}
-
-    if isinstance(obj, (tuple, list)):
-        return [objToDict(x) for x in obj]
-
-    if isinstance(obj, dict):
-        if addItemType:
-            obj2 = {"@itemType": type({}).__name__}
-        obj2.update(obj)
-        obj = obj2
-        return {key: objToDict(value) for key, value in obj.items()}
-    obj_dict = {}
-    if addItemType:
-        obj_dict["@itemType"] = type(obj).__name__
-    for attr in dir(obj):
-        if attr.startswith("__") and attr.endswith("__"):
-            continue
-        if attr == "dic":
-            continue
-        if getattr(obj, attr) is None:
-            obj_dict[attr] = "<class 'none'>"
-            continue
-        if callable(getattr(obj, attr)):
-            obj_dict[attr] = f"<function '{attr}'>"
-            continue
-        value = getattr(obj, attr)
-        obj_dict[attr] = objToDict(value)
-    return obj_dict
-
-
 def help(args):
     div()
     print("Program List")
@@ -1242,12 +1187,6 @@ class ISPNode(Node):
                 print("ERROR: Invalid node.")
                 br()
                 return
-
-
-class Note(Base):
-    def __init__(self, text):
-        super().__init__()
-        self.text = text
 
 
 class XOSMailAccount(Base):
