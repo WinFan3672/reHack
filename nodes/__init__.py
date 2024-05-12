@@ -233,7 +233,7 @@ maildotcom_cme = ZippedFolder(Folder("CME_2009-12-01", [
     ]),
 ]))
 
-mailcomftp.add_file(maildotcom_cme)
+mailcomftp.pub.add_file(maildotcom_cme)
 mailcomftp.pub.create_file("ReadMe.txt", """This folder contains tools deployed on all servers. For more info, see the docs server.""")
 
 

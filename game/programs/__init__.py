@@ -19,7 +19,12 @@ import re
 import getpass
 import code
 
-def pickSelection(a_list, amount=1):
+def pickSelection(a_list: list, amount=1, remove=True):
+    """
+    Picks items randomly from a_list, amount of picks specified by amount.
+    If remove is True, the picked item is removed.
+    NOTE: A copy is made!
+    """
     l = copy.copy(a_list)
     random.shuffle(l)
 
@@ -27,12 +32,13 @@ def pickSelection(a_list, amount=1):
     for i in range(amount):
         z = random.choice(l)
         x.append(z)
-        l.remove(z)
+        if remove:
+            l.remove(z)
 
     return x
 
 
-def sendEmail(email):
+def sendEmail(email: Email):
     recipient = email.receiver
     parts = recipient.split("@")
     server = data.getNode(parts[1], True) 
