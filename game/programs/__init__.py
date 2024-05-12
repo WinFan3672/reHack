@@ -38,85 +38,6 @@ def pickSelection(a_list: list, amount=1, remove=True):
     return x
 
 
-def sendEmail(email: Email):
-    recipient = email.receiver
-    parts = recipient.split("@")
-    server = data.getNode(parts[1], True) 
-    if isinstance(server, MailServer):
-        account = None
-        for item in server.accounts:
-            if item.name == parts[0]:
-                account = item
-        if account:
-            account.data.receive(email)
-            server.emails.append(email)
-        else:
-            m = [
-                "Your message to {} could not be delivered.".format(recipient),
-                "Please check that the email address is valid and try again.",
-                # "You can use the `mxlookup` utility for a list of email accounts on our server.",
-                "",
-                "FROM: {}".format(email.sender),
-                "TO: {}".format(email.receiver),
-                "SUBJECT: {}".format(email.subject),
-                "",
-                "EMAIL START",
-                email.body,
-                "EMAIL END",
-            ]
-            m = "\n".join(m)
-            e = Email(
-                "accounts-daemon@{}".format(parts[1]),
-                email.sender,
-                "Your message could not be delivered",
-                m,
-            )
-            sendEmail(e)
-    else:
-        raise TypeError("Invalid mail server: {} ({}>{})".format(parts[1],email.sender, email.receiver))
-
-
-def sendTorEmail(email):
-    recipient = email.receiver
-    parts = recipient.split("@")
-    server = None
-    for item in data.TOR_NODES:
-        if item.address == parts[1]:
-            server = item
-            break
-    if isinstance(server, TorMailServer):
-        account = None
-        for item in server.accounts:
-            if item.name == parts[0]:
-                account = item
-        if account:
-            account.data.receive(email)
-            server.emails.append(email)
-        else:
-            m = [
-                "Your message to {} could not be delivered.".format(recipient),
-                "The email address is invalid.",
-                "Please check that the email address is valid and try again.",
-                "",
-                "FROM: {}".format(email.sender),
-                "TO: {}".format(email.receiver),
-                "SUBJECT: {}".format(email.subject),
-                "",
-                "EMAIL START",
-                email.body,
-                "EMAIL END",
-            ]
-            m = "\n".join(m)
-            e = Email(
-                "accounts-daemon@{}".format(parts[1]),
-                email.sender,
-                "Your message could not be delivered",
-                m,
-            )
-            sendTorEmail(e)
-    else:
-        raise TypeError("Invalid mail server: {} ({}>{})".format(parts[1],email.sender, email.receiver))
-
 def div():
     print("--------------------")
 
@@ -664,6 +585,84 @@ class MailAccount(Base):
         self.password = password if password else makeRandomString()
         self.data = EmailData(autoresponse)
 
+def sendEmail(email: Email):
+    recipient = email.receiver
+    parts = recipient.split("@")
+    server = data.getNode(parts[1], True) 
+    if isinstance(server, MailServer):
+        account = None
+        for item in server.accounts:
+            if item.name == parts[0]:
+                account = item
+        if account:
+            account.data.receive(email)
+            server.emails.append(email)
+        else:
+            m = [
+                "Your message to {} could not be delivered.".format(recipient),
+                "Please check that the email address is valid and try again.",
+                # "You can use the `mxlookup` utility for a list of email accounts on our server.",
+                "",
+                "FROM: {}".format(email.sender),
+                "TO: {}".format(email.receiver),
+                "SUBJECT: {}".format(email.subject),
+                "",
+                "EMAIL START",
+                email.body,
+                "EMAIL END",
+            ]
+            m = "\n".join(m)
+            e = Email(
+                "accounts-daemon@{}".format(parts[1]),
+                email.sender,
+                "Your message could not be delivered",
+                m,
+            )
+            sendEmail(e)
+    else:
+        raise TypeError("Invalid mail server: {} ({}>{})".format(parts[1],email.sender, email.receiver))
+
+
+def sendTorEmail(email: Email):
+    recipient = email.receiver
+    parts = recipient.split("@")
+    server = None
+    for item in data.TOR_NODES:
+        if item.address == parts[1]:
+            server = item
+            break
+    if isinstance(server, TorMailServer):
+        account = None
+        for item in server.accounts:
+            if item.name == parts[0]:
+                account = item
+        if account:
+            account.data.receive(email)
+            server.emails.append(email)
+        else:
+            m = [
+                "Your message to {} could not be delivered.".format(recipient),
+                "The email address is invalid.",
+                "Please check that the email address is valid and try again.",
+                "",
+                "FROM: {}".format(email.sender),
+                "TO: {}".format(email.receiver),
+                "SUBJECT: {}".format(email.subject),
+                "",
+                "EMAIL START",
+                email.body,
+                "EMAIL END",
+            ]
+            m = "\n".join(m)
+            e = Email(
+                "accounts-daemon@{}".format(parts[1]),
+                email.sender,
+                "Your message could not be delivered",
+                m,
+            )
+            sendTorEmail(e)
+    else:
+        raise TypeError("Invalid mail server: {} ({}>{})".format(parts[1],email.sender, email.receiver))
 
 class MailServer(Node):
     def __init__(
@@ -4022,10 +4021,11 @@ class SearchEngine(Node):
 
 
 class LinkTree(Node):
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, motd="This is a default MOTD.", **kwargs):
         super().__init__(*args, **kwargs)
         self.ports = [data.getPort(21), data.getPort(22), data.getPort(80)]
         self.minPorts = 3
+        self.motd = motd
         self.linked = []
     def add_link(self, uid):
         self.linked.append(uid)
