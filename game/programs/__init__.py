@@ -1453,6 +1453,9 @@ class Mission(Base):
         self.start_function = start_function
         self.end_function = end_function
         self.complete = False
+    
+    def clone(self):
+        return type(self)(self.player, self.mission_id, self.name, self.target, self.start_email, self.end_email, self.reward, self.next_id, self.start_function, self.end_function)
 
     def start(self):
         sendEmail(self.start_email)
@@ -1494,6 +1497,8 @@ class LANMission(Mission):
         subNode = getNode(node, self.target)
         if subNode:
             return subNode.hacked
+    def clone(self):
+        return LANMission(self.player, self.mission_id, self.name, self.target, self.lanserver, self.start_email, self.end_email, self.next_id, self.start_function, self.end_function, self.reward)
 
 class NestedLANMission(Mission):
     def __init__(self, player, mission_id, name, target, lanserver, sublanserver, start_email, next_id=None, start_function=None, end_function=None, reward=0):
@@ -1509,6 +1514,8 @@ class NestedLANMission(Mission):
         subNode = getNode(node, self.target)
         if subNode:
             return subNode.hacked
+    def clone(self):
+        return LANMission(self.player, self.mission_id, self.name, self.target, self.lanserver, self.sublanserver, self.start_email, self.end_email, self.next_id, self.start_function, self.end_function, self.reward)
 
 def mission_program(args, player):
     if player.currentMission:
@@ -1623,14 +1630,11 @@ class MissionServer(Node):
                     print("ERROR: {}".format(e))
             elif ch == "cancel":
                 if self.player.currentMission:
-                    data.getNode("rejected").missions.append(
-                        copy.deepcopy(self.player.currentMission)
-                    )
+                    rejects = data.getNode("rejected")
+                    rejects.missions.append(self.player.currentMission.clone())
                     self.player.currentMission = None
                     print("Cancelled the mission.")
-                    print(
-                        "You can re-accept cancelled missions in the Rejects Hub: rejects.rehack.org"
-                    )
+                    print("To start the mission again: rejects.rehack.org")
                 else:
                     print("ERROR: No mission to cancel.")
             elif ch == "current":
