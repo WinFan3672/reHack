@@ -999,7 +999,15 @@ class MailDotCom(MailServer):
             data.getPort(80),
         ]
         self.minPorts = 4
-        self.accounts = [MailAccount("admin")]
+        self.accounts = [
+            MailAccount("admin"),
+            MailAccount("noreply", autoresponse=Email(
+                "noreply@{}".format(self.address),
+                "SENDER",
+                "This inbox does not accept emails",
+                "Hello. This inbox does not receive emails. It only sends them. Therefore, the email you have sent will be ignored.",
+            ))
+        ]
         for item in users:
             self.accounts.append(MailAccount(item.name, item.password))
         self.alive = True

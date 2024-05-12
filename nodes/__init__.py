@@ -210,7 +210,30 @@ with open("data/ffc.txt") as f:
     ffcftp.pub.create_file("HerbsAndSpices.docx", f.read())
 
 mailcomftp = programs.FTPServer("Mail.Com FTP Server", "mailcomftp", "ftp.mail.com")
-mailcomftp.pub.create_file("CME_2009_12_07.zip", None)
+maildotcom_cme = ZippedFolder(Folder("CME_2009-12-01", [
+    Folder("plugins", [
+        File("NoReplyEmail.plugin.json"),
+        File("MailDotComWebViewer.plugin.json"),
+        File("SecurityPlus.plugin.json"),
+        File("AdminUser.plugin.json"),
+        File("MailDotCom.plugin.json"),
+        File("")
+    ]),
+    Folder("config", [
+        File("maild.cfg"),
+    ]),
+    Folder("installer", [
+        File("dotnetfx35.exe"),
+        File("mail.net-2003.exe"),
+    ]),
+    Folder("w2k3", [
+        File("w2k3_RZR_1911.iso"),
+        File("w2k3_RZR_1911.nfo", "Cracked By Razor 1911 on 2004-04-01: razor1911.com"),
+        File("ProductKey.txt", "RZR19-11RZR-1911R-ZR191-1RZR1"),
+    ]),
+]))
+
+mailcomftp.add_file(maildotcom_cme)
 mailcomftp.pub.create_file("ReadMe.txt", """This folder contains tools deployed on all servers. For more info, see the docs server.""")
 
 

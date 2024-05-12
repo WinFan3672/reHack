@@ -628,6 +628,7 @@ N = [
     programs.WebServer("Workspaces Phone 8", "wp8web", "wp8.nanosoft.com", "wp8"),
     programs.Forwarder("duck", "duck.com", "duckdonald"),
     programs.WebServer("IsDed", "isded", "isded.com", "isded"),
+    programs.WebServer("RAZOR 1911", "razor1911", "razor1911.com", "razor1911"),
 ]
 for item in N:
     NODES.append(item)
