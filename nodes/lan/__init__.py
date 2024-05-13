@@ -50,8 +50,6 @@ scsi.add_device(scsi_test)
 
 mview = programs.RemoteLAN("Mountain View Intranet", "mountainremote", "intranet.mountain.view")
 mview_ftp = programs.FTPServer("Resources", "ftp", "ftp.local")
-mview.create_user("admin", "admin")
-mview_ftp.create_user("admin", "admin")
 with open("data/mview_recipe.txt") as f:
     mview_ftp.pub.create_encrypted_file(File("Recipe.docx", f.read(), "mountainremote"), "mountainremote", "mountainous")
 mview_ftp.pub.create_encrypted_file(File("Password.txt", "mountainous", "jrallypc"), "jrallypc", data.genString(32))
@@ -62,7 +60,7 @@ sfec = programs.RemoteLAN("SFEC Intranet", "sfeclan", "lan.sfec.com")
 
 sfec_files = programs.PublicFTPServer("Files", "files", "files.local")
 with open("data/sfeclan/report2010.txt") as f:
-    sfec_files.pub.create_file("2010 Report.docx", f.read())
+    sfec_files.pub.create_file("2010 Report.docx", f.read(), "sfecweb")
 sfec_irc = programs.IRCServer("SFEC Internal IRC", "irc", "irc.local")
 sfec_general = sfec_irc.add_channel("#general", "SFEC concerns")
 sfec_general.add_message("admin", "welcome to the channel")

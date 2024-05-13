@@ -42,16 +42,18 @@ class Base:
 
 
 class Program(Base):
-    def __init__(self, name, version, desc, function, unlocked=False, price=0, classPlease=False, inStore=True):
+    def __init__(self, name, desc, function, unlocked=False, price=0, classPlease=False, inStore=True):
         super().__init__()
         self.name = name
-        self.version = version
+        # self.version = version
         self.desc = desc
         self.function = function
         self.unlocked = unlocked
         self.price = price
         self.classPlease = classPlease
         self.inStore = inStore
+    def __str__(self):
+        return "Program({}, {})".format(self.name, self.version)
 
     def execute(self, args, player=None):
         if player:

@@ -83,9 +83,9 @@ Please respect the wishes of the maintainers of this FTP server and don't:
 
 This message was brought to you by the Apache Foundation."""
 
-def getProgram(name, version, force=True):
+def getProgram(name, force=True):
     for program in PROGRAMS if force else [x for x in PROGRAMS if x.unlocked]:
-        if name == program.name and version == program.version:
+        if name == program.name:
             return program
 
 def extrapolateTime(realTimeSinceDay):
@@ -633,9 +633,9 @@ N = [
 for item in N:
     NODES.append(item)
 PROGRAMS = [
-    Program("help", 1.0, "Lists installed programs", programs.help, True),
-    Program("nmap", 1.0, "Scan a node for open ports", programs.nmap, True),
-    Program("porthack", 1.0, "Hijack open ports to install root access", programs.porthack, True),
+    Program("help", "Lists installed programs", programs.help, True),
+    Program("nmap", "Scan a node for open ports", programs.nmap, True),
+    Program("porthack", "Hijack open ports to install root access", programs.porthack, True),
 
     programs.PortBreakingTool("lancrack", 1, price=3500).program,
     programs.PortBreakingTool("ftpkill", 21, unlocked=True).program,
@@ -645,45 +645,46 @@ PROGRAMS = [
     programs.PortBreakingTool("torrentpwn", 6881, price=750).program,
     programs.PortBreakingTool("sqldump", 1433, price=2500).program,
 
-    Program("connect", 1.0, "Connect to a node", game.programs.connect.main, True, classPlease=True),
-    Program("history", 1.0, "View a list of all connected nodes", game.programs.history,True, classPlease = True),
-    Program("note",  1.0, "Create and share plaintext notes", game.programs.note, True, classPlease=True),
-    Program("ssh",  1.0, "Connect to a node's command line over SSH", programs.ssh, True),
-    Program("ftp", 1.0, "Browse a node's files over FTP", programs.ftp, True),
-    Program("debug", 1.0, "For developers only", programs.debuginfo, True, price=0, classPlease=True),
-    Program("mxlookup", 1.0, "Gets a list of email addresss associated with a mail server", programs.mxlookup, price=1500),
-    Program("jmail",1.0, "Read your emails", programs.jmail, True, classPlease=True),
-    Program("store", 1.0, "Purchase more programs", programs.store, True, classPlease=True),
+    Program("connect", "Connect to a node", game.programs.connect.main, True, classPlease=True),
+    Program("history", "View a list of all connected nodes", game.programs.history,True, classPlease = True),
+    Program("note", "Create and share plaintext notes", game.programs.note, True, classPlease=True),
+    Program("ssh", "Connect to a node's command line over SSH", programs.ssh, True),
+    Program("ftp", "Browse a node's files over FTP", programs.ftp, True),
+    Program("debug", "For developers only", programs.debuginfo, True, price=0, classPlease=True),
+    Program("mxlookup", "Gets a list of email addresss associated with a mail server", programs.mxlookup, price=1500),
+    Program("jmail", "Read your emails", programs.jmail, True, classPlease=True),
+    Program("store", "Purchase more programs", programs.store, True, classPlease=True),
     # Program("anonmail", programs.anonclient, price=250, classPlease=True),
-    Program("login", 1.0, "Gain root access to a node using an admin password", programs.login, True),
-    Program("mission", 1.0, "Run this command once you've finished your mission", programs.mission_program, True, classPlease=True),
-    Program("logview", 1.0, "View logs for a (hacked) node", programs.logview, price=0),
-    Program("nodecheck", 1.0, "Tool for checking what type of node a node is", programs.nodecheck, price=0),
-    Program("mailman", 1.0, "Email client", programs.mailman_base, True, classPlease=True),
-    Program("bruter", 1.0, "Attempts to brute-force a node's admin password using a small dictionary", programs.bruter, True, classPlease=True),
-    Program("emailbruter", 1.0, "Attempts to brute-force an email address password using a small dictionary", programs.emailbruter, True, classPlease=True),
-    Program("firewall", 1.0, "The firewall multi-tool, free for a limited time only", programs.firewall, price=0),
-    Program("tor", 1.0, "Connect to the Tor network", programs.tor, True, classPlease=True, inStore=False),
+    Program("login", "Gain root access to a node using an admin password", programs.login, True),
+    Program("mission", "Run this command once you've finished your mission", programs.mission_program, True, classPlease=True),
+    Program("logview", "View logs for a (hacked) node", programs.logview, True),
+    Program("nodecheck", "Tool for checking what type of node a node is", programs.nodecheck, True),
+    Program("mailman", "Email client", programs.mailman_base, True, classPlease=True),
+    Program("bruter", "Attempts to brute-force a node's admin password using a small dictionary", programs.bruter, True, classPlease=True),
+    Program("emailbruter", "Attempts to brute-force an email address password using a small dictionary", programs.emailbruter, True, classPlease=True),
+    Program("firewall", "The firewall multi-tool, free for a limited time only", programs.firewall, price=0),
+    Program("tor", "Connect to the Tor network", programs.tor, True, classPlease=True, inStore=False),
     # Program("sweep", programs.sweep, price=0),
-    Program("save", 1.0, "Save the game", programs.save,True,classPlease=True),
-    Program("lanconnect", 1.0, "Connect to a hacked LAN as if you were inside of the network", programs.LANConnect, True, classPlease=True),
-    Program("account", 1.0, "List all saved bank accounts", programs.accountList, True, classPlease=True),
-    Program("bankhack", 1.0, "Tool for brute-forcing a bank PIN", programs.bankhack, price=1000, classPlease=True),
-    Program("tormail", 1.0, "Email client for the Tor network", programs.tormail, True, classPlease=True),
-    Program("date", 1.0, "Check the date and time", programs.date, True, classPlease=True),
-    Program("openftp", 1.0, "Install an FTP server to a remote node", programs.openftp, price=10000, inStore=False),
-    Program("chmod", 1.0, "Set permissions for a folder and its contents on a remote node", programs.chmod, True),
-    Program("irc", 1.0, "IRC client", programs.irc, True),
-    Program("logclear", 1.0, "Clears logs on a remote node", programs.logclear, price=500),
-    Program("darkstore", 1.0, "The one-stop shop for ALL your Tor needs", programs.darkstore, inStore=False),
-    Program("scsi", 1.0, "Official SCSI-NET client", programs.scsi, inStore=False),
-    Program("unhack", 1.0, "Removes root access from a node", programs.unhack, True),
-    Program("autohack", 1.0, "Semi-automatically hacks a node", programs.autohack, price=1500, inStore=False),
+    Program("save", "Save the game", programs.save,True,classPlease=True),
+    Program("lanconnect", "Connect to a hacked LAN as if you were inside of the network", programs.LANConnect, True, classPlease=True),
+    Program("account", "List all saved bank accounts", programs.accountList, True, classPlease=True),
+    Program("bankhack", "Tool for brute-forcing a bank PIN", programs.bankhack, price=1000, classPlease=True),
+    Program("tormail", "Email client for the Tor network", programs.tormail, True, classPlease=True),
+    Program("date", "Check the date and time", programs.date, True, classPlease=True),
+    Program("openftp", "Install an FTP server to a remote node", programs.openftp, price=10000, inStore=False),
+    Program("chmod", "Set permissions for a folder and its contents on a remote node", programs.chmod, True),
+    Program("irc", "IRC client", programs.irc, True),
+    Program("logclear", "Clears logs on a remote node", programs.logclear, price=500),
+    Program("darkstore", "The one-stop shop for ALL your Tor needs", programs.darkstore, inStore=False),
+    Program("scsi", "Official SCSI-NET client", programs.scsi, inStore=False),
+    Program("unhack", "Removes root access from a node", programs.unhack, True),
+    Program("autohack", "Semi-automatically hacks a node", programs.autohack, price=1500, inStore=False),
+    Program("autohack2", "Automatically hacks a node", programs.autohack2, price=3500, inStore=False),
 ]
 
 DARKSTORE = [
-    ("openftp", 1.0),
-    ("autohack", 1.0),
+    ("openftp"),
+    ("autohack"),
 ]
 SPICES = [
     "Basil",
@@ -808,8 +809,9 @@ TN = [
     programs.TorSignupService("rhomail-signup", generateTorURL(), "rhomail", usePlayerName=True),
     programs.TorSignupService("vc-signup", generateTorURL("vcsu"), "vcforum", usePlayerName=True, private=["anonmail", "euclid"]),
     programs.TorSignupService("ds-signup", generateTorURL("darkstoresu"), "darkstore", usePlayerName=True, private=["rhmail"]),
-    programs.ProgramInstaller("DarkStore", "darkstore", "darkstore.onion", getProgram("darkstore", 1.0)),
-    programs.ProgramInstaller("SCSI Client", "scsiclient", generateTorURL("scsiclient"), getProgram("scsi", 1.0)),
+    programs.ProgramInstaller("DarkStore", "darkstore", "darkstore.onion", getProgram("darkstore")),
+    programs.ProgramInstaller("SCSI Client", "scsiclient", generateTorURL("scsiclient"), getProgram("scsi")),
+    programs.ProgramInstaller("Autohack2", "autohack2", generateTorURL("autohack2"), getProgram("autohack2")),
     programs.Forwarder("nerdnet", "nerd-net.onion", "nerdnet"),
     programs.Forwarder("mht", "mht.onion", "mht"),
 ]

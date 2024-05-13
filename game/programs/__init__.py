@@ -83,11 +83,11 @@ def nmap(args):
         div()
 
 class PortBreakingTool(Base):
-    def __init__(self, name, port, version=1.0, unlocked=False, price=0):
+    def __init__(self, name, port, unlocked=False, price=0):
         super().__init__()
         self.name = name
         self.port = port
-        self.program = Program(self.name, version, "Tool for breaking port {}".format(port),self.function, unlocked=unlocked, price=price)
+        self.program = Program(self.name, "Tool for breaking port {}".format(port),self.function, unlocked=unlocked, price=price)
 
     def function(self, args):
         if len(args) == 1:
@@ -447,7 +447,7 @@ def debuginfo(args, player):
             print("ERROR: Invalid LAN.")
     elif args == ["buy"]:
         for prog in data.PROGRAMS:
-            prog.unlocked = True
+            installProgram(prog)
         print("Purchased all programs.")
     elif args == ["sm"]:
         div()
@@ -1049,7 +1049,7 @@ def store(args, player):
             print("ERROR: Store is empty")
             div()
         for item in getPrograms(player):
-            print("{} v{}".format(item.name, item.version))
+            print("{}".format(item.name))
             print("    {}\n    {} Cr.".format(item.desc, item.price))
             div()
     elif "buy" in args and len(args) == 2:
@@ -2397,9 +2397,10 @@ class LocalAreaNetwork(Node):
         if not self.locked:
             self.devices.append(device)
     def main(self):
-        print("ERROR: Access denied.")
-    def main_hacked(self):
-        print("ERROR: A LAN client such as `lanconnect` is required to connect to a LAN router and access its network.")
+        if self.hacked:
+            print("ERROR: A LAN client such as `lanconnect` is required to connect to a LAN router and access its network.")
+        else:
+            print("ERROR: Access denied.")
     def getNode(self, uid):
         for node in self.devices:
             if node.uid == uid or node.address == uid:
@@ -3833,6 +3834,21 @@ class FileCopiedCheck(Base):
             if file.name == self.filename and (not self.origin or file.origin == self.origin) and (not self.text or file.data == self.text):
                 return True
 
+class ZippedFileCopiedCheck(Base):
+    def __init__(self, filename, origin=None, folder="/"):
+        self.filename = filename
+        self.origin = origin
+        self.folder = folder
+
+    def check(self, node):
+        if self.folder == "/":
+            folder = data.createFolder(node)
+        else:
+            folder = data.getFile(node, self.folder, "Folder")
+
+        for file in folder.flatten():
+            if file.name == self.filename and (not self.origin or file.origin == self.origin):
+                return True
 
 class FileCheck(Base):
     def __init__(self, node: str):
@@ -4229,12 +4245,9 @@ def installProgram(program):
         return "Program already purchased."
     if player.creditCount < program.price:
         return "Insufficient funds to purchase program."
-    for prog in data.PROGRAMS:
-        if prog.name == program.name and prog.version < program.version:
-            prog.unlocked = False
     program.unlocked=True
     player.creditCount -= program.price
-    return "Successfully installed {} {}".format(program.name, program.version)
+    return "Successfully installed {}".format(program.name)
 
 
 
@@ -4253,7 +4266,7 @@ class ProgramInstaller(Node):
             return
         cls()
         div()
-        print("Install {} v{}?".format(program.name, program.version))
+        print("Install {}?".format(program.name))
         div()
         print("Price: {} Cr.".format(program.price))
         print("Description: {}".format(program.desc))
@@ -4263,12 +4276,12 @@ class ProgramInstaller(Node):
             print(installProgram(program))
 def darkstore(args):
     player = data.getNode("localhost")
-    programs = [x for x in [data.getProgram(x[0], x[1]) for x in data.DARKSTORE] if not x.unlocked]
+    programs = [x for x in [data.getProgram(x[0]) for x in data.DARKSTORE] if not x.unlocked]
     
     if args == ["list"]:
         for program in programs:
             div()
-            print("{} v{}".format(program.name, program.version))
+            print("{}".format(program.name))
             print("\t{}".format(program.desc))
             print("\t{} Cr.".format(program.price))
         div()
@@ -4318,9 +4331,9 @@ def bal(args):
     store(["balance"], player)
 
 def autohack(args):
-    sshkill = data.getProgram("sshkill", 1.0, False)
-    ftpkill = data.getProgram("ftpkill", 1.0, False)
-    webworm = data.getProgram("webworm", 1.0, False)
+    sshkill = data.getProgram("sshkill", False)
+    ftpkill = data.getProgram("ftpkill", False)
+    webworm = data.getProgram("webworm", False)
     if args == ["check"]:
         good = True
         if not sshkill:
@@ -4639,3 +4652,59 @@ class StockMarket(Node):
         print("Successfully sold {} shares for {} Credits.".format(shares, shares * stock.price))
         br()
 
+def autohack2(args):
+    sshkill = data.getProgram("sshkill", False)
+    ftpkill = data.getProgram("ftpkill", False)
+    webworm = data.getProgram("webworm", False)
+    lancrack = data.getProgram("lancrack", False)
+    mailoverflow = data.getProgram("mailoverflow", False)
+    torrentpwn = data.getProgram("torrentpwn", False)
+    if args == ["check"]:
+        if not sshkill:
+            print("ERROR: `sshkill` is not installed. Cannot open port 22.")
+        if not ftpkill:
+            print("ERROR: `ftpkill` is not installed. Cannot open port 21.")
+        if not webworm:
+            print("ERROR: `webworm` is not installed. Cannot open port 80.")
+        if not lancrack:
+            print("ERROR: `lancrack` is not installed. Cannot break port 1.")
+        if not mailoverflow:
+            print("ERROR: `mailoverflow` is not installed. Cannot break port 25.")
+        if not torrentpwn:
+            print("ERROR: `torrentpwn` is not installed. Cannot break port 6881.")
+        if not None in [sshkill, ftpkill, webworm, lancrack, mailoverflow, torrentpwn]:
+            print("All programs installed.")
+    elif len(args) == 1:
+        node = data.getNode(args[0], True)
+        if node:
+            ports = [x.num for x in node.ports]
+            if node.firewall:
+                firewall(["crack", node.address])
+            for port in node.ports:
+                if port.num == 21 and ftpkill and not port.open:
+                    ftpkill.function([node.address])
+                if port.num == 22 and sshkill and not port.open:
+                    sshkill.function([node.address])
+                if port.num == 80 and webworm and not port.open:
+                    webworm.function([node.address])
+                if port.num == 25 and mailoverflow and not port.open:
+                    mailoverflow.function([node.address])
+                if port.num == 1 and lancrack and not port.open:
+                    lancrack.function([node.address])
+                if port.num == 6881 and torrentpwn and not port.open:
+                    torrentpwn.function([node.address])
+                porthack([node.address])
+        else:
+            print("ERROR: Invalid address.")
+    else:
+        div()
+        print("autohack2 <address>")
+        div()
+        print("Semi-automatically hacks into nodes.")
+        div()
+        print("Version: 2.0")
+        print("Supports ports: 1, 21, 22, 80, 25, 6881")
+        print("Fully Automatic: Yes")
+        div()
+        print("autohack2 check: check if all required programs are installed")
+        div()
