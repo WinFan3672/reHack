@@ -680,11 +680,13 @@ PROGRAMS = [
     Program("unhack", "Removes root access from a node", programs.unhack, True),
     Program("autohack", "Semi-automatically hacks a node", programs.autohack, price=1500, inStore=False),
     Program("autohack2", "Automatically hacks a node", programs.autohack2, price=3500, inStore=False),
+    Program("tor_addon", "Adds tor support to ALL port breakers", programs.tor_addon, price=500, inStore=False),
 ]
 
 DARKSTORE = [
-    ("openftp"),
-    ("autohack"),
+    "openftp",
+    "autohack",
+    "tor_addon",
 ]
 SPICES = [
     "Basil",

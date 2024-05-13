@@ -19,6 +19,9 @@ import re
 import getpass
 import code
 
+def isAddon():
+    return data.getProgram("tor_addon").unlocked
+
 def pickSelection(a_list: list, amount=1, remove=True):
     """
     Picks items randomly from a_list, amount of picks specified by amount.
@@ -52,7 +55,7 @@ def Exit(args):
 
 def nmap(args):
     if args:
-        node = data.getNode(args[0], True)
+        node = data.getAnyNode(args[0], True) if isAddon() else data.getNode(args[0], True)
         if node:
             node.nmap = True
             div()
@@ -60,9 +63,9 @@ def nmap(args):
             print("Exposed Ports: {}".format(len(node.ports)))
             print("Min. Ports: {}".format(node.minPorts))
             if node.hacked:
-                print("ROOT ACCESS ACQUIRED")
+                print("Root Access: Yes")
             if node.firewall:
-                print("WARNING: FIREWALL ACTIVE")
+                print("Firewall: Active")
             if node.ports:
                 div()
                 print("PORT\tSTATE\tSERVICE")
@@ -88,12 +91,11 @@ class PortBreakingTool(Base):
         self.name = name
         self.port = port
         self.program = Program(self.name, "Tool for breaking port {}".format(port),self.function, unlocked=unlocked, price=price)
-
     def function(self, args):
         if len(args) == 1:
             item = args[0]
             success = False
-            node = data.getNode(item)
+            node = data.getAnyNode(item, True) if isAddon() else data.getNode(item, True)
             if node:
                 print(f"ATTACKING PORT {self.port}...")
                 if node.firewall:
@@ -124,34 +126,32 @@ class PortBreakingTool(Base):
 
 
 def porthack(args):
-    if args:
-        valid = False
-        for item in data.NODES:
-            if args[0] == item.address:
-                valid = True
-                openPorts = 0
-                for port in item.ports:
-                    openPorts += 1 if port.open else 0
-                if openPorts >= item.minPorts:
-                    print("OVERWHELMING HOST...")
-                    if item.firewall:
-                        print("ERROR: Attack blocked by firewall.")
-                    else:
-                        hackTime = 7 / (openPorts+1)
-                        time.sleep(hackTime)
-                        item.hacked = True
-                        print("SUCCESS! YOU CAN NOW CONNECT TO THE HOST.")
+    if len(args) == 1:
+        node = data.getAnyNode(args[0], True) if isAddon() else data.getNode(args[0], True)
+        if node:
+            openPorts = 0
+            for port in node.ports:
+                openPorts += 1 if port.open else 0
+            if openPorts >= node.minPorts:
+                print("Overwhelming host...")
+                if node.firewall:
+                    print("ERROR: Attack blocked by firewall.")
                 else:
-                    print("ERROR: Insufficient open ports.")
-        if not valid:
+                    hackTime = 7 / (openPorts+1)
+                    time.sleep(hackTime)
+                    node.hacked = True
+                    print("Success: Root access installed.")
+            else:
+                print("ERROR: Insufficient open ports.")
+        else:
             print("Failed to resolve hostname.")
     else:
         div()
-        print("porthack <IP ADDRESS>")
+        print("porthack <IP address>")
         div()
-        print("Attacks a machine using open ports on it.")
-        print("You must unlock at least the minimum amount as defined")
-        print("by running 'nmap <hostname>'.")
+        print("Attacks a machine using open ports.")
+        # print("You must unlock at least the minimum amount as defined")
+        # print("by running 'nmap <hostname>'.")
         div()
 
 
@@ -447,7 +447,7 @@ def debuginfo(args, player):
             print("ERROR: Invalid LAN.")
     elif args == ["buy"]:
         for prog in data.PROGRAMS:
-            installProgram(prog)
+            prog.unlocked = True
         print("Purchased all programs.")
     elif args == ["sm"]:
         div()
@@ -3841,6 +3841,7 @@ class ZippedFileCopiedCheck(Base):
         self.folder = folder
 
     def check(self, node):
+        node = data.getAnyNode(node)
         if self.folder == "/":
             folder = data.createFolder(node)
         else:
@@ -4245,7 +4246,7 @@ def installProgram(program):
         return "Program already purchased."
     if player.creditCount < program.price:
         return "Insufficient funds to purchase program."
-    program.unlocked=True
+    program.unlocked = True
     player.creditCount -= program.price
     return "Successfully installed {}".format(program.name)
 
@@ -4276,7 +4277,7 @@ class ProgramInstaller(Node):
             print(installProgram(program))
 def darkstore(args):
     player = data.getNode("localhost")
-    programs = [x for x in [data.getProgram(x[0]) for x in data.DARKSTORE] if not x.unlocked]
+    programs = [x for x in data.PROGRAMS if x.name in data.DARKSTORE and not x.unlocked]
     
     if args == ["list"]:
         for program in programs:
@@ -4365,12 +4366,11 @@ def autohack(args):
         print("autohack <address>")
         div()
         print("Semi-automatically hacks into nodes.")
-        div()
-        print("Version: 1.0")
         print("Supports ports: 21, 22, 80")
-        print("Fully Automatic: No")
         div()
         print("autohack check: check if all needed programs are installed")
+        div()
+        print("AD: For an autohack w/ more port options and firewall cracking: {}".format(data.getTorNode("autohack2").address))
         div()
 
 class NodeKillCheck:
@@ -4692,8 +4692,8 @@ def autohack2(args):
                 if port.num == 1 and lancrack and not port.open:
                     lancrack.function([node.address])
                 if port.num == 6881 and torrentpwn and not port.open:
-                    torrentpwn.function([node.address])
-                porthack([node.address])
+                    torrentpwn.function([node.address])     
+            porthack([node.address])
         else:
             print("ERROR: Invalid address.")
     else:
@@ -4708,3 +4708,7 @@ def autohack2(args):
         div()
         print("autohack2 check: check if all required programs are installed")
         div()
+
+def tor_addon(args):
+    print("Addon on and working.")
+    print("All port breaking tools (plus nmap and porthack) will now support Tor nodes.")

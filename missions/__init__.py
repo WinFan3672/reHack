@@ -239,7 +239,7 @@ def main_story_missions(self):
         [
             "Welcome, fellow hacker.",
             "This tutorial covers the 'scan' command.",
-            "In standard nodes (you can check a node's type using 'nodecheck'), there are several commands built in.",
+            "If you have root access to a node and it has ssh installed, you can run several commands."
             "One of them is 'scan'. It lists all nodes linked to a node.",
             "This is extremely useful as it allows you to search through more of a network that is normally hidden.",
             "",
@@ -257,9 +257,10 @@ def main_story_missions(self):
             "",
             "A few tips:",
             "* You can use 'bruter' to brute-force admin passwords instead of searching.",
+            "* Similarly, 'emailbruter' brute-forces emails."
             "* You can use 'mailman' to log into email accounts if you find them.",
-            "   * If you find the admin password, don't bother. Use 'login' and connect, because it lets you see everything."
-                "* Refer to the wiki (wiki.rehack.org) if you're stuck.",
+            "   * If you find the admin password, don't bother with looking at individual accounts. Use 'login' and connect, because it lets you see everything.",
+            "* Refer to the wiki (wiki.rehack.org) if you're stuck.",
         ],
         [
             "Hello again.",
@@ -377,19 +378,19 @@ def main_story_missions(self):
         Email(
             "contracts@rehack.mail",
             "{}@jmail.com".format(self.name),
-            "Advanced Tutorial #1",
+            "Advanced Tutorial #1: SSH",
             bodies[0],
         ),
         Email(
             "contracts@rehack.mail",
             "{}@jmail.com".format(self.name),
-            "Advanced Tutorial #2",
+            "Advanced Tutorial #2: Brute-Force Attacks",
             bodies[1],
         ),
         Email(
             "contracts@rehack.mail",
             "{}@jmail.com".format(self.name),
-            "Advanced Tutorial #3",
+            "Advanced Tutorial #3: Firewalls",
             bodies[2],
         ),
         Email(
@@ -413,7 +414,7 @@ def main_story_missions(self):
         Email(
             "contracts@rehack.mail",
             "{}@jmail.com".format(self.name),
-            "Advanced Tutorial #4",
+            "Advanced Tutorial #4: LANs",
             bodies[6],
         ),
         Email(
@@ -454,7 +455,7 @@ def main_story_missions(self):
         Mission(
             self,
             "advanced1",
-            "Advanced Tutorial #1",
+            "Advanced Tutorial #1: SSH",
             "cocamain",
             emails[0],
             end_email,
@@ -463,7 +464,7 @@ def main_story_missions(self):
         Mission(
             self,
             "advanced2",
-            "Advanced Tutorial #2",
+            "Advanced Tutorial #2: Brute-Force Attacks",
             "brutertest",
             emails[1],
             end_email,
@@ -472,7 +473,7 @@ def main_story_missions(self):
         Mission(
             self,
             "advanced3",
-            "Advanced Tutorial #3",
+            "Advanced Tutorial #3: Firewalls",
             "firewalltest",
             emails[2],
             end_email,
@@ -481,7 +482,7 @@ def main_story_missions(self):
         LANMission(
             self,
             "advanced4",
-            "Advanced Tutorial #4",
+            "Advanced Tutorial #4: LANs",
             "hackme",
             "testlan",
             emails[6],
