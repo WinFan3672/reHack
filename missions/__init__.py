@@ -925,7 +925,7 @@ You have been invited into the ThatCD IRC Server. The admin has already messaged
     ffc_nc.add(FileCopiedCheck("HerbsAndSpices.docx", origin="ffcftp"))
 
     dec_nc = FileCheck("rhdrop")
-    dec_nc.add(ZippedFileCopiedCheck("dec-src-v1.0.zip"))
+    dec_nc.add(ZippedFileCopiedCheck("dec-src-v1.0.zip", origin="roynet", folder="incoming"))
 
     bodies = [
         [
