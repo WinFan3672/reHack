@@ -805,7 +805,7 @@ TN = [
     programs.MessageBoard("The Tor Times", "tortimes", "tortimes.onion", "tortimes"),
     programs.MessageBoard("EnWired: Home", "enwired.onion", "enwired-onion", "enwired"),
     programs.TorWebServer("Apache HTTP Server 1.0", "rehack.onion", "rehack-onion", "httpserver"),
-    programs.TorWebServer("Euclid :: Homepage", "www.euclid.onion", "euclid-web", "euclid"),
+    programs.TorWebServer("Euclid :: Homepage", "euclid-web", "www.euclid.onion", "euclid"),
     programs.TorSignupService("euclid-signup", "signup.euclid.onion", "euclid", False, EUCLID_EMAILS),
     programs.TorSignupService("5chan-signup", generateTorURL("5chansu"), "5chan", usePlayerName=True),
     programs.TorSignupService("rhomail-signup", generateTorURL(), "rhomail", usePlayerName=True),

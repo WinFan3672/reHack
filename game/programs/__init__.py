@@ -26,7 +26,7 @@ def pickSelection(a_list: list, amount=1, remove=True):
     """
     Picks items randomly from a_list, amount of picks specified by amount.
     If remove is True, the picked item is removed.
-    NOTE: A copy is made!
+    NOTE: No changes to a_list is made.
     """
     l = copy.copy(a_list)
     random.shuffle(l)
@@ -3452,7 +3452,7 @@ Have a lovely day, and check out my story on mht.com for the full story.""")
 
 def ssh(args):
     if len(args) == 1:
-        node = data.getNode(args[0], True)
+        node = data.getAnyNode(args[0], True) if isAddon() else data.getNode(args[0], True)
         if node:
             if node.hacked and data.checkPort(node, 22):
                 connect.connect(node)
@@ -3469,7 +3469,7 @@ def ssh(args):
 
 def ftp(args):
     if len(args) == 1:
-        node = data.getNode(args[0], True)
+        node = data.getAnyNode(args[0], True) if isAddon() else data.getNode(args[0], True)
         if node:
             if node.hacked and data.checkPort(node, 21):
                 folderView(data.createFolder(node), True)
