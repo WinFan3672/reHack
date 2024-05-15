@@ -629,6 +629,8 @@ N = [
     programs.Forwarder("duck", "duck.com", "duckdonald"),
     programs.WebServer("IsDed", "isded", "isded.com", "isded"),
     programs.WebServer("RAZOR 1911", "razor1911", "razor1911.com", "razor1911"),
+    programs.WebServer("Bravado :: Luxury You Can't Afford", "bravado_web", "bravado.com", "bravado", linked=["bravado_ftp"]),
+    programs.TimeServer("Workspaces Time Server", "workspaces_time", "time.workspaces.com"),
 ]
 for item in N:
     NODES.append(item)

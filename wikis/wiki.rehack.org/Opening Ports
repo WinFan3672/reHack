@@ -24,6 +24,9 @@ div()
     * Cost: 500 Cr.
 * 123
     * NTP time server; cannot be broken
+* 1433
+    * sqldump
+    * Cost: 2500 Cr.
 * 6881
     * torrentpwn
     * Cost: 1500 Cr.

@@ -279,6 +279,59 @@ enwired_zip = ZippedFolder(enwired_articles)
 
 enwired_ftp.pub.add_file(enwired_zip)
 
+bravado_ftp = programs.FTPServer("Bravado Internal FTP", "bravado_ftp", "ftp.bravado.com")
+bravado_ftp.firewall = Firewall("bravado", 0.75)
+
+bravado_2010 = ZippedFolder(Folder("Bravado2010", [
+    Folder("engineering", [
+        File("Chasis.blend"),
+        File("WndShldWipers.blend"),
+    ]),
+    Folder("design", [
+        Folder("concepts", [
+            File("2010-v1.png"),
+            File("2010-v2.png"), 
+            File("2010-v3.png"),
+            File("2010-v4.png"),
+            File("2010-v5.png"),
+            File("2010-v6.png"),
+            File("2010-v7.png"),
+            File("2010-v8.png"),
+            File("2010-v9.png"),
+            File("2010-v10.png"),
+            File("2010-v11.png"),
+            File("2010-v12.png"),
+        ]),
+        File("FinalConceptArt.png"),
+    ]),
+    Folder("advertising", [
+        Folder("posters", [
+            File("The New Bravado 2010.bmp"),
+            File("Bravado 2010 Refresh.bmp"),
+        ]),
+        Folder("tv", [
+            File("RightNews.mp4"),
+            File("LeftNews.mp4"),
+            File("CenterNews.mp4"),
+        ]),
+        Folder("magazine", [
+            File("The Car You Want.pdf"),
+        ]),
+        Folder("radio", [
+            File("jingle.wav"),
+            File("ad1.wav"),
+            File("ad2.wav"),
+        ]),
+    ]),
+    Folder("technical", [
+        File("Technical Specifications.pdf"),
+        File("Letter To Shareholders.pdf"),
+    ]),
+    File("Launch Date.txt", "2010-07-11"),
+]))
+
+bravado_ftp.pub.add_file(bravado_2010)
+
 def main():
     return [
         mht,
@@ -298,6 +351,7 @@ def main():
         duckdonald,
         apache,
         enwired_ftp,
+        bravado_ftp,
     ] + nodes.forum.main() + nodes.forum.nerdnet.main() + nodes.test.main() + nodes.lan.main()
 
 def tor():

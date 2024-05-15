@@ -620,6 +620,7 @@ class MailServer(Node):
         accounts=[],
         hideLookup=False,
         minPorts=4,
+        web_address=None,
         **kwargs
         ):
         super().__init__(
@@ -641,12 +642,16 @@ class MailServer(Node):
         self.accounts += [x for x in accounts if ininstance(x, MailAccount)]
         self.hideLookup = hideLookup
         self.emails = []
+        self.web_address = web_address
         x = []
         for user in self.users:
             self.accounts.append(MailAccount(user.name, user.password))
 
     def main(self, args=None, player=None):
-        print("To access this mail server, log in with a mail client.")
+        if self.web_address:
+            connect.main([self.web_address], data.getNode("localhost"))
+        else:
+            print("To access this mail server, log in with a mail client.")
 
     def clientMain(self, account, player):
         cls()
@@ -923,7 +928,8 @@ class AnonMail(MailServer):
         x = 2**9
         for i in range(x):
             self.accounts.append(MailAccount(makeRandomString()))
-
+    def main(self):
+        connect.main(["www.anon.mail"], data.getNode("localhost"))
     def lookup(self):
         return [
             MailAccount(x.name) for x in self.users if x.name not in ["ceo", "noreply"]
@@ -1151,6 +1157,7 @@ class ISPNode(Node):
         self.linked = ["shodan"]
         self.users = [User("admin", "potholes")]
         self.finalMissionState = False
+        self.isAction = False
 
     def check_health(self):
         if not self.finalMissionState:
@@ -1633,12 +1640,10 @@ def nodecheck(args):
         JmailServer: "jmail",
         AnonMail: "anonmail",
         MailDotCom: "maildotcom",
-        ISPNode: "isp",
         XOSDevice: "xos",
         MissionServer: "contract_hub",
         VersionControl: "version_control",
         type(None): "invalid",
-        GlobalDNS: "global_dns",
         SignupService: "signup",
         VersionControl: "version_control",
         BankServer: "bank",
@@ -1646,11 +1651,12 @@ def nodecheck(args):
         LocalAreaNetwork: "router",
         Forwarder: "forwarder",
         TorForwarder: "forwarder",
+        TimeServer: "time_server",
 
     }
     if args:
         for arg in args:
-            node = type(data.getNode(arg))
+            node = type(data.getNode(arg, True))
             print("{}: {}".format(arg, d.get(node, "unknown")))
     else:
         div()
@@ -2092,7 +2098,7 @@ def sweep(args):
 
 class GlobalDNS(Node):
     def __init__(self):
-        super().__init__("Global DNS Service","gdns","8.8.8.8",minPorts=2**16,ports=[data.getPort(65536)])
+        super().__init__("Global DNS Service", "gdns", "8.8.8.8",minPorts=2**16,ports=[data.getPort(65536)])
     def main(self):
         print("This is the Global DNS Server.")
         print("It is important for the function of the Internet.")
@@ -3447,7 +3453,7 @@ Have a lovely day, and check out my story on mht.com for the full story.""")
                 xdgn.reply("admin", "don't worry, it's nothing too serious, just some run-of-the-mill hardships")
                 xdgn.reply("bit", "is there anything we can do to help?")
                 xdgn.reply("admin", "I make my money through licensing MHT articles, so not really")
-                xdgn.reply("admin", "that being said, i am launching a forum soon, so i'll keep you posted :)")
+                xdgn.reply("admin", "you can check out my forum though: forum.mht.com")
 
 
 def ssh(args):
@@ -4659,6 +4665,7 @@ def autohack2(args):
     lancrack = data.getProgram("lancrack", False)
     mailoverflow = data.getProgram("mailoverflow", False)
     torrentpwn = data.getProgram("torrentpwn", False)
+    sqldump = data.getProgram("sqldump", False)
     if args == ["check"]:
         if not sshkill:
             print("ERROR: `sshkill` is not installed. Cannot open port 22.")
@@ -4670,9 +4677,11 @@ def autohack2(args):
             print("ERROR: `lancrack` is not installed. Cannot break port 1.")
         if not mailoverflow:
             print("ERROR: `mailoverflow` is not installed. Cannot break port 25.")
+        if not sqldump:
+            print("ERROR: `sqldump` is not installed. Cannot break port 1443.")
         if not torrentpwn:
             print("ERROR: `torrentpwn` is not installed. Cannot break port 6881.")
-        if not None in [sshkill, ftpkill, webworm, lancrack, mailoverflow, torrentpwn]:
+        if not None in [sshkill, ftpkill, webworm, lancrack, mailoverflow, sqldump, torrentpwn]:
             print("All programs installed.")
     elif len(args) == 1:
         node = data.getNode(args[0], True)
@@ -4691,6 +4700,8 @@ def autohack2(args):
                     mailoverflow.function([node.address])
                 if port.num == 1 and lancrack and not port.open:
                     lancrack.function([node.address])
+                if port.num == 1433 and sqldump and not port.open:
+                    sqldump.function([node.address])
                 if port.num == 6881 and torrentpwn and not port.open:
                     torrentpwn.function([node.address])     
             porthack([node.address])
@@ -4712,3 +4723,9 @@ def autohack2(args):
 def tor_addon(args):
     print("Addon on and working.")
     print("All port breaking tools (plus nmap and porthack) will now support Tor nodes.")
+
+class TimeServer(Node):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, ports=[data.getPort(123), data.getPort(22)], minPorts=2, **kwargs)
+    def main(self):
+        date([], data.getNode("localhost"))

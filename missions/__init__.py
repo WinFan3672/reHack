@@ -915,6 +915,17 @@ You have been invited into the ThatCD IRC Server. The admin has already messaged
         nerdpost.reply("u/rehack", "sadly, i cannot claim the trophy of responsibility")
         nerdpost.reply("u/admin", "who did it then?")
         nerdpost.reply("u/vcforum", "it wasnt any of our members, apparently the poster tried to pin the blame on us")
+    
+    def vcf_end():
+        player = data.getNode("localhost")
+        vcforum = data.getTorNode("vcforum")
+        vcforum.create_user(player.name, player.password)
+        sendEmail(Email(
+            "null@null.null",
+            "{}@jmail.com".format(player.name),
+            "VCFORUM Tor Address",
+            vcforum.address,
+        ))
 
     end_email = Email("null@null.null", "{}@jmail.com".format(self.name), "Mission Complete!", "Thanks for working with SCSI group.")
 
@@ -926,6 +937,10 @@ You have been invited into the ThatCD IRC Server. The admin has already messaged
 
     dec_nc = FileCheck("rhdrop")
     dec_nc.add(ZippedFileCopiedCheck("dec-src-v1.0.zip", origin="roynet", folder="incoming"))
+
+    vcf_nc = FileCheck("bravado_ftp")
+    vcf_nc.add(FileDeletedCheck("Bravado2010.zip"))
+
 
     bodies = [
         [
@@ -957,6 +972,18 @@ You have been invited into the ThatCD IRC Server. The admin has already messaged
             "Website: dec.com",
             "Dropserver: drop.rehack.org",
         ],
+        [
+            "Are you good enough for VCFORUM? Let's find out.",
+            "The new Bravado 2010 has just been announced, and the design hasn't been revealed yet.",
+            "As a luxury car enthusiast, this interests me. Unfortunately for Bravado, I am not a fan of their company.",
+            "Their cars suck. Peroid. I want you to sabotage the launch of their new car by hacking in and deleting the engineering drawings and such.",
+            "I don't know HOW you will do this, but I hope you do. Their website is here: bravado.com"
+        ],
+        [
+            "No way, you did it! Well, you earned it. I've added you to VCFORUM.",
+            "You can log in with the same username and password as your SCSI account.",
+            "I've also sent a second email with the .onion address of VCFORUM, since you'll need that as well.",
+        ],
     ]
     bodies = ["\n".join(x) for x in bodies]
     emails = [
@@ -977,6 +1004,18 @@ You have been invited into the ThatCD IRC Server. The admin has already messaged
             "{}@jmail.com".format(self.name),
             "Breaking Insecure Security",
             bodies[2],
+        ),
+        Email(
+            "null@null.null",
+            "{}@jmail.com".format(self.name),
+            "VCFORUM Recruitement Test",
+            bodies[3],
+        ),
+        Email(
+            "null@null.null",
+            "{}@jmail.com".format(self.name),
+            "RE: VCFORUM Recruitement Test",
+            bodies[4],
         ),
     ]
     return [
@@ -1009,6 +1048,15 @@ You have been invited into the ThatCD IRC Server. The admin has already messaged
             end_email,
             reward=3500,
             end_function=dec_end,
+        ),
+        FileCheckMission(
+            self,
+            "scsi_vcforum",
+            "VCFORUM Recruitement Test",
+            vcf_nc,
+            emails[3],
+            emails[4],
+            end_function=vcf_end,
         ),
     ]
 
