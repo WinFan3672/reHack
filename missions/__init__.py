@@ -132,7 +132,7 @@ def chan_missions(self):
             self,
             "5chan_mission3",
             "Blue Blood Spilled",
-            "",
+            "bluemedical_ftp",
             emails[2],
             end_email,
             reward=1500,

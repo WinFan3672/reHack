@@ -632,6 +632,7 @@ N = [
     programs.WebServer("RAZOR 1911", "razor1911", "razor1911.com", "razor1911"),
     programs.WebServer("Bravado :: Luxury You Can't Afford", "bravado_web", "bravado.com", "bravado", linked=["bravado_ftp"]),
     programs.TimeServer("Workspaces Time Server", "workspaces_time", "time.workspaces.com"),
+    programs.WebServer("Blue Medical Official Homepage", "bluemedical", "bluemedical.com", "bluemedical"),
 ]
 for item in N:
     NODES.append(item)

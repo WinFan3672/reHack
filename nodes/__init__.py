@@ -332,7 +332,7 @@ bravado_2010 = ZippedFolder(Folder("Bravado2010", [
 
 bravado_ftp.pub.add_file(bravado_2010)
 
-bluemedic_ftp = programs.FTPServer("Blue Medical FTP", "bluemedic_ftp", "ftp.bluemedic.com", minPorts=65536)
+bluemedic_ftp = programs.FTPServer("Blue Medical FTP", "bluemedical_ftp", "ftp.bluemedical.com", minPorts=65536)
 
 def main():
     return [
