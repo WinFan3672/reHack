@@ -3882,7 +3882,8 @@ def date(args, player):
 
 class HostKillMission(Mission):
     def check_end(self):
-        node = data.getAnyNode(self.target)
+        node = data.getAnyNode(self.target, True)
+        print(node)
         return not node
 
 def openftp(args):
