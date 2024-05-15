@@ -270,6 +270,7 @@ PORTS = [
     Port(6667, "Internet Relay Chat"),
     Port(6881, "BitTorrent Tracker"),
     Port(7777, "reHackOS Node"),
+    Port(8989, "Blue Medical Device Port"),
     Port(9200, "Tor Relay"),
     Port(24525, "Message Board"),
     Port(65536, "DNS Server"),

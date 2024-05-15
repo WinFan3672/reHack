@@ -32,8 +32,8 @@ import nodes.test
 
 
 def pentest2_end():
-    node = data.getNode("cinnamon")
-    data.addFirewall("cinnamon", Firewall("cinnamon", 5))
+    node = data.getNode("cinnamon.mail.com")
+    data.addFirewall("cinnamon.mail.com", Firewall("cinnamon"))
     node.accounts = [MailAccount("admin")]
     node.minPorts = 65536
 
@@ -60,12 +60,27 @@ def chan_missions(self):
             "Oh, and most importantly, don't delete anything, we don't want to cause lasting damage, just confusion.",
             "The DCSE website can be found here: dcse.com",
         ],
+        [
+            "Blue Medical are a big technology company who manufacture medical devices, like pacemakers and such.",
+            "Their devices operate using a proprietary communications protocol. Attempts to reverse-engineer such a protocl have failed thus far.",
+            "If the hacking community got ahold of the source code to some firmware, this would be a big deal. It would allow for people to tinker",
+            "with their devices, doing things like reading the data off the device out of curiosity, and potentially find security vulnerabilities"
+            "to report to BM. It sounds like a good idea, doesn't it?",
+            "",
+            "Well, their LAN is like Fort Knox. I imagine it'd be a good challenge for you to get in.",
+            "Hack into it for now and we'll see where to go from here.",
+            "Their website is here: bluemedical.com",
+        ],
+        [
+            "Hack into the server time.workspaces.com and kill it.",
+            "Go go go!",
+        ],
     ]
     end_email = Email(
         "null@null.null", 
         "{}@jmail.com".format(self.name),
         "Mission Complete",
-        "Payment should be credited within the next 2 business days.",
+        "Congratulations on the successful mission. Payment should be credited within the next 2 business days.",
     )
     bodies = ["\n".join(x) for x in bodies]
     emails = [
@@ -80,7 +95,19 @@ def chan_missions(self):
             "{}@jmail.com".format(self.name),
             "Sharing Is Caring",
             bodies[1],
-        )
+        ),
+        Email(
+            "null@null.null",
+            "{}@jmail.com".format(self.name),
+            "Blue Blood Spilled",
+            bodies[2],
+        ),
+        Email(
+            "null@null.null",
+            "{}@jmail.com".format(self.name),
+            "I Can't Tell The Time",
+            bodies[3],
+        ),
     ]
     return [
         HostKillMission(
@@ -100,6 +127,24 @@ def chan_missions(self):
             emails[1],
             end_email,
             reward=4500,
+        ),
+        Mission(
+            self,
+            "5chan_mission3",
+            "Blue Blood Spilled",
+            "",
+            emails[2],
+            end_email,
+            reward=1500,
+        ),
+        HostKillMission(
+            self,
+            "5chan_mission4",
+            "I Can't Tell The Time",
+            "workspaces_time",
+            emails[3],
+            end_email,
+            reward=500,
         ),
     ]
 
@@ -144,15 +189,15 @@ def base_missions(self):
             emails[1],
             reward=7500,
         ),
-        # Mission(
-        #     self,
-        #     "pentest2_ctf",
-        #     "CTF: Mail.com",
-        #     "cinnamon",
-        #     emails[0],
-        #     emails[1],
-        #     reward=5500,
-        # ),
+        Mission(
+            self,
+            "pentest2_ctf",
+            "CTF: Mail.com",
+            "cinnamon.mail.com",
+            emails[0],
+            emails[1],
+            reward=5500,
+        ),
     ]
 
 
@@ -520,17 +565,17 @@ def main_story_missions(self):
             end_function=pentest1_end,
             next_id="pentest1_ctf",
         ),
-        # Mission(
-        #     self,
-        #     "pentest2",
-        #     "Pentesting Series: Mail.com",
-        #     "cinnamon",
-        #     emails[9],
-        #     emails[10],
-        #     reward=2500,
-        #     end_function = pentest2_end,
-        #     next_id = "pentest2_ctf",
-        # ),
+        Mission(
+            self,
+            "pentest2",
+            "Pentesting Series: Mail.Com",
+            "cinnamon.mail.com",
+            emails[9],
+            end_email,
+            reward=2750,
+            end_function=pentest2_end,
+            next_id="pentest2_ctf",
+        ),
     ]
 
 

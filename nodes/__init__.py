@@ -332,6 +332,8 @@ bravado_2010 = ZippedFolder(Folder("Bravado2010", [
 
 bravado_ftp.pub.add_file(bravado_2010)
 
+bluemedic_ftp = programs.FTPServer("Blue Medical FTP", "bluemedic_ftp", "ftp.bluemedic.com", minPorts=65536)
+
 def main():
     return [
         mht,
@@ -352,6 +354,7 @@ def main():
         apache,
         enwired_ftp,
         bravado_ftp,
+        bluemedic_ftp,
     ] + nodes.forum.main() + nodes.forum.nerdnet.main() + nodes.test.main() + nodes.lan.main()
 
 def tor():

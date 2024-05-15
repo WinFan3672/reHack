@@ -4726,6 +4726,6 @@ def tor_addon(args):
 
 class TimeServer(Node):
     def __init__(self, *args, **kwargs):
-        super().__init__(*args, ports=[data.getPort(123), data.getPort(22)], minPorts=2, **kwargs)
+        super().__init__(*args, ports=[data.getPort(123), data.getPort(22), data.getPort(21)], minPorts=2, **kwargs)
     def main(self):
         date([], data.getNode("localhost"))
