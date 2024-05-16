@@ -269,6 +269,8 @@ ARTICLES = [
     "1990-0000.doc",
     "2000-0000.doc",
     "2003-0000.doc",
+    "2008-0000.docx",
+    "2008-0004.docx",
 ]
 
 for article in ARTICLES:

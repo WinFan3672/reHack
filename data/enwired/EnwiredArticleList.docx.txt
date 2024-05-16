@@ -4,7 +4,7 @@ EnWired Official Article List
 DATE        ID          TITLE
 ************************************************
 1978-01-01  1878-0000   Greetings From EnWired
-1978-01-01  1978-0001   Ataro 2600: The Hot New Computer#
+1978-01-01  1978-0001   Ataro 2600: The Hot New Computer
 1978-01-01  1978-0002   x86: The Future Of Computing?
 1978-01-01  1978-0003   Xerox Park: A Fascinating Story
 1978-01-01  1978-0005   xDevices II Plus: Coming 1979
@@ -249,6 +249,7 @@ DATE        ID          TITLE
 
 2001-09-01  2001-0005   GameCube Poised To Compete With PlayStation 2
 
+2002-01-01  2002-0000   EnWired Direct: Rest In Peace, John Goodard (1917-2002)
 2002-01-01  2002-0001   Last Year: Xbox Releases; Workspaces XP A Smash-Hit
 
 2002-03-01  2002-0002   First BlackBerry Smartphone: It's A Big Deal
@@ -293,12 +294,14 @@ DATE        ID          TITLE
 
 2007-06-01  2007-0004   Asus Eee PC: The First Netbook (Yes, It Runs Linux)
 
-2008-01-01  2008-0000   EnWired Direct: We Are Officially Bankrupt (Capter 11 Bankruptcy Protection)
-2008-01-01  2007-0001   In Retrospect #4: 30 Years of EnWired
+2008-01-01  2008-0000   EnWired Direct: We Are Officially Bankrupt (Chapter 11)
+2008-01-01  2008-0001   In Retrospect #4: 30 Years of EnWired
 
-2008-04-04  2008-0001   Goodbye EnWired (Online Article)
+2008-04-04  2008-0002   Goodbye EnWired (Online Article)
 
-2008-04-21  2008-0002   Goodbye EnWired - Comments (Online Article)
+2008-04-21  2008-0003   Goodbye EnWired - Comments (Online Article)
+
+2006-04-21  2008-0004   Letter To Our (Remaining) Magazine Readers
 ************************************************
 Frequently Asked Questions
 ************************************************
@@ -309,7 +312,7 @@ Q: Can I Buy Magazines?
 A: Sadly not. Most of the original printing data
    is lost to time. However, you can always buy second-hand.
 
-Q: What Happened To Online Articles:
+Q: What Happened To Online Articles?
 A: We've removed them from our website, but they have been archived
    and will return soon. In the meantime, patience.
 ************************************************
