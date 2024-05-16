@@ -356,10 +356,13 @@ class PlayerNode(Node):
                 "",
                 "4: Only Hack Necessary Targets",
                 "4.1: Don't go out of your way to hack people unrelated to your mission.",
+                "4.2: The main exception is big corporations: hack them as much as you please.",
                 "",
                 "By using reHack, you agree to this Code of Conduct.",
                 "If you disagree with these rules, simply disconnect from your node and never connect again.",
                 "Hopefully, you won't find any of our agents (or your rivals) targeting you in real life.",
+                "",
+                
                 "",
                 "Signed,",
                 "[DATA EXPUNGED],",
@@ -380,7 +383,7 @@ class PlayerNode(Node):
         bodies = ["\n".join(x) for x in bodies]
         emails = [
             Email("admin@rehack.mail", "{}@jmail.com".format(self.name), "reHack Code of Conduct (COC)", bodies[7]),
-            Email(
+            Email(1
                 "admin@coca.mail",
                 "admin@coca.mail",
                 "Mainframe Password",

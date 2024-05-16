@@ -19,6 +19,12 @@ def loadGame():
             return hashlib.sha256(str(random.randint(1, 2^64) * time.time()).encode()).hexdigest()
 
         player = PlayerNode(config.get("Player", "name", fallback="UNKNOWN"), config.get("Player", "password", fallback="root"))
+        if player.name in data.BLOCKLIST:
+            cls()
+            div()
+            print("ERROR: You have modified the config file and have given yourself a restricted username. This is disallowed")
+            br()
+            return
         player.startActions()
         player.firewall.solution = config.get("Player", "firewall", fallback="a")
         player.creditCount = config.getint("Player", "credits", fallback=0)
@@ -104,11 +110,6 @@ def credits():
     )
     for item in resourceInfo.contributors:
         print("* {}".format(item))
-    # if resourceInfo.formerContributors:
-    #     div()
-    #     print("The following people are former contributors:")
-    #     for item in resourceInfo.formerContributors:
-    #         print("* {}".format(item))
     div()
     print("LEGAL NOTICES")
     div()
@@ -147,14 +148,8 @@ def main():
     p = PlayerNode(u, p)
     cls()
     div()
-    print("You have officially registered as a reHack user.")
-    print(
-        "You will now connect you your own private node, run on our own infrastructure free-of-charge."
-    )
+    print("You have officially registered as a reHack user. You will now connect you your private node, run on our own infrastructure free-of-charge.")
     br()
-    cls()
-    print("Connecting to 127.0.0.1...")
-    time.sleep(2.5)
     cls()
     div()
     print("ATTENTION: You have unread emails. Read them by running 'jmail'.")
