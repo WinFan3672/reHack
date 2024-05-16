@@ -383,7 +383,7 @@ class PlayerNode(Node):
         bodies = ["\n".join(x) for x in bodies]
         emails = [
             Email("admin@rehack.mail", "{}@jmail.com".format(self.name), "reHack Code of Conduct (COC)", bodies[7]),
-            Email(1
+            Email(
                 "admin@coca.mail",
                 "admin@coca.mail",
                 "Mainframe Password",
