@@ -48,7 +48,7 @@ scsi.add_device(scsi_jobs)
 scsi_test = Node("Test Node", "test", "test.local", ports=[data.getPort(21), data.getPort(22)])
 scsi.add_device(scsi_test)
 
-mview = programs.RemoteLAN("Mountain View Intranet", "mountainremote", "intranet.mountain.view")
+mview = programs.RemoteLAN("Mountain View Intranet", "mountainremote", "intranet.mountain.view", users=[User("admin")])
 mview_ftp = programs.FTPServer("Resources", "ftp", "ftp.local")
 with open("data/mview_recipe.txt") as f:
     mview_ftp.pub.create_encrypted_file(File("Recipe.docx", f.read(), "mountainremote"), "mountainremote", "mountainous")

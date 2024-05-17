@@ -1340,7 +1340,7 @@ class WikiServer(Node):
         self.homepage = WikiCategory(folder, homepage, True)
         self.private = private
     def main(self):
-        if self.private and not self.hacked:
+        if self.private and not self.login_screen():
             print("ERROR: Access denied.")
             return
         try:
@@ -2437,16 +2437,10 @@ class RemoteLAN(LocalAreaNetwork):
     Note that each user gets the same LAN connection (for now, probably).
     """
     def main(self):
-        cls()
-        div()
-        print("Sign Into {}".format(self.name))
-        div()
-        username, passwd = input("Username $"), getpass.getpass("Password $")
-        for user in self.users:
-            if user.name == username and user.password == passwd:
-                LANConnect([], data.getNode("player"), True)(self, data.getNode("player"))
-                return
-        print("ERROR: Invalid credentials.")
+        if self.login_screen():
+            LANConnect([], data.getNode("player"), True)(self, data.getNode("player"))
+        else:
+            print("ERROR: Invalid credentials.")
 
 
 class Router(Node):

@@ -10,6 +10,7 @@ import string
 import platform
 import copy
 import time
+import getpass
 
 WARN_TEXT = "WARNING! Deleting core.sys will break your system."
 
@@ -284,6 +285,20 @@ class Node(Base):
                                   # to main() or main_hacked()
         self.installedPrograms = ["scan", "user", "info"] ## Used by ssh
         self.trace = None
+    def login_screen(self):
+        if not self.users:
+            print("ERROR: No users registered on this machine.")
+            return
+        if self.hacked:
+            return self.users[0]
+        cls()
+        div()
+        print("Log In")
+        div()
+        username, password = input("Username $"), getpass.getpass("Password $")
+        for user in self.users:
+            if user.name == username and user.password == password:
+                return user
     def genRand(self, length=1024):
         s = ""
         for i in range(length):
