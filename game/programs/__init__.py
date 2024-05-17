@@ -295,7 +295,7 @@ def debuginfo(args, player):
         #     print(folder.files == fc.files)
         #     print(folder.files == fdc.files)
     elif args == ["test"]:
-        for node in [x for x in data.NODES if isinstance(x, RemoteLAN)]:
+        for node in [x for x in data.NODES + data.TOR_NODES if isinstance(x, RemoteLAN)]:
             print(node.uid)
     elif args == ["freecash"]:
         reward = 0
