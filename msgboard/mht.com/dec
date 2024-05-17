@@ -1,21 +1,36 @@
-Recently, the source code to DEC Suite (a popular encryption toolkit) was leaked to the dark web and has been circulating around the Internet.
+Recently, the source code to DEC Suite (a popular encryption toolkit) was
+leaked to the dark web and has been circulating around the Internet.
 div()
 What Happened?
 div()
-Earlier today, a post on VCFORUM (a popular hacking forum) included an announcement that DEC Solutions had been hacked into. The post also included a torrent file for the source code of DEC suite. Initially, the file was downloaded by VCFORUM members, until the magnet link started being shared on blogs and forums arond the world. Now, thousands have downloaded the source code.
+Earlier today, a post on VCFORUM (a popular hacking forum) included an
+announcement that DEC Solutions had been hacked into. The post also included a
+torrent file for the source code of DEC suite. Initially, the file was
+downloaded by VCFORUM members, until the magnet link started being shared on
+blogs and forums arond the world. Now, thousands have downloaded the source
+code.
 div()
 What Was Leaked?
 div()
 - The source code to DEC Suite. 
-    - This means that anyone can inspect the code for security issues, or compile their own version of DEC Suite.
+    - This means that anyone can inspect the code for security issues, or
+      compile their own version of DEC Suite.
 - The signatures used to sign the compiled DEC Suite executables.
-    - This means that anyone can pretend that their custom executable really came from DEC themselves.
+    - This means that anyone can pretend that their custom executable really
+      came from DEC themselves.
 div()
 What Now?
 div()
 DEC Solutions provided a statement on their news website:
-    We acknowledge that the leak has occured, and we will work with law enforcement to bring the hackers to justice. We will also work with cybersecurity pros to both perform damage control and release DEC Suite 2.0, which will be much more secure, invalidating the leak for the most part. DEC 2.0 will be released in 2011.
+    We acknowledge that the leak has occured, and we will work with law
+    enforcement to bring the hackers to justice. We will also work with
+    cybersecurity pros to both perform damage control and release DEC Suite
+    2.0, which will be much more secure, invalidating the leak for the most
+    part. DEC 2.0 will be released in 2011.
 
-    We have also worked with Nanosoft and our CA to reject our leaked digital signatures, meaning that you'll need to update DEC Suite to v1.1, which has a new signature.
+    We have also worked with Nanosoft and our CA to reject our leaked digital
+    signatures, meaning that you'll need to update DEC Suite to v1.1, which has
+    a new signature.
 div()
-As per usual, I have uploaded a copy of the source code to ftp.mht.com, although that is largely pointless due to the torrent's popularity.
+As per usual, I have uploaded a copy of the source code to ftp.mht.com,
+although that is largely pointless due to the torrent's popularity.

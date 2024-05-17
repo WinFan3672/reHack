@@ -84,6 +84,10 @@ class Port(Base):
 
 
 class BinaryFile(Base):
+    """
+    This class is not for use by anything other than the File class INTERNALLY.
+    It serves no function other than to generate random 'binary' data.
+    """
     def __init__(self, size=32, length=32):
         super().__init__()
         self.size = size
@@ -104,7 +108,7 @@ class File(Base):
         super().__init__()
         self.name = name
         if data:
-            self.data = data
+            self.data = data.rstrip("\n") if type(data) == str else data
         else:
             self.data = BinaryFile().data()
         self.origin = origin

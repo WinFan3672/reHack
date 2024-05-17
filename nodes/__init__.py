@@ -334,7 +334,15 @@ bravado_2010 = ZippedFolder(Folder("Bravado2010", [
 
 bravado_ftp.pub.add_file(bravado_2010)
 
-bluemedic_ftp = programs.FTPServer("Blue Medical FTP", "bluemedical_ftp", "ftp.bluemedical.com", minPorts=65536)
+bluemedical_ftp = programs.FTPServer("Blue Medical FTP", "bluemedical_ftp", "ftp.bluemedical.com", minPorts=65536)
+
+bluemedical_wiki = programs.WikiServer("Blue Medical Wiki", "bluemedical_wiki", data.generateIP(), "bluemedical", "Home", True)
+bluemedical_wiki.hacked = True
+bmwiki_devices = bluemedical_wiki.homepage.add_category("Devices")
+bmwiki_eseries = bmwiki_devices.add_category("E Series Pacemakers")
+bmwiki_eseries.add_page("About E Series")
+# bmwiki_support = bluemedical_wiki.homepage.add_category("Support")
+
 
 def main():
     return [
@@ -356,7 +364,8 @@ def main():
         apache,
         enwired_ftp,
         bravado_ftp,
-        bluemedic_ftp,
+        bluemedical_ftp,
+        bluemedical_wiki,
     ] + nodes.forum.main() + nodes.forum.nerdnet.main() + nodes.test.main() + nodes.lan.main()
 
 def tor():

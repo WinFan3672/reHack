@@ -1332,14 +1332,23 @@ class WikiCategory(Base):
 
 
 class WikiServer(Node):
-    def __init__(self, name, uid, address, folder, homepage="Main Page"):
-        super().__init__(name, uid, address)
+    def __init__(self, name, uid, address, folder, homepage="Main Page", private=False, **kwargs):
+        super().__init__(name, uid, address, **kwargs)
         self.ports = [data.getPort(22), data.getPort(80), data.getPort(1433)]
         self.minPorts = 3
         self.folder = folder
         self.homepage = WikiCategory(folder, homepage, True)
+        self.private = private
     def main(self):
-        self.homepage.read()
+        if self.private and not self.hacked:
+            print("ERROR: Access denied.")
+            return
+        try:
+            self.homepage.read()
+        except FileNotFoundError:
+            print(traceback.format_exc())
+            print(os.getcwd())
+            print(self.folder)
     def mainold(self):
         with open("wikis/{}/{}".format(self.folder, self.homepage)) as f:
             for line in f.read().split("\n"):
@@ -3253,7 +3262,7 @@ class NewsStory(Base):
         print("Date: {}".format(self.date))
         print("Author: {}".format(self.author))
         div()
-        print(self.text)
+        print(self.text.rstrip("\n"))
         if self.comments:
             div()
             print("Comments")

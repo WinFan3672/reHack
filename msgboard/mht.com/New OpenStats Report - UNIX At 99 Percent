@@ -1,8 +1,12 @@
-That's right, the new OpenStat report for 2010 has just been released!
-Here are the results.
-99.8% of the world runs a UNIX-like operating system, which now includes NanoSoft Workspaces 6 and 7 thanks to an agreement between NS and the Linux Kernel to allow them to operate a closed-source fork, provided they poured $1,000,000 into the project. 
-As usual, Debian remains strong, with 75% of the world running it. Not bad.
-Both NS and xOS have declined sharply, dropping from a combined 30% in 2007 to a combined 23%. That's a lot of Linux users!
-A shocking amount of people are still using Workspaces 5 (which was released in 2001), which, granted, still receives security updates, but a new OS is a far better security boost than an update.
+That's right, the new OpenStat report for 2010 has just been released! Here are
+the results. 99.8% of the world runs a UNIX-like operating system, which now
+includes NanoSoft Workspaces 6 and 7 thanks to an agreement between NS and the
+Linux Kernel to allow them to operate a closed-source fork, provided they
+poured $1,000,000 into the project. As usual, Debian remains strong, with 75%
+of the world running it. Not bad. Both NS and xOS have declined sharply,
+dropping from a combined 30% in 2007 to a combined 23%. That's a lot of Linux
+users! A shocking amount of people are still using Workspaces 5 (which was
+released in 2001), which, granted, still receives security updates, but a new
+OS is a far better security boost than an update.
 
 That being said, I question the methodology of the study. For example, 

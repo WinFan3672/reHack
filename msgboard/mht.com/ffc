@@ -1,16 +1,29 @@
-You probably recall the earlier hack into IsDedCo that uncovered the secret recipe for Mountain View, which has led to widespread shock and concerns over corruption, mismanagement, and profit over people.
-Well, guess what? The exact thing has happened to FFC, the popular multinational fast food chain most famous for its chicken that contains 69 different herbs and spices.
-An anonymous individual has just sent me a copy of the official Complete Herb and Spice List, which has been sought after for years. The individual (whose identity remains unknown) has this to say:
+You probably recall the earlier hack into IsDedCo that uncovered the secret
+recipe for Mountain View, which has led to widespread shock and concerns over
+corruption, mismanagement, and profit over people. Well, guess what? The exact
+thing has happened to FFC, the popular multinational fast food chain most
+famous for its chicken that contains 69 different herbs and spices. An
+anonymous individual has just sent me a copy of the official Complete Herb and
+Spice List, which has been sought after for years. The individual (whose
+identity remains unknown) has this to say:
 
-    It was stored on a publicly available FTP server, and was almost entirely unsecured. We were able to get in with a simple exploit. 
-    Even a script kiddie [a hacker who uses existing tools instead of performing 'real' hacking] could have done it. 
-    In fact, we're surprised it hasn't already happened. It was a stupendously bad decision to trust an unsecured FTP server with trade secrets.
+    It was stored on a publicly available FTP server, and was almost entirely
+    unsecured. We were able to get in with a simple exploit. Even a script
+    kiddie [a hacker who uses existing tools instead of performing 'real'
+    hacking] could have done it. In fact, we're surprised it hasn't already
+    happened. It was a stupendously bad decision to trust an unsecured FTP
+    server with trade secrets.
 
 A spokesperson for FFC has this to say:
 
-    Thank you for alerting us of this. Our investors will be interested to hear this. However, it should be noted that our herbs and spice list isn't urgently 
-    confidential, as many different expert taste testers have deduced some of the ingredients inside the chicken, to the extent that if you combined
-    all of their notes, you can get the full list, give or take a few. We will, however, take the server offline for the time being. 
+    Thank you for alerting us of this. Our investors will be interested to hear
+    this. However, it should be noted that our herbs and spice list isn't
+    urgently confidential, as many different expert taste testers have deduced
+    some of the ingredients inside the chicken, to the extent that if you
+    combined all of their notes, you can get the full list, give or take a few.
+    We will, however, take the server offline for the time being. 
 
-This has gone from a one-off incident to a coincidence. If this happens again, this is the true sign of something more meaningful than a list of herbs and spices.
-As usual, I've left the Complete Herb and Spice List on the FTP server (ftp.mht.com), so get it while it's still there!
+This has gone from a one-off incident to a coincidence. If this happens again,
+this is the true sign of something more meaningful than a list of herbs and
+spices. As usual, I've left the Complete Herb and Spice List on the FTP server
+(ftp.mht.com), so get it while it's still there!
