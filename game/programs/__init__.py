@@ -4727,7 +4727,27 @@ def tor_addon(args):
     print("All port breaking tools (plus nmap and porthack) will now support Tor nodes.")
 
 class TimeServer(Node):
+    """
+    An NTP time server.
+    """
     def __init__(self, *args, **kwargs):
         super().__init__(*args, ports=[data.getPort(123), data.getPort(22), data.getPort(21)], minPorts=2, **kwargs)
     def main(self):
         date([], data.getNode("localhost"))
+
+class WorldRouter(Node):
+    """
+    This node is initialised after the final mission is completed.
+    """
+    def __init__(self):
+        super().__init__("Router", "router", "192.168.0.0")
+    def main(self):
+        div()
+        print("ADDR\t\t\tHOSTNAME")
+        div()
+        print("192.168.0.0\t\t\tRouter")
+        for node in data.NODES + data.TOR_NODES:
+            print("{}\t\t\t{}".format(node.address, node.name))
+        div()
+    def check_health(self):
+        return not self.hacked
