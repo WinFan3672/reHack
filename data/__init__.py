@@ -233,7 +233,7 @@ def generateIP():
     for i in range(4):
         c.append(random.randint(0, 255))
     ip = ".".join([str(x) for x in c])
-    if ip in [x.address for x in NODES]:
+    if ip in [x.address for x in NODES] + ["192.168.0.0"]:
         return generateIP() ## prevents duplicate IP addresses.
     GENERATED.append(ip)
     return ip
