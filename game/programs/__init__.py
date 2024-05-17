@@ -294,7 +294,7 @@ def debuginfo(args, player):
         #     print(folder.name == fdc.name)
         #     print(folder.files == fc.files)
         #     print(folder.files == fdc.files)
-    elif args == ["test"]:
+    elif args == ["lans"]:
         for node in [x for x in data.NODES + data.TOR_NODES if isinstance(x, RemoteLAN)]:
             print(node.uid)
     elif args == ["freecash"]:
@@ -490,6 +490,7 @@ def debuginfo(args, player):
         print("    tree: display a node's file tree")
         print("    save: prints the player's save file")
         print("    ide: open a Python console with reHack's locals and globals")
+        print("    lans: lists UIDs of all LANs with login screens ('Remote LANs')")
         div()
         print("WARNING: This program is not intended for use by anyone other than the developers.")
         print("It is meant to be used when debugging the game, not when playing it.")
