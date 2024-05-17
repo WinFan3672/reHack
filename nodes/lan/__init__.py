@@ -56,7 +56,7 @@ mview_ftp.pub.create_encrypted_file(File("Password.txt", "mountainous", "jrallyp
 mview_ftp.inc.create_file("DearJames.txt", "Hello James. Please stop leaving passwords in the INCOMING folder. Just leave them in your PC's home folder. -Noah", "nbaileypc")
 mview.add_device(mview_ftp)
 
-sfec = programs.RemoteLAN("SFEC Intranet", "sfeclan", "lan.sfec.com")
+sfec = programs.RemoteLAN("SFEC Intranet", "sfeclan", "lan.sfec.com", users=[User("admin")])
 
 sfec_files = programs.PublicFTPServer("Files", "files", "files.local")
 with open("data/sfeclan/report2010.txt") as f:

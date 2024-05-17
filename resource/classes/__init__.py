@@ -299,6 +299,7 @@ class Node(Base):
         for user in self.users:
             if user.name == username and user.password == password:
                 return user
+        print("ERROR: Access denied.")
     def genRand(self, length=1024):
         s = ""
         for i in range(length):

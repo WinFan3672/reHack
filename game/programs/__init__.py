@@ -295,7 +295,8 @@ def debuginfo(args, player):
         #     print(folder.files == fc.files)
         #     print(folder.files == fdc.files)
     elif args == ["test"]:
-        pass
+        for node in [x for x in data.NODES if isinstance(x, RemoteLAN)]:
+            print(node.uid)
     elif args == ["freecash"]:
         reward = 0
         for mission in [x for x in player.MISSIONS if x.complete]:
@@ -1341,7 +1342,6 @@ class WikiServer(Node):
         self.private = private
     def main(self):
         if self.private and not self.login_screen():
-            print("ERROR: Access denied.")
             return
         try:
             self.homepage.read()
@@ -2439,8 +2439,6 @@ class RemoteLAN(LocalAreaNetwork):
     def main(self):
         if self.login_screen():
             LANConnect([], data.getNode("player"), True)(self, data.getNode("player"))
-        else:
-            print("ERROR: Invalid credentials.")
 
 
 class Router(Node):
