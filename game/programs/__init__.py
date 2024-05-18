@@ -3428,10 +3428,6 @@ Have a lovely day, and check out my story on mht.com for the full story.""")
                 renwired_story.reply("code", "Nonesense; this is 100% a cop-out")
                 renwired_story.reply("sizzle", "'he seems like a nice guy' = red flag")
                 renwired_story.reply("replit", "let's not start a flame war")
-                renwired_story.reply("admin", "While we're here, who's open to the idea of opening up a forum?")
-                renwired_story.reply("code", "Sure, if you have a powerful enough server to handle the demand xd")
-                renwired_story.reply("sizzle", "yes yes yes")
-                renwired_story.reply("replit", "Make a post about it once you've set it up!")
 
         if player.date == GameDate(2010, 7, 12) and not self.xdgNet:
             self.xdgNet = True
@@ -3439,7 +3435,7 @@ Have a lovely day, and check out my story on mht.com for the full story.""")
             renwired.name = "XDG.Net: A better kind of news"
             renwired.address = "xdg.net"
             with open("msgboard/mht.com/xdgn") as f:
-                xdgn = mht.add_story("RenWired Has Become xdg.net", "Admin", f.read())
+                xdgn = mht.add_story("RenWired Has Become xdg.net", "Admin", player.date.clone(), f.read())
                 xdgn.reply("code", "that was fast")
                 xdgn.reply("admin", "code: my thoughts exactly")
                 xdgn.reply("sizzle", "mht is such a shill, 2/3 of the article is about the previous one!")
@@ -3456,6 +3452,9 @@ Have a lovely day, and check out my story on mht.com for the full story.""")
                 xdgn.reply("bit", "is there anything we can do to help?")
                 xdgn.reply("admin", "I make my money through licensing MHT articles, so not really")
                 xdgn.reply("admin", "you can check out my forum though: forum.mht.com")
+
+            with open("msgboard/xdg.net/workspaces07") as f:
+                story = renwired.add_stock("NanoSoft Workspaces 2007: First Impressions", "Michael Olufsen", player.date.clone(), f.read())
 
 
 def ssh(args):
@@ -4743,11 +4742,11 @@ class WorldRouter(Node):
         super().__init__("Router", "router", "192.168.0.0")
     def main(self):
         div()
-        print("ADDR\t\t\tHOSTNAME")
+        print("ADDR\t\tHOSTNAME")
         div()
-        print("192.168.0.0\t\t\tRouter")
+        print("192.168.0.0\t\tRouter")
         for node in data.NODES + data.TOR_NODES:
-            print("{}\t\t\t{}".format(node.address, node.name))
+            print("{}\t\t{}".format(node.address, node.name))
         div()
     def check_health(self):
         return not self.hacked

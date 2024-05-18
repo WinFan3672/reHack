@@ -51,6 +51,7 @@ def chan_missions(self):
             "",
             "Because I hate cheaters, I want them to get what they deserve.",
             "Their system can't be that secure, so could you connect to their PC and delete some system files?",
+            "That should put them out of action for a couple days, since they'll need to reinstall their system and find their cheats again.",
             "Oh, yeah the address: {}".format(data.getNode("5chan_mission1").address)
         ],
         [
