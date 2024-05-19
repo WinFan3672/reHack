@@ -12,16 +12,15 @@ FROM: Team Autocrat #77
 TO: Team Autocrat
 DATE: 1/1/2010
 ************************************************
-Hello, agents.
-This document is a report of the entirety of
-Project Autocrat, as it happened from 1/1/2000
-to 1/1/2010. It remains imperative that this
-never reaches the public. We have 50 years
-to archive these records and re-classify them
-as new data, while destroying these records.
-I suggest we make a copy as a new document
-on 31/12/2049, that way its declassification is
-scheduled for 31/12/2099 instead.
+Hello, agents. This document is a report of the
+entirety of Project Autocrat, as it happened from
+1/1/2000 to 1/1/2010. It remains imperative that
+this never reaches the public. We have 50 years to
+archive these records and re-classify them as new
+data, while destroying these records. I suggest we
+make a copy as a new document on 31/12/2049, that
+way its declassification is scheduled for
+31/12/2099 instead.
 ************************************************
 INITIAL REQUEST
 FROM: President William Clifford
@@ -37,21 +36,25 @@ place to suggest our plan: I call it Project
 Autocrat. Here's the plan:
 
 1. Backdoor the Apache Web Server
-2. Work with corporations to install backdoors
-on all computers, including corporate ones and
-(hopefully) foreign ones as well.
-3. Work with Internet companies to perform surveillance
-on potential targets, setting up a system to request
-all data that company has on that individual, no warrant
-required. 
-4. Slowly make Internet devices insecure enough for us to
-be able to break into any uncomplaint targets.
 
-If this works, in ten years' time we'll have total 
-control over the Internet. After all, more and more
-people look to the Internet as a source of truth. 
-If we control the truth, we control the thought, 
-don't we?
+2. Work with corporations to install backdoors on
+all computers, including corporate ones and
+(hopefully) foreign ones as well.
+
+3. Work with Internet companies to perform
+surveillance on potential targets, setting up a
+system to request all data that company has on
+that individual, no warrant required. 
+
+4. Slowly make Internet devices insecure enough
+for us to be able to break into any uncompliant
+    targets.
+
+If this works, in ten years' time we'll have total
+control over the Internet. After all, more and
+more people look to the Internet as a source of
+truth. If we control the truth, we control the
+thought, don't we?
 
 Signed,
 W. Clifford
@@ -64,42 +67,39 @@ Date: 1/1/2000
 Dear Apache Foundation:
 
 We are the US Office. We are interested in
-including a backdoor in the open-source Apache
-Web Server. This is for national security
-purposes.
+including a backdoor in the open-source Apache Web
+Server. This is for national security purposes.
 
-We would like you to add a simple backdoor to
-your service by allowing us to add code over FTP.
+We would like you to add a simple backdoor to your
+service by allowing us to add code over FTP.
 
 If you are concerned about the security vulner-
 ability being noticed, we'd agree to let you 
 patch it, but ONLY if someone discovers it and
 reports it as a CVE.
 
-If you do this, we require you to not tell
-anyone about our communication. Destroy this letter,
-and do not discuss it with lower management. 
+If you do this, we require you to not tell anyone
+about our communication. Destroy this letter, and
+do not discuss it with lower management. 
 
 If you reject this, DO NOT mention it to anyone,
-least of all the public. We have a warrant for this
-request, so if you tell anyone, we'll denounce
-the Apache server, and Nginx will look like
-an actually viable competitor.
+least of all the public. We have a warrant for
+this request, so if you tell anyone, we'll
+denounce the Apache server, and Nginx will look
+like an actually viable competitor.
 
-We look forward to your written response.
-We've left a First Class Government Stamp 
-inside this letter, to allow you to discretely
-send the reply without the letter being 
-intercepted.
+We look forward to your written response. We've
+left a First Class Government Stamp inside this
+letter, to allow you to discretely send the reply
+without the letter being intercepted.
 ************************************************
 BACKDOOR REQUEST
 BY: US Office
 TO: NanoSoft Corporation
 ************************************************
-Hello. We would like to request that a backdoor
-be installed on all versions of Workspaces 
-in future. Please get back to us if this 
-sounds good.
+Hello. We would like to request that a backdoor be
+installed on all versions of Workspaces in future.
+Please get back to us if this sounds good.
 ************************************************
 BACKDOOR REQUEST
 FROM: US Office
@@ -116,24 +116,22 @@ Date: 1/1/2000
 ************************************************
 Hello.
 
-The Linux Kernel is an important project.
-So is our national security. Would it be possible
-for the LKF to (secretly) add a backdoor into the
-kernel that allows for privelege escalation from
-a userspace to a root user. Some example code
-on how the backdoor works would also help.
+The Linux Kernel is an important project. So is
+our national security. Would it be possible for
+the LKF to (secretly) add a backdoor into the
+kernel that allows for privelege escalation from a
+userspace to a root user. Some example code on how
+the backdoor works would also help.
 ************************************************
 REPLY: BACKDOOR REQUEST
 FROM: Linux Foundation
 TO: US Office
 DATE: 1/5/2000
 ************************************************
-Hello.
-The LKF has declined the offer. This is 
-non-negotiable.
-National security is of little importance to us,
-especially the facilitation of spying on 
-citizens without warrants.
+Hello. The LKF has declined the offer. This is
+non-negotiable. National security is of little
+importance to us, especially the facilitation of
+spying on citizens without warrants.
 ************************************************
 REPLY: BACKDOOR REQUEST
 FROM: Apache Foundation
@@ -141,14 +139,16 @@ TO: US Office
 DATE: 1/11/2000
 ************************************************
 Consider it done. Versions 2.0+ of Apache Server
-will have a backdoor in them. Here is how it works:
+will have a backdoor in them. Here is how it
+works:
 
 [REDACTED]
 
 Version 2.0 will release on 3/1/2001. We expect
 80% of our customers to migrate by 3/1/2002,
 because 2.0 introduces new features as well as
-security and stability improvements. Oh, the irony.
+security and stability improvements. Oh, the
+irony.
 ************************************************
 REPLY: BACKDOOR REQUEST
 FROM: NanoSoft Corporation
@@ -159,9 +159,9 @@ Done. If you open a terminal and run:
 
 $ C:\Workspaces\System_x86\kernel.exe --cia
 
-An admin shell will open. 
-This switch is undocumented.
-From an admin shell, you can add a new user:
+An admin shell will open. This switch is
+undocumented. From an admin shell, you can add a
+new user:
 
 $ useradd <username> <password> <admin|user>
 ************************************************
@@ -179,10 +179,10 @@ FROM: US Office
 TO: Team Autocrat
 DATE: 3/2/2000
 ************************************************
-Hello, Agents. Team Autocrat has formed. 
-Please write a Backdoor Report within 7 days.
-Please establish connections with companies
-and make data request frameworks.
+Hello, Agents. Team Autocrat has formed. Please
+write a Backdoor Report within 7 days. Please
+establish connections with companies and make data
+request frameworks.
 
 AGENT       STATUS
 #1          IN TEAM
@@ -210,16 +210,16 @@ FROM: Team Autocrat
 TO: US Office
 DATE: 1/1/2001
 ************************************************
-2000 was a good year for Project Autocrat.
-We have collaborated with many companies
-who have agreed to assist us in future.
-Attached is the Comms Report, which lists all 
-companies that have partnered with us.
+2000 was a good year for Project Autocrat. We have
+collaborated with many companies who have agreed
+to assist us in future. Attached is the Comms
+Report, which lists all companies that have
+partnered with us.
 
-We are a team of 8 at the moment, and we plan
-to set up systems for other CIA members to use
-our services, which will necessitate more 
-agents (at least 32).
+We are a team of 8 at the moment, and we plan to
+set up systems for other CIA members to use our
+services, which will necessitate more agents (at
+least 32).
 ************************************************
 COMMS REPORT
 FROM: Team Autocrat
@@ -241,14 +241,14 @@ FROM: Team Autocrat
 TO: US Office
 DATE: 1/1/2002
 ************************************************
-Things have slowed down in terms of adding
-new companies to our roster. However, the SGDRS
-is up and working and we get as many as 200 requests
-per day, 96% of which get fulfiled!
+Things have slowed down in terms of adding new
+companies to our roster. However, the SGDRS is up
+and working and we get as many as 200 requests per
+day, 96% of which get fulfiled!
 
-We think 2003 will be a great year, and we plan
-to set up a support channel (probably over IRC)
-in the LAN as well as a web portal. 
+We think 2003 will be a great year, and we plan to
+set up a support channel (probably over IRC) in
+the LAN as well as a web portal. 
 ************************************************
 SGDRS SPECIFICATION
 FROM: Team Autocrat
@@ -257,21 +257,27 @@ DATE: 5/31/2001
 ************************************************
 The SGDRS is incredibly simple:
 
-1. An agent in the FBI/CIA/NSA/Govt./Etc. makes
-a request by filling in the form;
+1. An agent in the FBI/CIA/NSA/Govt./Etc. makes a
+request by filling in the form;
+
 2. The request is sent to us;
+
 3. We contact the relevant company(ies);
+
 4. We receive all the data;
+
 5. We upload that data to the relevant server;
+
 6. We send it to the agent;
+
 7. The agent confirms delivery and closes the case.
 
 It's simple for the agent (who makes all requests
 the same way and can do so in bulk), it's simple
-for us (we have a standardised framework for
-how requests are handled), and it's simple for the
-companies (they receive requests in the same way
-as well).
+for us (we have a standardised framework for how
+    requests are handled), and it's simple for the
+    companies (they receive requests in the same
+    way as well).
 ************************************************
 SDGRS FORM TEMPLATE
 ************************************************
@@ -280,10 +286,11 @@ Revision 1 (5/31/2001)
 
 Dear Agent:
 Fill in as many details about the user as you can.
-The more you give, the fewer users' details you are given,
-and the less you need to sift through. Don't worry,
-if data is inaccurate, you'll probably still get a match,
-  because the search isn't strict.
+The more you give, the fewer users' details you
+are given, and the less you need to sift through.
+Don't worry, if data is inaccurate, you'll
+probably still get a match, because the search
+isn't strict.
 
 AGENT SECTION
 
@@ -304,7 +311,8 @@ COMPANY ID(s):
 WARNING TO AGENT:
 
 * Do NOT include data that could identify you.
-* Do NOT fill out a request without a genuine reason.
+* Do NOT fill out a request without a genuine
+  reason.
 
 WARNING TO HANDLER:
 
@@ -317,18 +325,19 @@ Date: 2/2/2002
 ************************************************
 Dear Mr Bush,
 
-We would like to request a consideration.
-We already have SGDRS, and it is highly effective.
-However, it takes time (2 days on average).
-As such, I propose an extension to the SGDRS protocol,
-called U+SGDRS, (Or Urgent SGDRS), which is designed
-to be resolved within an hour of being filled in.
-It would require significant discussion, and some 
-companies would probably opt out of it, meaning
-that there would be 2 SGDRS lists, but it would
-allow for extraordinary cases (such as issues of
-sudicide prevention) to be resolved in a good enough
-time, and not be useless.
+We would like to request a consideration. We
+already have SGDRS, and it is highly effective.
+However, it takes time (2 days on average). As
+such, I propose an extension to the SGDRS
+protocol, called U+SGDRS, (Or Urgent SGDRS), which
+is designed to be resolved within an hour of being
+filled in. It would require significant
+discussion, and some companies would probably opt
+out of it, meaning that there would be 2 SGDRS
+lists, but it would allow for extraordinary cases
+(such as issues of sudicide prevention) to be
+resolved in a good enough time, and not be
+useless.
 
 What do you think?
 ************************************************
@@ -337,8 +346,8 @@ FROM: US Office
 TO: Team Autocrat
 Date: 2/2/2002
 ************************************************
-We can confirm that President Bush agrees.
-Please proceed with this proposal ASAP.
+We can confirm that President Bush agrees. Please
+proceed with this proposal ASAP.
 ************************************************
 INTERNAL HEARING
 DATE: 3/14/2002
@@ -346,7 +355,7 @@ ATTENDING: Team Autocrat #1-9; Agents 1177,
 4848, 3457; Pres. G. E. Bush.
 ************************************************
 JUDGE: Welcome. This hearing aims to discuss
-whether Project Autocrat can continue in its 
+whether Project Autocrat can continue in its
 current form. Who originally proposed this?
 
 3457: I did, Sir.
@@ -355,24 +364,25 @@ JUDGE: Please make your opening statement.
 
 3457: Project Autocrat in its current form is
 Unconstitutional and immoral. It facilitates the
-spying of thousands of Americans without a warrant,
-and has compromised countless software projects, 
-including small open-source ones, which has led to
-the reputational damage of parties other than the CIA.
+spying of thousands of Americans without a
+warrant, and has compromised countless software
+projects, including small open-source ones, which
+has led to the reputational damage of parties
+other than the CIA.
 
 4848: The Project has been massively helpful in
-eliminating high-level crime, including unspeakable
-evils, and many thousands of suicides have been
-prevented.
+eliminating high-level crime, including
+unspeakable evils, and many thousands of suicides
+have been prevented.
 
-3457: Are you talking about 'Unspeakable evils'
-at the CIA?
+3457: Are you talking about 'Unspeakable evils' at
+the CIA?
 
 4848: Yes, I am.
 
-3457: You don't need to look further than the 
-Internal History Book to know that you're 
-full of shit!
+3457: You don't need to look further than the
+Internal History Book to know that you're full of
+shit!
 
 1177: And what exactly is your proposal to make
 the Project align with your personal values?
@@ -380,43 +390,49 @@ the Project align with your personal values?
 3457: Easy. Require warrants for SGDRS requests.
 Shut down the backdoors.
 
-4848: You want to make the sharpest tool we own blunter?
+4848: You want to make the sharpest tool we own
+blunter?
 
 3457: Ye-
 
-Autocrat #4: We already deal with massive amounts 
-of paperwork. Dealing with warrants would easily triple it,
-making requests take weeks to be filled out.
+Autocrat #4: We already deal with massive amounts
+of paperwork. Dealing with warrants would easily
+triple it, making requests take weeks to be filled
+out.
 
-Autocrat #5: What about urgent requests? If they needed a
-warrant, that would ruin the point, wouldn't it?
+Autocrat #5: What about urgent requests? If they
+needed a warrant, that would ruin the point,
+wouldn't it?
 
-3457: I'm not saying we should do that for the urgent ones.
-Just the regular ones. Besides, your team has quadrupled
-since its inception. It has 32 people in it!
+3457: I'm not saying we should do that for the
+urgent ones. Just the regular ones. Besides, your
+team has quadrupled since its inception. It has 32
+people in it!
 
 1177: You're the one that's full of shit.
 
 JUDGE: No need for personal attacks in a hearing.
 
 Autocrat #1: As a founding member of the Project,
-I don't think it's realistic. The number of fraudulent 
-urgent requests would skyrocket (we already deal with 
-plenty of those), which would just make the urgent
-requests worse at their jobs.
+I don't think it's realistic. The number of
+fraudulent urgent requests would skyrocket (we
+already deal with plenty of those), which would
+just make the urgent requests worse at their jobs.
 
 PRESIDENT: I flew all the way from DC for this?
 
 Autocrat #2: Care to share your thoughts?
 
-PRESIDENT: I suggest we end this hearing prematurely.
-This discussion is ridiculous. The Senate voted for
-this back in 2000 in an all-to-none vote! There was 
-approval from both sides of the political spectrum!
+PRESIDENT: I suggest we end this hearing
+prematurely. This discussion is ridiculous. The
+Senate voted for this back in 2000 in an
+all-to-none vote! There was approval from both
+sides of the political spectrum!
 
-Autocrat #5: How can a spectrum have two distinct sides?
+Autocrat #5: How can a spectrum have two distinct
+sides?
 
-Autocrat #6: Of course you'd discuss semantics in 
+Autocrat #6: Of course you'd discuss semantics in
 a hearing about ethics.
 
 3457: These 'ethical' hearings are a joke. 
@@ -449,9 +465,10 @@ Autocrat #9: Dismiss.
 
 President: Dismiss.
 
-JUDGE: Okay, that's 10 'Dismiss', and 3 'Continue'.
-As such, the hearing ends now. Duration, 14 minutes
-and 33 seconds. The time is lunch.
+JUDGE: Okay, that's 10 'Dismiss', and 3
+'Continue'. As such, the hearing ends now.
+Duration, 14 minutes and 33 seconds. The time is
+lunch.
 ************************************************
 NOTICE FOR SERIOUS COSNSIDERATION
 FROM: Presnident G. E. Bush
@@ -459,9 +476,10 @@ TO: CIA
 DATE: 3/14/2002
 ************************************************
 Today, I attended a hearing set up by Agent 3457.
-That agent was rather un-cooperative and in general
-seemed to lack focus in his work. I'd like to request
-that his termination be seriously considered.
+That agent was rather un-cooperative and in
+general seemed to lack focus in his work. I'd like
+to request that his termination be seriously
+considered.
 ************************************************
 NOTE
 FROM: Team Autocrat #77
@@ -477,30 +495,32 @@ FROM: Team Autocrat
 TO: US Office
 DATE: 1/1/2005
 ************************************************
-Since that hearing, things have gone very well.
-We have expanded from 32 members to 250, and 
-we have set up many different services. 
+Since that hearing, things have gone very well. We
+have expanded from 32 members to 250, and we have
+set up many different services. 
 
 New company goods and services have released,
 which have made our powers increase significantly.
 
-We have reduced SGDRS response time down from a week
-to 13 hours on average, and U+SGDRS response times
-from an hour to 20 minutes on average.
+We have reduced SGDRS response time down from a
+week to 13 hours on average, and U+SGDRS response
+times from an hour to 20 minutes on average.
 
-We plan to expand much slower, and our team is unlikely
-to grow, and we don't plan on launching new services.
-However, corporate outreach will keep going.
+We plan to expand much slower, and our team is
+unlikely to grow, and we don't plan on launching
+new services. However, corporate outreach will
+keep going.
 ************************************************
 NOTICE OF BACKDOOR
 FROM: xDevices Corporation
 TO: Project Autocrat; CIA
 DATE: 1/9/2007
 ************************************************
-As you know, we recently announced the xPhone
-to the world. We have decided to honor your request 
-from 2000 and have included a backdoor in that system 
-as well. The default admin password will be `alpine`.
+As you know, we recently announced the xPhone to
+the world. We have decided to honor your request
+from 2000 and have included a backdoor in that
+system as well. The default admin password will be
+`alpine`.
 
 This will affect ALL models in the future.
 ************************************************
@@ -519,30 +539,30 @@ ATTENDING: President Barack Oboma; Project Autocrat
 JUDGE: Mr President, please state your statement.
 
 President: When I was sworn in, I was informed of
-Project Autocrat. I was shocked of the scope 
-and extent of the Unconstitutional actions that have
+Project Autocrat. I was shocked of the scope and
+extent of the Unconstitutional actions that have
 been taken, and I want to do something about it.
 
 Autocrat #2: And what's that?
 
 President: Shut down the entirety of the Project,
-spinning off the SGDRS component into a new 
+spinning off the SGDRS component into a new
 department. 
 
 Autocrat #3: What about securing more contracts?
 
 President: That's what we DON'T want. I wish to
-essentially neuter the SGDRS system, making it less
-useful over time, until it no longer serves a purpose,
-as more companies pull out, and it has a smaller
-and smaller role in the CIA's operations. 
+essentially neuter the SGDRS system, making it
+less useful over time, until it no longer serves a
+purpose, as more companies pull out, and it has a
+smaller and smaller role in the CIA's operations. 
 
 Autocrat #11: What about the backdoors?
 
 President: I don't care.
 
-JUDGE: would you like to cast a vote? Do we Dismiss
-the project or Keep it?
+JUDGE: would you like to cast a vote? Do we
+Dismiss the project or Keep it?
 
 Autocrat #2: Dismiss.
 
@@ -566,10 +586,10 @@ Autocrat #11: Keep.
 
 President: Dismiss.
 
-JUDGE: 6 'Dismiss', 5 'Keep'. Sorry, guys.
-Hearing Dismissed. Team Autocrat, make an internal
-announcement and a report of what actions will 
-be taken. You know what to do. End of hearing.
+JUDGE: 6 'Dismiss', 5 'Keep'. Sorry, guys. Hearing
+Dismissed. Team Autocrat, make an internal
+announcement and a report of what actions will be
+taken. You know what to do. End of hearing.
 ************************************************
 PROJECT AUTOCRAT: DISBANDING ACTIONS
 FROM: Team Autocrat
@@ -577,10 +597,14 @@ TO: CIA
 DATE: 1/24/2009
 ************************************************
 * The Project has officially disbanded.
-* The entire team of 150  will spin off 
-into Team SGDRS.
+
+* The entire team of 150  will spin off into Team
+  SGDRS.
+
 * The Web Portal will shut down.
+
 * No more Recruitment will occur.
+
 * All other sub-projects will be canceled.
 ************************************************
 DECLARATION OF INCORPORATION
@@ -611,26 +635,28 @@ FROM: Team Autocrat #77
 TO: CIA
 DATE: 1/2/2010
 ***********************************************
-Team Autocrat is no more, although the team members
-still use its name due to internal familiarity.
+Team Autocrat is no more, although the team
+members still use its name due to internal
+familiarity.
 
-The effectiveness of the SGDRS has decreased 
+The effectiveness of the SGDRS has decreased
 significantly, with 75 of the companies and orgs
-leaving the program. This leaves 12 Core Orgs, 
-but that is a lot less effective than 2008, our 
-peak year. All servers relating to Autocrat 
-have been shut down, except for the Mainframe 
-archiving this data.
+leaving the program. This leaves 12 Core Orgs, but
+that is a lot less effective than 2008, our peak
+year. All servers relating to Autocrat have been
+shut down, except for the Mainframe archiving this
+data.
 
-As President Oboma predicted, SGDRS has had a 
-smaller and smaller role in the CIA, and 
-the SGDRS team is continually skrinking.
+As President Oboma predicted, SGDRS has had a
+smaller and smaller role in the CIA, and the SGDRS
+team is continually skrinking.
 
 The President has ordered continual staff number
 reductions, which has made the time for a request
 skyrocket; gone are the days of getting results
-within just 2 days of a Request; the wait 
-has expanded to an average of 90 days, and urgent
+within just 2 days of a Request; the wait has
+expanded to an average of 90 days, and urgent
 requests have been discontinued entirely due to
-abuse. Safe to say, the days of SGDRS are numbered.
+abuse. Safe to say, the days of SGDRS are
+numbered.
 ***********************************************
