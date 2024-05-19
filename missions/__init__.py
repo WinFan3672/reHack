@@ -73,8 +73,11 @@ def chan_missions(self):
             "Their website is here: bluemedical.com",
         ],
         [
-            "Hack into the server time.workspaces.com and kill it.",
-            "Go go go!",
+            "You may have heard of NTP, the protocol that syncs up your computer with the atomic clocks measuring time to insane degrees of accuracy.",
+            "Well, NanoSoft Workspaces has a minor flaw: it relies on a single time server (time.workspaces.com). As such, if it goes down, a lot of systems will",
+            "end up with out of sync clocks. Over time, this causes more and more issues.",
+            "If you do this properly, NanoSoft might not notice for some time, leading to chaos.",
+            "What are you waiting for?",
         ],
     ]
     end_email = Email(
@@ -129,7 +132,7 @@ def chan_missions(self):
             end_email,
             reward=4500,
         ),
-        Mission(
+        BlankMission(
             self,
             "5chan_mission3",
             "Blue Blood Spilled",

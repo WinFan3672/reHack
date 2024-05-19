@@ -49,6 +49,9 @@ with open("msgboard/mht.com/Confirming The Rumours") as f:
     mht_rumours.reply("admin", "rehack: Probably not, they've ignored it since the OG xPhone")
     mht_rumours.reply("duplexity", "what a madman; publishing an article months ahead of time under nda while saying literally nothing")
 
+with open("msgboard/mht.com/xdgn") as f:
+    mht_xdg = mht.add_story("EnWired Is Back as 'xdg.net'..?", "Admin", GameDate(2010, 1, 1), f.read())
+
 with open("msgboard/mht.com/dcseweb") as f:
     mht_dcse = mht.add_story("DCSE Launches New Web-Based Stock Exchange", "Admin", GameDate(), f.read())
     mht_dcse.reply("rehack", "when a company cites state-of-the-art encryption etc. they're asking to get pwnd")
@@ -343,6 +346,9 @@ bmwiki_eseries = bmwiki_devices.add_category("E Series Pacemakers")
 bmwiki_eseries.add_page("About E Series")
 # bmwiki_support = bluemedical_wiki.homepage.add_category("Support")
 
+xdgnet = programs.NewsServer("xdg.net - a better kind of tech news", "xdgnet", "xdg.net", "xdg.net")
+with open("msgboard/xdg.net/workspaces07") as f:
+    xdgn_w2007 = xdgnet.add_story("NanoSoft Workspaces 2007: First Impressions", "Michael Olsen - Editor-In-Chief", GameDate(2010, 1, 1), f.read())
 
 def main():
     return [
@@ -366,6 +372,7 @@ def main():
         bravado_ftp,
         bluemedical_ftp,
         bluemedical_wiki,
+        xdgnet,
     ] + nodes.forum.main() + nodes.forum.nerdnet.main() + nodes.test.main() + nodes.lan.main()
 
 def tor():
