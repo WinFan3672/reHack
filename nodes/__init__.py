@@ -29,7 +29,6 @@ wiki_hacking.add_page("Traces")
 
 wiki_nodes = rhwiki.homepage.add_category("Nodes")
 wiki_nodes.add_page("Tor")
-# wiki_nodes.add_page("ISP Hub")
 wiki_nodes.add_page("MasterVPS")
 
 wiki_rh = rhwiki.homepage.add_category("reHack")
