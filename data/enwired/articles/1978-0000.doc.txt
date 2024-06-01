@@ -3,16 +3,21 @@ GREETINGS FROM ENWIRED
 1978-01-01 :: 1978-0000
 BY: John Goodard, CEO
 ************************************************
-Hello, readers. You may have seen this magazine on a rack in your local computer store and wondered, "What is EnWired?".
-Here goes. EnWired is a computer magazine that talks about new stuff in computing. We believe that the next 10, 20, or 30
-years of computing history are going to be very exciting indeed, and we intend to archive as much of it as possible, and educate
-the reader about new and exciting technologies as they are announced and released. We also want to talk about failures in technology, 
-as those are just as important as successes.
+Hello, readers. You may have seen this magazine on a rack in your local
+computer store and wondered, "What is EnWired?". Here goes. EnWired is a
+computer magazine that talks about new stuff in computing. We believe that the
+next 10, 20, or 30 years of computing history are going to be very exciting
+indeed, and we intend to archive as much of it as possible, and educate the
+reader about new and exciting technologies as they are announced and released.
+We also want to talk about failures in technology, as those are just as
+important as successes.
 
-However, we don't just want to publish articles. You can send us a letter to us, and we may write a response in the next issue (which comes out next year) if it's good:
+However, we don't just want to publish articles. You can send us a letter, and
+we may write a response in the next issue (which comes out next year) if it's
+good:
 
-    EnWired,
-    222 Glove Ave.,
+    EnWired
+    222 Glove Ave.
     New York, NY.
 
 So, get reading, get writing, and get excited!
@@ -20,4 +25,8 @@ So, get reading, get writing, and get excited!
 John Goodard, 
 
 Founder/CEO of EnWired.
+
+PS: Since this is a computer magazine, here's a factoid. I typed this entire
+magazine with TeX, a brand-new typesetting system by Donald Knuth that gives
+positively beautiful results.
 ************************************************

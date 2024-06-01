@@ -263,12 +263,11 @@ DATE        ID          TITLE
 
 2000-06-01  2000-0007   EnWired Direct: Our New Website (Plus Digital Subscription)
 2000-06-01  2000-0008   In Retrospect #3: DOS
-2000-06-01  2000-0009   Looking Forward #1: Are Laptops The Future?
 
-2000-09-01  2000-0010   NanoSoft Workspaces Me Releases: It's A Buggy Mess
-2000-09-01  2000-0011   RSA Patent Expires: RSA Encryption Algorithm Public Domain
-2000-09-01  2000-0012   Which Computer To Buy: Y2K Edition
-2000-09-01  2000-0013   Custom PC Component Guide: Y2K Edition
+2000-09-01  2000-0009   NanoSoft Workspaces Me Releases: It's A Buggy Mess
+2000-09-01  2000-0010   RSA Patent Expires: RSA Encryption Algorithm Public Domain
+2000-09-01  2000-0011   Which Computer To Buy: Y2K Edition
+2000-09-01  2000-0012   Custom PC Component Guide: Y2K Edition
 
 2001-01-01  2001-0001   Last Year: Pentium 4 Releases (To Little Fanfare)
 2001-01-01  2001-0002   Linux 2.4.0 Releases
