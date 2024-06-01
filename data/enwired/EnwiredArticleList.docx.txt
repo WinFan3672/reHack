@@ -4,13 +4,13 @@ EnWired Official Article List
 DATE        ID          TITLE
 ************************************************
 1978-01-01  1878-0000   Greetings From EnWired
-1978-01-01  1978-0001   Ataro 2600: The Hot New Computer
+1978-01-01  1978-0001   Atari 2600: The Hot New Computer
 1978-01-01  1978-0002   x86: The Future Of Computing?
 1978-01-01  1978-0003   Xerox Park: A Fascinating Story
 1978-01-01  1978-0005   xDevices II Plus: Coming 1979
 1878-01-01  1878-0006   Simtel 8086 Officially Announced   
 
-1979-01-01  1979-0001   Motorisor 68k Released: A Big Milestone In Computing
+1979-01-01  1979-0001   Motorola 68k Released: A Big Milestone In Computing
 1979-01-01  1979-0002   In Retrospect #1: Z1 Computer
 1979-01-01  1979-0003   Teaching Computers To Think (Scientific Paper)
 
@@ -24,7 +24,7 @@ DATE        ID          TITLE
 
 1982-01-01  1982-0001   BBC Micro: Bringing The Computer To Schools
 1982-01-01  1982-0002   TCP/IP: The Future Of Networking
-1982-01-01  1982-0003   Gommodore 64 Poised To Sell Well (Launches August)
+1982-01-01  1982-0003   Commodore 64 Poised To Sell Well (Launches August)
 1982-01-01  1982-0004   Xerox STAR: First Ever 'Graphical User Interface'
 1982-01-01  1982-0004   Is WIMP The Future Of Computing?
 1982-01-01  1982-0005   IBM PC: Is Open Architecture The Future Of Competition?
@@ -33,11 +33,11 @@ DATE        ID          TITLE
 1982-03-01  1982-0006   NS-DOS: The Next DOS Or Just A Clone?
 1982-03-01  1982-0007   PC-DOS 1.1 V.S NS-DOS 1.25: Which Is Better?
 
-1982-06-01  1982-0008   Simclair XS Spectrum: A Gommodore Competitor For Just £125?
+1982-06-01  1982-0008   Simclair XS Spectrum: A Commodore Competitor For Just £125?
 1982-06-01  1982-0009   IBM Launches New 320K Double-Sided Floppy Disk
 
 1982-09-01  1982-0010   MIDI: Making Computers Talk To Musical Instruments
-1982-09-01  1982-0011   Gommodore 64 Finally Releases - Sells Like Hot Cakes
+1982-09-01  1982-0011   Commodore 64 Finally Releases - Sells Like Hot Cakes
 
 1983-01-01  1983-0001   xDevices Lisa: First Consumer Computer With a GUI
 1983-01-01  1983-0002   IBM Buys 12% Stake In Simtel: A Good Investment Or No?
@@ -47,12 +47,12 @@ DATE        ID          TITLE
 1983-03-01  1983-0004   IBM XT: A PC With A Hard Drive?
 1983-03-01  1983-0005   Compaq Portable: First IBM PC Clone Releases
 
-1983-06-01  1983-0006   Thinking Machines Corporation: An Artificial Intelligence Company?
-1983-06-01  1983-0007   NS-DOS/PC-DOS 2.0 Introduces Folders?
+1983-06-01  1983-0006   Thinking Machines Corporation: An 'Artificial Intelligence' Company
+1983-06-01  1983-0007   NS-DOS/PC-DOS 2.0 Introduces Folders: A Trend Or Not
 
 1983-09-01  1983-0008   GNU Project: A 'Free-As-In-Freedom' Alternative To UNIX?
 1983-09-01  1983-0009   Why Are There So Many DOS Clones?
-1983-09-01  1983-0010   Which Computer Should You Buy? 1983 Edition
+1983-09-01  1983-0010   Which Computer Should You Buy: 1983 Edition
 
 1984-01-01  1984-0001   NanoSoft Workspaces: A Graphical Shell For DOS: Coming Soon?
 1984-01-01  1984-0002   Domain Name System: Gone Are Hard To Remember Phone Numbers
@@ -64,10 +64,11 @@ DATE        ID          TITLE
 1984-01-01  1984-0008   xDevices Macintosh: A Successful Lisa Successor?
 
 1984-06-01  1984-0009   HP Releases Wildly Successful Laser Printer: Fast And Legible Text And Images?
-1984-06-01  1984-0010   Armstrad CPC: An Interesting Gommodore And xDevices Competitor
+1984-06-01  1984-0010   Armstrad CPC: An Interesting Commodore And xDevices Competitor
 
 1984-09-01  1984-0011   NS-DOS/PC-DOS 3.0: Small, Iterative Changes (32MB FAT16 Partition & 1.2M Floppy Disk Support)
 1984-09-01  1984-0012   Macintosh Gets 512K Model: 'Fat Mac'
+1984-09-01  1984-0013   Which Computer Should You Buy: 1984 Edition
 
 1985-01-01  1985-0001   PostScript: A 'Page Description Language' For Printers?
 1985-01-01  1985-0002   First .COM Domain Registered: A Big Milestone For DNS Fans
@@ -75,12 +76,13 @@ DATE        ID          TITLE
 1985-03-01  1985-0003   PC-DOS/MS-DOS 3.1: More Iterative Improvements
 
 1985-06-01  1985-0004   Lotus And Simtel Break The 640K Memory Limit: Expanded Memory
-1985-06-01  1985-0005   Gommodore 128: A Powerful, Expensive G64, Or Something More?
-1985-06-01  1985-0006   Ataro ST: An Inexpensive 'Jackintosh'
+1985-06-01  1985-0005   Commodore 128: A Powerful, Expensive G64, Or Something More?
+1985-06-01  1985-0006   Atari ST: An Inexpensive 'Jackintosh'
 1985-06-01  1985-0007   Tetris Mania In The USSR And Abroad
 
-1985-09-01  1985-0008   Gommodore Amiga: The First Preemptive Multitasking Computer
+1985-09-01  1985-0008   Commodore Amiga: The First Preemptive Multitasking Computer
 1985-09-01  1985-0009   Which DOS Is For You?
+1985-09-01  1985-0010   Which Computer Should You Buy: 1985 Edition
 
 1986-01-01  1986-0001   NanoSoft Workspaces Finally Launches: Few Impressed By Cheap Macintosh Clone
 1986-01-01  1986-0002   CD-ROM Launches With 650M Of Storage
@@ -92,12 +94,13 @@ DATE        ID          TITLE
 1986-06-01  1986-0006   xDevices Macintosh 512Ke: Bigger Floppy Disk Model Launches
 1986-06-01  1986-0007   Simclair Acquired By Armstrad: This Is Massive
 1986-06-01  1986-0008   LISTSERV: Is The Mailing List The Future Of Electronic Mail?
-1986-06-01  1986-0009   In Retrospect #2: TCP/IP And DNS Were The Forerunners Of The Internet
+1986-06-01  1986-0009   In Retrospect #2: TCP/IP And DNS
 
 1986-09-01  1986-0010   Amstrad Announces PC 1512: Cheap Yet Powerful
 1986-09-01  1986-0011   The Future Of Computing Is Definitely WIMP
+1986-09-01  1986-0012   Which Computer To Buy: 1986 Edition
 
-1987-03-01  1987-0001   Macintosh II: Motorisor 68k Mac Machines? 
+1987-03-01  1987-0001   Macintosh II: Motorola 68k Mac Machines? 
 
 1987-06-01  1987-0002   IBM PS/2: New PC With 1.44M Floppy Disks?
 1987-06-01  1987-0003   OS/2: A Joint IBM-Nanosoft Venture?
@@ -107,20 +110,23 @@ DATE        ID          TITLE
 1987-09-01  1987-0006   Connection Machine: Fascinating 2 Billion Operations Per Second Supercomputer
 1987-09-01  1987-0007   VGA: The Future Of Graphics?
 1987-09-01  1987-0008   HyperCard: Fascinating New 'Hypermedia' Development Kit
+1987-09-01  1987-0009   Which Computer To Buy: 1987 Edition
 
-1988-01-01  1988-0001   Amgia 5000 And 2000: Gommodore Keeps Up With Heavy Hitters
-1988-01-01  1988-0002   MPEG Group: Sound With Compression?
+1988-01-01  1988-0001   Amgia 5000 And 2000: Commodore Keeps Up With Heavy Hitters
+1988-01-01  1988-0002   MPEG Group: Sound With Compression
 
 1988-06-01  1988-0003   Simtel 80386SX: Yet More 386 Processors
 
 1988-09-01  1988-0004   NS-DOS 4.0: DOS? More Like SOS
 1988-09-01  1988-0005   Photoshop: A New Photo Manipulation Application For Mac?
+1988-09-01  1988-0006   Which Computer To Buy: 1988 Edition
 
 1989-09-01  1989-0001   Tim Berners-Lee's WWW Looks Like A Big Deal
-1989-09-01  1989-0002   EnWired Direct: Addressing A Lack of Articles This Year
+1989-09-01  1998-0002   Which Computer To Buy: 1989 Edition
+1989-09-01  1989-0003   EnWired Direct: Addressing A Lack of Articles This Year
 
 1990-01-01  1990-0000   A New Decade: Looking Back At The 1980s
-1990-01-01  1990-0001   Motorisor 68040: More Powerful m68k processor
+1990-01-01  1990-0001   Motorola 68040: More Powerful m68k processor
 
 1990-03-01  1990-0002   Macintosh IIfx: Faster CPU, Faster SCSI Adapter
 
@@ -128,12 +134,13 @@ DATE        ID          TITLE
 1990-06-01  1990-0004   Amiga 3000: First 32-Bit Amiga + Amiga OS 2.0
 
 1990-09-01  1990-0005   Macintosh Classic: A Confusing (Re-)Release
-1990-09-01  1990-0006   Multimedia PC: A Specification For The Optimal PC?
+1990-09-01  1990-0006   Multimedia PC: A Specification For The Optimal PC
+1990-09-01  1990-0007   Which Computer To Buy: 1990 Edition
 
 1991-01-01  1991-0001   NanoSoft Workplace: A Full Office Suite
 1991-01-01  1991-0002   PGP: A Freely Available Encryption Algorithm Looks Like The Most Secure Yet
 
-1991-03-01  1991-0003   Gommodore CDTV: Confusing Yet Fascinating - A 'Multimedia Applicance'?
+1991-03-01  1991-0003   Commodore CDTV: Confusing Yet Fascinating - A 'Multimedia Applicance'?
 
 1991-06-01  1991-0004   Creative Labs SoundBlaster Pro: The Best Sound Card, Or Cheap Ad-Lib Clone?
 1991-06-01  1991-0005   'DOS Is Dead', Says NanoSoft CEO
@@ -141,16 +148,21 @@ DATE        ID          TITLE
 1991-09-01  1991-0006   Linux: A Free Unix Announced On comp.os.minix
 1991-09-01  1991-0007   GNU Project Adopts Fledgling Linux As Its Kernel; Hurd Looks Dead Already
 1991-09-01  1991-0008   NanoSoft Announces Workspaces 'NT' Project
+1991-09-01  1991-0009   Which Computer To Buy: 1991 Edition
 
 1992-01-01  1992-0001   64-Bit Architecture? MIPS Release MIPS R4000
 1992-01-01  1992-0002   Workspaces NT Will Address 2GB Of RAM: "More than any application will ever need"
-1992-01-01  1992-0003   CDi - A Videogame Console With An Official CD Standard?
+1992-01-01  1992-0003   CDi - A Videogame Console With An Official CD Standard To Boot
 
 1992-03-01  1992-0004   ThinkPad: IBM's New Business Laptop Lineup
 
 1992-06-01  1992-0005   id Software's Wolfenstein 3D Is A Milestone In PC Gaming
 1992-06-01  1992-0006   Workspaces 3.1: A Big Improvement Over Successful 3.0
 1992-06-01  1992-0007   Sound Blaster 16: Sounds Pretty Cool
+
+1992-09-01  1992-0008   Which Computer To Buy: 1992 Edition
+1992-09-01  1992-0009   Homebuilt Computers: A Fascinating Hobby
+1992-09-01  1992-0010   The 'Do-It-Yourself' PC: Parts Choosing Guide (1992)
 
 1993-01-01  1993-0001   Mosaic: New Web Browser For WWW
 1993-01-01  1993-0002   Amiga 1200/4000: Better CPUs, Better Graphics
@@ -165,6 +177,8 @@ DATE        ID          TITLE
 1993-06-01  1993-0009   First Ever Live Internet Concert, Courtesy of MBone
 
 1993-09-01  1993-0010   Workspaces NT 3.1: 32-Bit Program Support
+1993-09-01  1993-0011   What Computer To Buy: 1993 Edition
+1993-09-01  1993-0012   The 'Do-It-Yourself' PC: Parts Choosing Guide (1993) 
 
 1994-01-01  1994-0001   1994 Is The Year Of The PC Game
 1994-01-01  1994-0002   Peter Shor Creates Quantum Algoritm
@@ -173,10 +187,12 @@ DATE        ID          TITLE
 1994-03-01  1994-0004   Linux Kernel Gets 1.0 Release
 1994-03-01  1994-0005   New Simtel Pentium: It Looks Great
 
-1994-06-01  1994-0006   Gommodore Corporation Bankrupt
+1994-06-01  1994-0006   Commodore Corporation Bankrupt
 
 1994-09-01  1994-0007   IBM Simon: An Interesting Computer
 1994-09-01  1994-0008   PC-DOS 6.3: The Death Knell Of DOS
+1994-09-01  1994-0009   Which Computer To Buy: 1994 Edition
+1994-09-01  1994-0010   The 'Do-It-Yourself' PC: Parts Choosing Guide (1994)
 
 1995-01-01  1995-0001   Simtel Pentium Gets Lower-End 75MHz Model
 1995-01-01  1995-0002   Netscape Navigator: A Better Mosaic?
@@ -188,6 +204,8 @@ DATE        ID          TITLE
 
 1995-09-01  1995-0007   NanoSoft Workspaces 95 Is A Massive Deal
 1995-09-01  1995-0008   Simtel Launches New 133MHz Pentium Processor
+1995-09-01  1995-0009   Which Computer To Buy: 1995 Edition
+1995-09-01  1995-0010   The 'Do-It-Yourself' PC: Parts Choosing Guide (1995)
 
 1996-01-01  1996-0001   Be Inc. Launches BeBox Computer Running BeOS
 1996-01-01  1996-0002   3DFX Voodoo: A New Graphics Card Technology
@@ -199,6 +217,9 @@ DATE        ID          TITLE
 1996-06-01  1996-0007   Toshiba Launches Libretto Notebook: Smallest PC Ever
 1996-06-01  1996-0008   Linux 2.0 Releases
 
+1996-09-01  1996-0009   Which Computer To Buy: 1996 Edition
+1996-09-01  1996-0010   The 'Do-It-Yourself' PC: Parts Choosing Guide (1996)
+
 1997-01-01  1997-0001   3D Gaming Demand Booms
 1997-01-01  1997-0002   Pentium MMX: Multimedia Extensions For x86?
 
@@ -207,6 +228,8 @@ DATE        ID          TITLE
 
 1997-09-01  1997-0005   NanoSoft Purchases 100,000 Non-Voting xDevices Shares: xDevices In Trouble?
 1997-09-01  1997-0006   Internet Explorer 4.0: Is Netscape In Trouble?
+1997-09-01  1997-0007   Which Computer To Buy: 1997 Edition
+1997-09-01  1997-0008   Custom PC Component Guide: 1997 Edition
 
 1998-01-01  1998-0001   Compaq Announces $9.6B Acquisition of DEC
 
@@ -217,6 +240,8 @@ DATE        ID          TITLE
 1998-06-01  1998-0005   Workspaces 98: A Tune-Up To 95
 
 1998-09-01  1998-0006   eMachines Launches $399 and $499 PC's: How?
+1998-09-01  1998-0007   Which Computer To Buy: 1998 Edition
+1998-09-01  1998-0008   Custom PC Component Guide: 1998 Edition
 
 1999-01-01  1999-0001   Linux Kernel 2.2.0: 10 Million Estimated Users?
 
@@ -224,6 +249,8 @@ DATE        ID          TITLE
 
 1999-09-01  1999-0003   xDevices Launches Power Mac G4
 1999-09-01  1999-0004   The Year 2000 Problem: A Big Issue, Or Manufactured Pandemonium?
+1999-09-01  1999-0005   Which Computer To Buy: 1999 Edition
+1999-09-01  1999-0006   Custom PC Component Guide: 1999 Edition
 
 2000-01-01  2000-0000   EnWired Direct: Welcome To A New Millenium
 2000-01-01  2000-0001   Last Year: Evasia Launches n-Force GPUs; 70MHz SMC Athlon
@@ -235,19 +262,23 @@ DATE        ID          TITLE
 2000-03-01  2000-0006   BeOS R5: Freely Downloadable Version Available Online
 
 2000-06-01  2000-0007   EnWired Direct: Our New Website (Plus Digital Subscription)
-2000-06-01  2000-0008   In Retrospect #3: DOS Was An Important Stepping Stone
+2000-06-01  2000-0008   In Retrospect #3: DOS
 2000-06-01  2000-0009   Looking Forward #1: Are Laptops The Future?
 
 2000-09-01  2000-0010   NanoSoft Workspaces Me Releases: It's A Buggy Mess
 2000-09-01  2000-0011   RSA Patent Expires: RSA Encryption Algorithm Public Domain
+2000-09-01  2000-0012   Which Computer To Buy: Y2K Edition
+2000-09-01  2000-0013   Custom PC Component Guide: Y2K Edition
 
 2001-01-01  2001-0001   Last Year: Pentium 4 Releases (To Little Fanfare)
 2001-01-01  2001-0002   Linux 2.4.0 Releases
 
-2001-03-01  2001-0003   Agile Manifesto Releases: A New Project Management Methodology?
+2001-03-01  2001-0003   Agile Manifesto: A New Project Management Methodology
 2001-03-01  2001-0004   macOS X Releases: An All-New Refresh To The Decades-Old OS
 
 2001-09-01  2001-0005   GameCube Poised To Compete With PlayStation 2
+2001-09-01  2001-0006   Which Computer To Buy: 2001 Edition
+2001-09-01  2001-0007   Custom PC Component Guide: 2001 Edition
 
 2002-01-01  2002-0000   EnWired Direct: Rest In Peace, John Goodard (1917-2002)
 2002-01-01  2002-0001   Last Year: Xbox Releases; Workspaces XP A Smash-Hit
@@ -255,6 +286,8 @@ DATE        ID          TITLE
 2002-03-01  2002-0002   First BlackBerry Smartphone: It's A Big Deal
 
 2002-09-01  2002-0003   Blender Becomes Open-Source After Raising €100,000
+2002-09-01  2002-0004   Which Computer To Buy: 2002 Edition
+2002-09-01  2002-0005   Custom PC Component Guide: 2002 Edition
 
 2003-03-01  2003-0000   EnWired Direct: News Stories Dry Up And We're Losing Subscribers
 2003-03-01  2003-0001   Evasia nForce FX: DirectX 9 Graphics Cards Release
@@ -264,11 +297,15 @@ DATE        ID          TITLE
 2003-06-01  2003-0004   SMC Apteron Server Processors Launch: Is 64-Bit The Next Big Thing?
 
 2003-09-01  2003-0005   Athlon 64 Launched: 64-Bit Reaches The Consumer Market
+2003-09-01  2003-0006   Which Computer To Buy: 2003 Edition
+2003-09-01  2003-0007   Custom PC Component Guide: 2003 Edition
 
 2004-01-01  2004-0000   EnWired Direct: No Articles Until September
 
 2004-09-01  2004-0001   Gmail Launched By Search.Com
 2004-09-01  2004-0002   nForce 6800: Beefy GPUs Run Games Amazingly Well
+2004-09-01  2004-0003   Which Computer To Buy: 2004 Edition
+2004-09-01  2004-0004   Custom PC Component Guide: 2004 Edition
 
 2005-06-01  2005-0001   Ubuntu: Debian, But More Enterprise-y?
 2005-06-01  2005-0002   Firefox: The Hot New Web Browser?
@@ -278,6 +315,9 @@ DATE        ID          TITLE
 2005-06-01  2005-0006   SMC Athlon 64 X2: Dual-Core 64-Bit CPU
 2005-06-01  2005-0007   xDevices Announces Switch To Simtel CPUs
 
+2005-09-01  2005-0008   Which Computer To Buy: 2005 Edition
+2005-09-01  2005-0009   Custom PC Component Guide: 2005 Edition
+
 2006-01-01  2006-0000   EnWired Direct: Things Are Getting Bad
 2006-01-01  2006-0001   Last Year: Workspaces Vista Announced; Xbox 360 Released
 
@@ -285,6 +325,8 @@ DATE        ID          TITLE
 
 2006-09-01  2006-0003   Simtel Core 2 Processors: They're Really Good
 2006-09-01  2006-0004   PlayStation 3: Most Expensive Console Ever, But It's POWERFUL
+2006-09-01  2006-0005   Which Computer To Buy: 2006
+2006-09-01  2006-0006   Custom PC Component Guide: 2006 Edition
 
 2007-01-01  2007-0000   EnWired Direct: EnWired Has Less Than Two Years Left
 2007-01-01  2007-0001   Last Year: Wii, Amiga OS 4
@@ -293,6 +335,8 @@ DATE        ID          TITLE
 2007-03-01  2007-0003   Workspaces Vista Releases: People HATE It
 
 2007-06-01  2007-0004   Asus Eee PC: The First Netbook (Yes, It Runs Linux)
+
+2007-09-01  2007-0005   Custom PC Component Guide: 2007 Edition
 
 2008-01-01  2008-0000   EnWired Direct: We Are Officially Bankrupt (Chapter 11)
 2008-01-01  2008-0001   In Retrospect #4: 30 Years of EnWired
