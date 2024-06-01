@@ -1,0 +1,25 @@
+Dear Reader,
+
+Included is the January 2009 issue of EnWired Magazine. It doesn't have a
+single news story, but it does have all 450 letters you sent my way, with
+lengthy responses compiled over six months. Let me tell you, I did not expect
+this many letters! I've spent an hour a day for God knows how many days
+writing the responses to them, and I think you'll love it.
+
+You may be curious to know how many people (out of 25,000) sent in $10, as I
+suggested last year. Well, it surprised me too: 14,334 of you sent a grand
+total of $380,000, meaning I can more than cover the costs of printing. That's
+pretty cool, but it was a bit of a logistical nightmare, and let me tell you,
+my LaTeX processor crashed more than a few times when rendering :)
+
+So here's to EnWired, and to all the people who subscribed. Oh, what's that?
+I've rambled for three paragraphs and I haven't told you what's in the issue?
+That's what the Table of Contents is for, silly. Anyway, a good day to you,
+and good luck to xdg.net, the spiritual successor to EnWired. Shame there's
+no magazine.
+
+Signed,
+
+Elliot Marksman
+
+PS: When I said it cost $10 to make an issue, I lied. It cost $9.99. 

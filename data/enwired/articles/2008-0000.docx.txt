@@ -17,17 +17,22 @@ bigger company for our remaining assets.
 Chapter 11 is different. The company is controlled by a "debtor in possession",
 which leads to one of three scenarios:
 
-* Chapter 7 Bankrupy; Restructuring (which is what we are doing); Dismissal.
+* Chapter 7 Bankrupy; 
+
+* Restructuring (which is what we are doing); 
+
+* Dismissal.
 
 Our reorganisation plan needs to be approved by a judge, and it's basically our
 last hurrah. The fact that you're reading this proves that our reorganisation
 plan (which includes writing this article) has been approved (perhaps with some
 minor changes), so who knows.
 
-The whole bankruptcy business has gotten in the way of us wanting to talk about
-Workplace 2007, or Workspaces Vista, or all the exciting Linux stuff, or any of
-that. Our diminishing subscriber base (down from over a million in 2000 to
-50,000 now) has made the business unsustainable, and we're out of money.
+The whole bankruptcy business has gotten in the way of us wanting to talk
+about Workplace 2007, or Workspaces Vista, or all the exciting Linux stuff, or
+anything else, for that matter.. Our diminishing subscriber base (down from
+over a million in 2000 to50,000 now) has made the business unsustainable, and
+we're out of money.
 
 You know, it's ironic that John Goodard, our founder, passed away just one year
 before our 2003 article titled "News Stories Dry Up And We're Losing
