@@ -14,6 +14,7 @@ import nodes.forum
 import nodes.forum.nerdnet
 import nodes.test
 import nodes.university
+import nodes.usenet
 
 
 rhwiki = programs.WikiServer("rehack Wiki", "rehack_wiki", "wiki.rehack.org", "wiki.rehack.org", "reHack Wiki")
@@ -373,7 +374,7 @@ def main():
         bluemedical_ftp,
         bluemedical_wiki,
         xdgnet,
-    ] + nodes.forum.main() + nodes.forum.nerdnet.main() + nodes.test.main() + nodes.lan.main()
+    ] + nodes.forum.main() + nodes.forum.nerdnet.main() + nodes.test.main() + nodes.lan.main() + nodes.usenet.main()
 
 def tor():
-    return [] + nodes.forum.tor() + nodes.forum.nerdnet.tor() + nodes.lan.tor()
+    return [] + nodes.forum.tor() + nodes.forum.nerdnet.tor() + nodes.lan.tor() + nodes.usenet.tor()

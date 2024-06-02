@@ -4748,3 +4748,71 @@ class WorldRouter(Node):
         div()
     def check_health(self):
         return not self.hacked
+
+class Newsgroup:
+    def __init__(self, name, desc):
+        self.name = name
+        self.desc = desc
+        self.content = []
+    def view(self):
+        while True:
+            cls()
+            div()
+            print(self.name)
+            div()
+            i = 1
+            for content in self.content:
+                print("[{}] {}".format(i, self.get_content(content)))
+                i += 1
+            div()
+            try:
+                sel = int(input(">"))
+                content = self.content[sel - 1]
+            except:
+                return
+            if isinstance(content, Newsgroup):
+                content.view()
+            elif isinstance(content, Email):
+                cls()
+                div()
+                print("FROM: {}".format(content.sender))
+                print("TO: {}".format(content.receiver))
+                print("SUBJECT: {}".format(content.subject))
+                div()
+                print(content.body)
+                br()
+            elif type(content) in [File, ZippedFolder, EncryptedFile]:
+                fileView(content, Folder(""))
+    def get_content(self, content):
+        if isinstance(content, Newsgroup):
+            return "{} - {} {}".format(content.name, content.desc, "" if content.content else "(Empty)")
+        elif isinstance(content, Email):
+            return content.subject
+        elif type(content) in [File, EncryptedFile, ZippedFolder]:
+            return content.name
+    def add_newsgroup(self, newsgroup):
+        if not isinstance(newsgroup, Newsgroup):
+            raise TypeError("Must be a Newsgroup")
+        self.content.append(newsgroup)
+        return newsgroup
+    def add_message(self, message):
+        if not isinstance(message, Email):
+            raise TypeError("Message is not an Email")
+        self.content.append(message)
+    def add_file(self, file):
+        if not type(file) in [File, ZippedFolder, EncryptedFile]:
+            raise TypeError
+        self.content.append(file)
+
+class Usenet(Node):
+    def __init__(self, name, uid, address, minPorts=2, **kwargs):
+        super().__init__(name, uid, address, ports = [data.getPort(119), data.getPort(22)], minPorts=minPorts, **kwargs)
+        self.news = Newsgroup(name, "Root newsgroup of {}".format(address))
+        self.users = self.users if self.users else [User("admin", "admin")]
+        self.hacked = True
+    def main(self):
+        if self.login_screen():
+            self.news.view()
+    def add_newsgroup(self, newsgroup):
+        self.news.add_newsgroup(newsgroup)
+        return newsgroup

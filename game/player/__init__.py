@@ -257,6 +257,7 @@ class PlayerNode(Node):
             MailDotCom("DEC Solutions Mail", "dec.mail.com", self, [User("admin", "password123"), User("sales", "password123"), User("press", "password123"), User("roy", "fruition"), User("recruitment")]),
             MailDotCom("sms", "sms.mail.com", self, [User("sales", "morality")]),
             MailDotCom("Cinnamon", "cinnamon.mail.com", self, [User("john"), User("jane")], web_address="mail.com"),
+            MailDotCom("Use.Net", "use-net.mail.com", self, [User("sales-daemon")]),
         ] + nodes.main()
         onionsites = [
             TorMailServer(

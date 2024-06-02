@@ -264,6 +264,7 @@ PORTS = [
     Port(23, "Telnet"),
     Port(25, "Mail Server"),
     Port(80, "Web Server"),
+    Port(119, "Usenet (NNTP) Server"),
     Port(123, "NTP Time Server"),
     Port(1194, "OpenVPN Server"),
     Port(1433, "SQL Database"),
@@ -633,6 +634,8 @@ N = [
     programs.WebServer("Bravado :: Luxury You Can't Afford", "bravado_web", "bravado.com", "bravado", linked=["bravado_ftp"]),
     programs.TimeServer("Workspaces Time Server", "workspaces_time", "time.workspaces.com"),
     programs.WebServer("Blue Medical Official Homepage", "bluemedical", "bluemedical.com", "bluemedical"),
+    programs.WebServer("Eternal September: Democratising Usenet", "esweb", "www.eternal-september.org", "eternalseptember"),
+    programs.WebServer("Use.Net Home", "udnweb", "www.use.net", "usedotnet"),
 ]
 for item in N:
     NODES.append(item)
