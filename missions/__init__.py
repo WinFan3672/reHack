@@ -33,9 +33,9 @@ import nodes.test
 
 def pentest2_end():
     node = data.getNode("cinnamon.mail.com")
-    data.addFirewall("cinnamon.mail.com", Firewall("cinnamon"))
     node.accounts = [MailAccount("admin")]
     node.minPorts = 65536
+    data.addFirewall("cinnamon.mail.com", Firewall("cinnamon"))
 
 
 def chan_missions(self):

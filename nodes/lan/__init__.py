@@ -148,7 +148,18 @@ with open("data/roy.txt") as f:
 roynet.add_device(roynet_pc)
 roynet.add_device(roynet_nas)
 
+blue_medical = programs.RemoteLAN("Blue Medical LAN", "bluelan", "work-vpn.bluemedical.com", minPorts=65536)
+
 def main():
-    return [cialan, mview, sfec, dec, roynet]
+    return [
+        cialan, 
+        mview,
+        sfec, 
+        dec,
+        roynet,
+        blue_medical,
+    ]
 def tor():
-    return [scsi]
+    return [
+        scsi,
+    ]

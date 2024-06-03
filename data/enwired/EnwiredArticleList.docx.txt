@@ -8,14 +8,14 @@ DATE        ID          TITLE
 1978-01-01  1978-0002   x86: The Future Of Computing?
 1978-01-01  1978-0003   Xerox Park: A Fascinating Story
 1978-01-01  1978-0005   xDevices II Plus: Coming 1979
-1878-01-01  1878-0006   Simtel 8086 Officially Announced   
+1878-01-01  1878-0006   Simtel 8086 Officially Announced 
 
 1979-01-01  1979-0001   Motorola 68k Released: A Big Milestone In Computing
 1979-01-01  1979-0002   In Retrospect #1: Z1 Computer
 1979-01-01  1979-0003   Teaching Computers To Think (Scientific Paper)
 
 1980-01-01  1980-0001   PC-DOS: The Next Generation of Computer OS?
-1980-01-01  1980-0002   Space Infiltrators: Tatio's New Shoot 'Em Up
+1980-01-01  1980-0002   Space Invaders: Taito's New Shoot 'Em Up
 1980-01-01  1980-0003   CP/M Loses Steam; Discontinuation Looks Likely
 
 1981-01-01  1981-0001   UNIX: The New Craze Or Something More?
@@ -55,7 +55,7 @@ DATE        ID          TITLE
 1983-09-01  1983-0010   Which Computer Should You Buy: 1983 Edition
 
 1984-01-01  1984-0001   NanoSoft Workspaces: A Graphical Shell For DOS: Coming Soon?
-1984-01-01  1984-0002   Domain Name System: Gone Are Hard To Remember Phone Numbers
+1984-01-01  1984-0002   Domain Name System: IP Addresses Are The Phone Numbers of Tomorrow
 1984-01-01  1984-0003   NanoSoft Word: New Word Processor
 1984-01-01  1984-0004   Lotus 1-2-3: Brand New Office Suite
 1984-01-01  1984-0005   Turbo Pascal: Programming For The Layperson

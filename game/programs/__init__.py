@@ -283,17 +283,6 @@ def debuginfo(args, player):
     if args == ["passwd"]:
         with open("data/passwords.txt") as f:
             print(random.choice(f.read().split("\n")))
-        # elif args == ["test"]:
-        #     ## I just wanted to check if Python's 'assignment == reference' thing applies to new instances
-        #     folder = Folder("", [File("a"), File("b")])
-        #     fc = folder.clone()
-        #     fdc = folder.clone(True)
-        #     folder.name = "g"
-        #     folder.files = []
-        #     print(folder.name == fc.name)
-        #     print(folder.name == fdc.name)
-        #     print(folder.files == fc.files)
-        #     print(folder.files == fdc.files)
     elif args == ["lans"]:
         for node in [x for x in data.NODES + data.TOR_NODES if isinstance(x, RemoteLAN)]:
             print(node.uid)
@@ -3803,7 +3792,9 @@ class MailDotComTracker(NodeTracker):
     def __init__(self):
         super().__init__("Mail.Com Instance Tracker", "maildotcomtracker", "tracker.mail.com")
     def tick(self):
-        self.nodes = [x for x in data.NODES if isinstance(x, MailDotCom)]
+        self.nodes = []
+        for node in [x for x in data.NODES if isinstance(x, MailDotCom)]:
+            self.add_node(node.uid)
 
 
 class FileDeletedCheck(Base):
