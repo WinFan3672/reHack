@@ -19,7 +19,7 @@ import re
 import getpass
 import code
 
-def isAddon():
+def isTorAddon():
     return data.getProgram("tor_addon").unlocked
 
 def pickSelection(a_list: list, amount=1, remove=True):
@@ -55,7 +55,7 @@ def Exit(args):
 
 def nmap(args):
     if args:
-        node = data.getAnyNode(args[0], True) if isAddon() else data.getNode(args[0], True)
+        node = data.getAnyNode(args[0], True) if isTorAddon() else data.getNode(args[0], True)
         if node:
             node.nmap = True
             div()
@@ -95,7 +95,7 @@ class PortBreakingTool(Base):
         if len(args) == 1:
             item = args[0]
             success = False
-            node = data.getAnyNode(item, True) if isAddon() else data.getNode(item, True)
+            node = data.getAnyNode(item, True) if isTorAddon() else data.getNode(item, True)
             if node:
                 print(f"ATTACKING PORT {self.port}...")
                 if node.firewall:
@@ -127,7 +127,7 @@ class PortBreakingTool(Base):
 
 def porthack(args):
     if len(args) == 1:
-        node = data.getAnyNode(args[0], True) if isAddon() else data.getNode(args[0], True)
+        node = data.getAnyNode(args[0], True) if isTorAddon() else data.getNode(args[0], True)
         if node:
             openPorts = 0
             for port in node.ports:
@@ -3457,7 +3457,7 @@ Have a lovely day, and check out my story on mht.com for the full story.""")
 
 def ssh(args):
     if len(args) == 1:
-        node = data.getAnyNode(args[0], True) if isAddon() else data.getNode(args[0], True)
+        node = data.getAnyNode(args[0], True) if isTorAddon() else data.getNode(args[0], True)
         if node:
             if node.hacked and data.checkPort(node, 22):
                 connect.connect(node)
@@ -3474,7 +3474,7 @@ def ssh(args):
 
 def ftp(args):
     if len(args) == 1:
-        node = data.getAnyNode(args[0], True) if isAddon() else data.getNode(args[0], True)
+        node = data.getAnyNode(args[0], True) if isTorAddon() else data.getNode(args[0], True)
         if node:
             if node.hacked and data.checkPort(node, 21):
                 folderView(data.createFolder(node), True)
