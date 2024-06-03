@@ -47,7 +47,7 @@ with open("data/usenet/eternalseptember.news/welcome") as f:
 with open("data/usenet/udn.news/welcome") as f:
     udn.news.add_message(Email("Admin", "udn.news", "Welcome to UDN", f.read()))
 
-eternal_september = programs.Usenet("Eternal September", "eternal_september", "eternal-september.org", minPorts=1)
+eternal_september = programs.Usenet("Eternal September", "eternal_september", "eternal-september.org")
 eternal_september.add_newsgroup(alt)
 eternal_september.add_newsgroup(comp)
 eternal_september.add_newsgroup(rec)
@@ -60,7 +60,7 @@ eternal_september.add_newsgroup(es)
 
 essu = programs.SignupService("essu", "sign-up.eternal-september.org", "eternal_september")
 
-usedotnet = programs.Usenet("Use.Net", "use.net", "use.net")
+usedotnet = programs.Usenet("Use.Net", "use.net", "use.net", minPorts=1)
 usedotnet.add_newsgroup(bin)
 usedotnet.add_newsgroup(news)
 usedotnet.add_newsgroup(udn)
