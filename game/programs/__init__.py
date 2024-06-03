@@ -4809,7 +4809,6 @@ class Usenet(Node):
         super().__init__(name, uid, address, ports = [data.getPort(119), data.getPort(22)], minPorts=minPorts, **kwargs)
         self.news = Newsgroup(name, "Root newsgroup of {}".format(address))
         self.users = self.users if self.users else [User("admin", "admin")]
-        self.hacked = True
     def main(self):
         if self.login_screen():
             self.news.view()

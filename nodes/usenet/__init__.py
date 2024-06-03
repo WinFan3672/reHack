@@ -10,7 +10,6 @@ import copy
 import string
 import data
 
-eternal_september = programs.Usenet("Eternal September", "eternal_september", "eternal-september.org")
 
 alt = programs.Newsgroup("alt", "Anything goes")
 
@@ -48,6 +47,7 @@ with open("data/usenet/eternalseptember.news/welcome") as f:
 with open("data/usenet/udn.news/welcome") as f:
     udn.news.add_message(Email("Admin", "udn.news", "Welcome to UDN", f.read()))
 
+eternal_september = programs.Usenet("Eternal September", "eternal_september", "eternal-september.org", minPorts=1)
 eternal_september.add_newsgroup(alt)
 eternal_september.add_newsgroup(comp)
 eternal_september.add_newsgroup(rec)
@@ -65,14 +65,11 @@ usedotnet.add_newsgroup(bin)
 usedotnet.add_newsgroup(news)
 usedotnet.add_newsgroup(udn)
 
-unsu = programs.SignupService("unsu", "signup.use.net", "use.net")
-
 def main():
     return [
         eternal_september,
         essu,
         usedotnet,
-        unsu,
     ]
 
 def tor():
