@@ -184,12 +184,7 @@ class PlayerNode(Node):
             AnonMail(self),
             MailDotCom("XWebDesign Mail", "xwebdesign.mail.com", self, [User("sales")]),
             MailDotCom("MHT Mail", "mht.mail.com", self),
-            MailDotCom(
-                "Mail Dot Com",
-                "root.mail.com",
-                self,
-                [User("sales"), User("beryl", "anderson")],
-            ),
+            MailDotCom("Mail Dot Com", "root.mail.com", self, [User("sales"), User("beryl", "anderson")], adminPassword="password"),
             MailDotCom("Jmail Corporate Mail", "jmail.mail.com", self, [User("sales")]),
             MailDotCom(
                 "5chan Corporate Mail", "5chan.mail.com", self, [User("invites")]
@@ -258,6 +253,7 @@ class PlayerNode(Node):
             MailDotCom("sms", "sms.mail.com", self, [User("sales", "morality")]),
             MailDotCom("Cinnamon", "cinnamon.mail.com", self, [User("john"), User("jane")], web_address="mail.com"),
             MailDotCom("Use.Net", "use-net.mail.com", self, [User("sales-daemon")]),
+            MailDotCom("Blue Medical Mail Network", "bluemedical.mail.com", self, [User("webmaster", "primrose")], adminPassword="cocktail"),
         ] + nodes.main()
         onionsites = [
             TorMailServer(

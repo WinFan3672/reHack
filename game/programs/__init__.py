@@ -937,7 +937,7 @@ def jmail(args, player):
     mailman_base([acc, player.password], player)
 
 class MailDotCom(MailServer):
-    def __init__(self, name, address, player, users=[], **kwargs):
+    def __init__(self, name, address, player, users=[], adminPassword=None, **kwargs):
         super().__init__(name, address, address, player, users=users, **kwargs)
         self.ports = [
             data.getPort(21),
@@ -947,23 +947,37 @@ class MailDotCom(MailServer):
         ]
         self.minPorts = 4
         self.accounts = [
-            MailAccount("admin"),
+            MailAccount("admin", adminPassword),
             MailAccount("noreply", autoresponse=Email(
                 "noreply@{}".format(self.address),
                 "SENDER",
                 "This inbox does not accept emails",
                 "Hello. This inbox does not receive emails. It only sends them. Therefore, the email you have sent will be ignored.",
-            ))
+            )),
         ]
         for item in users:
             self.accounts.append(MailAccount(item.name, item.password))
+        self.users = [User(x.name, x.password) for x in self.accounts]
         self.alive = True
+        self.welcomed = False
     def main(self):
         connect.main(["mail.com"], data.getNode("localhost"))
     def lookup(self):
         return [MailAccount("admin")]
     def tick(self):
         self.alive = data.getNode("mailcommain").check_health()
+        if not self.welcomed:
+            self.welcomed = True
+            sendEmail(Email("noreply@root.mail.com", "admin@{}".format(self.address), "Welcome To Your New Inbox", """Thank you for being a Mail.Com customer.
+This is your new mail server. You can use commands such as USERADD and USERS to manage users, LIST and READ to read emails, and RESET to manage credentials securely.
+You can also be rest assured that your server is secured to the highest degree, and (most importantly), works out of the box and won't fail.
+
+That's a pretty good proposition, if we don't say so ourselves, and a fair price you paid for it too."""))
+            sendEmail(Email("davepl@root.mail.com", "admin@{}".format(self.address), "Your Mail.Com Support Agent", """Dear administrator,
+My name is Dave. I am head of the Enterprise Support team here at Mail.Com, and my job is to provide you with top-notch, high-priority, fast, and easy tech support regarding your mail server.
+If your boss is calling you and asking questions, I can help. If your mail server is giving you cryptic errors, I can help. If a popular mail service is dropping your emails or sending them to spam, I can help.
+
+If you need support with anything, feel free to shoot me an email. You can hit 'Reply' in your client, or just create a new email conversation. Even better, you can use your new Mail.Com server to do it :)"""))
 
     def check_health(self):
         return self.alive
