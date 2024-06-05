@@ -97,7 +97,7 @@ class PortBreakingTool(Base):
             success = False
             node = data.getAnyNode(item, True) if isTorAddon() else data.getNode(item, True)
             if node:
-                print(f"ATTACKING PORT {self.port}...")
+                print(f"Attacking port {self.port}...")
                 if node.firewall:
                     print("ERROR: Attack blocked by firewall.")
                 else:
@@ -105,11 +105,7 @@ class PortBreakingTool(Base):
                         if port.num == self.port:
                             time.sleep(2.5)
                             port.open = True
-                            print(
-                                "SUCCESSFULLY OPENED PORT {} @ {}".format(
-                                    self.port, item
-                                )
-                            )
+                            print("Successfully opened port {} @ {}".format(self.port, item))
                             success = True
             if not node:
                 print("ERROR: Invalid IP address.")
@@ -3544,8 +3540,8 @@ class TorRelay(Node):
 
 
 class FTPServer(Node):
-    def __init__(self, node, uid, address, *args, **kwargs):
-        super().__init__(node, uid, address, ports=[data.getPort(21)], *args, **kwargs)
+    def __init__(self, node, uid, address, **kwargs):
+        super().__init__(node, uid, address, ports=[data.getPort(21)], **kwargs)
         self.pub = self.create_folder("pub")
         self.inc = self.create_folder("incoming", True)
         self.inc.create_file("ReadMe.txt", data.INCOMING_README)
