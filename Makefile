@@ -7,6 +7,7 @@ nuitka:
 		--include-data-dir=onionsites=onionsites \
 		--include-data-dir=wikis=wikis \
 		--include-data-dir=msgboard=msgboard \
+		--product-name="reHack" \
 		--run \;
 clean:
 	-rm -r bin/
