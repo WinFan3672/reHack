@@ -150,6 +150,9 @@ roynet.add_device(roynet_nas)
 
 blue_medical = programs.RemoteLAN("Blue Medical LAN", "bluelan", "work-vpn.bluemedical.com", minPorts=65536)
 blue_forum = programs.Forum("Forum", "forum", "forum.local", "webmaster@bluemedical.mail.com")
+blue_medical.add_device(blue_forum)
+
+bfg = blue_forum.boards[0]
 
 def main():
     return [

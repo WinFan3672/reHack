@@ -4663,6 +4663,7 @@ class StockMarket(Node):
         br()
 
 def autohack2(args):
+    player = data.getNode("localhost")
     sshkill = data.getProgram("sshkill", False)
     ftpkill = data.getProgram("ftpkill", False)
     webworm = data.getProgram("webworm", False)
@@ -4693,22 +4694,25 @@ def autohack2(args):
             ports = [x.num for x in node.ports]
             if node.firewall:
                 firewall(["crack", node.address])
-            for port in node.ports:
-                if port.num == 21 and ftpkill and not port.open:
-                    ftpkill.function([node.address])
-                if port.num == 22 and sshkill and not port.open:
-                    sshkill.function([node.address])
-                if port.num == 80 and webworm and not port.open:
-                    webworm.function([node.address])
-                if port.num == 25 and mailoverflow and not port.open:
-                    mailoverflow.function([node.address])
-                if port.num == 1 and lancrack and not port.open:
-                    lancrack.function([node.address])
-                if port.num == 1433 and sqldump and not port.open:
-                    sqldump.function([node.address])
-                if port.num == 6881 and torrentpwn and not port.open:
-                    torrentpwn.function([node.address])     
-            porthack([node.address])
+            if len(ports) < node.minPorts:
+                bruter([node.address], player)
+            else:
+                for port in node.ports:
+                    if port.num == 21 and ftpkill and not port.open:
+                        ftpkill.function([node.address])
+                    if port.num == 22 and sshkill and not port.open:
+                        sshkill.function([node.address])
+                    if port.num == 80 and webworm and not port.open:
+                        webworm.function([node.address])
+                    if port.num == 25 and mailoverflow and not port.open:
+                        mailoverflow.function([node.address])
+                    if port.num == 1 and lancrack and not port.open:
+                        lancrack.function([node.address])
+                    if port.num == 1433 and sqldump and not port.open:
+                        sqldump.function([node.address])
+                    if port.num == 6881 and torrentpwn and not port.open:
+                        torrentpwn.function([node.address])     
+                porthack([node.address])
         else:
             print("ERROR: Invalid address.")
     else:
