@@ -4166,7 +4166,7 @@ def ircmain(server, username):
         if msg in ["/quit", "/exit"]:
             return
         else:
-            if message:
+            if msg:
                 channel.add_message(username, msg)
             view(channel, username)
     channels = [x for x in server.channels if not x.private or username in x.allowlist]
